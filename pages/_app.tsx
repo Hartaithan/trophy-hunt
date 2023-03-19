@@ -10,6 +10,8 @@ import {
 import { getCookie, setCookie } from "cookies-next";
 import { type IExtendedInitialProps, type IAppProps } from "@/models/AppModel";
 import { type GetServerSidePropsContext } from "next";
+import MainLayout from "@/layouts/MainLayout";
+import theme from "@/styles/theme";
 
 type NullableScheme = ColorScheme | null;
 
@@ -50,11 +52,14 @@ const App = (props: IAppProps): JSX.Element => {
         withGlobalStyles
         withNormalizeCSS
         theme={{
+          ...theme,
           colorScheme,
           fontFamily: inter.style.fontFamily,
         }}
       >
-        <Component {...pageProps} />
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
       </MantineProvider>
     </ColorSchemeProvider>
   );
