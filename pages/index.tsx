@@ -1,10 +1,8 @@
+import { Title } from "@mantine/core";
 import { type NextPage } from "next";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
 
 const Home: NextPage = () => {
-  return <h3 className={inter.className}>Hello world!</h3>;
+  return <Title>Hello world!</Title>;
 };
 
 export default Home;
