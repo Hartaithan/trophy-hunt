@@ -1,7 +1,7 @@
+import { type IPage } from "@/models/AppModel";
 import { Title } from "@mantine/core";
-import { type NextPage } from "next";
 
-const Home: NextPage = () => {
+const Home: IPage = () => {
   return <Title>Hello world!</Title>;
 };
 

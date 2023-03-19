@@ -19,6 +19,7 @@
   },
   "plugins": ["react"],
   "rules": {
-    "no-console": ["error", { "allow": ["info", "error"] }]
+    "no-console": ["error", { "allow": ["info", "error"] }],
+    "@typescript-eslint/no-confusing-void-expression": "off"
   }
 }
