@@ -12,6 +12,8 @@ import { type IExtendedInitialProps, type IAppProps } from "@/models/AppModel";
 import { type GetServerSidePropsContext } from "next";
 import MainLayout from "@/layouts/MainLayout";
 import theme from "@/styles/theme";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
 
 type NullableScheme = ColorScheme | null;
 
@@ -23,6 +25,9 @@ const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 const App = (props: IAppProps): JSX.Element => {
   const { Component, pageProps } = props;
+
+  const supabaseClient = createBrowserSupabaseClient();
+  const [supabase] = useState(supabaseClient);
 
   const preferredColorScheme = useColorScheme();
   const [colorScheme, setColorScheme] = useState<ColorScheme>(
@@ -44,24 +49,29 @@ const App = (props: IAppProps): JSX.Element => {
   ]);
 
   return (
-    <ColorSchemeProvider
-      colorScheme={colorScheme}
-      toggleColorScheme={toggleColorScheme}
+    <SessionContextProvider
+      supabaseClient={supabase}
+      initialSession={pageProps?.initialSession}
     >
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          ...theme,
-          colorScheme,
-          fontFamily: inter.style.fontFamily,
-        }}
+      <ColorSchemeProvider
+        colorScheme={colorScheme}
+        toggleColorScheme={toggleColorScheme}
       >
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
-      </MantineProvider>
-    </ColorSchemeProvider>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{
+            ...theme,
+            colorScheme,
+            fontFamily: inter.style.fontFamily,
+          }}
+        >
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </MantineProvider>
+      </ColorSchemeProvider>
+    </SessionContextProvider>
   );
 };
 
