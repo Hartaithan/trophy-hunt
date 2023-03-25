@@ -1,4 +1,3 @@
-import { type ColorScheme } from "@mantine/core";
 import { type Session, type User } from "@supabase/supabase-js";
 import { type NextPage } from "next";
 import { type AppProps } from "next/app";
@@ -11,13 +10,7 @@ export interface SessionResponse {
   user: NullableUser;
 }
 
-export interface IExtendedInitialProps {
-  colorScheme: ColorScheme | null;
-}
-
-export interface IAppProps<P = object>
-  extends AppProps<P & SessionResponse>,
-    IExtendedInitialProps {
+export interface IAppProps<P = object> extends AppProps<P & SessionResponse> {
   Component: AppProps["Component"];
 }
 
