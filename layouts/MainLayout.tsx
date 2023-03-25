@@ -9,7 +9,7 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
         <title>Trophy Hunt</title>
         <meta name="description" content="Booky — Мобильное приложение" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container w="100%" h="100%">
         {children}
