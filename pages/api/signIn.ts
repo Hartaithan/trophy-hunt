@@ -1,28 +1,33 @@
 import { getErrorMessage } from "@/helpers/psn";
 import { type ISignUpBody } from "@/models/AuthModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { deleteCookie, setCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 import { type NextApiRequest, type NextApiHandler } from "next";
-import { type AuthTokensResponse } from "psn-api";
 import {
+  type AuthTokensResponse,
   exchangeCodeForAccessToken,
   exchangeNpssoForCode,
-  getProfileFromUserName,
 } from "psn-api";
 
-const REDIRECT_URL = process.env.NEXT_PUBLIC_REDIRECT_URL;
-
-interface ISignUpRequest extends NextApiRequest {
+interface ISignInRequest extends NextApiRequest {
   body: ISignUpBody;
 }
 
-const signUp: NextApiHandler = async (req, res) => {
-  const { body }: ISignUpRequest = req;
+const signIn: NextApiHandler = async (req, res) => {
+  const { body }: ISignInRequest = req;
   const { email, password, npsso } = body;
   const supabase = createServerSupabaseClient({ req, res });
 
   if (email === undefined || password === undefined || npsso === undefined) {
     return res.status(400).json({ message: "Invalid request body" });
+  }
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: body.email,
+    password: body.password,
+  });
+  if (error != null) {
+    return res.status(400).json(error);
   }
 
   let accessCode: string | null = null;
@@ -56,31 +61,14 @@ const signUp: NextApiHandler = async (req, res) => {
     maxAge: refreshTokenExpiresIn,
   });
 
-  const { profile } = await getProfileFromUserName(authorization, "me");
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { onlineId: profile.onlineId },
-      emailRedirectTo: REDIRECT_URL,
-    },
-  });
-  if (error != null) {
-    deleteCookie("psn_access");
-    deleteCookie("psn_refresh");
-    return res.status(400).json(error);
-  }
-  return res
-    .status(201)
-    .json({ message: "User successfully created!", user: data.user });
+  return res.status(200).json({ message: "Successful sign in!" });
 };
 
 const handler: NextApiHandler = async (req, res) => {
   const { method } = req;
   switch (method) {
     case "POST":
-      return signUp(req, res);
+      return signIn(req, res);
     default:
       res.setHeader("Allow", ["POST"]);
       return res

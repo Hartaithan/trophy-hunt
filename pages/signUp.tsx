@@ -20,7 +20,6 @@ const useStyles = createStyles(() => ({
     width: "100%",
     maxWidth: 400,
   },
-  welcome: {},
 }));
 
 const SignUpPage: IPage = () => {
@@ -60,7 +59,8 @@ const SignUpPage: IPage = () => {
         setUser(user);
       })
       .catch((error) => {
-        console.error("error", error);
+        // TODO: add error notifications
+        console.error("sign up error", error);
       });
   };
 
@@ -88,7 +88,7 @@ const SignUpPage: IPage = () => {
             <TextInput
               required
               label="Email"
-              placeholder="hello@mantine.dev"
+              placeholder="Your Email"
               {...form.getInputProps("email")}
             />
             <PasswordInput
