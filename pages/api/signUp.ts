@@ -50,8 +50,8 @@ const signUp: NextApiHandler = async (req, res) => {
   const options = { req, res };
   const { accessToken, expiresIn, refreshToken, refreshTokenExpiresIn } =
     authorization;
-  setCookie("psn_access", accessToken, { ...options, maxAge: expiresIn });
-  setCookie("psn_refresh", refreshToken, {
+  setCookie("psn-access-token", accessToken, { ...options, maxAge: expiresIn });
+  setCookie("psn-refresh-token", refreshToken, {
     ...options,
     maxAge: refreshTokenExpiresIn,
   });
@@ -67,8 +67,8 @@ const signUp: NextApiHandler = async (req, res) => {
     },
   });
   if (error != null) {
-    deleteCookie("psn_access");
-    deleteCookie("psn_refresh");
+    deleteCookie("psn-access-token");
+    deleteCookie("psn-refresh-token");
     return res.status(400).json(error);
   }
   return res

@@ -22,14 +22,6 @@ const signIn: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Invalid request body" });
   }
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: body.email,
-    password: body.password,
-  });
-  if (error != null) {
-    return res.status(400).json(error);
-  }
-
   let accessCode: string | null = null;
   let authorization: AuthTokensResponse | null = null;
 
@@ -55,11 +47,19 @@ const signIn: NextApiHandler = async (req, res) => {
   const options = { req, res };
   const { accessToken, expiresIn, refreshToken, refreshTokenExpiresIn } =
     authorization;
-  setCookie("psn_access", accessToken, { ...options, maxAge: expiresIn });
-  setCookie("psn_refresh", refreshToken, {
+  setCookie("psn-access-token", accessToken, { ...options, maxAge: expiresIn });
+  setCookie("psn-refresh-token", refreshToken, {
     ...options,
     maxAge: refreshTokenExpiresIn,
   });
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: body.email,
+    password: body.password,
+  });
+  if (error != null) {
+    return res.status(400).json(error);
+  }
 
   return res.status(200).json({ message: "Successful sign in!" });
 };
