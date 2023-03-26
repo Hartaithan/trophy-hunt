@@ -43,7 +43,7 @@ export const middleware: NextMiddleware = async (req) => {
   let refresh_token = req.cookies.get("psn-refresh-token")?.value;
 
   let response: NullableProfileResponse = null;
-  let authorization: NullableAuthResponse = null;
+  let refreshed_auth: NullableAuthResponse = null;
 
   const isHome = req.nextUrl.pathname === "/";
 
@@ -56,9 +56,9 @@ export const middleware: NextMiddleware = async (req) => {
   }
 
   if (access_token == null && refresh_token != null) {
-    authorization = await refreshTokens(refresh_token);
-    if (authorization != null) {
-      const { accessToken, refreshToken } = authorization;
+    refreshed_auth = await refreshTokens(refresh_token);
+    if (refreshed_auth != null) {
+      const { accessToken, refreshToken } = refreshed_auth;
       access_token = accessToken;
       refresh_token = refreshToken;
       response = await getProfile(access_token);
@@ -78,10 +78,11 @@ export const middleware: NextMiddleware = async (req) => {
 
   if (!isAuth && !isSignIn) {
     redirectUrl.pathname = "/signIn";
-    res.cookies.delete("supabase-auth-token");
-    res.cookies.delete("psn-access-token");
-    res.cookies.delete("psn-refresh-token");
-    return NextResponse.redirect(redirectUrl);
+    const redirectRes = NextResponse.redirect(redirectUrl);
+    redirectRes.cookies.delete("supabase-auth-token");
+    redirectRes.cookies.delete("psn-access-token");
+    redirectRes.cookies.delete("psn-refresh-token");
+    return redirectRes;
   }
 
   if (isAuth && isSignIn) {
@@ -89,9 +90,9 @@ export const middleware: NextMiddleware = async (req) => {
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (authorization != null) {
+  if (refreshed_auth != null) {
     const { accessToken, expiresIn, refreshToken, refreshTokenExpiresIn } =
-      authorization;
+      refreshed_auth;
     res.cookies.set("psn-access-token", accessToken, { maxAge: expiresIn });
     res.cookies.set("psn-refresh-token", refreshToken, {
       maxAge: refreshTokenExpiresIn,
