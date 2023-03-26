@@ -12,6 +12,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
+import API from "@/api/API";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -47,16 +48,9 @@ const SignUpPage: IPage = () => {
       console.error("API_URL not found");
       return;
     }
-    fetch(`${API_URL}/signUp`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
-      .then(async (response) => await response.json())
-      .then(({ user }) => {
-        setUser(user);
+    API.post("/signUp", JSON.stringify(values))
+      .then(({ data }) => {
+        setUser(data.user);
       })
       .catch((error) => {
         // TODO: add error notifications

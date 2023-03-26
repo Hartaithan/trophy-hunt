@@ -1,3 +1,4 @@
+import API from "@/api/API";
 import { type IPage } from "@/models/AppModel";
 import {
   Button,
@@ -44,14 +45,7 @@ const SignInPage: IPage = () => {
       console.error("API_URL not found");
       return;
     }
-    fetch(`${API_URL}/signIn`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
-      .then(async (response) => await response.json())
+    API.post("/signIn", JSON.stringify(values))
       .then(() => {
         reload();
       })
