@@ -47,11 +47,6 @@ const signIn: NextApiHandler = async (req, res) => {
   const options = { req, res };
   const { accessToken, expiresIn, refreshToken, refreshTokenExpiresIn } =
     authorization;
-  setCookie("psn-access-token", accessToken, { ...options, maxAge: expiresIn });
-  setCookie("psn-refresh-token", refreshToken, {
-    ...options,
-    maxAge: refreshTokenExpiresIn,
-  });
 
   const { error } = await supabase.auth.signInWithPassword({
     email: body.email,
@@ -60,6 +55,12 @@ const signIn: NextApiHandler = async (req, res) => {
   if (error != null) {
     return res.status(400).json(error);
   }
+
+  setCookie("psn-access-token", accessToken, { ...options, maxAge: expiresIn });
+  setCookie("psn-refresh-token", refreshToken, {
+    ...options,
+    maxAge: refreshTokenExpiresIn,
+  });
 
   return res.status(200).json({ message: "Successful sign in!" });
 };
