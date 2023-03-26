@@ -24,6 +24,7 @@
     "cookies-next": "^2.1.1",
     "eslint-config-next": "13.2.4",
     "next": "13.2.4",
+    "psn-api": "^2.9.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
