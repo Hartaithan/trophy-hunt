@@ -10,6 +10,8 @@ import {
   getProfileFromUserName,
 } from "psn-api";
 
+const REDIRECT_URL = process.env.NEXT_PUBLIC_REDIRECT_URL;
+
 interface ISignUpRequest extends NextApiRequest {
   body: ISignUpBody;
 }
@@ -56,15 +58,20 @@ const signUp: NextApiHandler = async (req, res) => {
 
   const { profile } = await getProfileFromUserName(authorization, "me");
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { onlineId: profile.onlineId } },
+    options: {
+      data: { onlineId: profile.onlineId },
+      emailRedirectTo: REDIRECT_URL,
+    },
   });
   if (error != null) {
     return res.status(400).json({ message: "Unable to create user", error });
   }
-  return res.status(201).json({ message: "User successfully created!" });
+  return res
+    .status(201)
+    .json({ message: "User successfully created!", user: data.user });
 };
 
 const handler: NextApiHandler = async (req, res) => {
