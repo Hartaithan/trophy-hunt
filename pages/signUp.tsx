@@ -1,7 +1,7 @@
 import { type IPage } from "@/models/AppModel";
 import { type ISignUpBody } from "@/models/AuthModel";
 import { Button, Flex, PasswordInput, Stack, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, isEmail, hasLength } from "@mantine/form";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -13,11 +13,12 @@ const SignUpPage: IPage = () => {
       npsso: "",
     },
     validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
-      password: (val) =>
-        val.length <= 6
-          ? "Password should include at least 6 characters"
-          : null,
+      email: isEmail("Invalid email"),
+      password: hasLength(
+        { min: 6 },
+        "Password should include at least 6 characters"
+      ),
+      npsso: hasLength(64, "NPSSO must have exactly 64 characters"),
     },
   });
 
