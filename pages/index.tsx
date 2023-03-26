@@ -3,7 +3,7 @@ import { Flex, Title } from "@mantine/core";
 
 const Home: IPage = () => {
   return (
-    <Flex h="100%" justify="center" align="center">
+    <Flex h="100%" justify="center" align="center" direction="column">
       <Title>Hello world!</Title>
     </Flex>
   );

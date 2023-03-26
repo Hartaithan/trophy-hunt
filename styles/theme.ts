@@ -1,5 +1,6 @@
 import { type DefaultProps } from "@/models/ThemeModel";
 import { type ContainerProps, type MantineThemeOverride } from "@mantine/core";
+import { globalStyles } from "./global";
 
 const ContainerDefaultProps: DefaultProps<ContainerProps> = ({ spacing }) => ({
   size: "xl",
@@ -49,6 +50,7 @@ const theme: MantineThemeOverride = {
   colorScheme: "dark",
   primaryColor: "accent",
   colors: extendedColors,
+  globalStyles,
   components: {
     Container: {
       defaultProps: ContainerDefaultProps,
