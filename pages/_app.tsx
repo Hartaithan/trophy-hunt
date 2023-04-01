@@ -29,19 +29,58 @@ const getSession = async (
   return data.session;
 };
 
+const getRefreshedCookies = (ctx: IInitialProps["ctx"]): string => {
+  let cookies: string = ctx.req.headers.cookie?.toString() ?? "";
+
+  if (!cookies.includes("psn-access-token")) {
+    const responseCookies = ctx.res.getHeader("set-cookie");
+    if (responseCookies instanceof Array) {
+      cookies = `${cookies}; ${responseCookies.join("; ")}`;
+    } else if (responseCookies !== undefined) {
+      cookies = `${cookies} ${responseCookies.toString()}`;
+    }
+  }
+
+  return cookies;
+};
+
 const getProfile = async (
   ctx: IInitialProps["ctx"]
 ): Promise<NullableProfile> => {
   let profile: NullableProfile = null;
+  const cookies = getRefreshedCookies(ctx);
+
   try {
     const { data } = await API.get("/profile", {
-      headers: { Cookie: ctx.req.headers.cookie },
+      headers: { Cookie: cookies },
     });
     profile = data.profile ?? null;
   } catch (error) {
     console.error("unable to fetch profile", error);
   }
   return profile;
+};
+
+const getInitialProps = async ({
+  ctx,
+}: IInitialProps): Promise<IExtendedInitialProps> => {
+  let initialSession: NullableSession = null;
+  let initialProfile: NullableProfile = null;
+
+  if (isServerSide) {
+    const [session, profile] = await Promise.allSettled([
+      getSession(ctx),
+      getProfile(ctx),
+    ]);
+    if (session.status === "fulfilled") {
+      initialSession = session.value;
+    }
+    if (profile.status === "fulfilled") {
+      initialProfile = profile.value;
+    }
+  }
+
+  return { initialSession, initialProfile };
 };
 
 const App = (props: IAppProps): JSX.Element => {
@@ -71,28 +110,6 @@ const App = (props: IAppProps): JSX.Element => {
       </MantineProvider>
     </SessionContextProvider>
   );
-};
-
-const getInitialProps = async ({
-  ctx,
-}: IInitialProps): Promise<IExtendedInitialProps> => {
-  let initialSession: NullableSession = null;
-  let initialProfile: NullableProfile = null;
-
-  if (isServerSide) {
-    const [session, profile] = await Promise.allSettled([
-      getSession(ctx),
-      getProfile(ctx),
-    ]);
-    if (session.status === "fulfilled") {
-      initialSession = session.value;
-    }
-    if (profile.status === "fulfilled") {
-      initialProfile = profile.value;
-    }
-  }
-
-  return { initialSession, initialProfile };
 };
 
 App.getInitialProps = getInitialProps;

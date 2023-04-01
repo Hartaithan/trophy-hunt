@@ -41,10 +41,10 @@ export const middleware: NextMiddleware = async (req) => {
   }
 
   const isAuth =
-    (access_token === undefined && refresh_token === undefined) ||
-    supabase_token === undefined;
+    (access_token !== undefined && refresh_token !== undefined) ||
+    supabase_token !== undefined;
 
-  if (isAuth && !isSignIn) {
+  if (!isAuth && !isSignIn) {
     redirectUrl.pathname = "/signIn";
     const redirectRes = NextResponse.redirect(redirectUrl);
     redirectRes.cookies.delete("supabase-auth-token");
@@ -53,7 +53,7 @@ export const middleware: NextMiddleware = async (req) => {
     return redirectRes;
   }
 
-  if (!isAuth && isSignIn) {
+  if (isAuth && isSignIn) {
     redirectUrl.pathname = "/";
     return NextResponse.redirect(redirectUrl);
   }
