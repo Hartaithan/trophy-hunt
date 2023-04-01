@@ -5,7 +5,13 @@ import { getErrorMessage } from "@/helpers/psn";
 
 const getProfile: NextApiHandler = async (req, res) => {
   const options = { req, res };
-  const access_token = getCookie("psn-access-token", options) as string;
+  const access_token = getCookie("psn-access-token", options);
+
+  if (typeof access_token !== "string") {
+    console.error("token not found");
+    return res.status(400).json({ message: "Unable to get profile" });
+  }
+
   const authorization: AuthorizationPayload = { accessToken: access_token };
   try {
     const { profile } = await getProfileFromUserName(authorization, "me");
