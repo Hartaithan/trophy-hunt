@@ -1,6 +1,11 @@
 import { type Tuple, type DefaultMantineColor } from "@mantine/core";
 
-type ExtendedColors = "primary" | "secondary" | "accent" | DefaultMantineColor;
+type ExtendedColors =
+  | "primary"
+  | "secondary"
+  | "accent"
+  | "accented"
+  | DefaultMantineColor;
 
 declare module "@mantine/core" {
   export interface MantineThemeColorsOverride {
