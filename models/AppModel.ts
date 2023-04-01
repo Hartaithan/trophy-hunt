@@ -1,4 +1,3 @@
-import { type Session, type User } from "@supabase/supabase-js";
 import {
   type NextComponentType,
   type NextPageContext,
@@ -6,14 +5,13 @@ import {
   type NextPage,
 } from "next";
 import { type AppProps } from "next/app";
-
-export type NullableSession = Session | null;
-export type NullableUser = User | null;
+import { type NullableProfile, type NullableSession } from "./AuthModel";
 
 export type IExtendedPageProps = object;
 
 export interface IExtendedInitialProps {
   initialSession: NullableSession;
+  initialProfile: NullableProfile;
 }
 
 export interface IAppProps<P = object>

@@ -1,13 +1,9 @@
-interface IError {
-  message: string;
-}
-
 export const getErrorMessage = (
   error: unknown,
   defaultMessage = "Unexpected error"
-): IError => {
+): string => {
   if (error instanceof Error) {
-    return { message: error.message };
+    return error.message;
   }
-  return { message: defaultMessage };
+  return defaultMessage;
 };

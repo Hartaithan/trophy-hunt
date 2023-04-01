@@ -6,7 +6,6 @@ import {
   type IExtendedInitialProps,
   type IAppProps,
   type IInitialProps,
-  type NullableSession,
 } from "@/models/AppModel";
 import MainLayout from "@/layouts/MainLayout";
 import theme from "@/styles/theme";
@@ -15,12 +14,38 @@ import {
   createServerSupabaseClient,
 } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { type NullableProfile, type NullableSession } from "@/models/AuthModel";
+import PSNProvider from "@/providers/PSNProvider";
+import API from "@/api/API";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 const isServerSide = typeof window === "undefined";
 
+const getSession = async (
+  ctx: IInitialProps["ctx"]
+): Promise<NullableSession> => {
+  const supabase = createServerSupabaseClient(ctx);
+  const { data } = await supabase.auth.getSession();
+  return data.session;
+};
+
+const getProfile = async (
+  ctx: IInitialProps["ctx"]
+): Promise<NullableProfile> => {
+  let profile: NullableProfile = null;
+  try {
+    const { data } = await API.get("/profile", {
+      headers: { Cookie: ctx.req.headers.cookie },
+    });
+    profile = data.profile ?? null;
+  } catch (error) {
+    console.error("unable to fetch profile", error);
+  }
+  return profile;
+};
+
 const App = (props: IAppProps): JSX.Element => {
-  const { Component, pageProps, initialSession } = props;
+  const { Component, pageProps, initialSession, initialProfile } = props;
 
   const supabaseClient = createBrowserSupabaseClient();
   const [supabase] = useState(supabaseClient);
@@ -38,9 +63,11 @@ const App = (props: IAppProps): JSX.Element => {
           fontFamily: inter.style.fontFamily,
         }}
       >
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
+        <PSNProvider initialProfile={initialProfile}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </PSNProvider>
       </MantineProvider>
     </SessionContextProvider>
   );
@@ -50,16 +77,22 @@ const getInitialProps = async ({
   ctx,
 }: IInitialProps): Promise<IExtendedInitialProps> => {
   let initialSession: NullableSession = null;
+  let initialProfile: NullableProfile = null;
 
   if (isServerSide) {
-    const supabase = createServerSupabaseClient(ctx);
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    initialSession = session;
+    const [session, profile] = await Promise.allSettled([
+      getSession(ctx),
+      getProfile(ctx),
+    ]);
+    if (session.status === "fulfilled") {
+      initialSession = session.value;
+    }
+    if (profile.status === "fulfilled") {
+      initialProfile = profile.value;
+    }
   }
 
-  return { initialSession };
+  return { initialSession, initialProfile };
 };
 
 App.getInitialProps = getInitialProps;
