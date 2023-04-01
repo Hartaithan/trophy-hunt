@@ -1,17 +1,33 @@
 import { type Session, type User } from "@supabase/supabase-js";
-import { type NextPage } from "next";
+import {
+  type NextComponentType,
+  type NextPageContext,
+  type GetServerSidePropsContext,
+  type NextPage,
+} from "next";
 import { type AppProps } from "next/app";
 
 export type NullableSession = Session | null;
 export type NullableUser = User | null;
 
-export interface SessionResponse {
+export type IExtendedPageProps = object;
+
+export interface IExtendedInitialProps {
   initialSession: NullableSession;
-  user: NullableUser;
 }
 
-export interface IAppProps<P = object> extends AppProps<P & SessionResponse> {
-  Component: AppProps["Component"];
+export interface IAppProps<P = object>
+  extends AppProps<P>,
+    IExtendedInitialProps {
+  Component: NextComponentType<
+    NextPageContext,
+    IExtendedInitialProps,
+    IExtendedPageProps
+  >;
 }
 
-export type IPage<P = object & SessionResponse, IP = P> = NextPage<P, IP>;
+export interface IInitialProps {
+  ctx: GetServerSidePropsContext;
+}
+
+export type IPage<P = object, IP = P> = NextPage<P & IExtendedPageProps, IP>;
