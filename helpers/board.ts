@@ -6,23 +6,22 @@ import {
 import { randomNum } from "./number";
 
 export const generateItems = (from: number, to: number): IBoardItem[] => {
-  const items = Array.from(
-    { length: to - from + 1 },
-    (_, index): IBoardItem => {
-      const random = randomNum(1, 4);
-      const size = random <= 2 ? "320/176" : "512/512";
-      const status = Object.entries(BOARD_COLUMNS)[
-        random - 1
-      ][1] as BOARD_COLUMNS;
-      return {
-        id: from + index,
-        title: `Item ${from + index}`,
-        image_url: `https://picsum.photos/${size}?random=${from + index}`,
-        status,
-      };
-    }
-  );
-  return items;
+  const a = Array(to).fill(from);
+  let b = from - 1;
+  while (b < to) {
+    const random = randomNum(1, 4);
+    const size = random <= 2 ? "320/176" : "512/512";
+    const columns = Object.values(BOARD_COLUMNS);
+    const status = columns[random - 1] as BOARD_COLUMNS;
+    const item = {
+      id: b,
+      title: `Item ${b}`,
+      image_url: `https://picsum.photos/${size}?random=${b}`,
+      status,
+    };
+    a[b++] = item;
+  }
+  return a;
 };
 
 export const initializeBoard = (items: IBoardItem[]): IBoardColumn => {
