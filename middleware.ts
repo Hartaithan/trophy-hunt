@@ -41,7 +41,8 @@ export const middleware: NextMiddleware = async (req) => {
   }
 
   const isAuth =
-    (access_token !== undefined && refresh_token !== undefined) ||
+    access_token !== undefined &&
+    refresh_token !== undefined &&
     supabase_token !== undefined;
 
   if (!isAuth && !isSignIn) {

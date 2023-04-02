@@ -47,15 +47,13 @@ const getRefreshedCookies = (ctx: IInitialProps["ctx"]): string => {
     return cookies;
   }
 
-  if (!cookies.includes("psn-access-token")) {
-    const access = ctx.req.headers["1"];
-    const refresh = ctx.req.headers["2"];
-    if (typeof access === "string") {
-      cookies = `${cookies}; ${access}`;
-    }
-    if (typeof refresh === "string") {
-      cookies = `${cookies}; ${refresh}`;
-    }
+  const access = ctx.req.headers["1"];
+  const refresh = ctx.req.headers["2"];
+  if (typeof access === "string") {
+    cookies = `${cookies}; ${access}`;
+  }
+  if (typeof refresh === "string") {
+    cookies = `${cookies}; ${refresh}`;
   }
 
   return cookies;
