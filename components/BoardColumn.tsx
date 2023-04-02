@@ -59,7 +59,7 @@ const useStyles = createStyles(
         marginBottom: spacing.md,
         zIndex: 100,
       },
-      title: {
+      label: {
         color: colors.secondary[9],
         fontSize: 14,
       },
@@ -69,13 +69,13 @@ const useStyles = createStyles(
 
 const BoardColumn: FC<IBoardColumnProps> = (props) => {
   const { children, column } = props;
-  const { classes } = useStyles({ column: column.title });
+  const { classes } = useStyles({ column: column.id });
   const { spacing } = useMantineTheme();
 
   return (
     <Flex className={classes.column} direction="column">
       <Box className={classes.header}>
-        <Text className={classes.title}>{column.title}</Text>
+        <Text className={classes.label}>{column.label}</Text>
       </Box>
       <Flex direction="column" gap={spacing.sm}>
         {children}

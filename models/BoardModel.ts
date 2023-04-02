@@ -1,4 +1,11 @@
 export enum BOARD_COLUMNS {
+  Backlog = "backlog",
+  InProgress = "progress",
+  Platinum = "platinum",
+  Complete = "complete",
+}
+
+export enum BOARD_COLUMNS_LABELS {
   Backlog = "Backlog",
   InProgress = "In Progress",
   Platinum = "Platinum",
@@ -12,7 +19,7 @@ export interface IBoardItem {
 }
 
 export interface IBoardColumn {
-  id: number;
-  title: BOARD_COLUMNS;
+  id: BOARD_COLUMNS;
+  label: BOARD_COLUMNS_LABELS;
   items: IBoardItem[];
 }

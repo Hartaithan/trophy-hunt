@@ -7,11 +7,11 @@ import {
   type IBoardItem,
   type IBoardColumn,
   BOARD_COLUMNS,
+  BOARD_COLUMNS_LABELS,
 } from "@/models/BoardModel";
 import { DndContext } from "@dnd-kit/core";
 import {
   SortableContext,
-  horizontalListSortingStrategy,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
@@ -33,23 +33,23 @@ const generateItems = (from: number, to: number): IBoardItem[] => {
 
 const columns: IBoardColumn[] = [
   {
-    id: 1,
-    title: BOARD_COLUMNS.Backlog,
+    id: BOARD_COLUMNS.Backlog,
+    label: BOARD_COLUMNS_LABELS.Backlog,
     items: generateItems(1, 6),
   },
   {
-    id: 2,
-    title: BOARD_COLUMNS.InProgress,
+    id: BOARD_COLUMNS.InProgress,
+    label: BOARD_COLUMNS_LABELS.InProgress,
     items: generateItems(7, 10),
   },
   {
-    id: 3,
-    title: BOARD_COLUMNS.Platinum,
+    id: BOARD_COLUMNS.Platinum,
+    label: BOARD_COLUMNS_LABELS.Platinum,
     items: generateItems(11, 20),
   },
   {
-    id: 4,
-    title: BOARD_COLUMNS.Complete,
+    id: BOARD_COLUMNS.Complete,
+    label: BOARD_COLUMNS_LABELS.Complete,
     items: generateItems(21, 25),
   },
 ];
@@ -57,22 +57,20 @@ const columns: IBoardColumn[] = [
 const BoardPage: IPage = () => {
   return (
     <DndContext>
-      <SortableContext items={columns} strategy={horizontalListSortingStrategy}>
-        <BoardContainer>
-          {columns.map((col) => (
-            <BoardColumn key={col.id} column={col}>
-              <SortableContext
-                items={col.items}
-                strategy={verticalListSortingStrategy}
-              >
-                {col.items.map((item) => (
-                  <BoardCard key={item.id} item={item} />
-                ))}
-              </SortableContext>
-            </BoardColumn>
-          ))}
-        </BoardContainer>
-      </SortableContext>
+      <BoardContainer>
+        {columns.map((col) => (
+          <BoardColumn key={col.id} column={col}>
+            <SortableContext
+              items={col.items}
+              strategy={verticalListSortingStrategy}
+            >
+              {col.items.map((item) => (
+                <BoardCard key={item.id} item={item} />
+              ))}
+            </SortableContext>
+          </BoardColumn>
+        ))}
+      </BoardContainer>
     </DndContext>
   );
 };
