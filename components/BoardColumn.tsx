@@ -1,4 +1,4 @@
-import { BOARD_COLUMNS, type IBoardColumn } from "@/models/BoardModel";
+import { BOARD_COLUMNS, columnsLabels } from "@/models/BoardModel";
 import { type Range } from "@/helpers/types";
 import {
   Text,
@@ -35,7 +35,7 @@ const columnColors: Record<BOARD_COLUMNS, IColumnColor> = {
 };
 
 interface IBoardColumnProps extends PropsWithChildren {
-  column: IBoardColumn;
+  column: BOARD_COLUMNS;
 }
 
 const useStyles = createStyles(
@@ -69,13 +69,13 @@ const useStyles = createStyles(
 
 const BoardColumn: FC<IBoardColumnProps> = (props) => {
   const { children, column } = props;
-  const { classes } = useStyles({ column: column.id });
+  const { classes } = useStyles({ column });
   const { spacing } = useMantineTheme();
 
   return (
     <Flex className={classes.column} direction="column">
       <Box className={classes.header}>
-        <Text className={classes.label}>{column.label}</Text>
+        <Text className={classes.label}>{columnsLabels[column]}</Text>
       </Box>
       <Flex direction="column" gap={spacing.sm}>
         {children}
