@@ -9,14 +9,15 @@ export const generateItems = (from: number, to: number): IBoardItem[] => {
   const a = Array(to).fill(from);
   let b = from - 1;
   while (b < to) {
+    const id = b + 1;
     const random = randomNum(1, 4);
     const size = random <= 2 ? "320/176" : "512/512";
     const columns = Object.values(BOARD_COLUMNS);
     const status = columns[random - 1] as BOARD_COLUMNS;
     const item = {
-      id: b,
-      title: `Item ${b}`,
-      image_url: `https://picsum.photos/${size}?random=${b}`,
+      id,
+      title: `Item ${id}`,
+      image_url: `https://picsum.photos/${size}?random=${id}`,
       status,
     };
     a[b++] = item;
