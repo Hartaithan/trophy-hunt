@@ -4,6 +4,8 @@ import {
   type IBoardItem,
 } from "@/models/BoardModel";
 import { randomNum } from "./number";
+import { arrayMove as dndKitArrayMove } from "@dnd-kit/sortable";
+import { type UniqueIdentifier } from "@dnd-kit/core";
 
 export const generateItems = (from: number, to: number): IBoardItem[] => {
   const a = Array(to).fill(from);
@@ -38,4 +40,45 @@ export const initializeBoard = (items: IBoardItem[]): IBoardColumn => {
     columns[status].push(item);
   }
   return columns;
+};
+
+export const moveBetweenContainers = (
+  items: IBoardColumn,
+  activeContainer: string,
+  activeIndex: number,
+  overContainer: string,
+  overIndex: number,
+  itemId: UniqueIdentifier
+): IBoardColumn => {
+  const item = items[activeContainer].find(
+    (item) => item.id === itemId
+  ) as IBoardItem;
+  return {
+    ...items,
+    [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
+    [overContainer]: insertAtIndex(items[overContainer], overIndex, item),
+  };
+};
+
+export const removeAtIndex = (
+  array: IBoardItem[],
+  index: number
+): IBoardItem[] => {
+  return [...array.slice(0, index), ...array.slice(index + 1)];
+};
+
+export const insertAtIndex = (
+  array: IBoardItem[],
+  index: number,
+  item: IBoardItem
+): IBoardItem[] => {
+  return [...array.slice(0, index), item, ...array.slice(index)];
+};
+
+export const arrayMove = (
+  array: IBoardItem[],
+  oldIndex: number,
+  newIndex: number
+): IBoardItem[] => {
+  return dndKitArrayMove(array, oldIndex, newIndex);
 };

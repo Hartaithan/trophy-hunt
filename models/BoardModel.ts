@@ -19,4 +19,4 @@ export interface IBoardItem {
   status: BOARD_COLUMNS;
 }
 
-export type IBoardColumn = Record<BOARD_COLUMNS, IBoardItem[]>;
+export type IBoardColumn = Record<BOARD_COLUMNS | string, IBoardItem[]>;

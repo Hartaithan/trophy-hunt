@@ -1,7 +1,9 @@
 import { type IBoardItem } from "@/models/BoardModel";
+import { useSortable } from "@dnd-kit/sortable";
 import { Box, Flex, Text, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
+import { CSS } from "@dnd-kit/utilities";
 
 interface IBoardCardProps {
   item: IBoardItem;
@@ -42,12 +44,24 @@ const useStyles = createStyles(({ colors, radius, spacing }) => ({
 
 const BoardCard: FC<IBoardCardProps> = (props) => {
   const { item } = props;
-  const { title, image_url } = item;
+  const { id, title, image_url } = item;
 
   const { classes } = useStyles();
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
 
   return (
-    <Flex className={classes.container} direction="column">
+    <Flex
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      className={classes.container}
+      direction="column"
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
+    >
       <Box className={classes.imageWrapper}>
         <Image
           className={classes.image}

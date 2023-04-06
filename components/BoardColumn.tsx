@@ -1,4 +1,8 @@
-import { BOARD_COLUMNS, columnsLabels } from "@/models/BoardModel";
+import {
+  BOARD_COLUMNS,
+  type IBoardItem,
+  columnsLabels,
+} from "@/models/BoardModel";
 import { type Range } from "@/helpers/types";
 import {
   Text,
@@ -8,7 +12,13 @@ import {
   type MantineColor,
   useMantineTheme,
 } from "@mantine/core";
-import { type FC, type PropsWithChildren } from "react";
+import { type FC } from "react";
+import { useDroppable } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import BoardCard from "./BoardCard";
 
 interface IColumnColor {
   color: MantineColor;
@@ -34,8 +44,9 @@ const columnColors: Record<BOARD_COLUMNS, IColumnColor> = {
   },
 };
 
-interface IBoardColumnProps extends PropsWithChildren {
+interface IBoardColumnProps {
   column: BOARD_COLUMNS;
+  items: IBoardItem[];
 }
 
 const useStyles = createStyles(
@@ -68,19 +79,28 @@ const useStyles = createStyles(
 );
 
 const BoardColumn: FC<IBoardColumnProps> = (props) => {
-  const { children, column } = props;
+  const { column, items } = props;
   const { classes } = useStyles({ column });
   const { spacing } = useMantineTheme();
+  const { setNodeRef } = useDroppable({ id: column });
 
   return (
-    <Flex className={classes.column} direction="column">
-      <Box className={classes.header}>
-        <Text className={classes.label}>{columnsLabels[column]}</Text>
-      </Box>
-      <Flex direction="column" gap={spacing.sm}>
-        {children}
+    <SortableContext
+      id={column}
+      items={items}
+      strategy={verticalListSortingStrategy}
+    >
+      <Flex className={classes.column} direction="column">
+        <Box className={classes.header}>
+          <Text className={classes.label}>{columnsLabels[column]}</Text>
+        </Box>
+        <Flex direction="column" gap={spacing.sm} ref={setNodeRef}>
+          {items.map((item) => (
+            <BoardCard key={item.id} item={item} />
+          ))}
+        </Flex>
       </Flex>
-    </Flex>
+    </SortableContext>
   );
 };
 
