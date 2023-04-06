@@ -50,9 +50,10 @@ export const moveBetweenContainers = (
   overIndex: number,
   itemId: UniqueIdentifier
 ): IBoardColumn => {
-  const item = items[activeContainer].find(
-    (item) => item.id === itemId
-  ) as IBoardItem;
+  const item = items[activeContainer].find((item) => item.id === itemId);
+  if (item === undefined) {
+    return items;
+  }
   return {
     ...items,
     [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
