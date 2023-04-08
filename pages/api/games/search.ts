@@ -12,12 +12,14 @@ const allowedPlatforms: string[] = ["PS5", "PS4", "PS3", "Vita"];
 
 const searchByQuery: NextApiHandler = async (req, res) => {
   const { query } = req.query as ISearchQueries;
+
   if (SEARCH_URL === undefined) {
     return res.status(400).json({ message: "SEARCH_URL not found" });
   }
   if (query === undefined || query.length === 0) {
     return res.status(400).json({ message: "Query is required" });
   }
+
   let results = null;
   try {
     results = await fetch(`${SEARCH_URL}/games/search?search=${query}`).then(
@@ -29,6 +31,7 @@ const searchByQuery: NextApiHandler = async (req, res) => {
       .status(400)
       .json({ message: `Unable to search by query: ${query}` });
   }
+
   const games: ISearchItem[] = results !== null ? results.games : [];
   const formattedGames: ISearchResult[] = [];
   for (let i = 0; i < games.length; i++) {
@@ -42,6 +45,7 @@ const searchByQuery: NextApiHandler = async (req, res) => {
       });
     }
   }
+
   const response: ISearchResponse = { query, results: formattedGames };
   return res.status(200).json(response);
 };
