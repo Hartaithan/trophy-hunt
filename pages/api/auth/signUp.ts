@@ -1,20 +1,23 @@
 import { getErrorMessage } from "@/helpers/psn";
 import { type ISignUpBody } from "@/models/AuthModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { setCookie } from "cookies-next";
+import { deleteCookie, setCookie } from "cookies-next";
 import { type NextApiRequest, type NextApiHandler } from "next";
+import { type AuthTokensResponse } from "psn-api";
 import {
-  type AuthTokensResponse,
   exchangeCodeForAccessToken,
   exchangeNpssoForCode,
+  getProfileFromUserName,
 } from "psn-api";
 
-interface ISignInRequest extends NextApiRequest {
+const REDIRECT_URL = process.env.NEXT_PUBLIC_REDIRECT_URL;
+
+interface ISignUpRequest extends NextApiRequest {
   body: ISignUpBody;
 }
 
-const signIn: NextApiHandler = async (req, res) => {
-  const { body }: ISignInRequest = req;
+const signUp: NextApiHandler = async (req, res) => {
+  const { body }: ISignUpRequest = req;
   const { email, password, npsso } = body;
   const supabase = createServerSupabaseClient({ req, res });
 
@@ -44,34 +47,40 @@ const signIn: NextApiHandler = async (req, res) => {
   const options = { req, res };
   const { accessToken, expiresIn, refreshToken, refreshTokenExpiresIn } =
     authorization;
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email: body.email,
-    password: body.password,
-  });
-  if (error != null) {
-    return res.status(400).json(error);
-  }
-
   setCookie("psn-access-token", accessToken, { ...options, maxAge: expiresIn });
   setCookie("psn-refresh-token", refreshToken, {
     ...options,
     maxAge: refreshTokenExpiresIn,
   });
 
-  return res.status(200).json({ message: "Successful sign in!" });
+  const { profile } = await getProfileFromUserName(authorization, "me");
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { onlineId: profile.onlineId },
+      emailRedirectTo: REDIRECT_URL,
+    },
+  });
+  if (error != null) {
+    deleteCookie("psn-access-token");
+    deleteCookie("psn-refresh-token");
+    return res.status(400).json(error);
+  }
+  return res
+    .status(201)
+    .json({ message: "User successfully created!", user: data.user });
 };
 
 const handler: NextApiHandler = async (req, res) => {
-  const { method } = req;
+  const { method = "[Not Found]" } = req;
   switch (method) {
     case "POST":
-      return signIn(req, res);
+      return signUp(req, res);
     default:
       res.setHeader("Allow", ["POST"]);
-      return res
-        .status(405)
-        .end(`Method ${method ?? "[Not Found]"} Not Allowed`);
+      return res.status(405).end(`Method ${method} Not Allowed`);
   }
 };
 

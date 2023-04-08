@@ -71,7 +71,7 @@ const getProfile = async (
   }
 
   try {
-    const url = `${API_URL}/profile`;
+    const url = `${API_URL}/auth/profile`;
     const response = await fetch(url, {
       method: "GET",
       credentials: "include",

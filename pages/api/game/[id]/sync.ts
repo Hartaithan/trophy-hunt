@@ -1,0 +1,18 @@
+import { type NextApiHandler } from "next";
+
+const syncGameProgress: NextApiHandler = async (req, res) => {
+  return res.status(200).json({ message: "Hello world!" });
+};
+
+const handler: NextApiHandler = async (req, res) => {
+  const { method = "[Not Found]" } = req;
+  switch (method) {
+    case "GET":
+      return syncGameProgress(req, res);
+    default:
+      res.setHeader("Allow", ["GET"]);
+      return res.status(405).end(`Method ${method} Not Allowed`);
+  }
+};
+
+export default handler;

@@ -48,7 +48,7 @@ const SignUpPage: IPage = () => {
       console.error("API_URL not found");
       return;
     }
-    API.post("/signUp", JSON.stringify(values))
+    API.post("/auth/signUp", JSON.stringify(values))
       .then(({ data }) => {
         setUser(data.user);
       })

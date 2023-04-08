@@ -31,7 +31,7 @@ const PSNProvider: FC<IPSNProvider> = (props) => {
   );
 
   const updateProfile = (): void => {
-    API.get("/profile")
+    API.get("/auth/profile")
       .then(({ data }) => {
         const profile = data.profile;
         setProfile(profile);

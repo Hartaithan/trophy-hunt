@@ -45,7 +45,7 @@ const SignInPage: IPage = () => {
       console.error("API_URL not found");
       return;
     }
-    API.post("/signIn", JSON.stringify(values))
+    API.post("/auth/signIn", JSON.stringify(values))
       .then(() => {
         reload();
       })

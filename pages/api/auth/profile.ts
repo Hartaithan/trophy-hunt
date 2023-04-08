@@ -24,15 +24,13 @@ const getProfile: NextApiHandler = async (req, res) => {
 };
 
 const handler: NextApiHandler = async (req, res) => {
-  const { method } = req;
+  const { method = "[Not Found]" } = req;
   switch (method) {
     case "GET":
       return getProfile(req, res);
     default:
       res.setHeader("Allow", ["GET"]);
-      return res
-        .status(405)
-        .end(`Method ${method ?? "[Not Found]"} Not Allowed`);
+      return res.status(405).end(`Method ${method} Not Allowed`);
   }
 };
 

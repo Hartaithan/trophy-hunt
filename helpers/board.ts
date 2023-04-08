@@ -15,7 +15,7 @@ export const generateItems = (from: number, to: number): IBoardItem[] => {
     const random = randomNum(1, 4);
     const size = random <= 2 ? "320/176" : "512/512";
     const columns = Object.values(BOARD_COLUMNS);
-    const status = columns[random - 1] as BOARD_COLUMNS;
+    const status = columns[random - 1];
     const item = {
       id,
       title: `Item ${id}`,
