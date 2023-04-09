@@ -17,10 +17,10 @@ export interface IGame {
 
 export type INewGamePayload = Omit<
   IGame,
-  "id" | "created_at" | "updated_at" | "ordered_at"
+  "id" | "created_at" | "updated_at" | "ordered_at" | "progress" | "order"
 >;
 
 export interface IAddGamePayload {
   gameId: string;
-  lang: string;
+  status: BOARD_COLUMNS;
 }
