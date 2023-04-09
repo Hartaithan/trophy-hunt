@@ -7,7 +7,7 @@ import {
 type NullableAuthResponse = AuthTokensResponse | null;
 
 export const config = {
-  matcher: "/((?!api|_next/static|_next/image|favicon.ico).*)",
+  matcher: "/((?!api|static|.*\\..*|_next|favicon.ico).*)",
 };
 
 const refreshTokens = async (token: string): Promise<NullableAuthResponse> => {
