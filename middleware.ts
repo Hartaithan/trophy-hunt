@@ -26,7 +26,7 @@ export const middleware: NextMiddleware = async (req) => {
   let access_token = req.cookies.get("psn-access-token")?.value;
   let refresh_token = req.cookies.get("psn-refresh-token")?.value;
   const supabase_token = req.cookies.get("supabase-auth-token")?.value;
-  const isSignIn = req.nextUrl.pathname === "/signIn";
+  const isSignIn = ["/signIn", "/signUp"].includes(req.nextUrl.pathname);
 
   let refreshed_auth: NullableAuthResponse = null;
   const redirectUrl = req.nextUrl.clone();
