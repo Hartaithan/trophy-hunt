@@ -18,7 +18,7 @@ interface ISignUpRequest extends NextApiRequest {
 
 const signUp: NextApiHandler = async (req, res) => {
   const { body }: ISignUpRequest = req;
-  const { email, password, npsso } = body;
+  const { email, password, npsso, lang } = body;
   const supabase = createServerSupabaseClient({ req, res });
 
   if (email === undefined || password === undefined || npsso === undefined) {
@@ -59,7 +59,7 @@ const signUp: NextApiHandler = async (req, res) => {
     email,
     password,
     options: {
-      data: { onlineId: profile.onlineId },
+      data: { onlineId: profile.onlineId, lang },
       emailRedirectTo: REDIRECT_URL,
     },
   });
