@@ -4,6 +4,10 @@ const getGameById: NextApiHandler = async (req, res) => {
   return res.status(200).json({ message: "Hello world!" });
 };
 
+const updateGameById: NextApiHandler = async (req, res) => {
+  return res.status(200).json({ message: "Hello world!" });
+};
+
 const deleteGameById: NextApiHandler = async (req, res) => {
   return res.status(200).json({ message: "Hello world!" });
 };
@@ -13,10 +17,12 @@ const handler: NextApiHandler = async (req, res) => {
   switch (method) {
     case "GET":
       return getGameById(req, res);
+    case "PUT":
+      return updateGameById(req, res);
     case "DELETE":
       return deleteGameById(req, res);
     default:
-      res.setHeader("Allow", ["GET", "DELETE"]);
+      res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
       return res.status(405).end(`Method ${method} Not Allowed`);
   }
 };
