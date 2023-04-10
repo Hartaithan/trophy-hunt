@@ -1,3 +1,4 @@
+import { validatePayload } from "@/helpers/payload";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
@@ -22,7 +23,32 @@ const getGameById: NextApiHandler = async (req, res) => {
 };
 
 const updateGameById: NextApiHandler = async (req, res) => {
-  return res.status(200).json({ message: "Hello world!" });
+  const {
+    query: { id },
+    body,
+  } = req;
+  const supabase = createServerSupabaseClient({ req, res });
+
+  const results = validatePayload(body);
+  if (results !== null) {
+    console.error("invalid payload", results.errors);
+    return res.status(400).json(results);
+  }
+
+  const { data, error } = await supabase
+    .from("games")
+    .update(body)
+    .eq("id", id)
+    .single();
+
+  if (error !== null) {
+    console.error("unable to update game by id", id, error);
+    return res.status(400).json({ message: "Unable to update game by id", id });
+  }
+
+  return res
+    .status(204)
+    .json({ message: "Game successfully updated!", game: data });
 };
 
 const deleteGameById: NextApiHandler = async (req, res) => {
