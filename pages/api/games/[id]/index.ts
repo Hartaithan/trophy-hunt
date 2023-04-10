@@ -14,7 +14,7 @@ const getGameById: NextApiHandler = async (req, res) => {
     .single();
 
   if (error !== null) {
-    console.error("Unable to get game by id", id, error);
+    console.error("unable to get game by id", id, error);
     return res.status(400).json({ message: "Unable to get game by id", id });
   }
 
@@ -26,7 +26,19 @@ const updateGameById: NextApiHandler = async (req, res) => {
 };
 
 const deleteGameById: NextApiHandler = async (req, res) => {
-  return res.status(200).json({ message: "Hello world!" });
+  const {
+    query: { id },
+  } = req;
+  const supabase = createServerSupabaseClient({ req, res });
+
+  const { error } = await supabase.from("games").delete().eq("id", id);
+
+  if (error !== null) {
+    console.error("unable to delete game by id", id, error);
+    return res.status(400).json({ message: "Unable to delete game by id", id });
+  }
+
+  return res.status(204).json({ message: "Game successfully deleted!", id });
 };
 
 const handler: NextApiHandler = async (req, res) => {
