@@ -1,7 +1,24 @@
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
 const getGameById: NextApiHandler = async (req, res) => {
-  return res.status(200).json({ message: "Hello world!" });
+  const {
+    query: { id },
+  } = req;
+  const supabase = createServerSupabaseClient({ req, res });
+
+  const { data, error } = await supabase
+    .from("games")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error !== null) {
+    console.error("Unable to get game by id", id, error);
+    return res.status(400).json({ message: "Unable to get game by id", id });
+  }
+
+  return res.status(200).json({ game: data });
 };
 
 const updateGameById: NextApiHandler = async (req, res) => {
