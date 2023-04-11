@@ -23,6 +23,10 @@ type TitleTrophiesOptions = Pick<
   "headerOverrides" | "limit" | "npServiceName" | "offset"
 >;
 
+interface ITitleGroups extends TitleTrophyGroupsResponse {
+  error?: Error;
+}
+
 const splitId = (game: string): ISplittedId => {
   let platform: ISplittedId = { id: null, platform: null };
   const splitted = game.split("/");
@@ -128,12 +132,16 @@ const addGame: NextApiHandler = async (req, res) => {
     listOptions = { ...listOptions, npServiceName: "trophy" };
   }
 
-  let titleGroups: TitleTrophyGroupsResponse | null = null;
-  try {
-    titleGroups = await getTitleTrophyGroups(authorization, code, listOptions);
-  } catch (error) {
-    console.error("unable to get trophy groups", error);
-    const message = getErrorMessage(error, "Unable to get trophy groups");
+  const titleGroups: ITitleGroups = await getTitleTrophyGroups(
+    authorization,
+    code,
+    listOptions
+  );
+  if (titleGroups.error != null) {
+    const message = getErrorMessage(
+      titleGroups.error,
+      "Unable to get trophy groups"
+    );
     return res.status(400).json({ message });
   }
 
@@ -148,6 +156,7 @@ const addGame: NextApiHandler = async (req, res) => {
   const { data: newGame, error: newGameError } = await supabase
     .from("games")
     .insert([payload])
+    .select("*")
     .single();
   if (newGameError !== null) {
     console.error("unable to create new game", newGameError);

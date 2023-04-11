@@ -39,6 +39,7 @@ const updateGameById: NextApiHandler = async (req, res) => {
     .from("games")
     .update(body)
     .eq("id", id)
+    .select("*")
     .single();
 
   if (error !== null) {
@@ -47,7 +48,7 @@ const updateGameById: NextApiHandler = async (req, res) => {
   }
 
   return res
-    .status(204)
+    .status(200)
     .json({ message: "Game successfully updated!", game: data });
 };
 
@@ -64,7 +65,7 @@ const deleteGameById: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Unable to delete game by id", id });
   }
 
-  return res.status(204).json({ message: "Game successfully deleted!", id });
+  return res.status(200).json({ message: "Game successfully deleted!", id });
 };
 
 const handler: NextApiHandler = async (req, res) => {
