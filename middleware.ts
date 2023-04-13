@@ -60,12 +60,8 @@ export const middleware: NextMiddleware = async (req) => {
   }
 
   if (refreshed_auth != null) {
-    const { accessToken, expiresIn, refreshToken, refreshTokenExpiresIn } =
-      refreshed_auth;
+    const { accessToken, expiresIn } = refreshed_auth;
     res.cookies.set("psn-access-token", accessToken, { maxAge: expiresIn });
-    res.cookies.set("psn-refresh-token", refreshToken, {
-      maxAge: refreshTokenExpiresIn,
-    });
   }
 
   return res;
