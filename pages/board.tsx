@@ -2,10 +2,10 @@ import BoardColumn from "@/components/BoardColumn";
 import BoardContainer from "@/components/BoardContainer";
 import {
   arrayMove,
-  generateItems,
   initializeBoard,
   moveBetweenContainers,
 } from "@/helpers/board";
+import { getErrorMessage } from "@/helpers/psn";
 import { type IPage } from "@/models/AppModel";
 import {
   type IBoardColumn,
@@ -24,16 +24,38 @@ import {
 import { type GetServerSideProps } from "next";
 import { useState } from "react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 interface IBoardPageProps {
   items: IBoardItem[];
+  message?: string;
 }
 
-export const getServerSideProps: GetServerSideProps<
-  IBoardPageProps
-> = async () => {
-  const items: IBoardItem[] = generateItems(1, 25);
-  const props: IBoardPageProps = { items };
-  return { props };
+export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
+  ctx
+) => {
+  if (API_URL === undefined) {
+    console.error("env variables not found");
+    return { props: { items: [], message: "Something wrong..." } };
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/games`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Cookie: ctx.req.headers.cookie ?? "",
+      },
+    }).then(async (res) => await res.json());
+    return {
+      props: { items: response.games ?? [] },
+    };
+  } catch (error) {
+    const message = getErrorMessage(error, "Something wrong...");
+    return {
+      props: { items: [], message },
+    };
+  }
 };
 
 const BoardPage: IPage<IBoardPageProps> = (props) => {
@@ -88,7 +110,7 @@ const BoardPage: IPage<IBoardPageProps> = (props) => {
       const overIndex: number = over.data.current?.sortable.index ?? 0;
 
       setColumns((items) => {
-        let newItems: IBoardColumn;
+        let newItems: IBoardColumn = { ...items };
         if (activeContainer === overContainer) {
           newItems = {
             ...items,

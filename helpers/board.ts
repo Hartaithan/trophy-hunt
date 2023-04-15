@@ -37,6 +37,10 @@ export const initializeBoard = (items: IBoardItem[]): IBoardColumn => {
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const { status } = item;
+    const column = columns[status];
+    if (column === undefined) {
+      continue;
+    }
     columns[status].push(item);
   }
   return columns;
