@@ -7,11 +7,8 @@ import {
 } from "@/helpers/board";
 import { getErrorMessage } from "@/helpers/psn";
 import { type IPage } from "@/models/AppModel";
-import {
-  type IBoardColumn,
-  type BOARD_COLUMNS,
-  type IBoardItem,
-} from "@/models/BoardModel";
+import { type IBoardColumn, type BOARD_COLUMNS } from "@/models/BoardModel";
+import { type IGame } from "@/models/GameModel";
 import {
   DndContext,
   type DragEndEvent,
@@ -27,7 +24,7 @@ import { useState } from "react";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface IBoardPageProps {
-  items: IBoardItem[];
+  items: IGame[];
   message?: string;
 }
 

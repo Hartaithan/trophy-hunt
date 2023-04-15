@@ -1,13 +1,10 @@
-import {
-  BOARD_COLUMNS,
-  type IBoardColumn,
-  type IBoardItem,
-} from "@/models/BoardModel";
+import { BOARD_COLUMNS, type IBoardColumn } from "@/models/BoardModel";
 import { randomNum } from "./number";
 import { arrayMove as dndKitArrayMove } from "@dnd-kit/sortable";
 import { type UniqueIdentifier } from "@dnd-kit/core";
+import { type IGame } from "@/models/GameModel";
 
-export const generateItems = (from: number, to: number): IBoardItem[] => {
+export const generateItems = (from: number, to: number): IGame[] => {
   const a = Array(to).fill(from);
   let b = from - 1;
   while (b < to) {
@@ -27,7 +24,7 @@ export const generateItems = (from: number, to: number): IBoardItem[] => {
   return a;
 };
 
-export const initializeBoard = (items: IBoardItem[]): IBoardColumn => {
+export const initializeBoard = (items: IGame[]): IBoardColumn => {
   const columns: IBoardColumn = {
     [BOARD_COLUMNS.Backlog]: [],
     [BOARD_COLUMNS.InProgress]: [],
@@ -42,6 +39,11 @@ export const initializeBoard = (items: IBoardItem[]): IBoardColumn => {
       continue;
     }
     columns[status].push(item);
+  }
+  const entries = Object.entries(columns);
+  for (let i = 0; i < entries.length; i++) {
+    const [key, items] = entries[i];
+    columns[key] = [...items].sort((a, b) => a.order_index - b.order_index);
   }
   return columns;
 };
@@ -65,25 +67,22 @@ export const moveBetweenContainers = (
   };
 };
 
-export const removeAtIndex = (
-  array: IBoardItem[],
-  index: number
-): IBoardItem[] => {
+export const removeAtIndex = (array: IGame[], index: number): IGame[] => {
   return [...array.slice(0, index), ...array.slice(index + 1)];
 };
 
 export const insertAtIndex = (
-  array: IBoardItem[],
+  array: IGame[],
   index: number,
-  item: IBoardItem
-): IBoardItem[] => {
+  item: IGame
+): IGame[] => {
   return [...array.slice(0, index), item, ...array.slice(index)];
 };
 
 export const arrayMove = (
-  array: IBoardItem[],
+  array: IGame[],
   oldIndex: number,
   newIndex: number
-): IBoardItem[] => {
+): IGame[] => {
   return dndKitArrayMove(array, oldIndex, newIndex);
 };

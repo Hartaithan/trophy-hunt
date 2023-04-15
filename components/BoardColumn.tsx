@@ -1,8 +1,4 @@
-import {
-  BOARD_COLUMNS,
-  type IBoardItem,
-  columnsLabels,
-} from "@/models/BoardModel";
+import { BOARD_COLUMNS, columnsLabels } from "@/models/BoardModel";
 import { type Range } from "@/helpers/types";
 import {
   Text,
@@ -19,6 +15,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import BoardCard from "./BoardCard";
+import { type IGame } from "@/models/GameModel";
 
 interface IColumnColor {
   color: MantineColor;
@@ -46,7 +43,7 @@ const columnColors: Record<BOARD_COLUMNS, IColumnColor> = {
 
 interface IBoardColumnProps {
   column: BOARD_COLUMNS;
-  items: IBoardItem[];
+  items: IGame[];
 }
 
 const useStyles = createStyles(

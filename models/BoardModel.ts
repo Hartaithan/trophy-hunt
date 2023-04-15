@@ -1,3 +1,5 @@
+import { type IGame } from "./GameModel";
+
 export enum BOARD_COLUMNS {
   Backlog = "backlog",
   InProgress = "progress",
@@ -12,11 +14,4 @@ export const columnsLabels: Record<BOARD_COLUMNS, string> = {
   [BOARD_COLUMNS.Complete]: "100%",
 };
 
-export interface IBoardItem {
-  id: number;
-  title: string;
-  image_url: string;
-  status: BOARD_COLUMNS;
-}
-
-export type IBoardColumn = Record<BOARD_COLUMNS | string, IBoardItem[]>;
+export type IBoardColumn = Record<BOARD_COLUMNS | string, IGame[]>;

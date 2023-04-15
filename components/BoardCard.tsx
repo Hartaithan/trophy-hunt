@@ -1,12 +1,12 @@
-import { type IBoardItem } from "@/models/BoardModel";
 import { useSortable } from "@dnd-kit/sortable";
 import { Box, Flex, Text, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
 import { CSS } from "@dnd-kit/utilities";
+import { type IGame } from "@/models/GameModel";
 
 interface IBoardCardProps {
-  item: IBoardItem;
+  item: IGame;
 }
 
 const useStyles = createStyles(({ colors, radius, spacing }) => ({
