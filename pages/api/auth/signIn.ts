@@ -1,3 +1,4 @@
+import { validatePayload } from "@/helpers/payload";
 import { getErrorMessage } from "@/helpers/psn";
 import { type ISignUpBody } from "@/models/AuthModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
@@ -18,8 +19,10 @@ const signIn: NextApiHandler = async (req, res) => {
   const { email, password, npsso } = body;
   const supabase = createServerSupabaseClient({ req, res });
 
-  if (email === undefined || password === undefined || npsso === undefined) {
-    return res.status(400).json({ message: "Invalid request body" });
+  const results = validatePayload(body);
+  if (results !== null) {
+    console.error("invalid payload", results.errors);
+    return res.status(400).json(results);
   }
 
   let accessCode: string | null = null;
@@ -45,10 +48,7 @@ const signIn: NextApiHandler = async (req, res) => {
   const { accessToken, expiresIn, refreshToken, refreshTokenExpiresIn } =
     authorization;
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: body.email,
-    password: body.password,
-  });
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error != null) {
     return res.status(400).json(error);
   }

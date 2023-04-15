@@ -4,7 +4,7 @@ import { type ProfileFromUserNameResponse } from "psn-api";
 export type NullableSession = Session | null;
 export type NullableUser = User | null;
 
-export interface ISignUpBody {
+export interface ISignUpBody extends Record<string, string> {
   email: string;
   password: string;
   npsso: string;
