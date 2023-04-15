@@ -10,10 +10,7 @@ const reorderGames: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Invalid payload" });
   }
 
-  const { data, error } = await supabase
-    .from("games")
-    .upsert(payload)
-    .select("*");
+  const { data, error } = await supabase.rpc("reorder", { payload });
   if (error !== null) {
     console.error("unable to reorder games", error);
     return res.status(400).json({ message: "Unable to reorder games" });
