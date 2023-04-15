@@ -1,7 +1,27 @@
+import { type IReorderPayload } from "@/models/GameModel";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
 const reorderGames: NextApiHandler = async (req, res) => {
-  return res.status(200).json({ message: "Hello world!" });
+  const { payload } = req.body as IReorderPayload;
+  const supabase = createServerSupabaseClient({ req, res });
+
+  if (payload == null || payload.length === 0) {
+    return res.status(400).json({ message: "Invalid payload" });
+  }
+
+  const { data, error } = await supabase
+    .from("games")
+    .upsert(payload)
+    .select("*");
+  if (error !== null) {
+    console.error("unable to reorder games", error);
+    return res.status(400).json({ message: "Unable to reorder games" });
+  }
+
+  return res
+    .status(200)
+    .json({ message: "Games successfully reordered!", data });
 };
 
 const handler: NextApiHandler = async (req, res) => {

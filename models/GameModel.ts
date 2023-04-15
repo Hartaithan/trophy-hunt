@@ -24,3 +24,12 @@ export interface IAddGamePayload {
   gameId: string;
   status: BOARD_COLUMNS;
 }
+
+export interface IReorderItem {
+  id: number;
+  order: number;
+}
+
+export interface IReorderPayload {
+  payload: IReorderItem[];
+}
