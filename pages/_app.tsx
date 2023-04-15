@@ -37,25 +37,18 @@ const getRefreshedCookies = (ctx: IInitialProps["ctx"]): string => {
     return cookies;
   }
 
+  let responseCookies = null;
   if (process.env.NODE_ENV === "development") {
-    const responseCookies = ctx.res.getHeader("set-cookie");
-    if (responseCookies instanceof Array) {
-      cookies = `${cookies}; ${responseCookies.join("; ")}`;
-    } else if (responseCookies !== undefined) {
-      cookies = `${cookies}; ${responseCookies.toString()}`;
-    }
-    return cookies;
+    responseCookies = ctx.res.getHeader("set-cookie");
+  } else {
+    responseCookies = ctx.req.headers["set-cookie"];
   }
 
-  const access = ctx.req.headers["1"];
-  const refresh = ctx.req.headers["2"];
-  if (typeof access === "string") {
-    cookies = `${cookies}; ${access}`;
+  if (responseCookies instanceof Array) {
+    cookies = `${cookies}; ${responseCookies.join("; ")}`;
+  } else if (responseCookies !== undefined) {
+    cookies = `${cookies}; ${responseCookies.toString()}`;
   }
-  if (typeof refresh === "string") {
-    cookies = `${cookies}; ${refresh}`;
-  }
-
   return cookies;
 };
 
