@@ -40,22 +40,31 @@ const useStyles = createStyles(({ colors, radius, spacing }) => ({
     zIndex: 1,
     filter: "blur(5px)",
   },
+  draggable: {
+    zIndex: 99999,
+  },
 }));
 
 const BoardCard: FC<IBoardCardProps> = (props) => {
   const { item } = props;
   const { id, title, image_url } = item;
 
-  const { classes } = useStyles();
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+  const { classes, cx } = useStyles();
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
 
   return (
     <Flex
       ref={setNodeRef}
       {...attributes}
       {...listeners}
-      className={classes.container}
+      className={cx([classes.container, isDragging && classes.draggable])}
       direction="column"
       style={{
         transform: CSS.Transform.toString(transform),
