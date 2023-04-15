@@ -79,7 +79,9 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           alt="image card"
         />
       </Box>
-      <Text mt={6}>{title}</Text>
+      <Text mt={6} lineClamp={2} h={48}>
+        {title}
+      </Text>
     </Flex>
   );
 };

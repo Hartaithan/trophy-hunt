@@ -56,6 +56,7 @@ const useStyles = createStyles(
         background: colors.primary[7],
         borderRadius: radius.lg,
         minWidth: 300,
+        flex: 1,
       },
       header: {
         position: "sticky",
