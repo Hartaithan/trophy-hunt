@@ -1,7 +1,6 @@
 import { type NextApiHandler } from "next";
 import { type AuthorizationPayload, getProfileFromUserName } from "psn-api";
 import { getCookie } from "cookies-next";
-import { getErrorMessage } from "@/helpers/psn";
 
 const getProfile: NextApiHandler = async (req, res) => {
   const options = { req, res };
@@ -18,8 +17,7 @@ const getProfile: NextApiHandler = async (req, res) => {
     return res.status(200).json({ profile });
   } catch (error) {
     console.error("unable to get profile", error);
-    const message = getErrorMessage(error, "Unable to get profile");
-    return res.status(400).json({ message });
+    return res.status(400).json({ message: "Unable to get profile" });
   }
 };
 

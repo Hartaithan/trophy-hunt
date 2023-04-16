@@ -5,7 +5,6 @@ import {
   initializeBoard,
   moveBetweenContainers,
 } from "@/helpers/board";
-import { getErrorMessage } from "@/helpers/psn";
 import { type IPage } from "@/models/AppModel";
 import { type IBoardColumn, type BOARD_COLUMNS } from "@/models/BoardModel";
 import { type IGame } from "@/models/GameModel";
@@ -48,9 +47,9 @@ export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
       props: { items: response.games ?? [] },
     };
   } catch (error) {
-    const message = getErrorMessage(error, "Something wrong...");
+    console.error("unable to fetch games", error);
     return {
-      props: { items: [], message },
+      props: { items: [], message: "Unable to fetch games" },
     };
   }
 };

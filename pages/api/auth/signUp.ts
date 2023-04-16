@@ -1,5 +1,4 @@
 import { validatePayload } from "@/helpers/payload";
-import { getErrorMessage } from "@/helpers/psn";
 import { type ISignUpBody } from "@/models/AuthModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { deleteCookie, setCookie } from "cookies-next";
@@ -35,16 +34,14 @@ const signUp: NextApiHandler = async (req, res) => {
     accessCode = await exchangeNpssoForCode(npsso);
   } catch (error) {
     console.error("exchange access code error", error);
-    const message = getErrorMessage(error, "Unable to get PSN access code");
-    return res.status(400).json({ message });
+    return res.status(400).json({ message: "Unable to get PSN access code" });
   }
 
   try {
     authorization = await exchangeCodeForAccessToken(accessCode);
   } catch (error) {
     console.error("exchange access token error", error);
-    const message = getErrorMessage(error, "Unable to get PSN access token");
-    return res.status(400).json({ message });
+    return res.status(400).json({ message: "Unable to get PSN access token" });
   }
 
   const options = { req, res };

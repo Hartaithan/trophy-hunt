@@ -1,5 +1,4 @@
 import { validatePayload } from "@/helpers/payload";
-import { getErrorMessage } from "@/helpers/psn";
 import { type INewGamePayload, type IAddGamePayload } from "@/models/GameModel";
 import {
   type ITitleGroups,
@@ -133,11 +132,8 @@ const addGame: NextApiHandler = async (req, res) => {
     listOptions
   );
   if ("error" in titleGroups) {
-    const message = getErrorMessage(
-      titleGroups.error,
-      "Unable to get trophy groups"
-    );
-    return res.status(400).json({ message });
+    console.error("unable to get trophy group", titleGroups.error);
+    return res.status(400).json({ message: "Unable to get trophy groups" });
   }
 
   const payload: INewGamePayload = {
