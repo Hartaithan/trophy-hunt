@@ -20,4 +20,6 @@ export const locales: ILocale[] = [
   { id: 17, value: "ru-RU", icon_url: "./locales/ru.png", label: "Russian" },
   { id: 18, value: "sv-SE", icon_url: "./locales/sv.png", label: "Swedish" },
   { id: 19, value: "tr-TR", icon_url: "./locales/tr.png", label: "Turkish" },
+  { id: 20, value: "uk-UA", icon_url: "./locales/uk.png", label: "Ukrainian" },
+  { id: 21, value: "zh-Hans", icon_url: "./locales/zh.png", label: "Chinese" },
 ];
