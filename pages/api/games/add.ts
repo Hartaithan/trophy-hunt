@@ -1,30 +1,20 @@
 import { validatePayload } from "@/helpers/payload";
 import { getErrorMessage } from "@/helpers/psn";
 import { type INewGamePayload, type IAddGamePayload } from "@/models/GameModel";
+import {
+  type ITitleGroups,
+  type TitleTrophiesOptions,
+} from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
 import { type NextApiHandler } from "next";
-import {
-  getTitleTrophyGroups,
-  type AuthorizationPayload,
-  type TitleTrophyGroupsResponse,
-  type AllCallOptions,
-} from "psn-api";
+import { getTitleTrophyGroups, type AuthorizationPayload } from "psn-api";
 
 const SEARCH_URL = process.env.NEXT_PUBLIC_SEARCH_URL;
 
 interface ISplittedId {
   id: string | null;
   platform: string | null;
-}
-
-type TitleTrophiesOptions = Pick<
-  AllCallOptions,
-  "headerOverrides" | "limit" | "npServiceName" | "offset"
->;
-
-interface ITitleGroups extends TitleTrophyGroupsResponse {
-  error?: Error;
 }
 
 const splitId = (game: string): ISplittedId => {
