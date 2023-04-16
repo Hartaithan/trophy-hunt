@@ -8,6 +8,10 @@ const getGameById: NextApiHandler = async (req, res) => {
   } = req;
   const supabase = createServerSupabaseClient({ req, res });
 
+  if (id === undefined || Array.isArray(id)) {
+    return res.status(400).json({ message: "Invalid [id] query" });
+  }
+
   const { data, error } = await supabase
     .from("games")
     .select("*")
@@ -28,6 +32,10 @@ const updateGameById: NextApiHandler = async (req, res) => {
     body,
   } = req;
   const supabase = createServerSupabaseClient({ req, res });
+
+  if (id === undefined || Array.isArray(id)) {
+    return res.status(400).json({ message: "Invalid [id] query" });
+  }
 
   const results = validatePayload(body);
   if (results !== null) {
@@ -57,6 +65,10 @@ const deleteGameById: NextApiHandler = async (req, res) => {
     query: { id },
   } = req;
   const supabase = createServerSupabaseClient({ req, res });
+
+  if (id === undefined || Array.isArray(id)) {
+    return res.status(400).json({ message: "Invalid [id] query" });
+  }
 
   const { error } = await supabase.from("games").delete().eq("id", id);
 
