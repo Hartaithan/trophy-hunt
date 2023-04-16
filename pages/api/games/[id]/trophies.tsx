@@ -22,10 +22,12 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
   const access_token = getCookie("psn-access-token", options);
 
   if (typeof access_token !== "string") {
+    console.error("psn-access-token not found");
     return res.status(400).json({ message: "Unable to get access token" });
   }
 
   if (id === undefined || Array.isArray(id)) {
+    console.error("invalid [id] query", id);
     return res.status(400).json({ message: "Invalid [id] query" });
   }
 
@@ -33,7 +35,6 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
     supabase.auth.getUser(),
     supabase.from("games").select("*").eq("id", id).single(),
   ]);
-
   if (user.error !== null || user === null) {
     console.error("unable to get user", user.error);
     return res.status(400).json({ message: "Unable to get user" });
@@ -60,10 +61,12 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
   ]);
   if (groups.error != null) {
     const defaultMessage = "Unable to get trophy groups";
+    console.error("unable to get trophy groups", groups.error);
     const message = getErrorMessage(groups.error, defaultMessage);
     return res.status(400).json({ message });
   }
   if (trophies.error != null) {
+    console.error("unable to get trophies", trophies.error);
     const message = getErrorMessage(trophies.error, "Unable to get trophies");
     return res.status(400).json({ message });
   }

@@ -14,9 +14,11 @@ const searchByQuery: NextApiHandler = async (req, res) => {
   const { query } = req.query as ISearchQueries;
 
   if (SEARCH_URL === undefined) {
-    return res.status(400).json({ message: "SEARCH_URL not found" });
+    console.error("SEARCH_URL not found", SEARCH_URL);
+    return res.status(400).json({ message: "Internal server error" });
   }
   if (query === undefined || query.length === 0) {
+    console.error("query is required", req.query);
     return res.status(400).json({ message: "Query is required" });
   }
 

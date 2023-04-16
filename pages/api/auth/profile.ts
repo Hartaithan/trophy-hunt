@@ -8,8 +8,8 @@ const getProfile: NextApiHandler = async (req, res) => {
   const access_token = getCookie("psn-access-token", options);
 
   if (typeof access_token !== "string") {
-    console.error("token not found");
-    return res.status(400).json({ message: "Unable to get profile" });
+    console.error("psn-access-token not found", access_token);
+    return res.status(400).json({ message: "Unable to get access token" });
   }
 
   const authorization: AuthorizationPayload = { accessToken: access_token };

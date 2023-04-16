@@ -38,10 +38,12 @@ const saveGameProgress: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res });
 
   if (id === undefined || Array.isArray(id)) {
+    console.error("invalid [id] query", req.query);
     return res.status(400).json({ message: "Invalid [id] query" });
   }
 
   if (payload == null || !Array.isArray(payload) || payload.length === 0) {
+    console.error("invalid payload", payload);
     return res.status(400).json({ message: "Invalid payload" });
   }
 

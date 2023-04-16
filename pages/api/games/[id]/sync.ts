@@ -6,6 +6,7 @@ const syncGameProgress: NextApiHandler = async (req, res) => {
   } = req;
 
   if (id === undefined || Array.isArray(id)) {
+    console.error("invalid [id] query", req.query);
     return res.status(400).json({ message: "Invalid [id] query" });
   }
 

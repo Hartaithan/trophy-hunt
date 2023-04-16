@@ -7,6 +7,7 @@ const reorderGames: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res });
 
   if (payload == null || payload.length === 0) {
+    console.error("invalid payload", payload);
     return res.status(400).json({ message: "Invalid payload" });
   }
 

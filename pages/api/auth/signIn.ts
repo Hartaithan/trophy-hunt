@@ -50,6 +50,7 @@ const signIn: NextApiHandler = async (req, res) => {
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error != null) {
+    console.error("sign in with password error", error);
     return res.status(400).json(error);
   }
 

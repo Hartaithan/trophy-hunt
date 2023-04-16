@@ -9,6 +9,7 @@ const getGameById: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res });
 
   if (id === undefined || Array.isArray(id)) {
+    console.error("invalid [id] query", req.query);
     return res.status(400).json({ message: "Invalid [id] query" });
   }
 
@@ -34,6 +35,7 @@ const updateGameById: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res });
 
   if (id === undefined || Array.isArray(id)) {
+    console.error("invalid [id] query", req.query);
     return res.status(400).json({ message: "Invalid [id] query" });
   }
 
@@ -67,6 +69,7 @@ const deleteGameById: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res });
 
   if (id === undefined || Array.isArray(id)) {
+    console.error("invalid [id] query", req.query);
     return res.status(400).json({ message: "Invalid [id] query" });
   }
 

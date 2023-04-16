@@ -69,7 +69,8 @@ const signUp: NextApiHandler = async (req, res) => {
   if (error != null) {
     deleteCookie("psn-access-token");
     deleteCookie("psn-refresh-token");
-    return res.status(400).json(error);
+    console.error("unable to sign up", error);
+    return res.status(400).json({ message: "Unable to sign up" });
   }
   return res
     .status(201)

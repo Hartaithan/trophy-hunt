@@ -75,15 +75,13 @@ const getCode = (value: string | null): string | null => {
 
 const addGame: NextApiHandler = async (req, res) => {
   const { gameId, status } = req.body as IAddGamePayload;
+  const options = { req, res };
+  const access_token = getCookie("psn-access-token", options);
   const supabase = createServerSupabaseClient({ req, res });
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-  if (userError !== null || user === null) {
-    console.error("unable to get user", userError);
-    return res.status(400).json({ message: "Unable to get user" });
+  if (typeof access_token !== "string") {
+    console.error("psn-access-token not found", access_token);
+    return res.status(400).json({ message: "Unable to get access token" });
   }
 
   if (typeof gameId !== "string") {
@@ -99,19 +97,26 @@ const addGame: NextApiHandler = async (req, res) => {
 
   const { id, platform } = splitId(gameId);
   if (id === null || platform === null) {
-    console.error("unable to get id or platform");
+    console.error("unable to get id or platform", gameId);
     return res.status(400).json({ message: "Unable to get id or platform" });
+  }
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+  if (userError !== null || user === null) {
+    console.error("unable to get user", userError);
+    return res.status(400).json({ message: "Unable to get user" });
   }
 
   const game = await getGame(id);
   const code = getCode(game);
   if (game === null || game.length === 0 || code === null) {
-    console.error("unable to find game code");
+    console.error("unable to find game code", id, code);
     return res.status(400).json({ message: "Unable to find game code" });
   }
 
-  const options = { req, res };
-  const access_token = getCookie("psn-access-token", options) as string;
   const authorization: AuthorizationPayload = { accessToken: access_token };
 
   const lang = user.user_metadata.lang ?? "en-en";
@@ -128,6 +133,7 @@ const addGame: NextApiHandler = async (req, res) => {
     listOptions
   );
   if (titleGroups.error != null) {
+    console.error("unable to get trophy groups", titleGroups.error);
     const message = getErrorMessage(
       titleGroups.error,
       "Unable to get trophy groups"
