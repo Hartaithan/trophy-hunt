@@ -132,8 +132,7 @@ const addGame: NextApiHandler = async (req, res) => {
     code,
     listOptions
   );
-  if (titleGroups.error != null) {
-    console.error("unable to get trophy groups", titleGroups.error);
+  if ("error" in titleGroups) {
     const message = getErrorMessage(
       titleGroups.error,
       "Unable to get trophy groups"

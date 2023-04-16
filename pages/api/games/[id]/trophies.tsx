@@ -1,4 +1,3 @@
-import { getErrorMessage } from "@/helpers/psn";
 import {
   type TitleTrophiesOptions,
   type ITitleGroups,
@@ -70,27 +69,23 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
       getTitleTrophies(auth, code, "all", options),
       getUserTrophiesEarnedForTitle(auth, "me", code, "all", options),
     ]);
-  if (resGroups.status === "fulfilled" && resGroups.value.error == null) {
+
+  if (resGroups.status === "fulfilled" && !("error" in resGroups.value)) {
     groups = resGroups.value;
   }
-  if (resGroups.status === "fulfilled" && resGroups.value.error != null) {
-    const { value } = resGroups;
-    const defaultMessage = "Unable to get trophy groups";
-    console.error("unable to get trophy groups", value.error);
-    const message = getErrorMessage(value.error, defaultMessage);
-    return res.status(400).json({ message });
-  }
-  if (resTrophies.status === "fulfilled" && resTrophies.value.error == null) {
+
+  if (resTrophies.status === "fulfilled" && !("error" in resTrophies.value)) {
     trophies = resTrophies.value;
   }
-  if (resTrophies.status === "fulfilled" && resTrophies.value.error != null) {
-    const { value } = resTrophies;
-    console.error("unable to get trophies", value.error);
-    const message = getErrorMessage(value.error, "Unable to get trophies");
-    return res.status(400).json({ message });
-  }
-  if (resEarned.status === "fulfilled" && resEarned.value.error == null) {
+
+  if (resEarned.status === "fulfilled" && !("error" in resEarned.value)) {
     earned = resEarned.value;
+  }
+
+  if (groups === null || trophies === null) {
+    const defaultMessage = "Unable to get trophies and trophy groups";
+    console.error("unable to get trophies");
+    return res.status(400).json({ message: defaultMessage });
   }
 
   return res.status(200).json({ groups, trophies, earned });
