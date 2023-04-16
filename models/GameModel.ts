@@ -33,3 +33,12 @@ export interface IReorderItem {
 export interface IReorderPayload {
   payload: IReorderItem[];
 }
+
+export interface IProgressItem {
+  id: number;
+  earned: boolean;
+}
+
+export interface IProgressPayload {
+  payload: IProgressItem[];
+}
