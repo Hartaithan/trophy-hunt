@@ -4,7 +4,6 @@ export interface IGame {
   id: number;
   created_at: string;
   updated_at: string;
-  ordered_at: string;
   title: string;
   image_url: string;
   platform: string;
@@ -17,7 +16,7 @@ export interface IGame {
 
 export type INewGamePayload = Omit<
   IGame,
-  "id" | "created_at" | "updated_at" | "ordered_at" | "progress" | "order_index"
+  "id" | "created_at" | "updated_at" | "progress" | "order_index"
 >;
 
 export interface IAddGamePayload {
