@@ -1,10 +1,6 @@
 import { NextResponse, type NextMiddleware } from "next/server";
-import {
-  exchangeRefreshTokenForAuthTokens,
-  type AuthTokensResponse,
-} from "psn-api";
-
-type NullableAuthResponse = AuthTokensResponse | null;
+import { exchangeRefreshTokenForAuthTokens } from "psn-api";
+import { type NullableAuthResponse } from "./models/AuthModel";
 
 export const config = {
   matcher: "/((?!api|static|.*\\..*|_next|favicon.ico).*)",

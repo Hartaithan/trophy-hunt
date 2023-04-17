@@ -1,5 +1,5 @@
 import { type Session, type User } from "@supabase/supabase-js";
-import { type ProfileFromUserNameResponse } from "psn-api";
+import { type AuthTokensResponse, type ProfileFromUserNameResponse } from "psn-api";
 
 export type NullableSession = Session | null;
 export type NullableUser = User | null;
@@ -22,3 +22,5 @@ export interface IUser extends User {
 export type Profile = ProfileFromUserNameResponse["profile"];
 
 export type NullableProfile = ProfileFromUserNameResponse["profile"] | null;
+
+export type NullableAuthResponse = AuthTokensResponse | null;
