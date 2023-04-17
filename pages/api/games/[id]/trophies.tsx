@@ -60,9 +60,9 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
     PromiseSettledResult<ITitleTrophies>,
     PromiseSettledResult<ITitleEarnedTrophies>
   ];
-  let groups: ITitleGroups | null = null;
-  let trophies: ITitleTrophies | null = null;
-  let earned: ITitleEarnedTrophies | null = null;
+  let titleGroups: ITitleGroups | null = null;
+  let titleTrophies: ITitleTrophies | null = null;
+  let titleEarned: ITitleEarnedTrophies | null = null;
   const [resGroups, resTrophies, resEarned]: Response =
     await Promise.allSettled([
       getTitleTrophyGroups(auth, code, options),
@@ -71,24 +71,36 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
     ]);
 
   if (resGroups.status === "fulfilled" && !("error" in resGroups.value)) {
-    groups = resGroups.value;
+    titleGroups = resGroups.value;
   }
 
   if (resTrophies.status === "fulfilled" && !("error" in resTrophies.value)) {
-    trophies = resTrophies.value;
+    titleTrophies = resTrophies.value;
   }
 
   if (resEarned.status === "fulfilled" && !("error" in resEarned.value)) {
-    earned = resEarned.value;
+    titleEarned = resEarned.value;
   }
 
-  if (groups === null || trophies === null) {
+  if (titleGroups === null || titleTrophies === null) {
     const defaultMessage = "Unable to get trophies and trophy groups";
     console.error("unable to get trophies");
     return res.status(400).json({ message: defaultMessage });
   }
 
-  return res.status(200).json({ groups, trophies, earned });
+  const { trophies: allTrophies, ...restTitle } = titleTrophies;
+  const { trophies: earnedTrophies, ...restEarned } = titleEarned ?? {
+    trophies: [],
+  };
+
+  const mergedTitle = { ...restTitle, ...restEarned };
+  const mergedTrophies = allTrophies.map((i) => ({
+    ...i,
+    ...earnedTrophies.find((n) => n.trophyId === i.trophyId),
+  }));
+  const merged = { ...mergedTitle, trophies: mergedTrophies };
+
+  return res.status(200).json({ merged, length: merged.trophies.length });
 };
 
 const handler: NextApiHandler = async (req, res) => {
