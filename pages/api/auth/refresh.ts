@@ -7,7 +7,15 @@ import { exchangeRefreshTokenForAuthTokens } from "psn-api";
 const refreshToken: NextApiHandler = async (req, res) => {
   const options = { req, res };
   const supabase = createServerSupabaseClient(options);
+  const access_token = getCookie("psn-access-token", options);
   const refresh_token = getCookie("psn-refresh-token", options);
+
+  if (access_token !== undefined) {
+    console.error("user already has psn-access-token", access_token);
+    return res
+      .status(400)
+      .json({ message: "You already have an access token" });
+  }
 
   if (typeof refresh_token !== "string") {
     console.error("psn-refresh-token not found", refresh_token);
