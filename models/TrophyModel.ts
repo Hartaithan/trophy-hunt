@@ -3,6 +3,7 @@ import {
   type AllCallOptions,
   type TitleTrophyGroupsResponse,
   type UserTrophiesEarnedForTitleResponse,
+  type UserTrophyGroupEarningsForTitleResponse,
 } from "psn-api";
 
 export type TitleTrophiesOptions = Pick<
@@ -17,6 +18,10 @@ export interface IError {
 export type ITitleTrophies = TitleTrophiesResponse | IError;
 
 export type ITitleGroups = TitleTrophyGroupsResponse | IError;
+
+export type ITitleEarnedGroups =
+  | UserTrophyGroupEarningsForTitleResponse
+  | IError;
 
 export type ITitleEarnedTrophies = UserTrophiesEarnedForTitleResponse | IError;
 

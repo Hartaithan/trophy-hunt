@@ -3,6 +3,7 @@ import {
   type ITitleGroups,
   type ITitleTrophies,
   type ITitleEarnedTrophies,
+  type ITitleEarnedGroups,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
@@ -12,6 +13,7 @@ import {
   type AuthorizationPayload,
   getTitleTrophies,
   getUserTrophiesEarnedForTitle,
+  getUserTrophyGroupEarningsForTitle,
 } from "psn-api";
 
 const getGameTrophies: NextApiHandler = async (req, res) => {
@@ -57,15 +59,18 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
 
   type Response = [
     PromiseSettledResult<ITitleGroups>,
+    PromiseSettledResult<ITitleEarnedGroups>,
     PromiseSettledResult<ITitleTrophies>,
     PromiseSettledResult<ITitleEarnedTrophies>
   ];
   let titleGroups: ITitleGroups | null = null;
+  let titleGroupsEarned: ITitleEarnedGroups | null = null;
   let titleTrophies: ITitleTrophies | null = null;
   let titleEarned: ITitleEarnedTrophies | null = null;
-  const [resGroups, resTrophies, resEarned]: Response =
+  const [resGroups, resGroupsEarned, resTrophies, resEarned]: Response =
     await Promise.allSettled([
       getTitleTrophyGroups(auth, code, options),
+      getUserTrophyGroupEarningsForTitle(auth, "me", code, options),
       getTitleTrophies(auth, code, "all", options),
       getUserTrophiesEarnedForTitle(auth, "me", code, "all", options),
     ]);
@@ -82,25 +87,48 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
     titleEarned = resEarned.value;
   }
 
+  if (
+    resGroupsEarned.status === "fulfilled" &&
+    !("error" in resGroupsEarned.value)
+  ) {
+    titleGroupsEarned = resGroupsEarned.value;
+  }
+
   if (titleGroups === null || titleTrophies === null) {
     const defaultMessage = "Unable to get trophies and trophy groups";
     console.error("unable to get trophies");
     return res.status(400).json({ message: defaultMessage });
   }
 
+  const { trophyGroups: allGroups, ...restGroup } = titleGroups;
+  const { trophyGroups: earnedGroups, ...restGroupEarned } =
+    titleGroupsEarned ?? {
+      trophyGroups: [],
+    };
+
+  const mergedGroupDetails = { ...restGroup, ...restGroupEarned };
+  const mergedGroups = allGroups.map((i) => ({
+    ...i,
+    ...earnedGroups.find((n) => n.trophyGroupId === i.trophyGroupId),
+  }));
+  const mergedGroupData = { ...mergedGroupDetails, trophyGroups: mergedGroups };
+
   const { trophies: allTrophies, ...restTitle } = titleTrophies;
   const { trophies: earnedTrophies, ...restEarned } = titleEarned ?? {
     trophies: [],
   };
 
-  const mergedTitle = { ...restTitle, ...restEarned };
+  const mergedTrophiesDetails = { ...restTitle, ...restEarned };
   const mergedTrophies = allTrophies.map((i) => ({
     ...i,
     ...earnedTrophies.find((n) => n.trophyId === i.trophyId),
   }));
-  const merged = { ...mergedTitle, trophies: mergedTrophies };
+  const mergedTrophyData = {
+    ...mergedTrophiesDetails,
+    trophies: mergedTrophies,
+  };
 
-  return res.status(200).json({ merged, length: merged.trophies.length });
+  return res.status(200).json({ mergedTrophyData, mergedGroupData });
 };
 
 const handler: NextApiHandler = async (req, res) => {
