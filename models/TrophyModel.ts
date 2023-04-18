@@ -4,6 +4,9 @@ import {
   type TitleTrophyGroupsResponse,
   type UserTrophiesEarnedForTitleResponse,
   type UserTrophyGroupEarningsForTitleResponse,
+  type TrophyGroupEarnings,
+  type UserThinTrophy,
+  type RarestThinTrophy,
 } from "psn-api";
 
 export type TitleTrophiesOptions = Pick<
@@ -48,3 +51,27 @@ export interface IGroupedTrophies {
   groups: IGroup[];
   counts: ITrophyCount;
 }
+
+export type EarnedGroupsDetails = Omit<
+  UserTrophyGroupEarningsForTitleResponse,
+  "trophyGroups"
+>;
+
+export interface EarnedGroups extends Partial<EarnedGroupsDetails> {
+  trophyGroups: Array<Partial<TrophyGroupEarnings>>;
+}
+
+export type MergedGroups = TitleTrophyGroupsResponse & EarnedGroups;
+
+export type EarnedTrophiesDetails = Omit<
+  UserTrophiesEarnedForTitleResponse,
+  "trophies" | "lastUpdatedDateTime" | "rarestTrophies"
+>;
+
+export interface EarnedTrophies extends Partial<EarnedTrophiesDetails> {
+  trophies: Array<Partial<UserThinTrophy>>;
+  rarestTrophies?: Array<Partial<RarestThinTrophy>>;
+  lastUpdatedDateTime?: string | undefined;
+}
+
+export type MergedTrophies = TitleTrophiesResponse & EarnedTrophies;
