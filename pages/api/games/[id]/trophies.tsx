@@ -9,6 +9,8 @@ import {
   type ITrophyCount,
   type IFormattedResponse,
   type ITrophy,
+  type IFormattedTrophies,
+  type GroupedTrophies,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
@@ -62,12 +64,13 @@ const mergeTrophies = (
   return { ...mergedTrophiesDetails, trophies: mergedTrophies };
 };
 
-const formatTrophies = (trophies: MergedTrophies): ITrophy[] => {
+const formatTrophies = (trophies: MergedTrophies): IFormattedTrophies => {
   const array = [...trophies.trophies];
   const formatted: ITrophy[] = [];
+  const grouped: GroupedTrophies = {};
   for (let i = 0; i < array.length; i++) {
     const el = array[i];
-    formatted.push({
+    const trophy = {
       id: el.trophyId,
       hidden: el.trophyHidden,
       type: el.trophyType,
@@ -78,9 +81,15 @@ const formatTrophies = (trophies: MergedTrophies): ITrophy[] => {
       earned: el.earned,
       rare: el.trophyRare,
       earnedRate: el.trophyEarnedRate,
-    });
+    };
+    formatted.push(trophy);
+    if (el.trophyGroupId != null) {
+      const list = grouped[el.trophyGroupId] ?? [];
+      list.push(trophy);
+      grouped[el.trophyGroupId] = list;
+    }
   }
-  return formatted;
+  return { grouped, trophies: formatted };
 };
 
 const formatResponse = (
@@ -110,7 +119,7 @@ const formatResponse = (
       platinum: earnedTrophies.platinum,
     };
   }
-  const formattedTrophies = formatTrophies(trophies);
+  const { trophies: formattedTrophies } = formatTrophies(trophies);
   return {
     name: trophyTitleName,
     detail: trophyTitleDetail,

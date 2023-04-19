@@ -70,6 +70,13 @@ export interface IGroup {
   trophies: ITrophy[];
 }
 
+export type GroupedTrophies = Record<TrophyGroupId, ITrophy[]>;
+
+export interface IFormattedTrophies {
+  grouped: GroupedTrophies;
+  trophies: ITrophy[];
+}
+
 export interface IFormattedResponse {
   name: string;
   detail?: string;
