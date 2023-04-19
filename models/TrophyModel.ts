@@ -28,14 +28,40 @@ export type ITitleEarnedGroups =
 
 export type ITitleEarnedTrophies = UserTrophiesEarnedForTitleResponse | IError;
 
-interface ITrophyCount {
+export type TrophyRare = 0 | 1 | 2 | 3;
+
+export const TrophyRareLabels: Record<TrophyRare, string> = {
+  0: "Ultra Rare",
+  1: "Very Rare",
+  2: "Rare",
+  3: "Common",
+};
+
+export type TrophyType = "platinum" | "gold" | "silver" | "bronze";
+
+export type TrophyGroupId = "default" | string;
+
+export interface ITrophy {
+  id: number;
+  hidden: boolean;
+  type: TrophyType;
+  name: string;
+  detail: string;
+  icon_url: string;
+  group_id: TrophyGroupId;
+  earned?: boolean;
+  rare?: TrophyRare;
+  earnedRate?: string;
+}
+
+export interface ITrophyCount {
   bronze: number;
   silver: number;
   gold: number;
   platinum: number;
 }
 
-interface IGroup {
+export interface IGroup {
   id: string;
   name: string;
   detail: string;
@@ -48,8 +74,10 @@ export interface IGroupedTrophies {
   detail: string;
   icon_url: string;
   platform: string;
-  groups: IGroup[];
   counts: ITrophyCount;
+  groups: IGroup[];
+  trophies: ITrophy[];
+  earned_counts?: ITrophyCount;
 }
 
 export type EarnedGroupsDetails = Omit<
