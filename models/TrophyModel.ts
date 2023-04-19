@@ -67,6 +67,7 @@ export interface IGroup {
   detail?: string;
   icon_url: string;
   counts: ITrophyCount;
+  earned_counts?: ITrophyCount;
   trophies: ITrophy[];
 }
 

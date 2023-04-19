@@ -6,9 +6,9 @@ import {
   type ITitleEarnedGroups,
   type MergedGroups,
   type MergedTrophies,
-  type ITrophyCount,
   type IFormattedResponse,
   type ITrophy,
+  type IGroup,
   type IFormattedTrophies,
   type GroupedTrophies,
 } from "@/models/TrophyModel";
@@ -92,6 +92,27 @@ const formatTrophies = (trophies: MergedTrophies): IFormattedTrophies => {
   return { grouped, trophies: formatted };
 };
 
+const formatGroups = (
+  groups: MergedGroups,
+  trophies: GroupedTrophies
+): IGroup[] => {
+  const array = [...groups.trophyGroups];
+  const formatted: IGroup[] = [];
+  for (let i = 0; i < array.length; i++) {
+    const el = array[i];
+    formatted.push({
+      id: el.trophyGroupId,
+      name: el.trophyGroupName,
+      detail: el.trophyGroupDetail,
+      icon_url: el.trophyGroupIconUrl,
+      counts: el.definedTrophies,
+      earned_counts: el.earnedTrophies,
+      trophies: trophies[el.trophyGroupId],
+    });
+  }
+  return formatted;
+};
+
 const formatResponse = (
   groups: MergedGroups,
   trophies: MergedTrophies
@@ -104,30 +125,16 @@ const formatResponse = (
     definedTrophies,
     earnedTrophies,
   } = groups;
-  const counts: ITrophyCount = {
-    bronze: definedTrophies.bronze,
-    silver: definedTrophies.silver,
-    gold: definedTrophies.gold,
-    platinum: definedTrophies.platinum,
-  };
-  let earned_counts: ITrophyCount | undefined;
-  if (earnedTrophies != null) {
-    earned_counts = {
-      bronze: earnedTrophies.bronze,
-      silver: earnedTrophies.silver,
-      gold: earnedTrophies.gold,
-      platinum: earnedTrophies.platinum,
-    };
-  }
-  const { trophies: formattedTrophies } = formatTrophies(trophies);
+  const { trophies: formattedTrophies, grouped } = formatTrophies(trophies);
+  const formattedGroups = formatGroups(groups, grouped);
   return {
     name: trophyTitleName,
     detail: trophyTitleDetail,
     icon_url: trophyTitleIconUrl,
     platform: trophyTitlePlatform,
-    counts,
-    earned_counts,
-    groups: [],
+    counts: definedTrophies,
+    earned_counts: earnedTrophies,
+    groups: formattedGroups,
     trophies: formattedTrophies,
   };
 };
