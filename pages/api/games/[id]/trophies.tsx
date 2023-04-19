@@ -6,6 +6,8 @@ import {
   type ITitleEarnedGroups,
   type MergedGroups,
   type MergedTrophies,
+  type IFormattedTrophies,
+  type ITrophyCount,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
@@ -57,6 +59,45 @@ const mergeTrophies = (
     ...earnedTrophies.find((n) => n.trophyId === i.trophyId),
   }));
   return { ...mergedTrophiesDetails, trophies: mergedTrophies };
+};
+
+const formatTrophies = (
+  groups: MergedGroups,
+  trophies: MergedTrophies
+): IFormattedTrophies => {
+  const {
+    trophyTitleName,
+    trophyTitleDetail,
+    trophyTitleIconUrl,
+    trophyTitlePlatform,
+    definedTrophies,
+    earnedTrophies,
+  } = groups;
+  const counts: ITrophyCount = {
+    bronze: definedTrophies.bronze,
+    silver: definedTrophies.silver,
+    gold: definedTrophies.gold,
+    platinum: definedTrophies.platinum,
+  };
+  let earned_counts: ITrophyCount | undefined;
+  if (earnedTrophies != null) {
+    earned_counts = {
+      bronze: earnedTrophies.bronze,
+      silver: earnedTrophies.silver,
+      gold: earnedTrophies.gold,
+      platinum: earnedTrophies.platinum,
+    };
+  }
+  return {
+    name: trophyTitleName,
+    detail: trophyTitleDetail,
+    icon_url: trophyTitleIconUrl,
+    platform: trophyTitlePlatform,
+    counts,
+    earned_counts,
+    groups: [],
+    trophies: [],
+  };
 };
 
 const getGameTrophies: NextApiHandler = async (req, res) => {
@@ -146,7 +187,9 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
   const mergedGroups = mergeGroups(titleGroups, titleEarnedGroups);
   const mergedTrophies = mergeTrophies(titleTrophies, titleEarnedTrophies);
 
-  return res.status(200).json({ mergedGroups, mergedTrophies });
+  const formattedTrophies = formatTrophies(mergedGroups, mergedTrophies);
+
+  return res.status(200).json({ ...formattedTrophies });
 };
 
 const handler: NextApiHandler = async (req, res) => {

@@ -64,20 +64,21 @@ export interface ITrophyCount {
 export interface IGroup {
   id: string;
   name: string;
-  detail: string;
+  detail?: string;
   icon_url: string;
   counts: ITrophyCount;
+  trophies: ITrophy[];
 }
 
-export interface IGroupedTrophies {
+export interface IFormattedTrophies {
   name: string;
-  detail: string;
+  detail?: string;
   icon_url: string;
   platform: string;
   counts: ITrophyCount;
+  earned_counts?: ITrophyCount;
   groups: IGroup[];
   trophies: ITrophy[];
-  earned_counts?: ITrophyCount;
 }
 
 export type EarnedGroupsDetails = Omit<
