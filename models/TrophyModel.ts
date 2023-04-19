@@ -45,10 +45,10 @@ export interface ITrophy {
   id: number;
   hidden: boolean;
   type: TrophyType;
-  name: string;
-  detail: string;
-  icon_url: string;
-  group_id: TrophyGroupId;
+  name?: string;
+  detail?: string;
+  icon_url?: string;
+  group_id?: TrophyGroupId;
   earned?: boolean;
   rare?: TrophyRare;
   earnedRate?: string;
@@ -70,7 +70,7 @@ export interface IGroup {
   trophies: ITrophy[];
 }
 
-export interface IFormattedTrophies {
+export interface IFormattedResponse {
   name: string;
   detail?: string;
   icon_url: string;

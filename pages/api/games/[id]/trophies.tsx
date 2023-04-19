@@ -6,8 +6,9 @@ import {
   type ITitleEarnedGroups,
   type MergedGroups,
   type MergedTrophies,
-  type IFormattedTrophies,
   type ITrophyCount,
+  type IFormattedResponse,
+  type ITrophy,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
@@ -61,10 +62,31 @@ const mergeTrophies = (
   return { ...mergedTrophiesDetails, trophies: mergedTrophies };
 };
 
-const formatTrophies = (
+const formatTrophies = (trophies: MergedTrophies): ITrophy[] => {
+  const array = [...trophies.trophies];
+  const formatted: ITrophy[] = [];
+  for (let i = 0; i < array.length; i++) {
+    const el = array[i];
+    formatted.push({
+      id: el.trophyId,
+      hidden: el.trophyHidden,
+      type: el.trophyType,
+      name: el.trophyName,
+      detail: el.trophyDetail,
+      icon_url: el.trophyIconUrl,
+      group_id: el.trophyGroupId,
+      earned: el.earned,
+      rare: el.trophyRare,
+      earnedRate: el.trophyEarnedRate,
+    });
+  }
+  return formatted;
+};
+
+const formatResponse = (
   groups: MergedGroups,
   trophies: MergedTrophies
-): IFormattedTrophies => {
+): IFormattedResponse => {
   const {
     trophyTitleName,
     trophyTitleDetail,
@@ -88,6 +110,7 @@ const formatTrophies = (
       platinum: earnedTrophies.platinum,
     };
   }
+  const formattedTrophies = formatTrophies(trophies);
   return {
     name: trophyTitleName,
     detail: trophyTitleDetail,
@@ -96,7 +119,7 @@ const formatTrophies = (
     counts,
     earned_counts,
     groups: [],
-    trophies: [],
+    trophies: formattedTrophies,
   };
 };
 
@@ -187,9 +210,9 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
   const mergedGroups = mergeGroups(titleGroups, titleEarnedGroups);
   const mergedTrophies = mergeTrophies(titleTrophies, titleEarnedTrophies);
 
-  const formattedTrophies = formatTrophies(mergedGroups, mergedTrophies);
+  const formattedResponse = formatResponse(mergedGroups, mergedTrophies);
 
-  return res.status(200).json({ ...formattedTrophies });
+  return res.status(200).json({ ...formattedResponse });
 };
 
 const handler: NextApiHandler = async (req, res) => {
