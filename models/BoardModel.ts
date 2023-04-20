@@ -14,4 +14,4 @@ export const columnsLabels: Record<BOARD_COLUMNS, string> = {
   [BOARD_COLUMNS.Complete]: "100%",
 };
 
-export type IBoardColumn = Record<BOARD_COLUMNS | string, IGame[]>;
+export type IBoardColumns = Record<BOARD_COLUMNS | string, IGame[]>;

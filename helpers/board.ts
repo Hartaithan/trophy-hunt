@@ -1,4 +1,4 @@
-import { BOARD_COLUMNS, type IBoardColumn } from "@/models/BoardModel";
+import { BOARD_COLUMNS, type IBoardColumns } from "@/models/BoardModel";
 import { randomNum } from "./number";
 import { arrayMove as dndKitArrayMove } from "@dnd-kit/sortable";
 import { type UniqueIdentifier } from "@dnd-kit/core";
@@ -24,8 +24,8 @@ export const generateItems = (from: number, to: number): IGame[] => {
   return a;
 };
 
-export const initializeBoard = (items: IGame[]): IBoardColumn => {
-  const columns: IBoardColumn = {
+export const initializeBoard = (items: IGame[]): IBoardColumns => {
+  const columns: IBoardColumns = {
     [BOARD_COLUMNS.Backlog]: [],
     [BOARD_COLUMNS.InProgress]: [],
     [BOARD_COLUMNS.Platinum]: [],
@@ -49,13 +49,13 @@ export const initializeBoard = (items: IGame[]): IBoardColumn => {
 };
 
 export const moveBetweenContainers = (
-  items: IBoardColumn,
+  items: IBoardColumns,
   activeContainer: string,
   activeIndex: number,
   overContainer: string,
   overIndex: number,
   itemId: UniqueIdentifier
-): IBoardColumn => {
+): IBoardColumns => {
   const item = items[activeContainer].find((item) => item.id === itemId);
   if (item === undefined) {
     return items;

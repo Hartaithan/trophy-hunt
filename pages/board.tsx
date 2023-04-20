@@ -1,4 +1,3 @@
-import BoardColumn from "@/components/BoardColumn";
 import BoardContainer from "@/components/BoardContainer";
 import {
   arrayMove,
@@ -6,7 +5,7 @@ import {
   moveBetweenContainers,
 } from "@/helpers/board";
 import { type IPage } from "@/models/AppModel";
-import { type IBoardColumn, type BOARD_COLUMNS } from "@/models/BoardModel";
+import { type IBoardColumns } from "@/models/BoardModel";
 import { type IGame } from "@/models/GameModel";
 import {
   DndContext,
@@ -57,7 +56,7 @@ export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
 const BoardPage: IPage<IBoardPageProps> = (props) => {
   const { items } = props;
   const initializedBoard = initializeBoard(items);
-  const [columns, setColumns] = useState<IBoardColumn>(initializedBoard);
+  const [columns, setColumns] = useState<IBoardColumns>(initializedBoard);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -66,9 +65,9 @@ const BoardPage: IPage<IBoardPageProps> = (props) => {
       return;
     }
 
-    const activeContainer: keyof IBoardColumn =
+    const activeContainer: keyof IBoardColumns =
       active.data.current.sortable.containerId;
-    const overContainer: keyof IBoardColumn =
+    const overContainer: keyof IBoardColumns =
       over.data.current?.sortable.containerId;
 
     if (overContainer === undefined) {
@@ -98,15 +97,15 @@ const BoardPage: IPage<IBoardPageProps> = (props) => {
     }
 
     if (active.id !== over.id) {
-      const activeContainer: keyof IBoardColumn =
+      const activeContainer: keyof IBoardColumns =
         active.data.current.sortable.containerId;
-      const overContainer: keyof IBoardColumn =
+      const overContainer: keyof IBoardColumns =
         over.data.current?.sortable.containerId ?? over.id;
       const activeIndex: number = active.data.current.sortable.index;
       const overIndex: number = over.data.current?.sortable.index ?? 0;
 
       setColumns((items) => {
-        let newItems: IBoardColumn = { ...items };
+        let newItems: IBoardColumns = { ...items };
         if (activeContainer === overContainer) {
           newItems = {
             ...items,
@@ -138,13 +137,7 @@ const BoardPage: IPage<IBoardPageProps> = (props) => {
       onDragOver={handleDragOver}
       collisionDetection={closestCorners}
     >
-      <BoardContainer>
-        {Object.keys(columns).map((col) => {
-          const key = col as BOARD_COLUMNS;
-          const items = columns[key];
-          return <BoardColumn key={col} column={key} items={items} />;
-        })}
-      </BoardContainer>
+      <BoardContainer columns={columns} />
     </DndContext>
   );
 };
