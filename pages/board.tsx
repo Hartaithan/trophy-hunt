@@ -68,15 +68,11 @@ const BoardPage: IPage<IBoardPageProps> = (props) => {
     const activeContainer: keyof IBoardColumns =
       active.data.current.sortable.containerId;
     const overContainer: keyof IBoardColumns =
-      over.data.current?.sortable.containerId;
-
-    if (overContainer === undefined) {
-      return;
-    }
+      over.data.current?.sortable.containerId ?? over.id;
+    const activeIndex: number = active.data.current.sortable.index;
+    const overIndex: number = over.data.current?.sortable.index ?? 0;
 
     if (activeContainer !== overContainer) {
-      const activeIndex: number = active.data.current.sortable.index;
-      const overIndex: number = over.data.current?.sortable.index ?? 0;
       setColumns((items) => {
         const movedItems = moveBetweenContainers(
           items,
