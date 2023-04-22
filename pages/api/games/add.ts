@@ -109,6 +109,16 @@ const addGame: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Unable to get user" });
   }
 
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("username, language")
+    .eq("id", user.id)
+    .single();
+  if (profileError !== null || profile === null) {
+    console.error("unable to get profile", profileError);
+    return res.status(400).json({ message: "Unable to get profile" });
+  }
+
   const game = await getGame(id);
   const code = getCode(game);
   if (game === null || game.length === 0 || code === null) {
@@ -118,7 +128,7 @@ const addGame: NextApiHandler = async (req, res) => {
 
   const authorization: AuthorizationPayload = { accessToken: access_token };
 
-  const lang = user.user_metadata.lang ?? "en-en";
+  const lang = profile.language ?? "en-en";
   let listOptions: Partial<TitleTrophiesOptions> = {
     headerOverrides: { "Accept-Language": lang },
   };
@@ -142,6 +152,7 @@ const addGame: NextApiHandler = async (req, res) => {
     platform,
     status,
     user_id: user.id,
+    username: profile.username,
     code,
   };
   const { data: newGame, error: newGameError } = await supabase

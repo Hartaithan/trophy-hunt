@@ -10,6 +10,7 @@ export interface IGame {
   status: BOARD_COLUMNS;
   progress: string;
   user_id: string;
+  username: string;
   code: string;
   order_index: number;
 }
