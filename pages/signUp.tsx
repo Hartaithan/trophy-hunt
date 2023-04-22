@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useEffect } from "react";
 import { type IPage } from "@/models/AppModel";
 import { type IUser, type ISignUpBody } from "@/models/AuthModel";
 import {
@@ -15,11 +15,17 @@ import {
   Text,
   TextInput,
   Title,
+  Loader,
+  useMantineTheme,
+  Box,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength, isNotEmpty } from "@mantine/form";
 import API from "@/api/API";
 import { locales } from "@/constants/locales";
 import { type ILocale } from "@/models/LocaleModel";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useDebouncedValue } from "@mantine/hooks";
+import { UserCheck, UserX } from "tabler-icons-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -37,6 +43,16 @@ const useStyles = createStyles(({ spacing }) => ({
     left: spacing.xs,
     transform: "translateY(-50%)",
     zIndex: 10,
+  },
+  username: {
+    position: "relative",
+  },
+  unique: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    fontSize: "0.875rem",
+    lineHeight: 1.55,
   },
 }));
 
@@ -59,7 +75,11 @@ const SelectItem = forwardRef<HTMLDivElement, ILocale>(
 
 const SignUpPage: IPage = () => {
   const { classes } = useStyles();
+  const supabase = useSupabaseClient();
+  const { colors } = useMantineTheme();
   const [user, setUser] = useState<IUser | null>(null);
+  const [isChecking, setChecking] = useState<boolean>(false);
+  const [isUnique, setUnique] = useState<boolean>(false);
 
   const form = useForm<ISignUpBody>({
     initialValues: {
@@ -71,6 +91,7 @@ const SignUpPage: IPage = () => {
     },
     validate: {
       email: isEmail("Invalid email"),
+      username: isNotEmpty("Language is required"),
       password: hasLength(
         { min: 6 },
         "Password should include at least 6 characters"
@@ -79,6 +100,8 @@ const SignUpPage: IPage = () => {
       lang: isNotEmpty("Language is required"),
     },
   });
+
+  const [debounced] = useDebouncedValue(form.values.username, 500);
 
   const handleSubmit = (values: typeof form.values): void => {
     if (API_URL === undefined) {
@@ -94,6 +117,24 @@ const SignUpPage: IPage = () => {
         console.error("sign up error", error);
       });
   };
+
+  const checkUsernameUniqueness = async (): Promise<void> => {
+    const { error } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("username", form.values.username)
+      .single();
+    setUnique(error != null);
+  };
+
+  useEffect(() => {
+    if (debounced.length !== 0) {
+      setChecking(true);
+      checkUsernameUniqueness().finally(() => setChecking(false));
+    } else {
+      setUnique(false);
+    }
+  }, [debounced]); // eslint-disable-line
 
   return (
     <Flex w="100%" h="100%" direction="column" justify="center" align="center">
@@ -123,14 +164,48 @@ const SignUpPage: IPage = () => {
               placeholder="Enter your email"
               {...form.getInputProps("email")}
             />
-            <TextInput
-              required
-              type="text"
-              label="Username"
-              autoComplete="off"
-              placeholder="Enter your username"
-              {...form.getInputProps("username")}
-            />
+            <Box className={classes.username}>
+              {form.values.username.length > 0 && !isChecking && (
+                <Text
+                  className={classes.unique}
+                  color={isUnique ? colors.green[8] : colors.red[8]}
+                >
+                  {isUnique ? "Username is unique" : "Username already taken"}
+                </Text>
+              )}
+              {form.values.username.length > 0 && isChecking && (
+                <Text className={classes.unique} color={colors.dark[0]}>
+                  Checking...
+                </Text>
+              )}
+              <TextInput
+                required
+                type="text"
+                label="Username"
+                autoComplete="off"
+                placeholder="Enter your username"
+                {...form.getInputProps("username")}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.length > 0) {
+                    setChecking(true);
+                  } else {
+                    setChecking(false);
+                    setUnique(false);
+                  }
+                  form.setFieldValue("username", e.target.value);
+                }}
+                rightSection={
+                  isChecking ? (
+                    <Loader size="xs" />
+                  ) : isUnique ? (
+                    <UserCheck size={20} color={colors.green[8]} />
+                  ) : (
+                    <UserX size={20} color={colors.red[8]} />
+                  )
+                }
+              />
+            </Box>
             <PasswordInput
               required
               type="password"
@@ -164,7 +239,12 @@ const SignUpPage: IPage = () => {
               </div>
             </Input.Wrapper>
           </Stack>
-          <Button type="submit" mt="xl" fullWidth>
+          <Button
+            type="submit"
+            mt="xl"
+            disabled={!form.isValid() || isChecking || !isUnique}
+            fullWidth
+          >
             Sign up!
           </Button>
         </form>
