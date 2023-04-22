@@ -5,13 +5,18 @@ import {
   type NextPage,
 } from "next";
 import { type AppProps } from "next/app";
-import { type NullableProfile, type NullableSession } from "./AuthModel";
+import {
+  type NullableProfile,
+  type NullablePSNProfile,
+  type NullableSession,
+} from "./AuthModel";
 
 export type IExtendedPageProps = object;
 
 export interface IExtendedInitialProps {
   initialSession: NullableSession;
   initialProfile: NullableProfile;
+  initialPSNProfile: NullablePSNProfile;
 }
 
 export interface IAppProps<P = object>

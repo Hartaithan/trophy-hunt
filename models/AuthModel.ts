@@ -6,6 +6,9 @@ import {
 
 export type NullableSession = Session | null;
 export type NullableUser = User | null;
+export type NullableProfile = IProfile | null;
+export type NullablePSNProfile = ProfileFromUserNameResponse["profile"] | null;
+export type NullableAuthResponse = AuthTokensResponse | null;
 
 export interface ISignUpBody extends Record<string, string> {
   email: string;
@@ -16,6 +19,8 @@ export interface ISignUpBody extends Record<string, string> {
 }
 
 interface IUserData {
+  lang: string;
+  username: string;
   onlineId: string;
 }
 
@@ -23,8 +28,17 @@ export interface IUser extends User {
   user_metadata: User["user_metadata"] & IUserData;
 }
 
-export type Profile = ProfileFromUserNameResponse["profile"];
+export interface IProfile {
+  id: string;
+  created_at: string;
+  language: string;
+  username: string;
+  online_id: string;
+}
 
-export type NullableProfile = ProfileFromUserNameResponse["profile"] | null;
+export interface ISessionResponse {
+  session: NullableSession;
+  profile: NullableProfile;
+}
 
-export type NullableAuthResponse = AuthTokensResponse | null;
+export type PSNProfile = ProfileFromUserNameResponse["profile"];

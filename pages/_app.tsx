@@ -14,8 +14,14 @@ import {
   createServerSupabaseClient,
 } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
-import { type NullableProfile, type NullableSession } from "@/models/AuthModel";
-import PSNProvider from "@/providers/PSNProvider";
+import {
+  type NullableUser,
+  type NullablePSNProfile,
+  type NullableSession,
+  type ISessionResponse,
+  type NullableProfile,
+} from "@/models/AuthModel";
+import ProfileProvider from "@/providers/ProfileProvider";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -24,10 +30,24 @@ const isServerSide = typeof window === "undefined";
 
 const getSession = async (
   ctx: IInitialProps["ctx"]
-): Promise<NullableSession> => {
+): Promise<ISessionResponse> => {
   const supabase = createServerSupabaseClient(ctx);
   const { data } = await supabase.auth.getSession();
-  return data.session;
+  const user: NullableUser = data.session?.user ?? null;
+  if (user === null || data === null) {
+    console.error("unable to get user");
+    return { session: data.session, profile: null };
+  }
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+  if (profileError !== null || profile === null) {
+    console.error("unable to get profile", profileError);
+    return { session: data.session, profile: null };
+  }
+  return { session: data.session, profile: profile as NullableProfile };
 };
 
 const getRefreshedCookies = (ctx: IInitialProps["ctx"]): string => {
@@ -52,10 +72,10 @@ const getRefreshedCookies = (ctx: IInitialProps["ctx"]): string => {
   return cookies;
 };
 
-const getProfile = async (
+const getPSNProfile = async (
   ctx: IInitialProps["ctx"]
-): Promise<NullableProfile> => {
-  let profile: NullableProfile = null;
+): Promise<NullablePSNProfile> => {
+  let profile: NullablePSNProfile = null;
   const cookies = getRefreshedCookies(ctx);
 
   if (API_URL === undefined) {
@@ -84,25 +104,33 @@ const getInitialProps = async ({
 }: IInitialProps): Promise<IExtendedInitialProps> => {
   let initialSession: NullableSession = null;
   let initialProfile: NullableProfile = null;
+  let initialPSNProfile: NullablePSNProfile = null;
 
   if (isServerSide) {
     const [session, profile] = await Promise.allSettled([
       getSession(ctx),
-      getProfile(ctx),
+      getPSNProfile(ctx),
     ]);
     if (session.status === "fulfilled") {
-      initialSession = session.value;
+      initialSession = session.value.session;
+      initialProfile = session.value.profile;
     }
     if (profile.status === "fulfilled") {
-      initialProfile = profile.value;
+      initialPSNProfile = profile.value;
     }
   }
 
-  return { initialSession, initialProfile };
+  return { initialSession, initialProfile, initialPSNProfile };
 };
 
 const App = (props: IAppProps): JSX.Element => {
-  const { Component, pageProps, initialSession, initialProfile } = props;
+  const {
+    Component,
+    pageProps,
+    initialSession,
+    initialProfile,
+    initialPSNProfile,
+  } = props;
 
   const supabaseClient = createBrowserSupabaseClient();
   const [supabase] = useState(supabaseClient);
@@ -120,11 +148,14 @@ const App = (props: IAppProps): JSX.Element => {
           fontFamily: inter.style.fontFamily,
         }}
       >
-        <PSNProvider initialProfile={initialProfile}>
+        <ProfileProvider
+          initialProfile={initialProfile}
+          initialPSNProfile={initialPSNProfile}
+        >
           <MainLayout>
             <Component {...pageProps} />
           </MainLayout>
-        </PSNProvider>
+        </ProfileProvider>
       </MantineProvider>
     </SessionContextProvider>
   );

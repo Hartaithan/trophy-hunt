@@ -2,7 +2,7 @@ import { type NextApiHandler } from "next";
 import { type AuthorizationPayload, getProfileFromUserName } from "psn-api";
 import { getCookie } from "cookies-next";
 
-const getProfile: NextApiHandler = async (req, res) => {
+const getPSNProfile: NextApiHandler = async (req, res) => {
   const options = { req, res };
   const access_token = getCookie("psn-access-token", options);
 
@@ -25,7 +25,7 @@ const handler: NextApiHandler = async (req, res) => {
   const { method = "[Not Found]" } = req;
   switch (method) {
     case "GET":
-      return getProfile(req, res);
+      return getPSNProfile(req, res);
     default:
       res.setHeader("Allow", ["GET"]);
       return res.status(405).end(`Method ${method} Not Allowed`);
