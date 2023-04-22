@@ -64,6 +64,7 @@ const SignUpPage: IPage = () => {
   const form = useForm<ISignUpBody>({
     initialValues: {
       email: "",
+      username: "",
       password: "",
       npsso: "",
       lang: "en-US",
@@ -117,20 +118,31 @@ const SignUpPage: IPage = () => {
           <Stack>
             <TextInput
               required
+              type="email"
               label="Email"
-              placeholder="Your Email"
+              placeholder="Enter your email"
               {...form.getInputProps("email")}
+            />
+            <TextInput
+              required
+              type="text"
+              label="Username"
+              autoComplete="off"
+              placeholder="Enter your username"
+              {...form.getInputProps("username")}
             />
             <PasswordInput
               required
+              type="password"
               label="Password"
-              placeholder="Your password"
+              placeholder="Enter your password"
               {...form.getInputProps("password")}
             />
             <TextInput
               required
+              type="text"
               label="NPSSO"
-              placeholder="Your NPSSO"
+              placeholder="Enter your NPSSO"
               {...form.getInputProps("npsso")}
             />
             <Input.Wrapper label="Language" required>

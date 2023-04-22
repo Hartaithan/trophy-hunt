@@ -1,5 +1,8 @@
 import { type Session, type User } from "@supabase/supabase-js";
-import { type AuthTokensResponse, type ProfileFromUserNameResponse } from "psn-api";
+import {
+  type AuthTokensResponse,
+  type ProfileFromUserNameResponse,
+} from "psn-api";
 
 export type NullableSession = Session | null;
 export type NullableUser = User | null;
@@ -9,6 +12,7 @@ export interface ISignUpBody extends Record<string, string> {
   password: string;
   npsso: string;
   lang: string;
+  username: string;
 }
 
 interface IUserData {
