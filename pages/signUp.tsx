@@ -91,7 +91,10 @@ const SignUpPage: IPage = () => {
     },
     validate: {
       email: isEmail("Invalid email"),
-      username: isNotEmpty("Language is required"),
+      username: (value) =>
+        /^[\w-_]*$/.test(value)
+          ? null
+          : "Username can only include letters, numbers, dashes and underscores",
       password: hasLength(
         { min: 6 },
         "Password should include at least 6 characters"
@@ -99,6 +102,7 @@ const SignUpPage: IPage = () => {
       npsso: hasLength(64, "NPSSO must have exactly 64 characters"),
       lang: isNotEmpty("Language is required"),
     },
+    validateInputOnChange: ["username"],
   });
 
   const [debounced] = useDebouncedValue(form.values.username, 500);
@@ -128,7 +132,7 @@ const SignUpPage: IPage = () => {
   };
 
   useEffect(() => {
-    if (debounced.length !== 0) {
+    if (debounced.length !== 0 && form.isValid("username")) {
       setChecking(true);
       checkUsernameUniqueness().finally(() => setChecking(false));
     } else {
