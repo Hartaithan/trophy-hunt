@@ -1,5 +1,5 @@
 import { type BOARD_COLUMNS } from "./BoardModel";
-import { type Platform } from "./PlaformModel";
+import { type Platform } from "./PlatformModel";
 
 export interface IGame {
   id: number;
