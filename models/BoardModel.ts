@@ -1,4 +1,11 @@
+import { type MantineColor } from "@mantine/core";
 import { type IGame } from "./GameModel";
+import { type Range } from "@/helpers/types";
+
+export interface IColumnColor {
+  color: MantineColor;
+  shade: Range<0, 10>;
+}
 
 export enum BOARD_COLUMNS {
   Backlog = "backlog",
@@ -6,12 +13,5 @@ export enum BOARD_COLUMNS {
   Platinum = "platinum",
   Complete = "complete",
 }
-
-export const columnsLabels: Record<BOARD_COLUMNS, string> = {
-  [BOARD_COLUMNS.Backlog]: "Backlog",
-  [BOARD_COLUMNS.InProgress]: "In Progress",
-  [BOARD_COLUMNS.Platinum]: "Platinum",
-  [BOARD_COLUMNS.Complete]: "100%",
-};
 
 export type IBoardColumns = Record<BOARD_COLUMNS | string, IGame[]>;

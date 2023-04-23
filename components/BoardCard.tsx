@@ -4,52 +4,79 @@ import Image from "next/image";
 import { type FC } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { type IGame } from "@/models/GameModel";
+import { columnColors, columnsLabels, platformLabels } from "@/constants/board";
 
 interface IBoardCardProps {
   item: IGame;
 }
 
-const useStyles = createStyles(({ colors, radius, spacing }) => ({
-  container: {
-    width: "100%",
-    padding: spacing.xs,
-    background: colors.primary[6],
-    borderRadius: radius.md,
-  },
-  imageWrapper: {
-    position: "relative",
-    width: "100%",
-    aspectRatio: "320 / 176",
-    overflow: "hidden",
-    borderRadius: radius.md,
-  },
-  image: {
-    objectFit: "contain",
-    zIndex: 3,
-    filter:
-      "drop-shadow(0 0 100px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 100px rgba(0, 0, 0, 0.9))",
-  },
-  overlay: {
-    zIndex: 2,
-    width: "100%",
-    height: "100%",
-    background: "linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))",
-  },
-  background: {
-    objectFit: "cover",
-    zIndex: 1,
-    filter: "blur(5px)",
-  },
-  draggable: {
-    zIndex: 99999,
-  },
-}));
+const useStyles = createStyles(
+  ({ colors, radius, spacing }, { item }: { item: IGame }) => {
+    const { color, shade } = columnColors[item.status];
+    return {
+      container: {
+        width: "100%",
+        padding: spacing.xs,
+        background: colors.primary[6],
+        borderRadius: radius.md,
+      },
+      imageWrapper: {
+        position: "relative",
+        width: "100%",
+        aspectRatio: "320 / 176",
+        overflow: "hidden",
+        borderRadius: radius.md,
+      },
+      image: {
+        objectFit: "contain",
+        zIndex: 3,
+        filter:
+          "drop-shadow(0 0 100px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 100px rgba(0, 0, 0, 0.9))",
+      },
+      overlay: {
+        zIndex: 2,
+        width: "100%",
+        height: "100%",
+        background:
+          "linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))",
+      },
+      background: {
+        objectFit: "cover",
+        zIndex: 1,
+        filter: "blur(5px)",
+      },
+      draggable: {
+        zIndex: 99999,
+      },
+      header: {
+        justifyContent: "space-between",
+        marginBottom: spacing.xs,
+      },
+      badge: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: radius.sm,
+        padding: "2px 6px",
+        fontSize: 12,
+      },
+      platform: {
+        background: colors.gray[7],
+        color: colors.gray[0],
+      },
+      status: {
+        background: colors[color][shade] + "80",
+        color: colors.gray[0],
+      },
+    };
+  }
+);
 
 const BoardCard: FC<IBoardCardProps> = (props) => {
   const { item } = props;
-  const { id, title, image_url } = item;
+  const { id, title, image_url, status, platform } = item;
 
-  const { classes, cx } = useStyles();
+  const { classes, cx } = useStyles({ item });
   const {
     attributes,
     listeners,
@@ -71,6 +98,14 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
         transition,
       }}
     >
+      <Flex className={classes.header}>
+        <Flex className={cx(classes.badge, classes.platform)}>
+          {platformLabels[platform].short}
+        </Flex>
+        <Flex className={cx(classes.badge, classes.status)}>
+          {columnsLabels[status]}
+        </Flex>
+      </Flex>
       <Box className={classes.imageWrapper}>
         <Image
           className={classes.image}
@@ -88,7 +123,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           alt="image card"
         />
       </Box>
-      <Text mt={6} lineClamp={2} h={48}>
+      <Text mt={6} lineClamp={2}>
         {title}
       </Text>
     </Flex>

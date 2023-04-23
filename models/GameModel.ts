@@ -1,4 +1,5 @@
 import { type BOARD_COLUMNS } from "./BoardModel";
+import { type Platform } from "./PlaformModel";
 
 export interface IGame {
   id: number;
@@ -6,7 +7,7 @@ export interface IGame {
   updated_at: string;
   title: string;
   image_url: string;
-  platform: string;
+  platform: Platform;
   status: BOARD_COLUMNS;
   progress: string;
   user_id: string;

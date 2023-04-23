@@ -1,10 +1,8 @@
-import { BOARD_COLUMNS, columnsLabels } from "@/models/BoardModel";
-import { type Range } from "@/helpers/types";
+import { type BOARD_COLUMNS } from "@/models/BoardModel";
 import {
   Text,
   Flex,
   createStyles,
-  type MantineColor,
   useMantineTheme,
   UnstyledButton,
 } from "@mantine/core";
@@ -17,30 +15,7 @@ import {
 import BoardCard from "./BoardCard";
 import { type IGame } from "@/models/GameModel";
 import { PlaylistAdd } from "tabler-icons-react";
-
-interface IColumnColor {
-  color: MantineColor;
-  shade: Range<0, 10>;
-}
-
-const columnColors: Record<BOARD_COLUMNS, IColumnColor> = {
-  [BOARD_COLUMNS.Backlog]: {
-    color: "gray",
-    shade: 6,
-  },
-  [BOARD_COLUMNS.InProgress]: {
-    color: "green",
-    shade: 9,
-  },
-  [BOARD_COLUMNS.Platinum]: {
-    color: "blue",
-    shade: 9,
-  },
-  [BOARD_COLUMNS.Complete]: {
-    color: "red",
-    shade: 9,
-  },
-};
+import { columnColors, columnsLabels } from "@/constants/board";
 
 interface IBoardColumnProps {
   column: BOARD_COLUMNS;
@@ -50,7 +25,6 @@ interface IBoardColumnProps {
 const useStyles = createStyles(
   ({ radius, colors, spacing }, { column }: { column: BOARD_COLUMNS }) => {
     const { color, shade } = columnColors[column];
-    const background = colors[color][shade];
     return {
       column: {
         padding: spacing.xs,
@@ -63,7 +37,7 @@ const useStyles = createStyles(
         position: "sticky",
         top: spacing.xl,
         width: "100%",
-        borderBottom: `3px ${background} solid`,
+        borderBottom: `3px ${colors[color][shade]} solid`,
         padding: "6px 8px",
         marginBottom: spacing.md,
         zIndex: 100,
@@ -77,7 +51,7 @@ const useStyles = createStyles(
           width: 8,
           height: 8,
           borderRadius: "50%",
-          background,
+          background: colors[color][shade],
           display: "inline-block",
           marginRight: spacing.xs,
         },
@@ -102,9 +76,8 @@ const useStyles = createStyles(
         aspectRatio: "1 / 1",
         marginLeft: "auto",
         transform: "translateX(4px)",
-        right: 0,
         "& > svg": {
-          stroke: background,
+          stroke: colors[color][shade],
         },
       },
     };
