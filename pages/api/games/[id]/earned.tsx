@@ -2,7 +2,10 @@ import {
   type TitleTrophiesOptions,
   type ITitleGroups,
   type ITitleTrophies,
+  type ITitleEarnedTrophies,
+  type ITitleEarnedGroups,
   type MergedGroups,
+  type MergedTrophies,
   type IFormattedResponse,
   type ITrophy,
   type IGroup,
@@ -16,13 +19,52 @@ import {
   getTitleTrophyGroups,
   type AuthorizationPayload,
   getTitleTrophies,
+  getUserTrophiesEarnedForTitle,
+  getUserTrophyGroupEarningsForTitle,
   type TitleTrophyGroupsResponse,
+  type UserTrophyGroupEarningsForTitleResponse,
   type TitleTrophiesResponse,
+  type UserTrophiesEarnedForTitleResponse,
 } from "psn-api";
 
-const formatTrophies = (
-  trophies: TitleTrophiesResponse
-): IFormattedTrophies => {
+const mergeGroups = (
+  groups: TitleTrophyGroupsResponse,
+  earned: UserTrophyGroupEarningsForTitleResponse | null
+): MergedGroups => {
+  const empty = { trophyGroups: [] };
+  const { trophyGroups: allGroups, ...groupDetails } = groups;
+  const { trophyGroups: earnedGroups, ...earnedGroupDetails } = earned ?? empty;
+  const mergedGroupDetails = {
+    ...groupDetails,
+    ...earnedGroupDetails,
+  };
+  const mergedGroups = allGroups.map((i) => ({
+    ...i,
+    ...earnedGroups.find((n) => n.trophyGroupId === i.trophyGroupId),
+  }));
+  return { ...mergedGroupDetails, trophyGroups: mergedGroups };
+};
+
+const mergeTrophies = (
+  trophies: TitleTrophiesResponse,
+  earned: UserTrophiesEarnedForTitleResponse | null
+): MergedTrophies => {
+  const { trophies: allTrophies, ...trophiesDetails } = trophies;
+  const { trophies: earnedTrophies, ...earnedTrophiesDetails } = earned ?? {
+    trophies: [],
+  };
+  const mergedTrophiesDetails = {
+    ...trophiesDetails,
+    ...earnedTrophiesDetails,
+  };
+  const mergedTrophies = allTrophies.map((i) => ({
+    ...i,
+    ...earnedTrophies.find((n) => n.trophyId === i.trophyId),
+  }));
+  return { ...mergedTrophiesDetails, trophies: mergedTrophies };
+};
+
+const formatTrophies = (trophies: MergedTrophies): IFormattedTrophies => {
   const array = [...trophies.trophies];
   const formatted: ITrophy[] = [];
   const grouped: GroupedTrophies = {};
@@ -36,6 +78,9 @@ const formatTrophies = (
       detail: el.trophyDetail,
       icon_url: el.trophyIconUrl,
       group_id: el.trophyGroupId,
+      earned: el.earned,
+      rare: el.trophyRare,
+      earnedRate: el.trophyEarnedRate,
     };
     formatted.push(trophy);
     if (el.trophyGroupId != null) {
@@ -61,6 +106,7 @@ const formatGroups = (
       detail: el.trophyGroupDetail,
       icon_url: el.trophyGroupIconUrl,
       counts: el.definedTrophies,
+      earned_counts: el.earnedTrophies,
       trophies: trophies[el.trophyGroupId],
     });
   }
@@ -68,8 +114,8 @@ const formatGroups = (
 };
 
 const formatResponse = (
-  groups: TitleTrophyGroupsResponse,
-  trophies: TitleTrophiesResponse
+  groups: MergedGroups,
+  trophies: MergedTrophies
 ): IFormattedResponse => {
   const {
     trophyTitleName,
@@ -77,6 +123,7 @@ const formatResponse = (
     trophyTitleIconUrl,
     trophyTitlePlatform,
     definedTrophies,
+    earnedTrophies,
   } = groups;
   const { trophies: formattedTrophies, grouped } = formatTrophies(trophies);
   const formattedGroups = formatGroups(groups, grouped);
@@ -86,12 +133,13 @@ const formatResponse = (
     icon_url: trophyTitleIconUrl,
     platform: trophyTitlePlatform,
     counts: definedTrophies,
+    earned_counts: earnedTrophies,
     groups: formattedGroups,
     trophies: formattedTrophies,
   };
 };
 
-const getGameTrophies: NextApiHandler = async (req, res) => {
+const getEarnedTrophies: NextApiHandler = async (req, res) => {
   const {
     query: { id },
   } = req;
@@ -134,14 +182,21 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
 
   type Response = [
     PromiseSettledResult<ITitleGroups>,
-    PromiseSettledResult<ITitleTrophies>
+    PromiseSettledResult<ITitleEarnedGroups>,
+    PromiseSettledResult<ITitleTrophies>,
+    PromiseSettledResult<ITitleEarnedTrophies>
   ];
   let titleGroups: ITitleGroups | null = null;
+  let titleEarnedGroups: ITitleEarnedGroups | null = null;
   let titleTrophies: ITitleTrophies | null = null;
-  const [resGroups, resTrophies]: Response = await Promise.allSettled([
-    getTitleTrophyGroups(auth, code, options),
-    getTitleTrophies(auth, code, "all", options),
-  ]);
+  let titleEarnedTrophies: ITitleEarnedTrophies | null = null;
+  const [resGroups, resGroupsEarned, resTrophies, resEarned]: Response =
+    await Promise.allSettled([
+      getTitleTrophyGroups(auth, code, options),
+      getUserTrophyGroupEarningsForTitle(auth, "me", code, options),
+      getTitleTrophies(auth, code, "all", options),
+      getUserTrophiesEarnedForTitle(auth, "me", code, "all", options),
+    ]);
 
   if (resGroups.status === "fulfilled" && !("error" in resGroups.value)) {
     titleGroups = resGroups.value;
@@ -151,13 +206,27 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
     titleTrophies = resTrophies.value;
   }
 
+  if (resEarned.status === "fulfilled" && !("error" in resEarned.value)) {
+    titleEarnedTrophies = resEarned.value;
+  }
+
+  if (
+    resGroupsEarned.status === "fulfilled" &&
+    !("error" in resGroupsEarned.value)
+  ) {
+    titleEarnedGroups = resGroupsEarned.value;
+  }
+
   if (titleGroups === null || titleTrophies === null) {
     const defaultMessage = "Unable to get trophies and trophy groups";
     console.error("unable to get trophies");
     return res.status(400).json({ message: defaultMessage });
   }
 
-  const formattedResponse = formatResponse(titleGroups, titleTrophies);
+  const mergedGroups = mergeGroups(titleGroups, titleEarnedGroups);
+  const mergedTrophies = mergeTrophies(titleTrophies, titleEarnedTrophies);
+
+  const formattedResponse = formatResponse(mergedGroups, mergedTrophies);
 
   return res.status(200).json({ ...formattedResponse });
 };
@@ -166,7 +235,7 @@ const handler: NextApiHandler = async (req, res) => {
   const { method = "[Not Found]" } = req;
   switch (method) {
     case "GET":
-      return getGameTrophies(req, res);
+      return getEarnedTrophies(req, res);
     default:
       res.setHeader("Allow", ["GET"]);
       return res.status(405).end(`Method ${method} Not Allowed`);
