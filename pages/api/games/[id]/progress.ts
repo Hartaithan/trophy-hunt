@@ -25,7 +25,7 @@ const updateProgress = async (
   }
   return res.status(200).json({
     message: "Game progress successfully updated!",
-    data: updateData.progress,
+    progress: updateData.progress,
   });
 };
 

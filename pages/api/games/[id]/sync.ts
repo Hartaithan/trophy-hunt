@@ -1,16 +1,80 @@
+import { type IProgressItem } from "@/models/GameModel";
+import {
+  type ITitleEarnedTrophies,
+  type TitleTrophiesOptions,
+} from "@/models/TrophyModel";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { getCookie } from "cookies-next";
 import { type NextApiHandler } from "next";
+import {
+  getUserTrophiesEarnedForTitle,
+  type AuthorizationPayload,
+} from "psn-api";
 
 const syncGameProgress: NextApiHandler = async (req, res) => {
   const {
     query: { id },
   } = req;
+  const supabase = createServerSupabaseClient({ req, res });
+  const access_token = getCookie("psn-access-token", { req, res });
+
+  if (typeof access_token !== "string") {
+    console.error("psn-access-token not found");
+    return res.status(400).json({ message: "Unable to get access token" });
+  }
 
   if (id === undefined || Array.isArray(id)) {
     console.error("invalid [id] query", req.query);
     return res.status(400).json({ message: "Invalid [id] query" });
   }
 
-  return res.status(200).json({ message: "Hello world!" });
+  const { data: game, error: gameError } = await supabase
+    .from("games")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (gameError !== null) {
+    console.error("unable to update game by id", id, gameError);
+    return res.status(400).json({ message: "Unable to update game by id", id });
+  }
+
+  const auth: AuthorizationPayload = { accessToken: access_token };
+  const code = game.code;
+  let options: Partial<TitleTrophiesOptions> = {};
+  if (game.platform !== "ps5") {
+    options = { ...options, npServiceName: "trophy" };
+  }
+
+  const earnedTrophies: ITitleEarnedTrophies =
+    await getUserTrophiesEarnedForTitle(auth, "me", code, "all", options);
+  if ("error" in earnedTrophies) {
+    console.error("unable to get earned trophies", earnedTrophies.error);
+    return res.status(400).json({ message: "Unable to get earned trophies" });
+  }
+
+  const trophies = earnedTrophies?.trophies ?? [];
+  const progress: IProgressItem[] = trophies.map((i) => ({
+    id: i.trophyId,
+    earned: i.earned ?? false,
+  }));
+
+  const { data: updateData, error: updateError } = await supabase
+    .from("games")
+    .update({ progress })
+    .eq("id", id)
+    .select("progress")
+    .single();
+  if (updateError !== null) {
+    console.error("unable to update game progress", id, updateError);
+    return res
+      .status(400)
+      .json({ message: "Unable to update game progress", id });
+  }
+
+  return res.status(200).json({
+    message: "Game progress successfully synced!",
+    progress: updateData.progress,
+  });
 };
 
 const handler: NextApiHandler = async (req, res) => {
