@@ -45,11 +45,21 @@ const syncGameProgress: NextApiHandler = async (req, res) => {
     options = { ...options, npServiceName: "trophy" };
   }
 
-  const earnedTrophies: ITitleEarnedTrophies =
-    await getUserTrophiesEarnedForTitle(auth, "me", code, "all", options);
-  if ("error" in earnedTrophies) {
-    console.error("unable to get earned trophies", earnedTrophies.error);
-    return res.status(400).json({ message: "Unable to get earned trophies" });
+  let earnedTrophies: ITitleEarnedTrophies | null = null;
+  try {
+    earnedTrophies = await getUserTrophiesEarnedForTitle(
+      auth,
+      "me",
+      code,
+      "all",
+      options
+    );
+  } catch (error) {
+    console.error("unable to get earned trophies", error);
+    return res.status(400).json({
+      message:
+        "Unable to get earned trophies, you probably don't have this game on your account.",
+    });
   }
 
   const trophies = earnedTrophies?.trophies ?? [];

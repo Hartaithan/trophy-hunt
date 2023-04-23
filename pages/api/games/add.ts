@@ -136,13 +136,11 @@ const addGame: NextApiHandler = async (req, res) => {
     listOptions = { ...listOptions, npServiceName: "trophy" };
   }
 
-  const titleGroups: ITitleGroups = await getTitleTrophyGroups(
-    authorization,
-    code,
-    listOptions
-  );
-  if ("error" in titleGroups) {
-    console.error("unable to get trophy group", titleGroups.error);
+  let titleGroups: ITitleGroups | null = null;
+  try {
+    titleGroups = await getTitleTrophyGroups(authorization, code, listOptions);
+  } catch (error) {
+    console.error("unable to get trophy group", error);
     return res.status(400).json({ message: "Unable to get trophy groups" });
   }
 
