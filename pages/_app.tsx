@@ -25,7 +25,7 @@ import ProfileProvider from "@/providers/ProfileProvider";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const inter = Inter({ subsets: ["latin", "cyrillic"] });
+const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 const isServerSide = typeof window === "undefined";
 
 const getSession = async (
