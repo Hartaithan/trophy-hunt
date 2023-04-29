@@ -5,6 +5,7 @@ import {
   type ISearchItem,
 } from "@/models/SearchModel";
 import { type NextApiHandler } from "next";
+import { search as headers } from "@/helpers/headers";
 
 const SEARCH_URL = process.env.NEXT_PUBLIC_SEARCH_URL;
 
@@ -24,9 +25,9 @@ const searchByQuery: NextApiHandler = async (req, res) => {
 
   let results = null;
   try {
-    results = await fetch(`${SEARCH_URL}/games/search?search=${query}`).then(
-      async (r) => await r.json()
-    );
+    results = await fetch(`${SEARCH_URL}/games/search?search=${query}`, {
+      headers,
+    }).then(async (r) => await r.json());
   } catch (error) {
     console.error("search error", error);
     return res

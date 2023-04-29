@@ -8,6 +8,7 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
 import { type NextApiHandler } from "next";
 import { getTitleTrophyGroups, type AuthorizationPayload } from "psn-api";
+import { search as headers } from "@/helpers/headers";
 
 const SEARCH_URL = process.env.NEXT_PUBLIC_SEARCH_URL;
 
@@ -40,7 +41,7 @@ const getGame = async (id: string): Promise<string | null> => {
 
   try {
     const fetchUrl = `${SEARCH_URL}/trophies_list/games/${id}`;
-    game = await fetch(fetchUrl).then(async (r) => await r.json());
+    game = await fetch(fetchUrl, { headers }).then(async (r) => await r.json());
   } catch (error) {
     console.error("get game content error", error);
   }
@@ -49,7 +50,9 @@ const getGame = async (id: string): Promise<string | null> => {
 
   try {
     const fetchUrl = `${SEARCH_URL}/trophies/trophies_list/${game.id}`;
-    const response = await fetch(fetchUrl).then(async (r) => await r.json());
+    const response = await fetch(fetchUrl, { headers }).then(
+      async (r) => await r.json()
+    );
     content = response.length > 0 ? response[0].image : null;
   } catch (error) {
     console.error("get game list error", error);
