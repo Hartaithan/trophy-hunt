@@ -7,6 +7,7 @@ import {
 import { type IPage } from "@/models/AppModel";
 import { type IBoardColumns } from "@/models/BoardModel";
 import { type IGame } from "@/models/GameModel";
+import BoardProvider from "@/providers/BoardProvider";
 import {
   DndContext,
   type DragEndEvent,
@@ -127,14 +128,16 @@ const BoardPage: IPage<IBoardPageProps> = (props) => {
   };
 
   return (
-    <DndContext
-      sensors={sensors}
-      onDragEnd={handleDragEnd}
-      onDragOver={handleDragOver}
-      collisionDetection={closestCorners}
-    >
-      <BoardContainer columns={columns} />
-    </DndContext>
+    <BoardProvider>
+      <DndContext
+        sensors={sensors}
+        onDragEnd={handleDragEnd}
+        onDragOver={handleDragOver}
+        collisionDetection={closestCorners}
+      >
+        <BoardContainer columns={columns} />
+      </DndContext>
+    </BoardProvider>
   );
 };
 

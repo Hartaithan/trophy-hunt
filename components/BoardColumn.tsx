@@ -16,6 +16,7 @@ import BoardCard from "./BoardCard";
 import { type IGame } from "@/models/GameModel";
 import { PlaylistAdd } from "tabler-icons-react";
 import { columnColors, columnsLabels } from "@/constants/board";
+import { useBoard } from "@/providers/BoardProvider";
 
 interface IBoardColumnProps {
   column: BOARD_COLUMNS;
@@ -89,9 +90,10 @@ const BoardColumn: FC<IBoardColumnProps> = (props) => {
   const { classes } = useStyles({ column });
   const { spacing } = useMantineTheme();
   const { setNodeRef } = useDroppable({ id: column });
+  const { addGameModal } = useBoard();
 
   const handleAddGame = (): void => {
-    alert("TODO: open new game modal");
+    addGameModal.open(column);
   };
 
   return (
