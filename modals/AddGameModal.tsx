@@ -6,8 +6,10 @@ import {
   Modal,
   Badge,
   createStyles,
-  Autocomplete,
   Loader,
+  Button,
+  useMantineTheme,
+  Select,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useState, type FC, useEffect } from "react";
@@ -37,20 +39,34 @@ const useStyles = createStyles(({ colors }, { status }: IAddGameModalProps) => {
 const AddGameModal: FC<IAddGameModalProps> = (props) => {
   const { status, opened, close } = props;
   const { classes } = useStyles(props);
+  const { spacing } = useMantineTheme();
 
   const [search, setSearch] = useState<string>("");
+  const [value, setValue] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [results, setResults] = useState<ISearchResult[]>([]);
   const [debouncedSearch] = useDebouncedValue(search, 1000);
 
   const data = results.map((item) => ({
-    value: `${item.name} [${item.platform}]`,
+    label: `${item.name} [${item.platform}]`,
+    value: item.url,
   }));
 
   const handleReset = (): void => {
     setSearch("");
     setLoading(false);
     setResults([]);
+  };
+
+  const handleSearch = (value: string): void => {
+    setSearch(value);
+    const isValid = isValidSearch(value);
+    if (!isValid) return;
+    setLoading(true);
+  };
+
+  const handleSubmit = (): void => {
+    alert(value);
   };
 
   useEffect(() => {
@@ -89,22 +105,20 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
           <Modal.CloseButton />
         </Modal.Header>
         <Modal.Body>
-          <Autocomplete
-            value={search}
-            onChange={(value) => {
-              setSearch(value);
-              const isValid = isValidSearch(value);
-              if (!isValid) return;
-              setLoading(true);
-            }}
-            placeholder="Search..."
+          <Select
+            searchable
+            value={value}
+            onChange={setValue}
             data={data}
             withinPortal
-            filter={() => true}
-            rightSection={isLoading ? <Loader size="xs" /> : null}
-            limit={100}
+            placeholder="Search..."
             maxDropdownHeight={300}
+            onSearchChange={handleSearch}
+            rightSection={isLoading ? <Loader size="xs" /> : null}
           />
+          <Button mt={spacing.md} fullWidth onClick={handleSubmit}>
+            Add
+          </Button>
         </Modal.Body>
       </Modal.Content>
     </Modal.Root>
