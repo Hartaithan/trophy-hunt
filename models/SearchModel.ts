@@ -15,8 +15,7 @@ export interface ISearchItem {
 export interface ISearchResult {
   id: number;
   name: string;
-  platform?: string;
-  platforms?: string[];
+  platform: string;
   url: string;
 }
 
