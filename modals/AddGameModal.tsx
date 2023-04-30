@@ -15,7 +15,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
       <Modal.Overlay />
       <Modal.Content>
         <Modal.Header>
-          <Modal.Title>Title</Modal.Title>
+          <Modal.Title>Add the game to the {status} column</Modal.Title>
           <Modal.CloseButton />
         </Modal.Header>
         <Modal.Body>

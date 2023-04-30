@@ -1,10 +1,30 @@
 import { type DefaultProps } from "@/models/ThemeModel";
-import { type ContainerProps, type MantineThemeOverride } from "@mantine/core";
+import {
+  type ContainerProps,
+  type MantineThemeOverride,
+  type ContextStylesParams,
+  type CSSObject,
+  type MantineTheme,
+} from "@mantine/core";
 import { globalStyles } from "./global";
 
 const ContainerDefaultProps: DefaultProps<ContainerProps> = ({ spacing }) => ({
   size: "xl",
   px: { base: spacing.xs, xl: 0 },
+});
+
+const ModalStyles: (
+  theme: MantineTheme,
+  params: unknown,
+  context: ContextStylesParams
+) => Record<string, CSSObject> = ({ radius }) => ({
+  content: {
+    borderRadius: radius.lg,
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: 500,
+  },
 });
 
 const extendedColors: MantineThemeOverride["colors"] = {
@@ -67,6 +87,9 @@ const theme: MantineThemeOverride = {
   components: {
     Container: {
       defaultProps: ContainerDefaultProps,
+    },
+    Modal: {
+      styles: ModalStyles,
     },
   },
 };
