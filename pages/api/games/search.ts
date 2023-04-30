@@ -35,7 +35,7 @@ const searchByQuery: NextApiHandler = async (req, res) => {
       .json({ message: `Unable to search by query: ${query}` });
   }
 
-  const games: ISearchItem[] = results !== null ? results.games : [];
+  const games: ISearchItem[] = results?.games ?? [];
   const formattedGames: ISearchResult[] = [];
   for (let i = 0; i < games.length; i++) {
     const { id, title, platform_title, count_tlist } = games[i];
