@@ -54,6 +54,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
     label: `${item.name} [${item.platform}]`,
     value: item.url,
   }));
+  const showNoResults = search.trim().length === 0 || isLoading;
 
   const handleReset = (): void => {
     setSearch("");
@@ -64,8 +65,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   const handleSearch = (value: string): void => {
     setSearch(value);
     const isValid = isValidSearch(value);
-    if (!isValid) return;
-    setLoading(true);
+    setLoading(isValid);
   };
 
   const handleSubmit = (): void => {
@@ -131,8 +131,10 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
             withinPortal
             placeholder="Search..."
             maxDropdownHeight={300}
+            searchValue={search}
             onSearchChange={handleSearch}
             rightSection={isLoading ? <Loader size="xs" /> : null}
+            nothingFound={showNoResults ? undefined : "No results"}
           />
           <Button mt={spacing.md} fullWidth onClick={handleSubmit}>
             Add
