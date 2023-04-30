@@ -15,6 +15,7 @@ import {
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useState, type FC, useEffect } from "react";
+import { SquarePlus } from "tabler-icons-react";
 
 interface IAddGameModalProps {
   status: BOARD_COLUMNS | null;
@@ -48,7 +49,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   const [value, setValue] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [results, setResults] = useState<ISearchResult[]>([]);
-  const [debouncedSearch] = useDebouncedValue(search, 1000);
+  const [debouncedSearch] = useDebouncedValue(search, 500);
 
   const data = results.map((item) => ({
     label: `${item.name} [${item.platform}]`,
@@ -58,6 +59,8 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
 
   const handleReset = (): void => {
     setSearch("");
+    setSubmit(false);
+    setValue(null);
     setLoading(false);
     setResults([]);
   };
@@ -136,7 +139,13 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
             rightSection={isLoading ? <Loader size="xs" /> : null}
             nothingFound={showNoResults ? undefined : "No results"}
           />
-          <Button mt={spacing.md} fullWidth onClick={handleSubmit}>
+          <Button
+            mt={spacing.md}
+            fullWidth
+            disabled={value === null || status === null}
+            onClick={handleSubmit}
+            leftIcon={<SquarePlus size={20} />}
+          >
             Add
           </Button>
         </Modal.Body>
