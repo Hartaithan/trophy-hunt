@@ -1,6 +1,7 @@
 import API from "@/api/API";
 import { columnColors, columnsLabels } from "@/constants/board";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
+import { type IAddGamePayload } from "@/models/GameModel";
 import { type ISearchResult } from "@/models/SearchModel";
 import {
   Modal,
@@ -10,6 +11,7 @@ import {
   Button,
   useMantineTheme,
   Select,
+  LoadingOverlay,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useState, type FC, useEffect } from "react";
@@ -42,6 +44,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   const { spacing } = useMantineTheme();
 
   const [search, setSearch] = useState<string>("");
+  const [isSubmit, setSubmit] = useState<boolean>(false);
   const [value, setValue] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [results, setResults] = useState<ISearchResult[]>([]);
@@ -66,7 +69,21 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   };
 
   const handleSubmit = (): void => {
-    alert(value);
+    const payload: Partial<IAddGamePayload> = {
+      gameId: value ?? undefined,
+      status: status ?? undefined,
+    };
+    setSubmit(true);
+    API.post("/games/add", JSON.stringify(payload))
+      .then((res) => {
+        // TODO: show notification with res.message
+        close();
+      })
+      .catch((error) => {
+        // TODO: show notification with errors
+        console.error("add game error", error);
+      })
+      .finally(() => setSubmit(false));
   };
 
   useEffect(() => {
@@ -105,6 +122,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
           <Modal.CloseButton />
         </Modal.Header>
         <Modal.Body>
+          <LoadingOverlay visible={isSubmit} />
           <Select
             searchable
             value={value}
