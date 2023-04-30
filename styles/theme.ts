@@ -5,6 +5,7 @@ import {
   type ContextStylesParams,
   type CSSObject,
   type MantineTheme,
+  type BadgeProps,
 } from "@mantine/core";
 import { globalStyles } from "./global";
 
@@ -24,6 +25,15 @@ const ModalStyles: (
   title: {
     fontSize: 14,
     fontWeight: 500,
+  },
+});
+
+const BadgeStyles: BadgeProps["styles"] = () => ({
+  root: {
+    padding: "2px 6px",
+    fontSize: 12,
+    fontWeight: 500,
+    textTransform: "unset",
   },
 });
 
@@ -90,6 +100,9 @@ const theme: MantineThemeOverride = {
     },
     Modal: {
       styles: ModalStyles,
+    },
+    Badge: {
+      styles: BadgeStyles,
     },
   },
 };

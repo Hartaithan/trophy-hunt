@@ -1,5 +1,5 @@
 import { useSortable } from "@dnd-kit/sortable";
-import { Box, Flex, Text, createStyles } from "@mantine/core";
+import { Badge, Box, Flex, Overlay, Text, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
 import { CSS } from "@dnd-kit/utilities";
@@ -33,13 +33,6 @@ const useStyles = createStyles(
         filter:
           "drop-shadow(0 0 100px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 100px rgba(0, 0, 0, 0.9))",
       },
-      overlay: {
-        zIndex: 2,
-        width: "100%",
-        height: "100%",
-        background:
-          "linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))",
-      },
       background: {
         objectFit: "cover",
         zIndex: 1,
@@ -51,14 +44,6 @@ const useStyles = createStyles(
       header: {
         justifyContent: "space-between",
         marginBottom: spacing.xs,
-      },
-      badge: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: radius.sm,
-        padding: "2px 6px",
-        fontSize: 12,
       },
       platform: {
         background: colors.gray[7],
@@ -99,12 +84,12 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       }}
     >
       <Flex className={classes.header}>
-        <Flex className={cx(classes.badge, classes.platform)}>
+        <Badge className={classes.platform} radius="sm">
           {platformLabels[platform].short}
-        </Flex>
-        <Flex className={cx(classes.badge, classes.status)}>
+        </Badge>
+        <Badge className={classes.status} radius="sm">
           {columnsLabels[status]}
-        </Flex>
+        </Badge>
       </Flex>
       <Box className={classes.imageWrapper}>
         <Image
@@ -114,7 +99,10 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           unoptimized
           alt="image card"
         />
-        <div className={classes.overlay} />
+        <Overlay
+          zIndex={2}
+          gradient="linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))"
+        />
         <Image
           className={classes.background}
           src={image_url}
