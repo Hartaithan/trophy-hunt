@@ -50,9 +50,9 @@ export const initializeBoard = (items: IGame[]): IBoardColumns => {
 
 export const moveBetweenContainers = (
   items: IBoardColumns,
-  activeContainer: string,
+  activeContainer: BOARD_COLUMNS,
   activeIndex: number,
-  overContainer: string,
+  overContainer: BOARD_COLUMNS,
   overIndex: number,
   itemId: UniqueIdentifier
 ): IBoardColumns => {
@@ -60,10 +60,12 @@ export const moveBetweenContainers = (
   if (item === undefined) {
     return items;
   }
+  const active = removeAtIndex(items[activeContainer], activeIndex);
+  const over = insertAtIndex(items[overContainer], overIndex, item);
   return {
     ...items,
-    [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
-    [overContainer]: insertAtIndex(items[overContainer], overIndex, item),
+    [activeContainer]: active.map((i) => ({ ...i, status: activeContainer })),
+    [overContainer]: over.map((i) => ({ ...i, status: overContainer })),
   };
 };
 

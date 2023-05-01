@@ -46,9 +46,9 @@ const BoardContainer: FC = () => {
       return;
     }
 
-    const activeContainer: keyof IBoardColumns =
+    const activeContainer: BOARD_COLUMNS =
       active.data.current.sortable.containerId;
-    const overContainer: keyof IBoardColumns =
+    const overContainer: BOARD_COLUMNS =
       over.data.current?.sortable.containerId ?? over.id;
     const activeIndex: number = active.data.current.sortable.index;
     const overIndex: number = over.data.current?.sortable.index ?? 0;
@@ -78,9 +78,9 @@ const BoardContainer: FC = () => {
       return;
     }
 
-    const activeContainer: keyof IBoardColumns =
+    const activeContainer: BOARD_COLUMNS =
       active.data.current.sortable.containerId;
-    const overContainer: keyof IBoardColumns =
+    const overContainer: BOARD_COLUMNS =
       over.data.current?.sortable.containerId ?? over.id;
     const activeIndex: number = active.data.current.sortable.index;
     const overIndex: number = over.data.current?.sortable.index ?? 0;
