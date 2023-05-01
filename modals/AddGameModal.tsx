@@ -1,8 +1,9 @@
 import API from "@/api/API";
 import { columnColors, columnsLabels } from "@/constants/board";
-import { type BOARD_COLUMNS } from "@/models/BoardModel";
-import { type IAddGamePayload } from "@/models/GameModel";
+import { type IBoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
+import { type IGame, type IAddGamePayload } from "@/models/GameModel";
 import { type ISearchResult } from "@/models/SearchModel";
+import { useBoard } from "@/providers/BoardProvider";
 import {
   Modal,
   Badge,
@@ -43,6 +44,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   const { status, opened, close } = props;
   const { classes } = useStyles(props);
   const { spacing } = useMantineTheme();
+  const { setColumns } = useBoard();
 
   const [search, setSearch] = useState<string>("");
   const [isSubmit, setSubmit] = useState<boolean>(false);
@@ -71,6 +73,19 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
     setLoading(isValid);
   };
 
+  const addNewGame = (game: IGame): void => {
+    const status: BOARD_COLUMNS | null = game?.status ?? null;
+    if (status == null) return;
+    setColumns((items) => {
+      let newItems: IBoardColumns = { ...items };
+      newItems = {
+        ...items,
+        [status]: [game, ...items[status]],
+      };
+      return newItems;
+    });
+  };
+
   const handleSubmit = (): void => {
     const payload: Partial<IAddGamePayload> = {
       gameId: value ?? undefined,
@@ -79,6 +94,8 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
     setSubmit(true);
     API.post("/games/add", JSON.stringify(payload))
       .then((res) => {
+        const game: IGame = res.data.game;
+        addNewGame(game);
         // TODO: show notification with res.message
         close();
       })
