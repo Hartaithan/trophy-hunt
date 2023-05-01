@@ -13,6 +13,8 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, moveBetweenContainers } from "@/helpers/board";
 import { useBoard } from "@/providers/BoardProvider";
+import { type IReorderItem, type IReorderPayload } from "@/models/GameModel";
+import API from "@/api/API";
 
 interface IMove {
   start: string | null;
@@ -28,16 +30,44 @@ const BoardContainer: FC = () => {
   const sensors = useSensors(useSensor(PointerSensor));
 
   const handleMoveEnd = (): void => {
+    let payload: IReorderPayload | null = null;
     const { start, end } = move.current;
     if (start === null || end === null) return;
     if (start === end) {
-      console.info("move inside container");
-      console.info("start items", columnsRef.current[start]);
+      const items: IReorderItem[] = columnsRef.current[start].map(
+        (i, index) => ({
+          id: i.id,
+          order_index: index,
+          status: i.status,
+        })
+      );
+      payload = { items };
     } else {
-      console.info("move between container");
-      console.info("start items", columnsRef.current[start]);
-      console.info("end items", columnsRef.current[end]);
+      const startItems: IReorderItem[] = columnsRef.current[start].map(
+        (i, index) => ({
+          id: i.id,
+          order_index: index,
+          status: i.status,
+        })
+      );
+      const endItems: IReorderItem[] = columnsRef.current[end].map(
+        (i, index) => ({
+          id: i.id,
+          order_index: index,
+          status: i.status,
+        })
+      );
+      payload = { items: [...startItems, ...endItems] };
     }
+    if (payload === null) return;
+    API.post("/games/reorder", JSON.stringify(payload))
+      .then((res) => {
+        // TODO: show notification with res.message
+      })
+      .catch((error) => {
+        // TODO: show notification with errors
+        console.error("reorder columns error", error);
+      });
     move.current = { start: null, end: null };
   };
 

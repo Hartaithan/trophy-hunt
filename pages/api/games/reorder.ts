@@ -3,15 +3,15 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
 const reorderGames: NextApiHandler = async (req, res) => {
-  const { payload } = req.body as IReorderPayload;
+  const { items } = req.body as IReorderPayload;
   const supabase = createServerSupabaseClient({ req, res });
 
-  if (payload == null || payload.length === 0) {
-    console.error("invalid payload", payload);
+  if (items == null || items.length === 0) {
+    console.error("invalid payload", items);
     return res.status(400).json({ message: "Invalid payload" });
   }
 
-  const { data, error } = await supabase.rpc("reorder", { payload });
+  const { data, error } = await supabase.rpc("reorder", { payload: items });
   if (error !== null) {
     console.error("unable to reorder games", error);
     return res.status(400).json({ message: "Unable to reorder games" });

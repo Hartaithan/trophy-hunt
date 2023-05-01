@@ -29,10 +29,11 @@ export interface IAddGamePayload {
 export interface IReorderItem {
   id: number;
   order_index: number;
+  status: BOARD_COLUMNS;
 }
 
 export interface IReorderPayload {
-  payload: IReorderItem[];
+  items: IReorderItem[];
 }
 
 export interface IProgressItem {
