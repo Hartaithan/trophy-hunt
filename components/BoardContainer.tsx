@@ -1,5 +1,5 @@
 import { Flex, useMantineTheme } from "@mantine/core";
-import { type FC } from "react";
+import { useRef, type FC } from "react";
 import BoardColumn from "./BoardColumn";
 import { type IBoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
 import {
@@ -14,11 +14,32 @@ import {
 import { arrayMove, moveBetweenContainers } from "@/helpers/board";
 import { useBoard } from "@/providers/BoardProvider";
 
+interface IMove {
+  start: string | null;
+  end: string | null;
+}
+
 const BoardContainer: FC = () => {
   const { spacing } = useMantineTheme();
   const { columns, setColumns } = useBoard();
+  const move = useRef<IMove>({ start: null, end: null });
+  const columnsRef = useRef<IBoardColumns>(columns);
 
   const sensors = useSensors(useSensor(PointerSensor));
+
+  const handleMoveEnd = (): void => {
+    const { start, end } = move.current;
+    if (start === null || end === null) return;
+    if (start === end) {
+      console.info("move inside container");
+      console.info("start items", columnsRef.current[start]);
+    } else {
+      console.info("move between container");
+      console.info("start items", columnsRef.current[start]);
+      console.info("end items", columnsRef.current[end]);
+    }
+    move.current = { start: null, end: null };
+  };
 
   const handleDragOver = ({ over, active }: DragOverEvent): void => {
     if (over == null || active.data.current === undefined || over === null) {
@@ -32,6 +53,10 @@ const BoardContainer: FC = () => {
     const activeIndex: number = active.data.current.sortable.index;
     const overIndex: number = over.data.current?.sortable.index ?? 0;
 
+    if (move.current.start === null) {
+      move.current.start = activeContainer;
+    }
+
     if (activeContainer !== overContainer) {
       setColumns((items) => {
         const movedItems = moveBetweenContainers(
@@ -42,6 +67,7 @@ const BoardContainer: FC = () => {
           overIndex,
           active.id
         );
+        columnsRef.current = movedItems;
         return movedItems;
       });
     }
@@ -52,27 +78,29 @@ const BoardContainer: FC = () => {
       return;
     }
 
-    if (active.id !== over.id) {
-      const activeContainer: keyof IBoardColumns =
-        active.data.current.sortable.containerId;
-      const overContainer: keyof IBoardColumns =
-        over.data.current?.sortable.containerId ?? over.id;
-      const activeIndex: number = active.data.current.sortable.index;
-      const overIndex: number = over.data.current?.sortable.index ?? 0;
+    const activeContainer: keyof IBoardColumns =
+      active.data.current.sortable.containerId;
+    const overContainer: keyof IBoardColumns =
+      over.data.current?.sortable.containerId ?? over.id;
+    const activeIndex: number = active.data.current.sortable.index;
+    const overIndex: number = over.data.current?.sortable.index ?? 0;
 
+    if (active.id !== over.id) {
       setColumns((items) => {
         let newItems: IBoardColumns = { ...items };
         if (activeContainer === overContainer) {
-          newItems = {
+          const movedItems = arrayMove(
+            items[overContainer],
+            activeIndex,
+            overIndex
+          );
+          const movedInsideContainer = {
             ...items,
-            [overContainer]: arrayMove(
-              items[overContainer],
-              activeIndex,
-              overIndex
-            ),
+            [overContainer]: movedItems,
           };
+          newItems = movedInsideContainer;
         } else {
-          newItems = moveBetweenContainers(
+          const movedBetweenContainers = moveBetweenContainers(
             items,
             activeContainer,
             activeIndex,
@@ -80,10 +108,15 @@ const BoardContainer: FC = () => {
             overIndex,
             active.id
           );
+          newItems = movedBetweenContainers;
         }
+        columnsRef.current = newItems;
         return newItems;
       });
     }
+
+    move.current.end = overContainer;
+    handleMoveEnd();
   };
 
   return (

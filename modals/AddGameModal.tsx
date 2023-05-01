@@ -1,6 +1,6 @@
 import API from "@/api/API";
 import { columnColors, columnsLabels } from "@/constants/board";
-import { type IBoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
+import { type BOARD_COLUMNS } from "@/models/BoardModel";
 import { type IGame, type IAddGamePayload } from "@/models/GameModel";
 import { type ISearchResult } from "@/models/SearchModel";
 import { useBoard } from "@/providers/BoardProvider";
@@ -76,14 +76,10 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   const addNewGame = (game: IGame): void => {
     const status: BOARD_COLUMNS | null = game?.status ?? null;
     if (status == null) return;
-    setColumns((items) => {
-      let newItems: IBoardColumns = { ...items };
-      newItems = {
-        ...items,
-        [status]: [game, ...items[status]],
-      };
-      return newItems;
-    });
+    setColumns((items) => ({
+      ...items,
+      [status]: [game, ...items[status]],
+    }));
   };
 
   const handleSubmit = (): void => {
