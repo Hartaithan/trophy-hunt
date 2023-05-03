@@ -14,7 +14,7 @@ import {
 import { arrayMove, moveBetweenContainers } from "@/helpers/board";
 import { useBoard } from "@/providers/BoardProvider";
 import { type IReorderItem, type IReorderPayload } from "@/models/GameModel";
-import API from "@/api/API";
+import API from "@/helpers/api";
 
 interface IMove {
   start: string | null;

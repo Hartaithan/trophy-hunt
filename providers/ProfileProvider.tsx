@@ -1,4 +1,4 @@
-import API from "@/api/API";
+import API from "@/helpers/api";
 import {
   type NullableProfile,
   type NullablePSNProfile,

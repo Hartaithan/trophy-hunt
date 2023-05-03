@@ -20,12 +20,12 @@ import {
   Box,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength, isNotEmpty } from "@mantine/form";
-import API from "@/api/API";
 import { locales } from "@/constants/locales";
 import { type ILocale } from "@/models/LocaleModel";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useDebouncedValue } from "@mantine/hooks";
 import { UserCheck, UserX } from "tabler-icons-react";
+import API from "@/helpers/api";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 

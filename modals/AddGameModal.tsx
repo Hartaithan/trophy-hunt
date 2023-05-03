@@ -1,5 +1,5 @@
-import API from "@/api/API";
 import { columnColors, columnsLabels } from "@/constants/board";
+import API from "@/helpers/api";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
 import { type IGame, type IAddGamePayload } from "@/models/GameModel";
 import { type ISearchResult } from "@/models/SearchModel";
