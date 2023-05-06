@@ -1,7 +1,11 @@
 import ColumnBadge from "@/components/ColumnBadge";
 import API from "@/helpers/api";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
-import { type IGame, type IAddGamePayload } from "@/models/GameModel";
+import {
+  type IGame,
+  type IAddGamePayload,
+  type IReorderItem,
+} from "@/models/GameModel";
 import { type ISearchResult } from "@/models/SearchModel";
 import { useBoard } from "@/providers/BoardProvider";
 import {
@@ -63,10 +67,27 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   const addNewGame = (game: IGame): void => {
     const status: BOARD_COLUMNS | null = game?.status ?? null;
     if (status == null) return;
-    setColumns((items) => ({
-      ...items,
-      [status]: [game, ...items[status]],
-    }));
+    setColumns((items) => {
+      const newItems = [game, ...items[status]];
+      const reorderItems: IReorderItem[] = newItems.map((i, index) => ({
+        id: i.id,
+        order_index: index,
+        status: i.status,
+      }));
+      const payload = { items: reorderItems };
+      API.post("/games/reorder", JSON.stringify(payload))
+        .then((res) => {
+          // TODO: show notification with res.message
+        })
+        .catch((error) => {
+          // TODO: show notification with errors
+          console.error("reorder columns error", error);
+        });
+      return {
+        ...items,
+        [status]: newItems,
+      };
+    });
   };
 
   const handleSubmit = (): void => {
