@@ -105,9 +105,8 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   }, [debouncedSearch]);
 
   useEffect(() => {
-    if (opened) {
-      handleReset();
-    }
+    if (!opened) return;
+    handleReset();
   }, [opened]);
 
   return (

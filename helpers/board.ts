@@ -35,9 +35,7 @@ export const initializeBoard = (items: IGame[]): IBoardColumns => {
     const item = items[i];
     const { status } = item;
     const column = columns[status];
-    if (column === undefined) {
-      continue;
-    }
+    if (column === undefined) continue;
     columns[status].push(item);
   }
   const entries = Object.entries(columns);
@@ -57,9 +55,7 @@ export const moveBetweenContainers = (
   itemId: UniqueIdentifier
 ): IBoardColumns => {
   const item = items[activeContainer].find((item) => item.id === itemId);
-  if (item === undefined) {
-    return items;
-  }
+  if (item === undefined) return items;
   const active = removeAtIndex(items[activeContainer], activeIndex);
   const over = insertAtIndex(items[overContainer], overIndex, item);
   return {

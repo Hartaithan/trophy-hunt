@@ -11,9 +11,7 @@ export const validatePayload = (
 ): IValidationResult | null => {
   const results: string[] = [];
   const items = Object.entries(payload);
-  if (items.length === 0) {
-    return { message: "Empty payload", errors: [] };
-  }
+  if (items.length === 0) return { message: "Empty payload", errors: [] };
   for (let i = 0; i < items.length; i++) {
     const [key, value] = items[i];
     const allowedKey = ignore.includes(key);
@@ -21,15 +19,11 @@ export const validatePayload = (
     if (typeof value === "string") {
       check = value.length === 0;
     }
-    if (allowedKey) {
-      continue;
-    }
+    if (allowedKey) continue;
     if (check) {
       results.push(key + " is required");
     }
   }
-  if (results.length > 0) {
-    return { message: "Invalid payload", errors: results };
-  }
-  return null;
+  if (results.length === 0) return null;
+  return { message: "Invalid payload", errors: results };
 };
