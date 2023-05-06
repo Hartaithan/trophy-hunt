@@ -1,67 +1,57 @@
 import { useSortable } from "@dnd-kit/sortable";
-import { Badge, Box, Flex, Overlay, Text, createStyles } from "@mantine/core";
+import { Box, Flex, Overlay, Text, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { type IGame } from "@/models/GameModel";
-import { columnColors, columnsLabels, platformLabels } from "@/constants/board";
+import ColumnBadge from "./ColumnBadge";
+import PlatformBadge from "./PlatformBadge";
 
 interface IBoardCardProps {
   item: IGame;
 }
 
-const useStyles = createStyles(
-  ({ colors, radius, spacing }, { item }: { item: IGame }) => {
-    const { color, shade } = columnColors[item.status];
-    return {
-      container: {
-        width: "100%",
-        padding: spacing.xs,
-        background: colors.primary[6],
-        borderRadius: radius.md,
-      },
-      imageWrapper: {
-        position: "relative",
-        width: "100%",
-        aspectRatio: "320 / 176",
-        overflow: "hidden",
-        borderRadius: radius.md,
-      },
-      image: {
-        objectFit: "contain",
-        zIndex: 3,
-        filter:
-          "drop-shadow(0 0 100px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 100px rgba(0, 0, 0, 0.9))",
-      },
-      background: {
-        objectFit: "cover",
-        zIndex: 1,
-        filter: "blur(5px)",
-      },
-      draggable: {
-        zIndex: 99999,
-      },
-      header: {
-        justifyContent: "space-between",
-        marginBottom: spacing.xs,
-      },
-      platform: {
-        background: colors.gray[7],
-        color: colors.gray[0],
-      },
-      status: {
-        background: colors[color][shade] + "80",
-        color: colors.gray[0],
-      },
-    };
-  }
-);
+const useStyles = createStyles(({ colors, radius, spacing }) => {
+  return {
+    container: {
+      width: "100%",
+      padding: spacing.xs,
+      background: colors.primary[6],
+      borderRadius: radius.md,
+    },
+    imageWrapper: {
+      position: "relative",
+      width: "100%",
+      aspectRatio: "320 / 176",
+      overflow: "hidden",
+      borderRadius: radius.md,
+    },
+    image: {
+      objectFit: "contain",
+      zIndex: 3,
+      filter:
+        "drop-shadow(0 0 100px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 100px rgba(0, 0, 0, 0.9))",
+    },
+    background: {
+      objectFit: "cover",
+      zIndex: 1,
+      filter: "blur(5px)",
+    },
+    draggable: {
+      zIndex: 99999,
+    },
+    header: {
+      justifyContent: "space-between",
+      marginBottom: spacing.xs,
+    },
+  };
+});
 
 const BoardCard: FC<IBoardCardProps> = (props) => {
   const { item } = props;
   const { id, title, image_url, status, platform } = item;
 
-  const { classes, cx } = useStyles({ item });
+  const { classes, cx } = useStyles();
   const {
     attributes,
     listeners,
@@ -84,12 +74,8 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       }}
     >
       <Flex className={classes.header}>
-        <Badge className={classes.platform} radius="sm">
-          {platformLabels[platform].short}
-        </Badge>
-        <Badge className={classes.status} radius="sm">
-          {columnsLabels[status]}
-        </Badge>
+        <PlatformBadge platform={platform} />
+        <ColumnBadge status={status} />
       </Flex>
       <Box className={classes.imageWrapper}>
         <Image

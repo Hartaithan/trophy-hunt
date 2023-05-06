@@ -1,4 +1,4 @@
-import { columnColors, columnsLabels } from "@/constants/board";
+import ColumnBadge from "@/components/ColumnBadge";
 import API from "@/helpers/api";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
 import { type IGame, type IAddGamePayload } from "@/models/GameModel";
@@ -6,8 +6,6 @@ import { type ISearchResult } from "@/models/SearchModel";
 import { useBoard } from "@/providers/BoardProvider";
 import {
   Modal,
-  Badge,
-  createStyles,
   Loader,
   Button,
   useMantineTheme,
@@ -30,19 +28,8 @@ const isValidSearch = (value: string): boolean => {
   return !isEmpty && !hasTags;
 };
 
-const useStyles = createStyles(({ colors }, { status }: IAddGameModalProps) => {
-  const { color, shade } = columnColors[status ?? "backlog"];
-  return {
-    status: {
-      background: colors[color][shade] + "80",
-      color: colors.gray[0],
-    },
-  };
-});
-
 const AddGameModal: FC<IAddGameModalProps> = (props) => {
   const { status, opened, close } = props;
-  const { classes } = useStyles(props);
   const { spacing } = useMantineTheme();
   const { setColumns } = useBoard();
 
@@ -130,9 +117,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
         <Modal.Header>
           <Modal.Title>
             Add the game to the&nbsp;
-            <Badge className={classes.status} radius="sm">
-              {status !== null ? columnsLabels[status] : "Not Found"}
-            </Badge>
+            <ColumnBadge status={status} />
             &nbsp;column
           </Modal.Title>
           <Modal.CloseButton />
