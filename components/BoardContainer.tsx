@@ -15,6 +15,8 @@ import { arrayMove, moveBetweenContainers } from "@/helpers/board";
 import { useBoard } from "@/providers/BoardProvider";
 import { type IReorderItem, type IReorderPayload } from "@/models/GameModel";
 import API from "@/helpers/api";
+import { notifications } from "@mantine/notifications";
+import { AlertCircle, CircleCheck } from "tabler-icons-react";
 
 interface IMove {
   start: string | null;
@@ -60,12 +62,33 @@ const BoardContainer: FC = () => {
       payload = { items: [...startItems, ...endItems] };
     }
     if (payload === null) return;
+    notifications.show({
+      id: "reorder",
+      loading: true,
+      title: "Sync...",
+      message:
+        "Synchronizing the order of games... It shouldn't take long, don't reload the page.",
+      autoClose: false,
+      withCloseButton: false,
+    });
     API.post("/games/reorder", JSON.stringify(payload))
       .then((res) => {
-        // TODO: show notification with res.message
+        notifications.update({
+          id: "reorder",
+          title: "Success!",
+          message: res.data.message,
+          icon: <CircleCheck size="1.2rem" />,
+          autoClose: 3000,
+        });
       })
       .catch((error) => {
-        // TODO: show notification with errors
+        notifications.update({
+          id: "reorder",
+          title: "Something went wrong!",
+          message:
+            "For some reason the synchronization did not complete, please try again.",
+          icon: <AlertCircle size="1.2rem" />,
+        });
         console.error("reorder columns error", error);
       });
     move.current = { start: null, end: null };

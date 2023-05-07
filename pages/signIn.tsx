@@ -9,6 +9,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -50,7 +51,12 @@ const SignInPage: IPage = () => {
         reload();
       })
       .catch((error) => {
-        // TODO: add error notifications
+        notifications.show({
+          title: "Something went wrong!",
+          color: "red",
+          message: error.response.data.message,
+          autoClose: false,
+        });
         console.error("sign in error", error);
       });
   };

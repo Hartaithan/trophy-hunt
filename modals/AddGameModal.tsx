@@ -17,8 +17,9 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import { useState, type FC, useEffect } from "react";
-import { SquarePlus } from "tabler-icons-react";
+import { AlertCircle, CircleCheck, SquarePlus } from "tabler-icons-react";
 
 interface IAddGameModalProps {
   status: BOARD_COLUMNS | null;
@@ -75,12 +76,33 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
         status: i.status,
       }));
       const payload = { items: reorderItems };
+      notifications.show({
+        id: "reorder",
+        loading: true,
+        title: "Sync...",
+        message:
+          "Synchronizing the order of games... It shouldn't take long, don't reload the page.",
+        autoClose: false,
+        withCloseButton: false,
+      });
       API.post("/games/reorder", JSON.stringify(payload))
         .then((res) => {
-          // TODO: show notification with res.message
+          notifications.update({
+            id: "reorder",
+            title: "Success!",
+            message: res.data.message,
+            icon: <CircleCheck size="1.2rem" />,
+            autoClose: 3000,
+          });
         })
         .catch((error) => {
-          // TODO: show notification with errors
+          notifications.update({
+            id: "reorder",
+            title: "Something went wrong!",
+            message:
+              "For some reason the synchronization did not complete, please try again.",
+            icon: <AlertCircle size="1.2rem" />,
+          });
           console.error("reorder columns error", error);
         });
       return {
@@ -100,11 +122,20 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
       .then((res) => {
         const game: IGame = res.data.game;
         addNewGame(game);
-        // TODO: show notification with res.message
+        notifications.show({
+          title: "Success!",
+          message: res.data.message,
+          autoClose: 3000,
+        });
         close();
       })
       .catch((error) => {
-        // TODO: show notification with errors
+        notifications.show({
+          title: "Something went wrong!",
+          color: "red",
+          message: error.response.data.message,
+          autoClose: false,
+        });
         console.error("add game error", error);
       })
       .finally(() => setSubmit(false));

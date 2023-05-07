@@ -26,6 +26,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useDebouncedValue } from "@mantine/hooks";
 import { UserCheck, UserX } from "tabler-icons-react";
 import API from "@/helpers/api";
+import { notifications } from "@mantine/notifications";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -117,7 +118,12 @@ const SignUpPage: IPage = () => {
         setUser(data.user);
       })
       .catch((error) => {
-        // TODO: add error notifications
+        notifications.show({
+          title: "Something went wrong!",
+          color: "red",
+          message: error.response.data.message,
+          autoClose: false,
+        });
         console.error("sign up error", error);
       });
   };
