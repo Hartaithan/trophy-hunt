@@ -58,18 +58,11 @@ const getRefreshedCookies = (ctx: IInitialProps["ctx"]): string => {
     return cookies;
   }
 
-  let responseCookies = null;
-  if (process.env.NODE_ENV === "development") {
-    responseCookies = ctx.res.getHeader("set-cookie");
-  } else {
-    responseCookies = ctx.req.headers["set-cookie"];
+  const responseCookies = ctx.req.headers["set-cookie"];
+  if (responseCookies !== undefined) {
+    cookies = `${cookies}; ${responseCookies.join("; ")}`;
   }
 
-  if (responseCookies instanceof Array) {
-    cookies = `${cookies}; ${responseCookies.join("; ")}`;
-  } else if (responseCookies !== undefined) {
-    cookies = `${cookies}; ${responseCookies.toString()}`;
-  }
   return cookies;
 };
 
