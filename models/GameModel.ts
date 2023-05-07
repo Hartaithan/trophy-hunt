@@ -13,12 +13,12 @@ export interface IGame {
   user_id: string;
   username: string;
   code: string;
-  order_index: number;
+  position: number;
 }
 
 export type INewGamePayload = Omit<
   IGame,
-  "id" | "created_at" | "updated_at" | "progress" | "order_index"
+  "id" | "created_at" | "updated_at" | "progress" | "position"
 >;
 
 export interface IAddGamePayload {
@@ -28,7 +28,7 @@ export interface IAddGamePayload {
 
 export interface IReorderItem {
   id: number;
-  order_index: number;
+  position: number;
   status: BOARD_COLUMNS;
 }
 

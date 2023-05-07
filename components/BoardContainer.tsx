@@ -39,7 +39,7 @@ const BoardContainer: FC = () => {
       const items: IReorderItem[] = columnsRef.current[start].map(
         (i, index) => ({
           id: i.id,
-          order_index: index,
+          position: index,
           status: i.status,
         })
       );
@@ -48,14 +48,14 @@ const BoardContainer: FC = () => {
       const startItems: IReorderItem[] = columnsRef.current[start].map(
         (i, index) => ({
           id: i.id,
-          order_index: index,
+          position: index,
           status: i.status,
         })
       );
       const endItems: IReorderItem[] = columnsRef.current[end].map(
         (i, index) => ({
           id: i.id,
-          order_index: index,
+          position: index,
           status: i.status,
         })
       );
