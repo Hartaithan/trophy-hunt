@@ -8,6 +8,7 @@ import {
   type BadgeProps,
 } from "@mantine/core";
 import { globalStyles } from "./global";
+import { type NotificationProps } from "@mantine/notifications";
 
 const ContainerDefaultProps: DefaultProps<ContainerProps> = ({ spacing }) => ({
   size: "xl",
@@ -35,6 +36,13 @@ const BadgeStyles: BadgeProps["styles"] = () => ({
     fontWeight: 500,
     textTransform: "unset",
   },
+});
+
+const NotificationStyles: NotificationProps["styles"] = ({
+  colors,
+  radius,
+}) => ({
+  root: { background: colors.primary[7], borderRadius: radius.lg },
 });
 
 const extendedColors: MantineThemeOverride["colors"] = {
@@ -103,6 +111,9 @@ const theme: MantineThemeOverride = {
     },
     Badge: {
       styles: BadgeStyles,
+    },
+    Notification: {
+      styles: NotificationStyles,
     },
   },
 };

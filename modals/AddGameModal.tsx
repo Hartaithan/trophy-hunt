@@ -19,7 +19,7 @@ import {
 import { useDebouncedValue } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { useState, type FC, useEffect } from "react";
-import { AlertCircle, CircleCheck, SquarePlus } from "tabler-icons-react";
+import { AlertOctagon, Check, SquarePlus } from "tabler-icons-react";
 
 interface IAddGameModalProps {
   status: BOARD_COLUMNS | null;
@@ -91,17 +91,18 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
             id: "reorder",
             title: "Success!",
             message: res.data.message,
-            icon: <CircleCheck size="1.2rem" />,
+            icon: <Check size="1rem" />,
             autoClose: 3000,
           });
         })
         .catch((error) => {
           notifications.update({
             id: "reorder",
+            color: "red",
             title: "Something went wrong!",
             message:
               "For some reason the synchronization did not complete, please try again.",
-            icon: <AlertCircle size="1.2rem" />,
+            icon: <AlertOctagon size="1rem" />,
           });
           console.error("reorder columns error", error);
         });
