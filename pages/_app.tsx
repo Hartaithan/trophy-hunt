@@ -22,6 +22,7 @@ import {
   type NullableProfile,
 } from "@/models/AuthModel";
 import ProfileProvider from "@/providers/ProfileProvider";
+import { Notifications } from "@mantine/notifications";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -153,6 +154,7 @@ const App = (props: IAppProps): JSX.Element => {
           initialPSNProfile={initialPSNProfile}
         >
           <MainLayout>
+            <Notifications />
             <Component {...pageProps} />
           </MainLayout>
         </ProfileProvider>
