@@ -39,6 +39,7 @@ export interface IReorderPayload {
 export interface IProgressItem {
   id: number;
   earned: boolean;
+  dlc: boolean;
 }
 
 export interface IProgressPayload {

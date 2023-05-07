@@ -1,13 +1,8 @@
+import { formatResponse } from "@/helpers/psn";
 import {
   type TitleTrophiesOptions,
   type ITitleGroups,
   type ITitleTrophies,
-  type MergedGroups,
-  type IFormattedResponse,
-  type ITrophy,
-  type IGroup,
-  type IFormattedTrophies,
-  type GroupedTrophies,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
@@ -16,80 +11,7 @@ import {
   getTitleTrophyGroups,
   type AuthorizationPayload,
   getTitleTrophies,
-  type TitleTrophyGroupsResponse,
-  type TitleTrophiesResponse,
 } from "psn-api";
-
-const formatTrophies = (
-  trophies: TitleTrophiesResponse
-): IFormattedTrophies => {
-  const array = [...trophies.trophies];
-  const formatted: ITrophy[] = [];
-  const grouped: GroupedTrophies = {};
-  for (let i = 0; i < array.length; i++) {
-    const el = array[i];
-    const trophy = {
-      id: el.trophyId,
-      hidden: el.trophyHidden,
-      type: el.trophyType,
-      name: el.trophyName,
-      detail: el.trophyDetail,
-      icon_url: el.trophyIconUrl,
-      group_id: el.trophyGroupId,
-    };
-    formatted.push(trophy);
-    if (el.trophyGroupId != null) {
-      const list = grouped[el.trophyGroupId] ?? [];
-      list.push(trophy);
-      grouped[el.trophyGroupId] = list;
-    }
-  }
-  return { grouped, trophies: formatted };
-};
-
-const formatGroups = (
-  groups: MergedGroups,
-  trophies: GroupedTrophies
-): IGroup[] => {
-  const array = [...groups.trophyGroups];
-  const formatted: IGroup[] = [];
-  for (let i = 0; i < array.length; i++) {
-    const el = array[i];
-    formatted.push({
-      id: el.trophyGroupId,
-      name: el.trophyGroupName,
-      detail: el.trophyGroupDetail,
-      icon_url: el.trophyGroupIconUrl,
-      counts: el.definedTrophies,
-      trophies: trophies[el.trophyGroupId],
-    });
-  }
-  return formatted;
-};
-
-const formatResponse = (
-  groups: TitleTrophyGroupsResponse,
-  trophies: TitleTrophiesResponse
-): IFormattedResponse => {
-  const {
-    trophyTitleName,
-    trophyTitleDetail,
-    trophyTitleIconUrl,
-    trophyTitlePlatform,
-    definedTrophies,
-  } = groups;
-  const { trophies: formattedTrophies, grouped } = formatTrophies(trophies);
-  const formattedGroups = formatGroups(groups, grouped);
-  return {
-    name: trophyTitleName,
-    detail: trophyTitleDetail,
-    icon_url: trophyTitleIconUrl,
-    platform: trophyTitlePlatform,
-    counts: definedTrophies,
-    groups: formattedGroups,
-    trophies: formattedTrophies,
-  };
-};
 
 const getGameTrophies: NextApiHandler = async (req, res) => {
   const {

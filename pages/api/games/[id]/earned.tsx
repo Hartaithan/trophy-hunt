@@ -1,16 +1,14 @@
 import {
+  formatEarnedResponse,
+  mergeGroups,
+  mergeTrophies,
+} from "@/helpers/psn";
+import {
   type TitleTrophiesOptions,
   type ITitleGroups,
   type ITitleTrophies,
   type ITitleEarnedTrophies,
   type ITitleEarnedGroups,
-  type MergedGroups,
-  type MergedTrophies,
-  type IFormattedResponse,
-  type ITrophy,
-  type IGroup,
-  type IFormattedTrophies,
-  type GroupedTrophies,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
@@ -21,123 +19,7 @@ import {
   getTitleTrophies,
   getUserTrophiesEarnedForTitle,
   getUserTrophyGroupEarningsForTitle,
-  type TitleTrophyGroupsResponse,
-  type UserTrophyGroupEarningsForTitleResponse,
-  type TitleTrophiesResponse,
-  type UserTrophiesEarnedForTitleResponse,
 } from "psn-api";
-
-const mergeGroups = (
-  groups: TitleTrophyGroupsResponse,
-  earned: UserTrophyGroupEarningsForTitleResponse | null
-): MergedGroups => {
-  const empty = { trophyGroups: [] };
-  const { trophyGroups: allGroups, ...groupDetails } = groups;
-  const { trophyGroups: earnedGroups, ...earnedGroupDetails } = earned ?? empty;
-  const mergedGroupDetails = {
-    ...groupDetails,
-    ...earnedGroupDetails,
-  };
-  const mergedGroups = allGroups.map((i) => ({
-    ...i,
-    ...earnedGroups.find((n) => n.trophyGroupId === i.trophyGroupId),
-  }));
-  return { ...mergedGroupDetails, trophyGroups: mergedGroups };
-};
-
-const mergeTrophies = (
-  trophies: TitleTrophiesResponse,
-  earned: UserTrophiesEarnedForTitleResponse | null
-): MergedTrophies => {
-  const { trophies: allTrophies, ...trophiesDetails } = trophies;
-  const { trophies: earnedTrophies, ...earnedTrophiesDetails } = earned ?? {
-    trophies: [],
-  };
-  const mergedTrophiesDetails = {
-    ...trophiesDetails,
-    ...earnedTrophiesDetails,
-  };
-  const mergedTrophies = allTrophies.map((i) => ({
-    ...i,
-    ...earnedTrophies.find((n) => n.trophyId === i.trophyId),
-  }));
-  return { ...mergedTrophiesDetails, trophies: mergedTrophies };
-};
-
-const formatTrophies = (trophies: MergedTrophies): IFormattedTrophies => {
-  const array = [...trophies.trophies];
-  const formatted: ITrophy[] = [];
-  const grouped: GroupedTrophies = {};
-  for (let i = 0; i < array.length; i++) {
-    const el = array[i];
-    const trophy = {
-      id: el.trophyId,
-      hidden: el.trophyHidden,
-      type: el.trophyType,
-      name: el.trophyName,
-      detail: el.trophyDetail,
-      icon_url: el.trophyIconUrl,
-      group_id: el.trophyGroupId,
-      earned: el.earned,
-      rare: el.trophyRare,
-      earnedRate: el.trophyEarnedRate,
-    };
-    formatted.push(trophy);
-    if (el.trophyGroupId != null) {
-      const list = grouped[el.trophyGroupId] ?? [];
-      list.push(trophy);
-      grouped[el.trophyGroupId] = list;
-    }
-  }
-  return { grouped, trophies: formatted };
-};
-
-const formatGroups = (
-  groups: MergedGroups,
-  trophies: GroupedTrophies
-): IGroup[] => {
-  const array = [...groups.trophyGroups];
-  const formatted: IGroup[] = [];
-  for (let i = 0; i < array.length; i++) {
-    const el = array[i];
-    formatted.push({
-      id: el.trophyGroupId,
-      name: el.trophyGroupName,
-      detail: el.trophyGroupDetail,
-      icon_url: el.trophyGroupIconUrl,
-      counts: el.definedTrophies,
-      earned_counts: el.earnedTrophies,
-      trophies: trophies[el.trophyGroupId],
-    });
-  }
-  return formatted;
-};
-
-const formatResponse = (
-  groups: MergedGroups,
-  trophies: MergedTrophies
-): IFormattedResponse => {
-  const {
-    trophyTitleName,
-    trophyTitleDetail,
-    trophyTitleIconUrl,
-    trophyTitlePlatform,
-    definedTrophies,
-    earnedTrophies,
-  } = groups;
-  const { trophies: formattedTrophies, grouped } = formatTrophies(trophies);
-  const formattedGroups = formatGroups(groups, grouped);
-  return {
-    name: trophyTitleName,
-    detail: trophyTitleDetail,
-    icon_url: trophyTitleIconUrl,
-    platform: trophyTitlePlatform,
-    counts: definedTrophies,
-    earned_counts: earnedTrophies,
-    groups: formattedGroups,
-    trophies: formattedTrophies,
-  };
-};
 
 const getEarnedTrophies: NextApiHandler = async (req, res) => {
   const {
@@ -226,7 +108,7 @@ const getEarnedTrophies: NextApiHandler = async (req, res) => {
   const mergedGroups = mergeGroups(titleGroups, titleEarnedGroups);
   const mergedTrophies = mergeTrophies(titleTrophies, titleEarnedTrophies);
 
-  const formattedResponse = formatResponse(mergedGroups, mergedTrophies);
+  const formattedResponse = formatEarnedResponse(mergedGroups, mergedTrophies);
 
   return res.status(200).json({ ...formattedResponse });
 };

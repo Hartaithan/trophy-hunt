@@ -1,5 +1,7 @@
+import { mergeTrophies } from "@/helpers/psn";
 import { type IProgressItem } from "@/models/GameModel";
 import {
+  type ITitleTrophies,
   type ITitleEarnedTrophies,
   type TitleTrophiesOptions,
 } from "@/models/TrophyModel";
@@ -9,6 +11,7 @@ import { type NextApiHandler } from "next";
 import {
   getUserTrophiesEarnedForTitle,
   type AuthorizationPayload,
+  getTitleTrophies,
 } from "psn-api";
 
 const syncGameProgress: NextApiHandler = async (req, res) => {
@@ -45,27 +48,47 @@ const syncGameProgress: NextApiHandler = async (req, res) => {
     options = { ...options, npServiceName: "trophy" };
   }
 
-  let earnedTrophies: ITitleEarnedTrophies | null = null;
-  try {
-    earnedTrophies = await getUserTrophiesEarnedForTitle(
-      auth,
-      "me",
-      code,
-      "all",
-      options
-    );
-  } catch (error) {
-    console.error("unable to get earned trophies", error);
+  type Response = [
+    PromiseSettledResult<ITitleTrophies>,
+    PromiseSettledResult<ITitleEarnedTrophies>
+  ];
+
+  let titleTrophies: ITitleTrophies | null = null;
+  let titleEarnedTrophies: ITitleEarnedTrophies | null = null;
+
+  const [resTrophies, resEarned]: Response = await Promise.allSettled([
+    getTitleTrophies(auth, code, "all", options),
+    getUserTrophiesEarnedForTitle(auth, "me", code, "all", options),
+  ]);
+
+  if (resTrophies.status === "fulfilled" && !("error" in resTrophies.value)) {
+    titleTrophies = resTrophies.value;
+  }
+
+  if (resEarned.status === "fulfilled" && !("error" in resEarned.value)) {
+    titleEarnedTrophies = resEarned.value;
+  }
+
+  if (titleTrophies === null) {
+    console.error("unable to get trophies");
+    return res.status(400).json({ message: "Unable to get trophies" });
+  }
+
+  if (titleEarnedTrophies === null) {
+    console.error("unable to get earned trophies");
     return res.status(400).json({
       message:
         "Unable to get earned trophies, you probably don't have this game on your account.",
     });
   }
 
-  const trophies = earnedTrophies?.trophies ?? [];
+  const mergedTrophies = mergeTrophies(titleTrophies, titleEarnedTrophies);
+
+  const trophies = [...mergedTrophies.trophies] ?? [];
   const progress: IProgressItem[] = trophies.map((i) => ({
     id: i.trophyId,
     earned: i.earned ?? false,
+    dlc: i.trophyGroupId === undefined ? false : i.trophyGroupId !== "default",
   }));
 
   const { data: updateData, error: updateError } = await supabase
