@@ -1,5 +1,6 @@
 import { type BOARD_COLUMNS } from "./BoardModel";
 import { type Platform } from "./PlatformModel";
+import { type IProgressItem } from "./ProgressModel";
 
 export interface IGame {
   id: number;
@@ -9,7 +10,7 @@ export interface IGame {
   image_url: string;
   platform: Platform;
   status: BOARD_COLUMNS;
-  progress: string;
+  progress: IProgressItem[] | null;
   user_id: string;
   username: string;
   code: string;
@@ -34,14 +35,4 @@ export interface IReorderItem {
 
 export interface IReorderPayload {
   items: IReorderItem[];
-}
-
-export interface IProgressItem {
-  id: number;
-  earned: boolean;
-  dlc: boolean;
-}
-
-export interface IProgressPayload {
-  payload: IProgressItem[];
 }

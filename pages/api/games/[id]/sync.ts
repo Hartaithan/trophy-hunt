@@ -1,5 +1,5 @@
 import { mergeTrophies } from "@/helpers/psn";
-import { type IProgressItem } from "@/models/GameModel";
+import { type IProgressItem } from "@/models/ProgressModel";
 import {
   type ITitleTrophies,
   type ITitleEarnedTrophies,

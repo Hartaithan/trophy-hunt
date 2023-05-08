@@ -6,6 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { type IGame } from "@/models/GameModel";
 import ColumnBadge from "./ColumnBadge";
 import PlatformBadge from "./PlatformBadge";
+import ProgressStats from "./ProgressStats";
 
 interface IBoardCardProps {
   item: IGame;
@@ -49,7 +50,7 @@ const useStyles = createStyles(({ colors, radius, spacing }) => {
 
 const BoardCard: FC<IBoardCardProps> = (props) => {
   const { item } = props;
-  const { id, title, image_url, status, platform } = item;
+  const { id, title, image_url, status, platform, progress } = item;
 
   const { classes, cx } = useStyles();
   const {
@@ -100,6 +101,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       <Text mt={6} lineClamp={2}>
         {title}
       </Text>
+      <ProgressStats progress={progress} />
     </Flex>
   );
 };

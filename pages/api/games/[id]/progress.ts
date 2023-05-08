@@ -1,4 +1,7 @@
-import { type IProgressItem, type IProgressPayload } from "@/models/GameModel";
+import {
+  type IProgressItem,
+  type IProgressPayload,
+} from "@/models/ProgressModel";
 import {
   type SupabaseClient,
   createServerSupabaseClient,
