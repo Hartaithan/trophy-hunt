@@ -98,7 +98,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           alt="image card"
         />
       </Box>
-      <Text mt={6} lineClamp={2}>
+      <Text mt={6} fw={500} lineClamp={2}>
         {title}
       </Text>
       <ProgressStats progress={progress} />
