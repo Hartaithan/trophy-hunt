@@ -14,26 +14,30 @@ export const calculateProgress = (
   progress: IGame["progress"]
 ): IProgressStats => {
   if (progress === null) return emptyProgress;
-  const result: IProgressStats = [...progress].reduce((acc, i) => {
-    if (!i.dlc) {
-      acc.base = acc.base + 1;
+  const array = [...progress];
+  let base = 0;
+  let baseCompleted = 0;
+  let total = 0;
+  let totalCompleted = 0;
+  for (let i = 0; i < array.length; i++) {
+    const item = array[i];
+    if (!item.dlc) {
+      base = base + 1;
     }
-    if (!i.dlc && i.earned) {
-      acc.baseCompleted = acc.baseCompleted + 1;
+    if (!item.dlc && item.earned) {
+      baseCompleted = baseCompleted + 1;
     }
-    if (i.earned) {
-      acc.totalCompleted = acc.totalCompleted + 1;
+    if (item.earned) {
+      totalCompleted = totalCompleted + 1;
     }
-    acc.total = acc.total + 1;
-    return acc;
-  }, emptyProgress);
+    total = total + 1;
+  }
   return {
-    ...result,
-    baseProgress: parseFloat(
-      ((result.baseCompleted * 100) / result.base).toFixed(1)
-    ),
-    totalProgress: parseFloat(
-      ((result.totalCompleted * 100) / result.total).toFixed(1)
-    ),
+    base,
+    baseCompleted,
+    baseProgress: parseFloat(((baseCompleted * 100) / base).toFixed(1)),
+    total,
+    totalCompleted,
+    totalProgress: parseFloat(((totalCompleted * 100) / total).toFixed(1)),
   };
 };
