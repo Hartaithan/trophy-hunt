@@ -9,6 +9,7 @@ import {
   closestCorners,
   useSensor,
   useSensors,
+  MeasuringStrategy,
 } from "@dnd-kit/core";
 import {
   PointerSensor,
@@ -25,6 +26,12 @@ interface IMove {
   start: string | null;
   end: string | null;
 }
+
+const measuring = {
+  droppable: {
+    strategy: MeasuringStrategy.Always,
+  },
+};
 
 const BoardContainer: FC = () => {
   const { spacing } = useMantineTheme();
@@ -179,6 +186,7 @@ const BoardContainer: FC = () => {
   return (
     <DndContext
       sensors={sensors}
+      measuring={measuring}
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       collisionDetection={closestCorners}

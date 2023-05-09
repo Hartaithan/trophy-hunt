@@ -1,4 +1,8 @@
-import { useSortable } from "@dnd-kit/sortable";
+import {
+  type AnimateLayoutChanges,
+  defaultAnimateLayoutChanges,
+  useSortable,
+} from "@dnd-kit/sortable";
 import {
   Box,
   Flex,
@@ -25,6 +29,12 @@ import { notifications } from "@mantine/notifications";
 interface IBoardCardProps {
   item: IGame;
 }
+
+const animateLayoutChanges: AnimateLayoutChanges = (args) => {
+  const { isSorting, wasDragging } = args;
+  if (isSorting || wasDragging) return defaultAnimateLayoutChanges(args);
+  return true;
+};
 
 const useStyles = createStyles(({ colors, radius, spacing }) => {
   return {
@@ -83,7 +93,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({ id, animateLayoutChanges });
 
   const handleDelete = (): void => {
     let previousState: IBoardColumns = { ...columns };
