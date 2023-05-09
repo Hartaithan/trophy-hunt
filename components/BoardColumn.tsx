@@ -28,21 +28,32 @@ const useStyles = createStyles(
     const { color, shade } = columnColors[column];
     return {
       column: {
+        position: "relative",
         padding: spacing.xs,
+        paddingTop: 0,
         background: colors.primary[7],
         borderRadius: radius.lg,
         minWidth: 300,
         flex: 1,
       },
+      overlay: {
+        position: "fixed",
+        top: spacing.xl,
+        width: "100%",
+        height: 20,
+        background: "red",
+      },
       header: {
         position: "sticky",
-        top: spacing.xl,
+        top: 0,
         width: "100%",
         borderBottom: `3px ${colors[color][shade]} solid`,
         padding: "6px 8px",
+        paddingTop: spacing.sm,
         marginBottom: spacing.md,
         zIndex: 100,
         alignItems: "center",
+        background: `linear-gradient(180deg, ${colors.primary[7]} 0%, ${colors.primary[7]} 70%, transparent 160%)`,
       },
       label: {
         color: colors.secondary[9],
