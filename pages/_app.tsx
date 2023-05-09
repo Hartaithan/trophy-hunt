@@ -23,6 +23,7 @@ import {
 } from "@/models/AuthModel";
 import ProfileProvider from "@/providers/ProfileProvider";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -146,10 +147,12 @@ const App = (props: IAppProps): JSX.Element => {
           initialProfile={initialProfile}
           initialPSNProfile={initialPSNProfile}
         >
-          <MainLayout>
-            <Notifications />
-            <Component {...pageProps} />
-          </MainLayout>
+          <ModalsProvider>
+            <MainLayout>
+              <Notifications />
+              <Component {...pageProps} />
+            </MainLayout>
+          </ModalsProvider>
         </ProfileProvider>
       </MantineProvider>
     </SessionContextProvider>

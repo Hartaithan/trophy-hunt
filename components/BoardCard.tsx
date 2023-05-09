@@ -16,6 +16,11 @@ import ColumnBadge from "./ColumnBadge";
 import PlatformBadge from "./PlatformBadge";
 import ProgressStats from "./ProgressStats";
 import { Dots, Edit, Trash } from "tabler-icons-react";
+import { modals } from "@mantine/modals";
+import { useBoard } from "@/providers/BoardProvider";
+import API from "@/helpers/api";
+import { type IBoardColumns } from "@/models/BoardModel";
+import { notifications } from "@mantine/notifications";
 
 interface IBoardCardProps {
   item: IGame;
@@ -69,6 +74,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
   const { item } = props;
   const { id, title, image_url, status, platform, progress } = item;
 
+  const { columns, setColumns } = useBoard();
   const { classes, cx } = useStyles();
   const {
     attributes,
@@ -78,6 +84,49 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
     transition,
     isDragging,
   } = useSortable({ id });
+
+  const handleDelete = (): void => {
+    let previousState: IBoardColumns = { ...columns };
+    setColumns((prev) => {
+      previousState = prev;
+      const column = [...prev[status]];
+      return { ...prev, [status]: column.filter((i) => i.id !== id) };
+    });
+    API.delete(`/games/${id}`)
+      .then((res) => {
+        notifications.show({
+          title: "Success!",
+          message: res.data.message,
+          autoClose: 3000,
+        });
+      })
+      .catch((error) => {
+        setColumns(previousState);
+        notifications.show({
+          title: "Something went wrong!",
+          color: "red",
+          message: error.response.data.message,
+          autoClose: false,
+        });
+        console.error("delete game error", error);
+      });
+  };
+
+  const handleDeleteModal = (): void => {
+    modals.openConfirmModal({
+      title: "Are you sure?",
+      centered: true,
+      children: (
+        <Text size="sm">
+          Do you really want to delete this game? This process cannot be undone.
+        </Text>
+      ),
+      labels: { confirm: "Delete", cancel: "No don't delete it" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.info("user cancelled delete"),
+      onConfirm: handleDelete,
+    });
+  };
 
   return (
     <Flex
@@ -109,7 +158,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
             </Menu.Item>
             <Menu.Item
               icon={<Trash size="1rem" />}
-              onClick={() => alert("TODO: add delete modal")}
+              onClick={() => handleDeleteModal()}
             >
               Delete
             </Menu.Item>
