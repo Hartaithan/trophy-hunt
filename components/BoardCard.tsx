@@ -1,5 +1,12 @@
 import { useSortable } from "@dnd-kit/sortable";
-import { Box, Flex, Overlay, Text, createStyles } from "@mantine/core";
+import {
+  Box,
+  Flex,
+  Overlay,
+  Text,
+  UnstyledButton,
+  createStyles,
+} from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
 import { CSS } from "@dnd-kit/utilities";
@@ -7,6 +14,7 @@ import { type IGame } from "@/models/GameModel";
 import ColumnBadge from "./ColumnBadge";
 import PlatformBadge from "./PlatformBadge";
 import ProgressStats from "./ProgressStats";
+import { Dots } from "tabler-icons-react";
 
 interface IBoardCardProps {
   item: IGame;
@@ -42,8 +50,16 @@ const useStyles = createStyles(({ colors, radius, spacing }) => {
       zIndex: 99999,
     },
     header: {
-      justifyContent: "space-between",
+      justifyContent: "flex-start",
+      gap: spacing.xs,
       marginBottom: spacing.xs,
+    },
+    actions: {
+      marginLeft: "auto",
+      height: 20,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
   };
 });
@@ -75,8 +91,15 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       }}
     >
       <Flex className={classes.header}>
-        <PlatformBadge platform={platform} />
         <ColumnBadge status={status} />
+        <PlatformBadge platform={platform} />
+        <UnstyledButton
+          className={classes.actions}
+          onClick={() => alert("yo")}
+          data-no-dnd="true"
+        >
+          <Dots size="1.5rem" />
+        </UnstyledButton>
       </Flex>
       <Box className={classes.imageWrapper}>
         <Image

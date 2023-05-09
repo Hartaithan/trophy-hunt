@@ -6,12 +6,15 @@ import {
   DndContext,
   type DragEndEvent,
   type DragOverEvent,
-  PointerSensor,
   closestCorners,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { arrayMove, moveBetweenContainers } from "@/helpers/board";
+import {
+  PointerSensor,
+  arrayMove,
+  moveBetweenContainers,
+} from "@/helpers/board";
 import { useBoard } from "@/providers/BoardProvider";
 import { type IReorderItem, type IReorderPayload } from "@/models/GameModel";
 import API from "@/helpers/api";
