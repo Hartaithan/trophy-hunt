@@ -166,6 +166,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
     <Modal.Root opened={opened} onClose={close} centered>
       <Modal.Overlay />
       <Modal.Content>
+        <LoadingOverlay visible={isSubmit} zIndex={1001} />
         <Modal.Header>
           <Modal.Title>
             Add the game to the&nbsp;
@@ -175,7 +176,6 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
           <Modal.CloseButton />
         </Modal.Header>
         <Modal.Body>
-          <LoadingOverlay visible={isSubmit} />
           <Select
             searchable
             value={value}
