@@ -40,12 +40,13 @@ const BadgeStyles: BadgeProps["styles"] = () => ({
   },
 });
 
-const NotificationStyles: NotificationProps["styles"] = ({
-  colors,
-  radius,
-}) => ({
-  root: { background: colors.primary[7], borderRadius: radius.lg },
+const NotificationStyles: NotificationProps["styles"] = ({ colors }) => ({
+  root: { background: colors.primary[7] },
 });
+
+const NotificationDefaultProps: Partial<NotificationProps> = {
+  radius: "md",
+};
 
 const MenuStyles: Styles<MenuStylesNames, object> = ({ colors, radius }) => ({
   dropdown: {
@@ -122,6 +123,7 @@ const theme: MantineThemeOverride = {
       styles: BadgeStyles,
     },
     Notification: {
+      defaultProps: NotificationDefaultProps,
       styles: NotificationStyles,
     },
     Menu: {
