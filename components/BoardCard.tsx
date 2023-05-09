@@ -2,6 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import {
   Box,
   Flex,
+  Menu,
   Overlay,
   Text,
   UnstyledButton,
@@ -14,7 +15,7 @@ import { type IGame } from "@/models/GameModel";
 import ColumnBadge from "./ColumnBadge";
 import PlatformBadge from "./PlatformBadge";
 import ProgressStats from "./ProgressStats";
-import { Dots } from "tabler-icons-react";
+import { Dots, Edit, Trash } from "tabler-icons-react";
 
 interface IBoardCardProps {
   item: IGame;
@@ -93,13 +94,27 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       <Flex className={classes.header}>
         <ColumnBadge status={status} />
         <PlatformBadge platform={platform} />
-        <UnstyledButton
-          className={classes.actions}
-          onClick={() => alert("yo")}
-          data-no-dnd="true"
-        >
-          <Dots size="1.5rem" />
-        </UnstyledButton>
+        <Menu shadow="md" width={150} data-no-dnd="true" position="bottom-end">
+          <Menu.Target>
+            <UnstyledButton className={classes.actions}>
+              <Dots size="1.5rem" />
+            </UnstyledButton>
+          </Menu.Target>
+          <Menu.Dropdown data-no-dnd="true">
+            <Menu.Item
+              icon={<Edit size="1rem" />}
+              onClick={() => alert("TODO: add edit modal")}
+            >
+              Edit
+            </Menu.Item>
+            <Menu.Item
+              icon={<Trash size="1rem" />}
+              onClick={() => alert("TODO: add delete modal")}
+            >
+              Delete
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </Flex>
       <Box className={classes.imageWrapper}>
         <Image

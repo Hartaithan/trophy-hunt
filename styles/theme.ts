@@ -6,6 +6,8 @@ import {
   type CSSObject,
   type MantineTheme,
   type BadgeProps,
+  type Styles,
+  type MenuStylesNames,
 } from "@mantine/core";
 import { globalStyles } from "./global";
 import { type NotificationProps } from "@mantine/notifications";
@@ -43,6 +45,13 @@ const NotificationStyles: NotificationProps["styles"] = ({
   radius,
 }) => ({
   root: { background: colors.primary[7], borderRadius: radius.lg },
+});
+
+const MenuStyles: Styles<MenuStylesNames, object> = ({ colors, radius }) => ({
+  dropdown: {
+    background: colors.primary[7],
+    borderRadius: radius.md,
+  },
 });
 
 const extendedColors: MantineThemeOverride["colors"] = {
@@ -114,6 +123,9 @@ const theme: MantineThemeOverride = {
     },
     Notification: {
       styles: NotificationStyles,
+    },
+    Menu: {
+      styles: MenuStyles,
     },
   },
 };
