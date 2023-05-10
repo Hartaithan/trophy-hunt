@@ -13,7 +13,7 @@ import {
   createStyles,
 } from "@mantine/core";
 import Image from "next/image";
-import { type FC } from "react";
+import { type FC, memo } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { type IGame } from "@/models/GameModel";
 import ColumnBadge from "./ColumnBadge";
@@ -138,6 +138,30 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
     });
   };
 
+  const MemoizedMenu = memo(() => (
+    <Menu shadow="md" width={150} data-no-dnd="true" position="bottom-end">
+      <Menu.Target>
+        <UnstyledButton className={classes.actions}>
+          <Dots size="1.5rem" />
+        </UnstyledButton>
+      </Menu.Target>
+      <Menu.Dropdown data-no-dnd="true">
+        <Menu.Item
+          icon={<Edit size="1rem" />}
+          onClick={() => alert("TODO: add edit modal")}
+        >
+          Edit
+        </Menu.Item>
+        <Menu.Item
+          icon={<Trash size="1rem" />}
+          onClick={() => handleDeleteModal()}
+        >
+          Delete
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
+  ));
+
   return (
     <Flex
       ref={setNodeRef}
@@ -153,27 +177,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       <Flex className={classes.header}>
         <ColumnBadge status={status} />
         <PlatformBadge platform={platform} />
-        <Menu shadow="md" width={150} data-no-dnd="true" position="bottom-end">
-          <Menu.Target>
-            <UnstyledButton className={classes.actions}>
-              <Dots size="1.5rem" />
-            </UnstyledButton>
-          </Menu.Target>
-          <Menu.Dropdown data-no-dnd="true">
-            <Menu.Item
-              icon={<Edit size="1rem" />}
-              onClick={() => alert("TODO: add edit modal")}
-            >
-              Edit
-            </Menu.Item>
-            <Menu.Item
-              icon={<Trash size="1rem" />}
-              onClick={() => handleDeleteModal()}
-            >
-              Delete
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
+        <MemoizedMenu />
       </Flex>
       <Box className={classes.imageWrapper}>
         <Image

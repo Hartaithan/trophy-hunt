@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { memo, type FC } from "react";
 import { Badge, createStyles } from "@mantine/core";
 import { columnColors, columnsLabels } from "@/constants/board";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
@@ -28,4 +28,4 @@ const ColumnBadge: FC<IColumnBadgeProps> = (props) => {
   );
 };
 
-export default ColumnBadge;
+export default memo(ColumnBadge);

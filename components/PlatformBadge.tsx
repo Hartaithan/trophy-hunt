@@ -1,7 +1,7 @@
 import { platformLabels } from "@/constants/board";
 import { type Platform } from "@/models/PlatformModel";
 import { Badge, createStyles } from "@mantine/core";
-import { type FC } from "react";
+import { memo, type FC } from "react";
 
 interface IPlatformBadgeProps {
   platform: Platform | null;
@@ -27,4 +27,4 @@ const PlatformBadge: FC<IPlatformBadgeProps> = (props) => {
   );
 };
 
-export default PlatformBadge;
+export default memo(PlatformBadge);

@@ -3,7 +3,7 @@ import { calculateProgress } from "@/helpers/progress";
 import { type IGame } from "@/models/GameModel";
 import { type IProgressStats } from "@/models/ProgressModel";
 import { Text, Group, Progress, useMantineTheme } from "@mantine/core";
-import { useMemo, type FC } from "react";
+import { useMemo, type FC, memo } from "react";
 
 interface IProgressStatsProps {
   progress: IGame["progress"];
@@ -54,4 +54,4 @@ const ProgressStats: FC<IProgressStatsProps> = (props) => {
   );
 };
 
-export default ProgressStats;
+export default memo(ProgressStats);
