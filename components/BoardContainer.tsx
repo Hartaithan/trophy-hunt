@@ -38,6 +38,7 @@ const BoardContainer: FC = () => {
   const { columns, setColumns } = useBoard();
   const move = useRef<IMove>({ start: null, end: null });
   const columnsRef = useRef<IBoardColumns>(columns);
+  const previousRef = useRef<IBoardColumns>(columns);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -92,6 +93,7 @@ const BoardContainer: FC = () => {
         });
       })
       .catch((error) => {
+        setColumns(previousRef.current);
         notifications.update({
           id: "reorder",
           color: "red",
@@ -123,6 +125,7 @@ const BoardContainer: FC = () => {
 
     if (activeContainer !== overContainer) {
       setColumns((items) => {
+        previousRef.current = items;
         const movedItems = moveBetweenContainers(
           items,
           activeContainer,
