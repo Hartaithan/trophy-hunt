@@ -1,8 +1,19 @@
-import { Container } from "@mantine/core";
+import Header from "@/components/Header";
+import { Container, createStyles } from "@mantine/core";
 import Head from "next/head";
 import { type PropsWithChildren, type FC } from "react";
 
+const useStyles = createStyles(() => ({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    flex: "1 1 auto",
+  },
+}));
+
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {
+  const { classes } = useStyles();
   return (
     <>
       <Head>
@@ -11,9 +22,8 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container w="100%" h="100%">
-        {children}
-      </Container>
+      <Header />
+      <Container className={classes.container}>{children}</Container>
     </>
   );
 };

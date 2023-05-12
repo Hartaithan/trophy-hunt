@@ -45,7 +45,7 @@ const useStyles = createStyles(
       },
       header: {
         position: "sticky",
-        top: 0,
+        top: -1,
         width: "100%",
         borderBottom: `3px ${colors[color][shade]} solid`,
         padding: "6px 8px",
