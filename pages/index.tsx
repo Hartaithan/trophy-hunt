@@ -5,7 +5,7 @@ import { useSession } from "@supabase/auth-helpers-react";
 
 const Home: IPage = () => {
   const session = useSession();
-  const { profiles, updatePSNProfile } = useProfiles();
+  const { profile, psn, updatePSNProfile } = useProfiles();
 
   return (
     <Flex
@@ -33,7 +33,7 @@ const Home: IPage = () => {
           size={8}
           style={{ whiteSpace: "break-spaces", wordBreak: "break-all" }}
         >
-          profile: {JSON.stringify(profiles.profile, null, 2)}
+          profile: {JSON.stringify(profile, null, 2)}
         </Text>
         <Text
           component="pre"
@@ -41,7 +41,7 @@ const Home: IPage = () => {
           size={8}
           style={{ whiteSpace: "break-spaces", wordBreak: "break-all" }}
         >
-          psn_profile: {JSON.stringify(profiles.psn, null, 2)}
+          psn_profile: {JSON.stringify(psn, null, 2)}
         </Text>
       </Group>
     </Flex>

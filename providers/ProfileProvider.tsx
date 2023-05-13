@@ -3,6 +3,7 @@ import {
   type NullableProfile,
   type NullablePSNProfile,
 } from "@/models/AuthModel";
+import { useUser } from "@supabase/auth-helpers-react";
 import {
   type FC,
   type PropsWithChildren,
@@ -21,13 +22,15 @@ interface IProfilesState {
   profile: NullableProfile;
 }
 
-interface IProfileContext {
-  profiles: IProfilesState;
+interface IProfileContext extends IProfilesState {
+  isAuth: boolean;
   updatePSNProfile: () => void;
 }
 
 const initialContextValue: IProfileContext = {
-  profiles: { psn: null, profile: null },
+  psn: null,
+  profile: null,
+  isAuth: false,
   updatePSNProfile: () => null,
 };
 
@@ -40,6 +43,7 @@ const ProfileProvider: FC<IProfileProvider> = (props) => {
     profile: initialProfile ?? null,
   };
   const [profiles, setProfiles] = useState<IProfilesState>(initialProfiles);
+  const user = useUser();
 
   const updatePSNProfile = (): void => {
     API.get("/auth/profile")
@@ -53,7 +57,8 @@ const ProfileProvider: FC<IProfileProvider> = (props) => {
   };
 
   const exposed: IProfileContext = {
-    profiles,
+    ...profiles,
+    isAuth: profiles.psn !== null && user !== null,
     updatePSNProfile,
   };
 

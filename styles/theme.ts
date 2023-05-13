@@ -21,20 +21,20 @@ const ModalStyles: (
   theme: MantineTheme,
   params: unknown,
   context: ContextStylesParams
-) => Record<string, CSSObject> = ({ radius }) => ({
+) => Record<string, CSSObject> = ({ radius, fontSizes }) => ({
   content: {
     borderRadius: radius.lg,
   },
   title: {
-    fontSize: 14,
+    fontSize: fontSizes.sm,
     fontWeight: 500,
   },
 });
 
-const BadgeStyles: BadgeProps["styles"] = () => ({
+const BadgeStyles: BadgeProps["styles"] = ({ fontSizes }) => ({
   root: {
     padding: "2px 6px",
-    fontSize: 12,
+    fontSize: fontSizes.xs,
     fontWeight: 500,
     textTransform: "unset",
   },

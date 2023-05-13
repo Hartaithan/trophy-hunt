@@ -1,16 +1,22 @@
 import { type IHeaderLink } from "@/models/LinkModel";
+import { useProfiles } from "@/providers/ProfileProvider";
 import {
   Container,
   Flex,
   Header as MantineHeader,
   Title,
   createStyles,
+  UnstyledButton,
+  Badge,
+  Button,
 } from "@mantine/core";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { type FC } from "react";
+import { User } from "tabler-icons-react";
 
-const HEADER_HEIGHT = 64;
+const HEADER_HEIGHT = 48;
 
 const links: IHeaderLink[] = [
   {
@@ -33,7 +39,7 @@ const links: IHeaderLink[] = [
   },
 ];
 
-const useStyles = createStyles(({ colors, spacing, radius }) => ({
+const useStyles = createStyles(({ colors, spacing, radius, fontSizes }) => ({
   root: {
     width: "100%",
     minHeight: HEADER_HEIGHT,
@@ -52,6 +58,7 @@ const useStyles = createStyles(({ colors, spacing, radius }) => ({
     gap: spacing.xs,
   },
   link: {
+    fontSize: fontSizes.sm,
     fontWeight: 500,
     textDecoration: "none",
     padding: "2px 8px",
@@ -76,6 +83,7 @@ const useStyles = createStyles(({ colors, spacing, radius }) => ({
 const Header: FC = () => {
   const { classes, cx } = useStyles();
   const { pathname } = useRouter();
+  const { psn, isAuth } = useProfiles();
 
   return (
     <MantineHeader className={classes.root} height={HEADER_HEIGHT}>
@@ -100,7 +108,32 @@ const Header: FC = () => {
             );
           })}
         </Flex>
-        <Flex className={classes.profile}>Profile</Flex>
+        {isAuth && (
+          <UnstyledButton className={classes.profile}>
+            <Badge mr="sm" radius="sm">
+              {psn?.onlineId ?? "[Not Found]"}
+            </Badge>
+            <Image
+              width={30}
+              height={30}
+              src={psn?.avatarUrls[0].avatarUrl ?? ""}
+              alt="avatar"
+            />
+          </UnstyledButton>
+        )}
+        {!isAuth && (
+          <Link href="/signIn" passHref>
+            <Button
+              size="xs"
+              leftIcon={<User size="0.75rem" />}
+              variant="light"
+              compact
+              component="a"
+            >
+              Sign in
+            </Button>
+          </Link>
+        )}
       </Container>
     </MantineHeader>
   );

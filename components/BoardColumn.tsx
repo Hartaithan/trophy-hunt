@@ -24,7 +24,10 @@ interface IBoardColumnProps {
 }
 
 const useStyles = createStyles(
-  ({ radius, colors, spacing }, { column }: { column: BOARD_COLUMNS }) => {
+  (
+    { radius, colors, spacing, fontSizes },
+    { column }: { column: BOARD_COLUMNS }
+  ) => {
     const { color, shade } = columnColors[column];
     return {
       column: {
@@ -57,7 +60,7 @@ const useStyles = createStyles(
       },
       label: {
         color: colors.secondary[9],
-        fontSize: 14,
+        fontSize: fontSizes.sm,
         ":before": {
           content: "''",
           width: 8,
