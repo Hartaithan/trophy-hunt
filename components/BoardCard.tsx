@@ -167,6 +167,8 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       ref={setNodeRef}
       {...attributes}
       {...listeners}
+      aria-describedby=""
+      suppressHydrationWarning
       className={cx([classes.container, isDragging && classes.draggable])}
       direction="column"
       style={{
