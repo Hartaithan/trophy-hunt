@@ -184,7 +184,6 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           className={classes.image}
           src={image_url}
           fill
-          unoptimized
           alt="image card"
         />
         <Overlay
@@ -195,7 +194,6 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           className={classes.background}
           src={image_url}
           fill
-          unoptimized
           alt="image card"
         />
       </Box>
