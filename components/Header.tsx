@@ -1,3 +1,4 @@
+import API from "@/helpers/api";
 import { type IHeaderLink } from "@/models/LinkModel";
 import { useProfiles } from "@/providers/ProfileProvider";
 import {
@@ -9,12 +10,14 @@ import {
   UnstyledButton,
   Badge,
   Button,
+  Menu,
+  type MenuProps,
 } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { type FC } from "react";
-import { User } from "tabler-icons-react";
+import { DoorExit, User } from "tabler-icons-react";
 
 const HEADER_HEIGHT = 48;
 
@@ -38,6 +41,12 @@ const links: IHeaderLink[] = [
     disabled: true,
   },
 ];
+
+const MenuStyles: MenuProps["styles"] = ({ colors }) => ({
+  dropdown: {
+    background: colors.primary[8],
+  },
+});
 
 const useStyles = createStyles(({ colors, spacing, radius, fontSizes }) => ({
   root: {
@@ -82,8 +91,18 @@ const useStyles = createStyles(({ colors, spacing, radius, fontSizes }) => ({
 
 const Header: FC = () => {
   const { classes, cx } = useStyles();
-  const { pathname } = useRouter();
+  const { pathname, reload } = useRouter();
   const { psn, isAuth } = useProfiles();
+
+  const handleSignOut = (): void => {
+    API.get("/auth/signOut")
+      .then(() => {
+        reload();
+      })
+      .catch((error) => {
+        console.error("unable to sign out", error);
+      });
+  };
 
   return (
     <MantineHeader className={classes.root} height={HEADER_HEIGHT}>
@@ -109,26 +128,40 @@ const Header: FC = () => {
           })}
         </Flex>
         {isAuth && (
-          <UnstyledButton className={classes.profile}>
-            <Badge mr="sm" radius="sm">
-              {psn?.onlineId ?? "[Not Found]"}
-            </Badge>
-            <Image
-              width={30}
-              height={30}
-              src={psn?.avatarUrls[0].avatarUrl ?? ""}
-              alt="avatar"
-            />
-          </UnstyledButton>
+          <Menu width={150} position="bottom-end" styles={MenuStyles}>
+            <Menu.Target>
+              <UnstyledButton className={classes.profile}>
+                <Badge mr="sm" radius="sm">
+                  {psn?.onlineId ?? "[Not Found]"}
+                </Badge>
+                <Image
+                  width={30}
+                  height={30}
+                  src={psn?.avatarUrls[0].avatarUrl ?? ""}
+                  alt="avatar"
+                />
+              </UnstyledButton>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item icon={<User size="1rem" />} disabled>
+                <Link href="/profile">Profile</Link>
+              </Menu.Item>
+              <Menu.Item
+                onClick={() => handleSignOut()}
+                icon={<DoorExit size="1rem" />}
+              >
+                Sign out
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
         )}
         {!isAuth && (
-          <Link href="/signIn" passHref>
+          <Link href="/signIn">
             <Button
               size="xs"
               leftIcon={<User size="0.75rem" />}
               variant="light"
               compact
-              component="a"
             >
               Sign in
             </Button>
