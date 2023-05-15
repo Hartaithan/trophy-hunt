@@ -46,7 +46,7 @@ const ProfileProvider: FC<IProfileProvider> = (props) => {
   const user = useUser();
 
   const updatePSNProfile = (): void => {
-    API.get("/auth/profile")
+    API.get("/profile/psn")
       .then(({ data }) => {
         const psn_profile = data.profile;
         setProfiles((prev) => ({ ...prev, psn: psn_profile }));
