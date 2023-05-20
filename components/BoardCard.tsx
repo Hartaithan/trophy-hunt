@@ -13,7 +13,7 @@ import {
   createStyles,
 } from "@mantine/core";
 import Image from "next/image";
-import { type FC, memo } from "react";
+import { type FC, memo, type MouseEventHandler } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { type IGame } from "@/models/GameModel";
 import ColumnBadge from "./ColumnBadge";
@@ -25,6 +25,7 @@ import { useBoard } from "@/providers/BoardProvider";
 import API from "@/helpers/api";
 import { type IBoardColumns } from "@/models/BoardModel";
 import { notifications } from "@mantine/notifications";
+import { useRouter } from "next/router";
 
 interface IBoardCardProps {
   item: IGame;
@@ -43,6 +44,7 @@ const useStyles = createStyles(({ colors, radius, spacing }) => {
       padding: spacing.xs,
       background: colors.primary[6],
       borderRadius: radius.md,
+      cursor: "pointer",
     },
     imageWrapper: {
       position: "relative",
@@ -84,6 +86,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
   const { item } = props;
   const { id, title, image_url, status, platform, progress } = item;
 
+  const { push } = useRouter();
   const { columns, setColumns } = useBoard();
   const { classes, cx } = useStyles();
   const {
@@ -94,6 +97,9 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
     transition,
     isDragging,
   } = useSortable({ id, animateLayoutChanges });
+
+  const stopPropagation: MouseEventHandler<HTMLButtonElement> = (e) =>
+    e.stopPropagation();
 
   const handleDelete = (): void => {
     let previousState: IBoardColumns = { ...columns };
@@ -122,7 +128,8 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       });
   };
 
-  const handleDeleteModal = (): void => {
+  const handleDeleteModal: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     modals.openConfirmModal({
       title: "Are you sure?",
       centered: true,
@@ -138,24 +145,29 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
     });
   };
 
+  const handleEditModal: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    alert("TODO: add edit modal");
+  };
+
+  const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    e.stopPropagation();
+    const route = `/game/${id}`;
+    push(route).finally(() => console.info(`routed to ${route}`));
+  };
+
   const MemoizedMenu = memo(() => (
     <Menu shadow="md" width={150} data-no-dnd="true" position="bottom-end">
       <Menu.Target>
-        <UnstyledButton className={classes.actions}>
+        <UnstyledButton className={classes.actions} onClick={stopPropagation}>
           <Dots size="1.5rem" />
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown data-no-dnd="true">
-        <Menu.Item
-          icon={<Edit size="1rem" />}
-          onClick={() => alert("TODO: add edit modal")}
-        >
+        <Menu.Item icon={<Edit size="1rem" />} onClick={handleEditModal}>
           Edit
         </Menu.Item>
-        <Menu.Item
-          icon={<Trash size="1rem" />}
-          onClick={() => handleDeleteModal()}
-        >
+        <Menu.Item icon={<Trash size="1rem" />} onClick={handleDeleteModal}>
           Delete
         </Menu.Item>
       </Menu.Dropdown>
@@ -171,6 +183,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       suppressHydrationWarning
       className={cx([classes.container, isDragging && classes.draggable])}
       direction="column"
+      onClick={handleClick}
       style={{
         transform: CSS.Transform.toString(transform),
         transition,

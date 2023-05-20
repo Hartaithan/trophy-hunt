@@ -10,6 +10,7 @@ import {
   useSensor,
   useSensors,
   MeasuringStrategy,
+  type PointerActivationConstraint,
 } from "@dnd-kit/core";
 import {
   PointerSensor,
@@ -33,6 +34,8 @@ const measuring = {
   },
 };
 
+const activationConstraint: PointerActivationConstraint = { distance: 15 };
+
 const BoardContainer: FC = () => {
   const { spacing } = useMantineTheme();
   const { columns, setColumns } = useBoard();
@@ -40,7 +43,9 @@ const BoardContainer: FC = () => {
   const columnsRef = useRef<IBoardColumns>(columns);
   const previousRef = useRef<IBoardColumns>(columns);
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint })
+  );
 
   const handleMoveEnd = (): void => {
     let payload: IReorderPayload | null = null;
