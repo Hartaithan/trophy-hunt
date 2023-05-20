@@ -186,9 +186,8 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           className={classes.image}
           src={image_url}
           fill
-          priority
           alt="image card"
-          sizes="(max-width: 1200px) 320px"
+          unoptimized
         />
         <Overlay
           zIndex={2}
@@ -198,9 +197,8 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           className={classes.background}
           src={image_url}
           fill
-          priority
           alt="image card"
-          sizes="(max-width: 1200px) 320px"
+          unoptimized
         />
       </Box>
       <Text mt={6} fw={500} lineClamp={2}>
