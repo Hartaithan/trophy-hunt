@@ -8,11 +8,15 @@ interface ITrophyCardProps {
 }
 
 const useStyles = createStyles(({ spacing }) => ({
-  container: {},
+  container: {
+    alignItems: "center",
+  },
   content: {
     flexDirection: "column",
     justifyContent: "center",
     marginLeft: spacing.md,
+    marginRight: spacing.md,
+    flex: 1,
   },
 }));
 
@@ -20,7 +24,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
   const { classes } = useStyles();
 
-  const { name, detail, icon_url } = trophy;
+  const { name, detail, icon_url, type } = trophy;
 
   return (
     <Flex className={classes.container}>
@@ -39,6 +43,13 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
         )}
         {detail != null && <Text>{detail}</Text>}
       </Flex>
+      <Image
+        width={40}
+        height={40}
+        alt="trophy type icon"
+        src={`/trophy/${type}.png`}
+        unoptimized
+      />
     </Flex>
   );
 };

@@ -9,7 +9,7 @@ interface ITrophyListProps {
 }
 
 const useStyles = createStyles(() => ({
-  container: {},
+  container: { width: "100%" },
 }));
 
 const TrophyList: FC<ITrophyListProps> = (props) => {

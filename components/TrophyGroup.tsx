@@ -9,6 +9,7 @@ interface ITrophyGroupProps {
 
 const useStyles = createStyles(({ spacing }) => ({
   container: {
+    width: "100%",
     marginBottom: spacing.md,
   },
   icon: { height: "auto", objectFit: "contain" },
