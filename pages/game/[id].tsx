@@ -1,3 +1,4 @@
+import TrophyList from "@/components/TrophyList";
 import { type IPage } from "@/models/AppModel";
 import { type IGame } from "@/models/GameModel";
 import { type IFormattedResponse } from "@/models/TrophyModel";
@@ -91,9 +92,7 @@ const GamePage: IPage<IGamePageProps> = (props) => {
       <Text component="pre" size={9} mb="xl">
         game: {JSON.stringify(game, null, 2)}
       </Text>
-      <Text component="pre" size={9}>
-        trophies: {JSON.stringify(trophies, null, 2)}
-      </Text>
+      <TrophyList trophies={trophies} />
     </Flex>
   );
 };
