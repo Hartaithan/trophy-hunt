@@ -23,7 +23,7 @@ const TrophyList: FC<ITrophyListProps> = (props) => {
       {trophies.groups.map((group) => (
         <Box key={group.id}>
           <TrophyGroup group={group} />
-          <Stack>
+          <Stack mb="md">
             {group.trophies.map((trophy) => (
               <TrophyCard key={trophy.id} trophy={trophy} />
             ))}

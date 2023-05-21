@@ -34,6 +34,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
         className={classes.icon}
         src={icon_url}
         alt={name ?? "group icon url"}
+        unoptimized
       />
       <Flex className={classes.info}>
         <Text fw="bold">{name}</Text>
