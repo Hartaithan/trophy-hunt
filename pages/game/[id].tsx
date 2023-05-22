@@ -1,10 +1,10 @@
+import GameInfo from "@/components/GameInfo";
 import TrophyList from "@/components/TrophyList";
 import { type IPage } from "@/models/AppModel";
 import { type IGame } from "@/models/GameModel";
 import { type IFormattedResponse } from "@/models/TrophyModel";
-import { Text, Flex, Title } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { type GetServerSidePropsContext, type GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps<IGamePageProps> = async (
       ),
     ]);
     if (gameResponse.status === "fulfilled") {
-      game = gameResponse.value;
+      game = gameResponse.value.game ?? null;
     }
     if (trophiesResponse.status === "fulfilled") {
       trophies = trophiesResponse.value;
@@ -76,7 +76,6 @@ export const getServerSideProps: GetServerSideProps<IGamePageProps> = async (
 
 const GamePage: IPage<IGamePageProps> = (props) => {
   const { game, trophies } = props;
-  const { query } = useRouter();
 
   return (
     <Flex
@@ -87,11 +86,7 @@ const GamePage: IPage<IGamePageProps> = (props) => {
       align="center"
       py="md"
     >
-      <Title order={2}>GamePage</Title>
-      <Text>query: {JSON.stringify(query, null, 2)}</Text>
-      <Text component="pre" size={9} mb="xl">
-        game: {JSON.stringify(game, null, 2)}
-      </Text>
+      <GameInfo game={game} />
       <TrophyList trophies={trophies} />
     </Flex>
   );
