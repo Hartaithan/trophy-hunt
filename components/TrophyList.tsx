@@ -19,18 +19,18 @@ const TrophyList: FC<ITrophyListProps> = (props) => {
   if (trophies === null) return null;
 
   return (
-    <div className={classes.container}>
+    <Stack spacing="xl" className={classes.container}>
       {trophies.groups.map((group) => (
         <Box key={group.id}>
           <TrophyGroup group={group} />
-          <Stack mb="md">
+          <Stack my="xl">
             {group.trophies.map((trophy) => (
               <TrophyCard key={trophy.id} trophy={trophy} />
             ))}
           </Stack>
         </Box>
       ))}
-    </div>
+    </Stack>
   );
 };
 

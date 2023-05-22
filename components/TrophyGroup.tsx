@@ -9,12 +9,11 @@ interface ITrophyGroupProps {
   group: IGroup;
 }
 
-const useStyles = createStyles(({ spacing }) => ({
+const useStyles = createStyles(({ spacing, radius }) => ({
   container: {
     width: "100%",
-    marginBottom: spacing.md,
   },
-  icon: { height: "auto", objectFit: "contain" },
+  icon: { height: "auto", objectFit: "contain", borderRadius: radius.md },
   info: {
     marginLeft: spacing.md,
     flexDirection: "column",

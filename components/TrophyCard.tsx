@@ -29,8 +29,8 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
   return (
     <Flex className={classes.container}>
       <Image
-        width={100}
-        height={100}
+        width={80}
+        height={80}
         alt={name ?? "trophy icon url"}
         src={icon_url ?? ""}
         unoptimized

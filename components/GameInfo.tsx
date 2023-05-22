@@ -10,7 +10,7 @@ interface IGameInfoProps {
   game: IGame | null;
 }
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles(({ radius }) => ({
   container: {
     width: "100%",
   },
@@ -18,7 +18,7 @@ const useStyles = createStyles(() => ({
     flexDirection: "column",
     flex: 1,
   },
-  icon: { height: "auto", objectFit: "contain" },
+  icon: { height: "auto", objectFit: "contain", borderRadius: radius.md },
 }));
 
 const GameInfo: FC<IGameInfoProps> = (props) => {
