@@ -1,5 +1,6 @@
+import { rarityLabels } from "@/constants/trophy";
 import { type ITrophy } from "@/models/TrophyModel";
-import { Flex, Text, createStyles } from "@mantine/core";
+import { Flex, Text, Title, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
 
@@ -24,7 +25,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
   const { classes } = useStyles();
 
-  const { name, detail, icon_url, type } = trophy;
+  const { name, detail, icon_url, type, rare, earnedRate } = trophy;
 
   return (
     <Flex className={classes.container}>
@@ -43,6 +44,14 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
         )}
         {detail != null && <Text>{detail}</Text>}
       </Flex>
+      {rare !== undefined && (
+        <Flex direction="column" mr="md">
+          <Title align="center" order={3}>
+            {earnedRate}%
+          </Title>
+          <Text>{rarityLabels[rare]}</Text>
+        </Flex>
+      )}
       <Image
         width={40}
         height={40}

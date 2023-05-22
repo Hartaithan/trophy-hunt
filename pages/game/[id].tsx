@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps<IGamePageProps> = async (
       fetch(`${API_URL}/games/${id}`, options).then(
         async (res) => await res.json()
       ),
-      fetch(`${API_URL}/games/${id}/trophies`, options).then(
+      fetch(`${API_URL}/games/${id}/earned`, options).then(
         async (res) => await res.json()
       ),
     ]);
