@@ -1,7 +1,9 @@
 import { type IGroup } from "@/models/TrophyModel";
-import { Text, Flex, createStyles } from "@mantine/core";
+import { Text, Flex, createStyles, Group } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
+import TrophyIcon from "./TrophyIcon";
+import { trophyColors } from "@/constants/trophy";
 
 interface ITrophyGroupProps {
   group: IGroup;
@@ -26,6 +28,8 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
 
   const { icon_url, name, counts } = group;
 
+  const countsArray = Object.entries(counts).reverse();
+
   return (
     <Flex className={classes.container}>
       <Image
@@ -37,29 +41,22 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
         unoptimized
       />
       <Flex className={classes.info}>
-        <Text fw="bold">{name}</Text>
-        <Text>
-          {counts.platinum > 0 && (
-            <Text span inherit>
-              {`Platinum: ${counts.platinum}, `}
-            </Text>
-          )}
-          {counts.gold > 0 && (
-            <Text span inherit>
-              {`Gold: ${counts.gold}, `}
-            </Text>
-          )}
-          {counts.silver > 0 && (
-            <Text span inherit>
-              {`Silver: ${counts.silver}, `}
-            </Text>
-          )}
-          {counts.bronze > 0 && (
-            <Text span inherit>
-              {`Bronze: ${counts.bronze}`}
-            </Text>
-          )}
+        <Text fw="bold" mb={4}>
+          {name}
         </Text>
+        <Group>
+          {countsArray.map(([key, value]) => {
+            if (value === 0) return null;
+            return (
+              <Flex key={key}>
+                <TrophyIcon type={key} />
+                <Text ml={4} fw="bold" color={trophyColors[key]}>
+                  {value}
+                </Text>
+              </Flex>
+            );
+          })}
+        </Group>
       </Flex>
     </Flex>
   );
