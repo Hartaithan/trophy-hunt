@@ -19,6 +19,9 @@ const useStyles = createStyles(({ spacing }) => ({
     marginRight: spacing.md,
     flex: 1,
   },
+  icon: {
+    borderRadius: spacing.xs,
+  },
 }));
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
@@ -32,6 +35,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
       <Image
         width={80}
         height={80}
+        className={classes.icon}
         alt={name ?? "trophy icon url"}
         src={icon_url ?? ""}
         unoptimized

@@ -85,7 +85,7 @@ const GamePage: IPage<IGamePageProps> = (props) => {
       direction="column"
       justify="center"
       align="center"
-      py="md"
+      py="xl"
     >
       <GameInfo game={game} />
       <Space h={spacing.xl} />

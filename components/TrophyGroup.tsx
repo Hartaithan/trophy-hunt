@@ -13,7 +13,12 @@ const useStyles = createStyles(({ spacing, radius }) => ({
   container: {
     width: "100%",
   },
-  icon: { height: "auto", objectFit: "contain", borderRadius: radius.md },
+  icon: {
+    minHeight: 80,
+    width: "auto",
+    objectFit: "contain",
+    borderRadius: radius.md,
+  },
   info: {
     marginLeft: spacing.md,
     flexDirection: "column",
@@ -33,7 +38,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
     <Flex className={classes.container}>
       <Image
         width={150}
-        height={100}
+        height={80}
         className={classes.icon}
         src={icon_url}
         alt={name ?? "group icon url"}

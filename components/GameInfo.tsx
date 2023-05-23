@@ -18,7 +18,12 @@ const useStyles = createStyles(({ radius }) => ({
     flexDirection: "column",
     flex: 1,
   },
-  icon: { height: "auto", objectFit: "contain", borderRadius: radius.md },
+  icon: {
+    minHeight: 100,
+    width: "auto",
+    objectFit: "contain",
+    borderRadius: radius.md,
+  },
 }));
 
 const GameInfo: FC<IGameInfoProps> = (props) => {
