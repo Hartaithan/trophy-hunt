@@ -15,8 +15,6 @@ const useStyles = createStyles(({ spacing }) => ({
   content: {
     flexDirection: "column",
     justifyContent: "center",
-    marginLeft: spacing.md,
-    marginRight: spacing.md,
     flex: 1,
   },
   icon: {
@@ -31,7 +29,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { name, detail, icon_url, type, rare, earnedRate } = trophy;
 
   return (
-    <Flex className={classes.container}>
+    <Flex className={classes.container} gap="lg">
       <Image
         width={80}
         height={80}
@@ -56,13 +54,15 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
           <Text>{rarityLabels[rare]}</Text>
         </Flex>
       )}
-      <Image
-        width={40}
-        height={40}
-        alt="trophy type icon"
-        src={`/trophy/${type}.png`}
-        unoptimized
-      />
+      <Flex w={100} h={60} justify="center" align="center">
+        <Image
+          width={40}
+          height={40}
+          alt="trophy type icon"
+          src={`/trophy/${type}.png`}
+          unoptimized
+        />
+      </Flex>
     </Flex>
   );
 };

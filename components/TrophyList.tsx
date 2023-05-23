@@ -8,8 +8,13 @@ interface ITrophyListProps {
   trophies: IFormattedResponse | null;
 }
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles(({ colors, radius, spacing }) => ({
   container: { width: "100%" },
+  list: {
+    background: colors.primary[7],
+    padding: spacing.xs,
+    borderRadius: radius.lg,
+  },
 }));
 
 const TrophyList: FC<ITrophyListProps> = (props) => {
@@ -23,7 +28,7 @@ const TrophyList: FC<ITrophyListProps> = (props) => {
       {trophies.groups.map((group) => (
         <Box key={group.id}>
           <TrophyGroup group={group} />
-          <Stack my="xl">
+          <Stack mt="xl" className={classes.list}>
             {group.trophies.map((trophy) => (
               <TrophyCard key={trophy.id} trophy={trophy} />
             ))}

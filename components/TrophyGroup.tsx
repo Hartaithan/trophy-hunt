@@ -1,5 +1,5 @@
 import { type IGroup } from "@/models/TrophyModel";
-import { Text, Flex, createStyles, Group } from "@mantine/core";
+import { Text, Flex, createStyles, Group, Badge } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
 import TrophyIcon from "./TrophyIcon";
@@ -9,9 +9,14 @@ interface ITrophyGroupProps {
   group: IGroup;
 }
 
-const useStyles = createStyles(({ spacing, radius }) => ({
+const useStyles = createStyles(({ spacing, radius, colors }) => ({
   container: {
+    position: "sticky",
+    top: spacing.md,
     width: "100%",
+    background: colors.primary[7],
+    borderRadius: radius.lg,
+    padding: spacing.xs,
   },
   icon: {
     minHeight: 80,
@@ -30,7 +35,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
   const { group } = props;
   const { classes } = useStyles();
 
-  const { icon_url, name, counts } = group;
+  const { id, icon_url, name, counts } = group;
 
   const countsArray = Object.entries(counts).reverse();
 
@@ -45,9 +50,10 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
         unoptimized
       />
       <Flex className={classes.info}>
-        <Text fw="bold" mb={4}>
-          {name}
-        </Text>
+        <Flex align="center" mb="xs">
+          <Text fw="bold">{name}</Text>
+          <Badge ml="sm">{id === "default" ? "Base Game" : "DLC"}</Badge>
+        </Flex>
         <Group>
           {countsArray.map(([key, value]) => {
             if (value === 0) return null;
