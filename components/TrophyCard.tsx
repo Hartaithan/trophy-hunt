@@ -1,4 +1,4 @@
-import { rarityLabels } from "@/constants/trophy";
+import { rarityLabels, trophyColors } from "@/constants/trophy";
 import { type ITrophy } from "@/models/TrophyModel";
 import { Flex, Text, Title, createStyles } from "@mantine/core";
 import Image from "next/image";
@@ -8,9 +8,19 @@ interface ITrophyCardProps {
   trophy: ITrophy;
 }
 
-const useStyles = createStyles(({ spacing }) => ({
+const useStyles = createStyles(({ spacing }, { type }: ITrophy) => ({
   container: {
+    padding: `${spacing.xs} ${spacing.md}`,
     alignItems: "center",
+    background: `linear-gradient(120deg, transparent 0%, transparent 85%, ${
+      trophyColors[type] + "CC"
+    } 100%)`,
+    ":first-of-type": {
+      paddingTop: spacing.md,
+    },
+    ":last-of-type": {
+      paddingBottom: spacing.md,
+    },
   },
   content: {
     flexDirection: "column",
@@ -24,7 +34,7 @@ const useStyles = createStyles(({ spacing }) => ({
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
-  const { classes } = useStyles();
+  const { classes } = useStyles(trophy);
 
   const { name, detail, icon_url, type, rare, earnedRate } = trophy;
 

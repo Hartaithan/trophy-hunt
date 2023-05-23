@@ -12,8 +12,8 @@ const useStyles = createStyles(({ colors, radius, spacing }) => ({
   container: { width: "100%" },
   list: {
     background: colors.primary[7],
-    padding: spacing.xs,
     borderRadius: radius.lg,
+    overflow: "hidden",
   },
 }));
 
@@ -28,7 +28,7 @@ const TrophyList: FC<ITrophyListProps> = (props) => {
       {trophies.groups.map((group) => (
         <Box key={group.id}>
           <TrophyGroup group={group} />
-          <Stack mt="xl" className={classes.list}>
+          <Stack mt="xl" spacing={0} className={classes.list}>
             {group.trophies.map((trophy) => (
               <TrophyCard key={trophy.id} trophy={trophy} />
             ))}
