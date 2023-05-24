@@ -8,29 +8,33 @@ interface ITrophyCardProps {
   trophy: ITrophy;
 }
 
-const useStyles = createStyles(({ spacing }, { type }: ITrophy) => ({
-  container: {
-    padding: `${spacing.xs} ${spacing.md}`,
-    alignItems: "center",
-    background: `linear-gradient(120deg, transparent 0%, transparent 85%, ${
-      trophyColors[type] + "CC"
-    } 100%)`,
-    ":first-of-type": {
-      paddingTop: spacing.md,
+const useStyles = createStyles(
+  ({ spacing }, { type, earnedRate }: ITrophy) => ({
+    container: {
+      padding: `${spacing.xs} ${spacing.md}`,
+      alignItems: "center",
+      background: `linear-gradient(110deg, transparent 0%, transparent ${
+        earnedRate == null ? 87 : 75
+      }%, ${trophyColors[type] + "66"} ${earnedRate == null ? 94 : 90}%, ${
+        trophyColors[type] + "D9"
+      } 100%)`,
+      ":first-of-type": {
+        paddingTop: spacing.md,
+      },
+      ":last-of-type": {
+        paddingBottom: spacing.md,
+      },
     },
-    ":last-of-type": {
-      paddingBottom: spacing.md,
+    content: {
+      flexDirection: "column",
+      justifyContent: "center",
+      flex: 1,
     },
-  },
-  content: {
-    flexDirection: "column",
-    justifyContent: "center",
-    flex: 1,
-  },
-  icon: {
-    borderRadius: spacing.xs,
-  },
-}));
+    icon: {
+      borderRadius: spacing.xs,
+    },
+  })
+);
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
