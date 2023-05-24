@@ -20,3 +20,7 @@ body,
 a {
   text-decoration: none;
 }
+
+.trophy:hover .check {
+  opacity: 1;
+}

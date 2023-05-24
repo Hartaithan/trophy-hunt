@@ -1,8 +1,10 @@
 import { rarityLabels, trophyColors } from "@/constants/trophy";
 import { type ITrophy } from "@/models/TrophyModel";
-import { Flex, Text, Title, createStyles } from "@mantine/core";
+import { Checkbox, Flex, Text, Title, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
+
+const IMAGE_SIZE = 80;
 
 interface ITrophyCardProps {
   trophy: ITrophy;
@@ -33,25 +35,39 @@ const useStyles = createStyles(
     icon: {
       borderRadius: spacing.xs,
     },
+    wrapper: {
+      width: IMAGE_SIZE,
+      height: IMAGE_SIZE,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    check: {
+      opacity: 0,
+      transition: "all 0.3s ease",
+      position: "absolute",
+    },
   })
 );
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
-  const { classes } = useStyles(trophy);
+  const { classes, cx } = useStyles(trophy);
 
   const { name, detail, icon_url, type, rare, earnedRate } = trophy;
 
   return (
-    <Flex className={classes.container} gap="lg">
-      <Image
-        width={80}
-        height={80}
-        className={classes.icon}
-        alt={name ?? "trophy icon url"}
-        src={icon_url ?? ""}
-        unoptimized
-      />
+    <Flex className={cx(classes.container, "trophy")} gap="lg">
+      <Flex className={classes.wrapper}>
+        <Checkbox id="check" className={cx(classes.check, "check")} size="xl" />
+        <Image
+          width={IMAGE_SIZE}
+          height={IMAGE_SIZE}
+          className={classes.icon}
+          alt={name ?? "trophy icon url"}
+          src={icon_url ?? ""}
+          unoptimized
+        />
+      </Flex>
       <Flex className={classes.content}>
         {name != null && (
           <Text fw="bold" mb="xs">
