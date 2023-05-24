@@ -161,7 +161,8 @@ export const formatEarnedGroups = (
 
 export const formatResponse = (
   groups: TitleTrophyGroupsResponse,
-  trophies: TitleTrophiesResponse
+  trophies: TitleTrophiesResponse,
+  withTrophies: boolean = false
 ): IFormattedResponse => {
   const {
     trophyTitleName,
@@ -172,20 +173,24 @@ export const formatResponse = (
   } = groups;
   const { trophies: formattedTrophies, grouped } = formatTrophies(trophies);
   const formattedGroups = formatGroups(groups, grouped);
-  return {
+  let response: IFormattedResponse = {
     name: trophyTitleName,
     detail: trophyTitleDetail,
     icon_url: trophyTitleIconUrl,
     platform: trophyTitlePlatform,
     counts: definedTrophies,
     groups: formattedGroups,
-    trophies: formattedTrophies,
   };
+  if (withTrophies) {
+    response = { ...response, trophies: formattedTrophies };
+  }
+  return response;
 };
 
 export const formatEarnedResponse = (
   groups: MergedGroups,
-  trophies: MergedTrophies
+  trophies: MergedTrophies,
+  withTrophies: boolean = false
 ): IFormattedResponse => {
   const {
     trophyTitleName,
@@ -198,7 +203,7 @@ export const formatEarnedResponse = (
   const { trophies: formattedTrophies, grouped } =
     formatEarnedTrophies(trophies);
   const formattedGroups = formatGroups(groups, grouped);
-  return {
+  let response: IFormattedResponse = {
     name: trophyTitleName,
     detail: trophyTitleDetail,
     icon_url: trophyTitleIconUrl,
@@ -206,6 +211,9 @@ export const formatEarnedResponse = (
     counts: definedTrophies,
     earned_counts: earnedTrophies,
     groups: formattedGroups,
-    trophies: formattedTrophies,
   };
+  if (withTrophies) {
+    response = { ...response, trophies: formattedTrophies };
+  }
+  return response;
 };

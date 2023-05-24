@@ -86,7 +86,7 @@ export interface IFormattedResponse {
   counts: ITrophyCount;
   earned_counts?: ITrophyCount;
   groups: IGroup[];
-  trophies: ITrophy[];
+  trophies?: ITrophy[];
 }
 
 export type EarnedGroupsDetails = Omit<

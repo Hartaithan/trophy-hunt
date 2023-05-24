@@ -15,7 +15,7 @@ import {
 
 const getGameTrophies: NextApiHandler = async (req, res) => {
   const {
-    query: { id },
+    query: { id, withTrophies },
   } = req;
   const supabase = createServerSupabaseClient({ req, res });
   const access_token = getCookie("psn-access-token", { req, res });
@@ -79,7 +79,11 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: defaultMessage });
   }
 
-  const formattedResponse = formatResponse(titleGroups, titleTrophies);
+  const formattedResponse = formatResponse(
+    titleGroups,
+    titleTrophies,
+    withTrophies !== undefined
+  );
 
   return res.status(200).json({ ...formattedResponse });
 };

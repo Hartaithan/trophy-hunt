@@ -23,7 +23,7 @@ import {
 
 const getEarnedTrophies: NextApiHandler = async (req, res) => {
   const {
-    query: { id },
+    query: { id, withTrophies },
   } = req;
   const supabase = createServerSupabaseClient({ req, res });
   const access_token = getCookie("psn-access-token", { req, res });
@@ -108,7 +108,11 @@ const getEarnedTrophies: NextApiHandler = async (req, res) => {
   const mergedGroups = mergeGroups(titleGroups, titleEarnedGroups);
   const mergedTrophies = mergeTrophies(titleTrophies, titleEarnedTrophies);
 
-  const formattedResponse = formatEarnedResponse(mergedGroups, mergedTrophies);
+  const formattedResponse = formatEarnedResponse(
+    mergedGroups,
+    mergedTrophies,
+    withTrophies !== undefined
+  );
 
   return res.status(200).json({ ...formattedResponse });
 };
