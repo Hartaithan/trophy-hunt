@@ -1,5 +1,6 @@
 import { rarityLabels, trophyColors } from "@/constants/trophy";
 import { type ITrophy } from "@/models/TrophyModel";
+import { useGame } from "@/providers/GameProvider";
 import { Checkbox, Flex, Text, Title, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
@@ -46,19 +47,32 @@ const useStyles = createStyles(
       transition: "all 0.3s ease",
       position: "absolute",
     },
+    checked: {
+      filter: "grayscale(100%) opacity(50%)",
+    },
   })
 );
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
+  const { game } = useGame();
   const { classes, cx } = useStyles(trophy);
 
-  const { name, detail, icon_url, type, rare, earnedRate } = trophy;
+  const { id, name, detail, icon_url, type, rare, earnedRate } = trophy;
+  const checked = game?.progress?.find((i) => i.id === id)?.earned ?? false;
 
   return (
-    <Flex className={cx(classes.container, "trophy")} gap="lg">
+    <Flex
+      className={cx(classes.container, checked && classes.checked, "trophy")}
+      gap="lg"
+    >
       <Flex className={classes.wrapper}>
-        <Checkbox id="check" className={cx(classes.check, "check")} size="xl" />
+        <Checkbox
+          id="check"
+          className={cx(classes.check, "check")}
+          checked={checked}
+          size="xl"
+        />
         <Image
           width={IMAGE_SIZE}
           height={IMAGE_SIZE}
@@ -70,11 +84,11 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
       </Flex>
       <Flex className={classes.content}>
         {name != null && (
-          <Text fw="bold" mb="xs">
+          <Text fw="bold" mb="xs" strikethrough={checked}>
             {name}
           </Text>
         )}
-        {detail != null && <Text>{detail}</Text>}
+        {detail != null && <Text strikethrough={checked}>{detail}</Text>}
       </Flex>
       {rare !== undefined && (
         <Flex direction="column" mr="md">
