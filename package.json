@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "types": "tsc --noemit",
+    "check": "npm run lint && npm run types"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.0.8",

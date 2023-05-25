@@ -57,14 +57,14 @@ const useStyles = createStyles(({ spacing }) => ({
   },
 }));
 
-const SelectStyles: SelectProps["styles"] = ({ spacing }) => ({
+const SelectStyles: SelectProps["styles"] = () => ({
   input: {
     paddingLeft: 46,
   },
 });
 
 const SelectItem = forwardRef<HTMLDivElement, ILocale>(
-  ({ id, label, icon_url, ...rest }: ILocale, ref) => (
+  ({ id: _, label, icon_url, ...rest }: ILocale, ref) => (
     <div ref={ref} {...rest}>
       <Group noWrap>
         <Avatar size={24} src={icon_url} />

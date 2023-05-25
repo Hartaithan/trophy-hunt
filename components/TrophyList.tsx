@@ -4,7 +4,7 @@ import { Box, createStyles, Stack } from "@mantine/core";
 import TrophyGroup from "./TrophyGroup";
 import { useGame } from "@/providers/GameProvider";
 
-const useStyles = createStyles(({ colors, radius, spacing }) => ({
+const useStyles = createStyles(({ colors, radius }) => ({
   container: { width: "100%" },
   list: {
     background: colors.primary[7],
