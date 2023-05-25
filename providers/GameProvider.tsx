@@ -10,7 +10,7 @@ import {
 } from "react";
 
 interface IGameProviderProps extends PropsWithChildren {
-  id: string;
+  id: string | string[] | undefined;
   initialGame?: IGame | null;
   initialTrophies?: IFormattedResponse | null;
 }
@@ -40,6 +40,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   );
 
   const refetchGame = (): void => {
+    if (typeof id !== "string") return;
     API.get("/games/" + id)
       .then(({ data }) => {
         setGame(data?.game ?? null);
@@ -50,6 +51,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   };
 
   const refetchTrophies = (): void => {
+    if (typeof id !== "string") return;
     API.get("/games/" + id + "/earned")
       .then(({ data }) => {
         setTrophies(data ?? null);

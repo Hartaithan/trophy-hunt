@@ -1,14 +1,10 @@
-import { type IGame } from "@/models/GameModel";
 import { Flex, Group, Title, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
 import ProgressStats from "./ProgressStats";
 import PlatformBadge from "./PlatformBadge";
 import ColumnBadge from "./ColumnBadge";
-
-interface IGameInfoProps {
-  game: IGame | null;
-}
+import { useGame } from "@/providers/GameProvider";
 
 const useStyles = createStyles(({ radius }) => ({
   container: {
@@ -26,8 +22,8 @@ const useStyles = createStyles(({ radius }) => ({
   },
 }));
 
-const GameInfo: FC<IGameInfoProps> = (props) => {
-  const { game } = props;
+const GameInfo: FC = () => {
+  const { game } = useGame();
   const { classes } = useStyles();
 
   if (game === null) return null;

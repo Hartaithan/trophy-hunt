@@ -1,12 +1,8 @@
-import { type IFormattedResponse } from "@/models/TrophyModel";
 import { type FC } from "react";
 import TrophyCard from "./TrophyCard";
 import { Box, createStyles, Stack } from "@mantine/core";
 import TrophyGroup from "./TrophyGroup";
-
-interface ITrophyListProps {
-  trophies: IFormattedResponse | null;
-}
+import { useGame } from "@/providers/GameProvider";
 
 const useStyles = createStyles(({ colors, radius, spacing }) => ({
   container: { width: "100%" },
@@ -17,8 +13,8 @@ const useStyles = createStyles(({ colors, radius, spacing }) => ({
   },
 }));
 
-const TrophyList: FC<ITrophyListProps> = (props) => {
-  const { trophies } = props;
+const TrophyList: FC = () => {
+  const { trophies } = useGame();
   const { classes } = useStyles();
 
   if (trophies === null) return null;

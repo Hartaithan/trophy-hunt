@@ -3,8 +3,10 @@ import TrophyList from "@/components/TrophyList";
 import { type IPage } from "@/models/AppModel";
 import { type IGame } from "@/models/GameModel";
 import { type IFormattedResponse } from "@/models/TrophyModel";
+import GameProvider from "@/providers/GameProvider";
 import { Flex, Space, useMantineTheme } from "@mantine/core";
 import { type GetServerSidePropsContext, type GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -77,20 +79,23 @@ export const getServerSideProps: GetServerSideProps<IGamePageProps> = async (
 const GamePage: IPage<IGamePageProps> = (props) => {
   const { game, trophies } = props;
   const { spacing } = useMantineTheme();
+  const { query } = useRouter();
 
   return (
-    <Flex
-      w="100%"
-      h="100%"
-      direction="column"
-      justify="center"
-      align="center"
-      py="xl"
-    >
-      <GameInfo game={game} />
-      <Space h={spacing.xl} />
-      <TrophyList trophies={trophies} />
-    </Flex>
+    <GameProvider id={query.id} initialGame={game} initialTrophies={trophies}>
+      <Flex
+        w="100%"
+        h="100%"
+        direction="column"
+        justify="center"
+        align="center"
+        py="xl"
+      >
+        <GameInfo />
+        <Space h={spacing.xl} />
+        <TrophyList />
+      </Flex>
+    </GameProvider>
   );
 };
 
