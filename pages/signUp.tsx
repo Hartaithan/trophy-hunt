@@ -1,4 +1,10 @@
-import { useState, forwardRef, useEffect } from "react";
+import {
+  useState,
+  forwardRef,
+  useEffect,
+  useMemo,
+  type ReactNode,
+} from "react";
 import { type IPage } from "@/models/AppModel";
 import { type IUser, type ISignUpBody } from "@/models/AuthModel";
 import {
@@ -27,6 +33,8 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { UserCheck, UserX } from "tabler-icons-react";
 import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
+
+type Status = "stale" | "checking" | "notUnique" | "unique";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -79,8 +87,19 @@ const SignUpPage: IPage = () => {
   const supabase = useSupabaseClient();
   const { colors } = useMantineTheme();
   const [user, setUser] = useState<IUser | null>(null);
-  const [isChecking, setChecking] = useState<boolean>(false);
-  const [isUnique, setUnique] = useState<boolean>(false);
+  const [status, setStatus] = useState<Status>("stale");
+  const isChecking = status === "checking";
+  const isUnique = status === "unique";
+
+  const statusIcons: Record<Status, ReactNode> = useMemo(
+    () => ({
+      stale: undefined,
+      checking: <Loader size="xs" />,
+      unique: <UserCheck size={20} color={colors.green[8]} />,
+      notUnique: <UserX size={20} color={colors.red[8]} />,
+    }),
+    [] // eslint-disable-line
+  );
 
   const form = useForm<ISignUpBody>({
     initialValues: {
@@ -128,22 +147,21 @@ const SignUpPage: IPage = () => {
       });
   };
 
-  const checkUsernameUniqueness = async (): Promise<void> => {
+  const isUsernameUnique = async (): Promise<boolean> => {
     const { error } = await supabase
       .from("profiles")
       .select("id")
       .eq("username", form.values.username)
       .single();
-    setUnique(error != null);
+    return error != null;
   };
 
   useEffect(() => {
-    if (debounced.length !== 0 && form.isValid("username")) {
-      setChecking(true);
-      checkUsernameUniqueness().finally(() => setChecking(false));
-    } else {
-      setUnique(false);
-    }
+    if (debounced.length === 0 || !form.isValid("username")) return;
+    setStatus("checking");
+    isUsernameUnique()
+      .then((unique) => setStatus(unique ? "unique" : "notUnique"))
+      .catch((error) => console.error("check if username unique error", error));
   }, [debounced]); // eslint-disable-line
 
   return (
@@ -194,26 +212,13 @@ const SignUpPage: IPage = () => {
                 label="Username"
                 autoComplete="off"
                 placeholder="Enter your username"
+                rightSection={statusIcons[status]}
                 {...form.getInputProps("username")}
                 onChange={(e) => {
                   const value = e.target.value;
-                  if (value.length > 0) {
-                    setChecking(true);
-                  } else {
-                    setChecking(false);
-                    setUnique(false);
-                  }
+                  setStatus(value.length > 0 ? "checking" : "stale");
                   form.setFieldValue("username", e.target.value);
                 }}
-                rightSection={
-                  isChecking ? (
-                    <Loader size="xs" />
-                  ) : isUnique ? (
-                    <UserCheck size={20} color={colors.green[8]} />
-                  ) : (
-                    <UserX size={20} color={colors.red[8]} />
-                  )
-                }
               />
             </Box>
             <PasswordInput
