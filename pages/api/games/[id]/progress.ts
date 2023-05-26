@@ -67,9 +67,9 @@ const saveGameProgress: NextApiHandler = async (req, res) => {
 
   const previous = [...data.progress];
   const updated = [...payload];
-  const merged = updated.map((i) => ({
-    ...previous.find((n) => n.id === i.id),
+  const merged = previous.map((i) => ({
     ...i,
+    ...updated.find((n) => n.id === i.id),
   }));
 
   return await updateProgress(id, merged, supabase, res);
