@@ -23,6 +23,7 @@ interface IGameContext {
   isLoading: boolean;
   refetchGame: () => void;
   refetchTrophies: () => void;
+  updateProgress: (id: number) => void;
 }
 
 const initialContextValue: IGameContext = {
@@ -32,6 +33,7 @@ const initialContextValue: IGameContext = {
   isLoading: false,
   refetchGame: () => null,
   refetchTrophies: () => null,
+  updateProgress: () => null,
 };
 
 const Context = createContext<IGameContext>(initialContextValue);
@@ -79,6 +81,15 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
       });
   };
 
+  const updateProgress = (id: number): void => {
+    setProgress((prev) => {
+      const updated = [...prev].map((i) => {
+        return { ...i, earned: i.id === id ? !i.earned : i.earned };
+      });
+      return updated;
+    });
+  };
+
   const exposed: IGameContext = {
     game,
     trophies,
@@ -86,6 +97,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     isLoading,
     refetchGame,
     refetchTrophies,
+    updateProgress,
   };
 
   return <Context.Provider value={exposed}>{children}</Context.Provider>;
