@@ -55,11 +55,11 @@ const useStyles = createStyles(
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
-  const { game } = useGame();
+  const { progress } = useGame();
   const { classes, cx } = useStyles(trophy);
 
   const { id, name, detail, icon_url, type, rare, earnedRate } = trophy;
-  const checked = game?.progress?.find((i) => i.id === id)?.earned ?? false;
+  const checked = progress.find((i) => i.id === id)?.earned ?? false;
 
   return (
     <Flex
