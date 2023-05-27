@@ -34,7 +34,7 @@ import { UserCheck, UserX } from "tabler-icons-react";
 import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
 
-type Status = "stale" | "checking" | "notUnique" | "unique";
+type Status = "idle" | "checking" | "notUnique" | "unique";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -87,13 +87,13 @@ const SignUpPage: IPage = () => {
   const supabase = useSupabaseClient();
   const { colors } = useMantineTheme();
   const [user, setUser] = useState<IUser | null>(null);
-  const [status, setStatus] = useState<Status>("stale");
+  const [status, setStatus] = useState<Status>("idle");
   const isChecking = status === "checking";
   const isUnique = status === "unique";
 
   const statusIcons: Record<Status, ReactNode> = useMemo(
     () => ({
-      stale: undefined,
+      idle: undefined,
       checking: <Loader size="xs" />,
       unique: <UserCheck size={20} color={colors.green[8]} />,
       notUnique: <UserX size={20} color={colors.red[8]} />,
@@ -216,7 +216,7 @@ const SignUpPage: IPage = () => {
                 {...form.getInputProps("username")}
                 onChange={(e) => {
                   const value = e.target.value;
-                  setStatus(value.length > 0 ? "checking" : "stale");
+                  setStatus(value.length > 0 ? "checking" : "idle");
                   form.setFieldValue("username", e.target.value);
                 }}
               />
