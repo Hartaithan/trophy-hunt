@@ -17,6 +17,7 @@ const useStyles = createStyles(({ spacing, radius, colors }) => ({
     background: colors.primary[7],
     borderRadius: radius.lg,
     padding: spacing.xs,
+    zIndex: 10,
   },
   icon: {
     minHeight: 80,
