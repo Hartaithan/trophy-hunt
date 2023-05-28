@@ -18,6 +18,7 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["react"],
+  "ignorePatterns": ["next-env.d.ts"],
   "rules": {
     "no-console": ["error", { "allow": ["info", "error"] }],
     "@typescript-eslint/no-confusing-void-expression": "off",
