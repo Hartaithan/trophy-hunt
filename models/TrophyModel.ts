@@ -66,6 +66,7 @@ export interface IGroup {
   name: string;
   detail?: string;
   icon_url: string;
+  count: number;
   counts: ITrophyCount;
   earned_counts?: ITrophyCount;
   trophies: ITrophy[];
@@ -83,6 +84,7 @@ export interface IFormattedResponse {
   detail?: string;
   icon_url: string;
   platform: string;
+  count: number;
   counts: ITrophyCount;
   earned_counts?: ITrophyCount;
   groups: IGroup[];

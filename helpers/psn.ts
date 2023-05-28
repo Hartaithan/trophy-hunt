@@ -120,41 +120,26 @@ export const formatEarnedTrophies = (
 
 export const formatGroups = (
   groups: MergedGroups,
-  trophies: GroupedTrophies
+  trophies: GroupedTrophies,
+  earned: boolean = false
 ): IGroup[] => {
   const array = [...groups.trophyGroups];
   const formatted: IGroup[] = [];
   for (let i = 0; i < array.length; i++) {
     const el = array[i];
-    formatted.push({
+    let group: IGroup = {
       id: el.trophyGroupId,
       name: el.trophyGroupName,
       detail: el.trophyGroupDetail,
       icon_url: el.trophyGroupIconUrl,
+      count: trophies[el.trophyGroupId].length,
       counts: el.definedTrophies,
       trophies: trophies[el.trophyGroupId],
-    });
-  }
-  return formatted;
-};
-
-export const formatEarnedGroups = (
-  groups: MergedGroups,
-  trophies: GroupedTrophies
-): IGroup[] => {
-  const array = [...groups.trophyGroups];
-  const formatted: IGroup[] = [];
-  for (let i = 0; i < array.length; i++) {
-    const el = array[i];
-    formatted.push({
-      id: el.trophyGroupId,
-      name: el.trophyGroupName,
-      detail: el.trophyGroupDetail,
-      icon_url: el.trophyGroupIconUrl,
-      counts: el.definedTrophies,
-      earned_counts: el.earnedTrophies,
-      trophies: trophies[el.trophyGroupId],
-    });
+    };
+    if (earned) {
+      group = { ...group, earned_counts: el.earnedTrophies };
+    }
+    formatted.push(group);
   }
   return formatted;
 };
@@ -178,6 +163,7 @@ export const formatResponse = (
     detail: trophyTitleDetail,
     icon_url: trophyTitleIconUrl,
     platform: trophyTitlePlatform,
+    count: formattedTrophies.length,
     counts: definedTrophies,
     groups: formattedGroups,
   };
@@ -202,12 +188,13 @@ export const formatEarnedResponse = (
   } = groups;
   const { trophies: formattedTrophies, grouped } =
     formatEarnedTrophies(trophies);
-  const formattedGroups = formatGroups(groups, grouped);
+  const formattedGroups = formatGroups(groups, grouped, true);
   let response: IFormattedResponse = {
     name: trophyTitleName,
     detail: trophyTitleDetail,
     icon_url: trophyTitleIconUrl,
     platform: trophyTitlePlatform,
+    count: formattedTrophies.length,
     counts: definedTrophies,
     earned_counts: earnedTrophies,
     groups: formattedGroups,
