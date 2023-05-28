@@ -54,7 +54,7 @@ const saveGameProgress: NextApiHandler = async (req, res) => {
     .from("games")
     .select("progress")
     .eq("id", id)
-    .single();
+    .single<{ progress: IProgressItem[] | null }>();
 
   if (error !== null) {
     console.error("unable to get game progress", id, error);
@@ -65,12 +65,13 @@ const saveGameProgress: NextApiHandler = async (req, res) => {
     return await updateProgress(id, payload, supabase, res);
   }
 
-  const previous = [...data.progress];
-  const updated = [...payload];
-  const merged = previous.map((i) => ({
-    ...i,
-    ...updated.find((n) => n.id === i.id),
-  }));
+  const map = new Map<number, IProgressItem>();
+  const combined = data.progress.concat(payload);
+  for (let n = 0; n < combined.length; n++) {
+    const el = combined[n];
+    map.set(el.id, { ...map.get(el.id), ...el });
+  }
+  const merged = Array.from(map.values());
 
   return await updateProgress(id, merged, supabase, res);
 };
