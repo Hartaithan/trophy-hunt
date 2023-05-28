@@ -1,6 +1,9 @@
 import API from "@/helpers/api";
 import { type IGame } from "@/models/GameModel";
-import { type IProgressItem } from "@/models/ProgressModel";
+import {
+  type IProgressPayload,
+  type IProgressItem,
+} from "@/models/ProgressModel";
 import { type IFormattedResponse } from "@/models/TrophyModel";
 import { useDebouncedValue } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -47,6 +50,19 @@ const initialContextValue: IGameContext = {
   refetchGame: () => null,
   refetchTrophies: () => null,
   updateProgress: () => null,
+};
+
+const initializeProgress = (trophies: IFormattedResponse): IProgressPayload => {
+  const payload = trophies.groups.reduce<IProgressItem[]>((acc, cur) => {
+    const items: IProgressItem[] = cur.trophies.map((i) => ({
+      id: i.id,
+      earned: i.earned ?? false,
+      dlc: cur.id !== "default",
+    }));
+    acc = acc.concat(items);
+    return acc;
+  }, []);
+  return { payload };
 };
 
 const Context = createContext<IGameContext>(initialContextValue);
@@ -166,6 +182,28 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
         isUserInteract.current = false;
       });
   }, [debouncedProgress]); // eslint-disable-line
+
+  useEffect(() => {
+    if (typeof id !== "string") return;
+    const count = trophies?.count ?? -1;
+    if (progress.length < count && trophies != null) {
+      const payload = initializeProgress(trophies);
+      API.post("/games/" + id + "/progress", JSON.stringify(payload))
+        .then(({ data }) => {
+          if (data.progress != null) {
+            setProgress(data.progress);
+          }
+        })
+        .catch((error) => {
+          console.error("unable to update progress", error);
+        })
+        .finally(() => {
+          setStatus("completed");
+        });
+    } else {
+      console.info("doesn't need update");
+    }
+  }, [progress, trophies]); // eslint-disable-line
 
   return <Context.Provider value={exposed}>{children}</Context.Provider>;
 };
