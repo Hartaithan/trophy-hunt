@@ -24,7 +24,7 @@ interface IGameProviderProps extends PropsWithChildren {
   initialTrophies?: IFormattedResponse | null;
 }
 
-type Status = "idle" | "syncing" | "refetching" | "completed";
+type Status = "idle" | "syncing" | "refetching" | "updating" | "completed";
 
 interface IGameContext {
   game: IGame | null;
@@ -33,6 +33,7 @@ interface IGameContext {
   isIdle: boolean;
   isRefetching: boolean;
   isSyncing: boolean;
+  isUpdating: boolean;
   isCompleted: boolean;
   refetchGame: () => void;
   refetchTrophies: () => void;
@@ -46,6 +47,7 @@ const initialContextValue: IGameContext = {
   isIdle: true,
   isRefetching: false,
   isSyncing: false,
+  isUpdating: false,
   isCompleted: false,
   refetchGame: () => null,
   refetchTrophies: () => null,
@@ -82,10 +84,12 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const isIdle = status === "idle";
   const isRefetching = status === "refetching";
   const isSyncing = status === "syncing";
+  const isUpdating = status === "updating";
   const isCompleted = status === "completed";
 
   const [debouncedProgress] = useDebouncedValue(progress, 700);
   const isUserInteract = useRef<boolean>(false);
+  const isAlreadyUpdated = useRef<boolean>(false);
 
   const refetchGame = (): void => {
     if (typeof id !== "string") return;
@@ -145,6 +149,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     isIdle,
     isRefetching,
     isSyncing,
+    isUpdating,
     isCompleted,
     refetchGame,
     refetchTrophies,
@@ -185,17 +190,44 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
 
   useEffect(() => {
     if (typeof id !== "string") return;
+    if (isAlreadyUpdated.current) return;
     const count = trophies?.count ?? -1;
     if (progress.length < count && trophies != null) {
       const payload = initializeProgress(trophies);
+      isAlreadyUpdated.current = true;
+      notifications.show({
+        id: "update",
+        loading: true,
+        title: "Updating...",
+        message:
+          "We've noticed a difference in progress, we're doing an update... It shouldn't take long, don't reload the page.",
+        autoClose: false,
+        withCloseButton: false,
+      });
+      setStatus("updating");
       API.post("/games/" + id + "/progress", JSON.stringify(payload))
-        .then(({ data }) => {
-          if (data.progress != null) {
-            setProgress(data.progress);
+        .then((res) => {
+          if (res.data.progress != null) {
+            setProgress(res.data.progress);
           }
+          notifications.update({
+            id: "update",
+            title: "Success!",
+            message: res.data.message,
+            icon: <Check size="1rem" />,
+            autoClose: 3000,
+          });
         })
         .catch((error) => {
           console.error("unable to update progress", error);
+          notifications.update({
+            id: "update",
+            color: "red",
+            title: "Something went wrong!",
+            message:
+              "For some reason the update is not complete, please try again later.",
+            icon: <AlertOctagon size="1rem" />,
+          });
         })
         .finally(() => {
           setStatus("completed");
