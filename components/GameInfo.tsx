@@ -23,12 +23,12 @@ const useStyles = createStyles(({ radius }) => ({
 }));
 
 const GameInfo: FC = () => {
-  const { game } = useGame();
+  const { game, progress } = useGame();
   const { classes } = useStyles();
 
   if (game === null) return null;
 
-  const { title, status, platform, image_url, progress } = game;
+  const { title, status, platform, image_url } = game;
 
   return (
     <Group className={classes.container}>
