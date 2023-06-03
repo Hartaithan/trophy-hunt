@@ -2,7 +2,7 @@ import LanguageSelect from "@/components/LanguageSelect";
 import API from "@/helpers/api";
 import { type IPage } from "@/models/AppModel";
 import { type IProfile } from "@/models/AuthModel";
-import { Box, Button, Flex, Group, TextInput, Title } from "@mantine/core";
+import { Box, Button, Flex, Group, Input, Title } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { type GetServerSideProps } from "next";
@@ -46,14 +46,9 @@ const ProfilePage: IPage<IProfilePageProps> = (props) => {
 
   const form = useForm({
     initialValues: {
-      username: profile?.username ?? "",
       language: profile?.language ?? "en-US",
     },
     validate: {
-      username: (value) =>
-        /^[\w-_]*$/.test(value)
-          ? null
-          : "Username can only include letters, numbers, dashes and underscores",
       language: isNotEmpty("Language is required"),
     },
     validateInputOnChange: ["username"],
@@ -90,12 +85,46 @@ const ProfilePage: IPage<IProfilePageProps> = (props) => {
       </Title>
       <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
         <Group grow>
-          <TextInput
-            required
-            label="Username"
-            placeholder="Your username"
-            {...form.getInputProps("username")}
-          />
+          <Input.Wrapper id="username" withAsterisk>
+            <Flex justify="space-between">
+              <Input.Label>Username</Input.Label>
+              <Input.Label
+                size="xs"
+                style={{ display: "flex", alignItems: "flex-end" }}
+              >
+                Non-editable
+              </Input.Label>
+            </Flex>
+            <Input
+              id="username"
+              readOnly
+              disabled
+              placeholder="Your username"
+              value={profile?.username ?? "Username not found"}
+            />
+          </Input.Wrapper>
+          <Input.Wrapper id="created" withAsterisk>
+            <Flex justify="space-between">
+              <Input.Label>Profile creation date</Input.Label>
+              <Input.Label
+                size="xs"
+                style={{ display: "flex", alignItems: "flex-end" }}
+              >
+                Non-editable
+              </Input.Label>
+            </Flex>
+            <Input
+              id="created"
+              readOnly
+              disabled
+              placeholder="Profile creation date"
+              value={
+                profile != null
+                  ? new Date(profile.created_at).toLocaleString()
+                  : "Created date not found"
+              }
+            />
+          </Input.Wrapper>
           <LanguageSelect
             value={form.values.language}
             onChange={(value) =>
@@ -104,7 +133,12 @@ const ProfilePage: IPage<IProfilePageProps> = (props) => {
           />
         </Group>
         <Flex justify="flex-end">
-          <Button type="submit" w={150} mt="xl">
+          <Button
+            type="submit"
+            w={150}
+            mt="xl"
+            disabled={!form.isDirty() && form.isValid()}
+          >
             Update!
           </Button>
         </Flex>
