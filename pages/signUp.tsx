@@ -1,22 +1,11 @@
-import {
-  useState,
-  forwardRef,
-  useEffect,
-  useMemo,
-  type ReactNode,
-} from "react";
+import { useState, useEffect, useMemo, type ReactNode } from "react";
 import { type IPage } from "@/models/AppModel";
 import { type IUser, type ISignUpBody } from "@/models/AuthModel";
 import {
-  Avatar,
   Button,
   createStyles,
   Flex,
-  Group,
-  Input,
   PasswordInput,
-  Select,
-  type SelectProps,
   Stack,
   Text,
   TextInput,
@@ -26,32 +15,21 @@ import {
   Box,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength, isNotEmpty } from "@mantine/form";
-import { locales } from "@/constants/locales";
-import { type ILocale } from "@/models/LocaleModel";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useDebouncedValue } from "@mantine/hooks";
 import { UserCheck, UserX } from "tabler-icons-react";
 import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
+import LanguageSelect from "@/components/LanguageSelect";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const useStyles = createStyles(({ spacing }) => ({
+const useStyles = createStyles(() => ({
   form: {
     width: "100%",
     maxWidth: 400,
-  },
-  language: {
-    position: "relative",
-  },
-  languageIcon: {
-    position: "absolute",
-    top: "50%",
-    left: spacing.xs,
-    transform: "translateY(-50%)",
-    zIndex: 10,
   },
   username: {
     position: "relative",
@@ -64,23 +42,6 @@ const useStyles = createStyles(({ spacing }) => ({
     lineHeight: 1.55,
   },
 }));
-
-const SelectStyles: SelectProps["styles"] = () => ({
-  input: {
-    paddingLeft: 46,
-  },
-});
-
-const SelectItem = forwardRef<HTMLDivElement, ILocale>(
-  ({ id: _, label, icon_url, ...rest }: ILocale, ref) => (
-    <div ref={ref} {...rest}>
-      <Group noWrap>
-        <Avatar size={24} src={icon_url} />
-        <Text size="sm">{label}</Text>
-      </Group>
-    </div>
-  )
-);
 
 const SignUpPage: IPage = () => {
   const { classes } = useStyles();
@@ -235,25 +196,12 @@ const SignUpPage: IPage = () => {
               placeholder="Enter your NPSSO"
               {...form.getInputProps("npsso")}
             />
-            <Input.Wrapper label="Language" required>
-              <div className={classes.language}>
-                <Avatar
-                  className={classes.languageIcon}
-                  size={24}
-                  src={
-                    locales.find((i) => i.value === form.values.language)
-                      ?.icon_url
-                  }
-                />
-                <Select
-                  data={locales}
-                  searchable
-                  styles={SelectStyles}
-                  itemComponent={SelectItem}
-                  {...form.getInputProps("language")}
-                />
-              </div>
-            </Input.Wrapper>
+            <LanguageSelect
+              value={form.values.language}
+              onChange={(value) =>
+                form.setFieldValue("language", value ?? "en-US")
+              }
+            />
           </Stack>
           <Button
             type="submit"
