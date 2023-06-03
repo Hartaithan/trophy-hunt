@@ -1,8 +1,8 @@
 import API from "@/helpers/api";
 import { type IPage } from "@/models/AppModel";
 import {
+  Box,
   Button,
-  createStyles,
   Flex,
   PasswordInput,
   Stack,
@@ -14,15 +14,7 @@ import { useRouter } from "next/router";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const useStyles = createStyles(() => ({
-  form: {
-    width: "100%",
-    maxWidth: 400,
-  },
-}));
-
 const SignInPage: IPage = () => {
-  const { classes } = useStyles();
   const { reload } = useRouter();
 
   const form = useForm({
@@ -63,7 +55,12 @@ const SignInPage: IPage = () => {
 
   return (
     <Flex w="100%" h="100%" direction="column" justify="center" align="center">
-      <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
+      <Box
+        component="form"
+        w="100%"
+        maw={400}
+        onSubmit={form.onSubmit(handleSubmit)}
+      >
         <Stack>
           <TextInput
             required
@@ -87,7 +84,7 @@ const SignInPage: IPage = () => {
         <Button type="submit" mt="xl" fullWidth>
           Sign in!
         </Button>
-      </form>
+      </Box>
     </Flex>
   );
 };

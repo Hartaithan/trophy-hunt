@@ -143,7 +143,7 @@ const Header: FC = () => {
               </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item icon={<User size="1rem" />} disabled>
+              <Menu.Item icon={<User size="1rem" />}>
                 <Link href="/profile">Profile</Link>
               </Menu.Item>
               <Menu.Item

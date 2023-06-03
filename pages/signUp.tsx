@@ -27,10 +27,6 @@ type Status = "idle" | "checking" | "notUnique" | "unique";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const useStyles = createStyles(() => ({
-  form: {
-    width: "100%",
-    maxWidth: 400,
-  },
   username: {
     position: "relative",
   },
@@ -144,7 +140,12 @@ const SignUpPage: IPage = () => {
           </Text>
         </Flex>
       ) : (
-        <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
+        <Box
+          component="form"
+          w="100%"
+          maw={400}
+          onSubmit={form.onSubmit(handleSubmit)}
+        >
           <Stack>
             <TextInput
               required
@@ -211,7 +212,7 @@ const SignUpPage: IPage = () => {
           >
             Sign up!
           </Button>
-        </form>
+        </Box>
       )}
     </Flex>
   );
