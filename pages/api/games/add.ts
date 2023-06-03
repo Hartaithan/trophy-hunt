@@ -131,7 +131,7 @@ const addGame: NextApiHandler = async (req, res) => {
 
   const authorization: AuthorizationPayload = { accessToken: access_token };
 
-  const language = profile.language ?? "en-en";
+  const language = profile.language ?? "en-US";
   let listOptions: Partial<TitleTrophiesOptions> = {
     headerOverrides: { "Accept-Language": language },
   };

@@ -38,13 +38,22 @@ const getEarnedTrophies: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Invalid [id] query" });
   }
 
-  const [user, game] = await Promise.all([
-    supabase.auth.getUser(),
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+  if (userError !== null || user === null) {
+    console.error("unable to get user", userError);
+    return res.status(400).json({ message: "Unable to get user" });
+  }
+
+  const [profile, game] = await Promise.all([
+    supabase.from("profiles").select("language").eq("id", user.id).single(),
     supabase.from("games").select("*").eq("id", id).single(),
   ]);
-  if (user.error !== null || user === null) {
-    console.error("unable to get user", user.error);
-    return res.status(400).json({ message: "Unable to get user" });
+  if (profile.error !== null || profile === null) {
+    console.error("unable to get profile", profile.error);
+    return res.status(400).json({ message: "Unable to get profile" });
   }
   if (game.error !== null) {
     console.error("unable to update game by id", id, game.error);
@@ -53,7 +62,7 @@ const getEarnedTrophies: NextApiHandler = async (req, res) => {
 
   const auth: AuthorizationPayload = { accessToken: access_token };
 
-  const language = user.data.user.user_metadata.language ?? "en-en";
+  const language = profile.data.language ?? "en-US";
   const code = game.data.code;
   let options: Partial<TitleTrophiesOptions> = {
     headerOverrides: { "Accept-Language": language },
