@@ -131,9 +131,9 @@ const addGame: NextApiHandler = async (req, res) => {
 
   const authorization: AuthorizationPayload = { accessToken: access_token };
 
-  const lang = profile.language ?? "en-en";
+  const language = profile.language ?? "en-en";
   let listOptions: Partial<TitleTrophiesOptions> = {
-    headerOverrides: { "Accept-Language": lang },
+    headerOverrides: { "Accept-Language": language },
   };
   if (platform !== "ps5") {
     listOptions = { ...listOptions, npServiceName: "trophy" };

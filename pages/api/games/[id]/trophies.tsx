@@ -45,10 +45,10 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
 
   const auth: AuthorizationPayload = { accessToken: access_token };
 
-  const lang = user.data.user.user_metadata.lang ?? "en-en";
+  const language = user.data.user.user_metadata.language ?? "en-en";
   const code = game.data.code;
   let options: Partial<TitleTrophiesOptions> = {
-    headerOverrides: { "Accept-Language": lang },
+    headerOverrides: { "Accept-Language": language },
   };
   if (game.data.platform !== "ps5") {
     options = { ...options, npServiceName: "trophy" };

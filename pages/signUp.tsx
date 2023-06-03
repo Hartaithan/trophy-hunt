@@ -107,7 +107,7 @@ const SignUpPage: IPage = () => {
       username: "",
       password: "",
       npsso: "",
-      lang: "en-US",
+      language: "en-US",
     },
     validate: {
       email: isEmail("Invalid email"),
@@ -120,7 +120,7 @@ const SignUpPage: IPage = () => {
         "Password should include at least 6 characters"
       ),
       npsso: hasLength(64, "NPSSO must have exactly 64 characters"),
-      lang: isNotEmpty("Language is required"),
+      language: isNotEmpty("Language is required"),
     },
     validateInputOnChange: ["username"],
   });
@@ -241,7 +241,8 @@ const SignUpPage: IPage = () => {
                   className={classes.languageIcon}
                   size={24}
                   src={
-                    locales.find((i) => i.value === form.values.lang)?.icon_url
+                    locales.find((i) => i.value === form.values.language)
+                      ?.icon_url
                   }
                 />
                 <Select
@@ -249,7 +250,7 @@ const SignUpPage: IPage = () => {
                   searchable
                   styles={SelectStyles}
                   itemComponent={SelectItem}
-                  {...form.getInputProps("lang")}
+                  {...form.getInputProps("language")}
                 />
               </div>
             </Input.Wrapper>

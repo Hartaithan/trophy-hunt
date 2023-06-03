@@ -14,12 +14,12 @@ export interface ISignUpBody extends Record<string, string> {
   email: string;
   password: string;
   npsso: string;
-  lang: string;
+  language: string;
   username: string;
 }
 
 interface IUserData {
-  lang: string;
+  language: string;
   username: string;
   onlineId: string;
 }
