@@ -60,6 +60,15 @@ const useStyles = createStyles(({ colors, radius, spacing }) => ({
   },
 }));
 
+const CardOverlay: FC = () => (
+  <Overlay
+    zIndex={2}
+    gradient="linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))"
+  />
+);
+
+const MemoizedCardOverlay = memo(CardOverlay);
+
 const BoardCard: FC<IBoardCardProps> = (props) => {
   const { item } = props;
   const { id, title, image_url, status, platform, progress } = item;
@@ -109,10 +118,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           alt="image card"
           unoptimized
         />
-        <Overlay
-          zIndex={2}
-          gradient="linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))"
-        />
+        {platform === "ps5" && <MemoizedCardOverlay />}
         <Image
           className={classes.background}
           src={image_url}
