@@ -7,14 +7,12 @@ interface IPlatformBadgeProps {
   platform: Platform | null;
 }
 
-const useStyles = createStyles(({ colors }) => {
-  return {
-    platform: {
-      background: colors.gray[7],
-      color: colors.gray[0],
-    },
-  };
-});
+const useStyles = createStyles(({ colors }) => ({
+  platform: {
+    background: colors.gray[7],
+    color: colors.gray[0],
+  },
+}));
 
 const PlatformBadge: FC<IPlatformBadgeProps> = (props) => {
   const { platform } = props;
