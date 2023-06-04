@@ -13,6 +13,7 @@ import {
   Loader,
   useMantineTheme,
   Box,
+  Input,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength, isNotEmpty } from "@mantine/form";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -21,32 +22,27 @@ import { UserCheck, UserX } from "tabler-icons-react";
 import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
 import LanguageSelect from "@/components/LanguageSelect";
+import Link from "next/link";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const useStyles = createStyles(() => ({
-  username: {
-    position: "relative",
-  },
+const useStyles = createStyles(({ colors, fontSizes }, isUnique: boolean) => ({
   unique: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    fontSize: "0.875rem",
-    lineHeight: 1.55,
+    fontSize: fontSizes.xs,
+    color: isUnique ? colors.green[8] : colors.red[8],
   },
 }));
 
 const SignUpPage: IPage = () => {
-  const { classes } = useStyles();
   const supabase = useSupabaseClient();
   const { colors } = useMantineTheme();
   const [user, setUser] = useState<IUser | null>(null);
   const [status, setStatus] = useState<Status>("idle");
   const isChecking = status === "checking";
   const isUnique = status === "unique";
+  const { classes } = useStyles(isUnique);
 
   const statusIcons: Record<Status, ReactNode> = useMemo(
     () => ({
@@ -146,6 +142,9 @@ const SignUpPage: IPage = () => {
           maw={400}
           onSubmit={form.onSubmit(handleSubmit)}
         >
+          <Title order={2} align="center" mb="md">
+            Let&apos;s get started!
+          </Title>
           <Stack>
             <TextInput
               required
@@ -154,24 +153,23 @@ const SignUpPage: IPage = () => {
               placeholder="Enter your email"
               {...form.getInputProps("email")}
             />
-            <Box className={classes.username}>
-              {form.values.username.length > 0 && !isChecking && (
-                <Text
-                  className={classes.unique}
-                  color={isUnique ? colors.green[8] : colors.red[8]}
-                >
-                  {isUnique ? "Username is unique" : "Username already taken"}
-                </Text>
-              )}
-              {form.values.username.length > 0 && isChecking && (
-                <Text className={classes.unique} color={colors.dark[0]}>
-                  Checking...
-                </Text>
-              )}
-              <TextInput
+            <Input.Wrapper id="username">
+              <Flex justify="space-between" align="flex-end">
+                <Input.Label required>Username</Input.Label>
+                {form.values.username.length > 0 && !isChecking && (
+                  <Input.Label className={classes.unique}>
+                    {isUnique ? "Username is unique" : "Username already taken"}
+                  </Input.Label>
+                )}
+                {form.values.username.length > 0 && isChecking && (
+                  <Input.Label className={classes.unique}>
+                    Checking...
+                  </Input.Label>
+                )}
+              </Flex>
+              <Input
+                id="username"
                 required
-                type="text"
-                label="Username"
                 autoComplete="off"
                 placeholder="Enter your username"
                 rightSection={statusIcons[status]}
@@ -182,7 +180,7 @@ const SignUpPage: IPage = () => {
                   form.setFieldValue("username", e.target.value);
                 }}
               />
-            </Box>
+            </Input.Wrapper>
             <PasswordInput
               required
               type="password"
@@ -212,6 +210,14 @@ const SignUpPage: IPage = () => {
           >
             Sign up!
           </Button>
+          <Text align="center" mt="md" size="sm" fw={500}>
+            Already have account?&nbsp;
+            <Link href="/signIn">
+              <Text span color="accented.9" td="underline">
+                Sign In!
+              </Text>
+            </Link>
+          </Text>
         </Box>
       )}
     </Flex>

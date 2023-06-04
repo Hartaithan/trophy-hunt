@@ -86,14 +86,9 @@ const ProfilePage: IPage<IProfilePageProps> = (props) => {
       <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
         <Group grow>
           <Input.Wrapper id="username" withAsterisk>
-            <Flex justify="space-between">
+            <Flex justify="space-between" align="flex-end">
               <Input.Label>Username</Input.Label>
-              <Input.Label
-                size="xs"
-                style={{ display: "flex", alignItems: "flex-end" }}
-              >
-                Non-editable
-              </Input.Label>
+              <Input.Label size="xs">Non-editable</Input.Label>
             </Flex>
             <Input
               id="username"
@@ -104,14 +99,9 @@ const ProfilePage: IPage<IProfilePageProps> = (props) => {
             />
           </Input.Wrapper>
           <Input.Wrapper id="created" withAsterisk>
-            <Flex justify="space-between">
+            <Flex justify="space-between" align="flex-end">
               <Input.Label>Profile creation date</Input.Label>
-              <Input.Label
-                size="xs"
-                style={{ display: "flex", alignItems: "flex-end" }}
-              >
-                Non-editable
-              </Input.Label>
+              <Input.Label size="xs">Non-editable</Input.Label>
             </Flex>
             <Input
               id="created"

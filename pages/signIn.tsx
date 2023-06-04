@@ -6,10 +6,13 @@ import {
   Flex,
   PasswordInput,
   Stack,
+  Text,
   TextInput,
+  Title,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -55,6 +58,9 @@ const SignInPage: IPage = () => {
 
   return (
     <Flex w="100%" h="100%" direction="column" justify="center" align="center">
+      <Title order={2} align="center" mb="md">
+        Welcome back!
+      </Title>
       <Box
         component="form"
         w="100%"
@@ -81,10 +87,18 @@ const SignInPage: IPage = () => {
             {...form.getInputProps("npsso")}
           />
         </Stack>
-        <Button type="submit" mt="xl" fullWidth>
+        <Button type="submit" mt="xl" fullWidth disabled={!form.isValid()}>
           Sign in!
         </Button>
       </Box>
+      <Text align="center" mt="md" fw={500} size="sm">
+        Don&apos;t have an account?&nbsp;
+        <Link href="/signUp">
+          <Text span color="accented.9" td="underline">
+            Sign Up!
+          </Text>
+        </Link>
+      </Text>
     </Flex>
   );
 };
