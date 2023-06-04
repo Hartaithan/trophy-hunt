@@ -14,6 +14,7 @@ import {
   useMantineTheme,
   Box,
   Input,
+  Anchor,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength, isNotEmpty } from "@mantine/form";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -212,11 +213,15 @@ const SignUpPage: IPage = () => {
           </Button>
           <Text align="center" mt="md" size="sm" fw={500}>
             Already have account?&nbsp;
-            <Link href="/signIn">
-              <Text span color="accented.9" td="underline">
-                Sign In!
-              </Text>
-            </Link>
+            <Anchor
+              component={Link}
+              href="/signIn"
+              span
+              color="accented.9"
+              td="underline"
+            >
+              Sign In!
+            </Anchor>
           </Text>
         </Box>
       )}

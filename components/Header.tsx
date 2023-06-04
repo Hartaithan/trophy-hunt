@@ -12,6 +12,7 @@ import {
   Button,
   Menu,
   type MenuProps,
+  Anchor,
 } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
@@ -68,6 +69,7 @@ const useStyles = createStyles(({ colors, spacing, radius, fontSizes }) => ({
   },
   link: {
     fontSize: fontSizes.sm,
+    color: colors.secondary[8],
     fontWeight: 500,
     textDecoration: "none",
     padding: "2px 8px",
@@ -112,7 +114,9 @@ const Header: FC = () => {
           {links.map((link) => {
             const isActive = pathname === link.href;
             return (
-              <Link
+              <Anchor
+                size="sm"
+                component={Link}
                 key={link.id}
                 href={link.href}
                 prefetch={false}
@@ -123,7 +127,7 @@ const Header: FC = () => {
                 )}
               >
                 {link.label}
-              </Link>
+              </Anchor>
             );
           })}
         </Flex>
@@ -143,8 +147,13 @@ const Header: FC = () => {
               </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item icon={<User size="1rem" />}>
-                <Link href="/profile">Profile</Link>
+              <Menu.Item
+                component={Link}
+                href="/profile"
+                icon={<User size="1rem" />}
+                lh="initial"
+              >
+                Profile
               </Menu.Item>
               <Menu.Item
                 onClick={() => handleSignOut()}
@@ -156,16 +165,16 @@ const Header: FC = () => {
           </Menu>
         )}
         {!isAuth && (
-          <Link href="/signIn">
-            <Button
-              size="xs"
-              leftIcon={<User size="0.75rem" />}
-              variant="light"
-              compact
-            >
-              Sign in
-            </Button>
-          </Link>
+          <Button
+            component={Link}
+            href="/signIn"
+            size="xs"
+            leftIcon={<User size="0.75rem" />}
+            variant="light"
+            compact
+          >
+            Sign in
+          </Button>
         )}
       </Container>
     </MantineHeader>

@@ -1,6 +1,7 @@
 import API from "@/helpers/api";
 import { type IPage } from "@/models/AppModel";
 import {
+  Anchor,
   Box,
   Button,
   Flex,
@@ -93,11 +94,15 @@ const SignInPage: IPage = () => {
       </Box>
       <Text align="center" mt="md" fw={500} size="sm">
         Don&apos;t have an account?&nbsp;
-        <Link href="/signUp">
-          <Text span color="accented.9" td="underline">
-            Sign Up!
-          </Text>
-        </Link>
+        <Anchor
+          component={Link}
+          href="/signUp"
+          span
+          color="accented.9"
+          td="underline"
+        >
+          Sign Up!
+        </Anchor>
       </Text>
     </Flex>
   );
