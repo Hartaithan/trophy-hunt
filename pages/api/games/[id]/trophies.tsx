@@ -1,8 +1,14 @@
-import { formatResponse } from "@/helpers/psn";
+import {
+  formatEarnedResponse,
+  mergeGroups,
+  mergeTrophies,
+} from "@/helpers/psn";
 import {
   type TitleTrophiesOptions,
   type ITitleGroups,
   type ITitleTrophies,
+  type ITitleEarnedTrophies,
+  type ITitleEarnedGroups,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
@@ -11,9 +17,11 @@ import {
   getTitleTrophyGroups,
   type AuthorizationPayload,
   getTitleTrophies,
+  getUserTrophiesEarnedForTitle,
+  getUserTrophyGroupEarningsForTitle,
 } from "psn-api";
 
-const getGameTrophies: NextApiHandler = async (req, res) => {
+const getTrophiesByGame: NextApiHandler = async (req, res) => {
   const {
     query: { id, withTrophies },
   } = req;
@@ -65,14 +73,21 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
 
   type Response = [
     PromiseSettledResult<ITitleGroups>,
-    PromiseSettledResult<ITitleTrophies>
+    PromiseSettledResult<ITitleEarnedGroups>,
+    PromiseSettledResult<ITitleTrophies>,
+    PromiseSettledResult<ITitleEarnedTrophies>
   ];
   let titleGroups: ITitleGroups | null = null;
+  let titleEarnedGroups: ITitleEarnedGroups | null = null;
   let titleTrophies: ITitleTrophies | null = null;
-  const [resGroups, resTrophies]: Response = await Promise.allSettled([
-    getTitleTrophyGroups(auth, code, options),
-    getTitleTrophies(auth, code, "all", options),
-  ]);
+  let titleEarnedTrophies: ITitleEarnedTrophies | null = null;
+  const [resGroups, resGroupsEarned, resTrophies, resEarned]: Response =
+    await Promise.allSettled([
+      getTitleTrophyGroups(auth, code, options),
+      getUserTrophyGroupEarningsForTitle(auth, "me", code, options),
+      getTitleTrophies(auth, code, "all", options),
+      getUserTrophiesEarnedForTitle(auth, "me", code, "all", options),
+    ]);
 
   if (resGroups.status === "fulfilled" && !("error" in resGroups.value)) {
     titleGroups = resGroups.value;
@@ -82,15 +97,29 @@ const getGameTrophies: NextApiHandler = async (req, res) => {
     titleTrophies = resTrophies.value;
   }
 
+  if (resEarned.status === "fulfilled" && !("error" in resEarned.value)) {
+    titleEarnedTrophies = resEarned.value;
+  }
+
+  if (
+    resGroupsEarned.status === "fulfilled" &&
+    !("error" in resGroupsEarned.value)
+  ) {
+    titleEarnedGroups = resGroupsEarned.value;
+  }
+
   if (titleGroups === null || titleTrophies === null) {
     const defaultMessage = "Unable to get trophies and trophy groups";
-    console.error("unable to get trophies", resGroups, resTrophies);
+    console.error("unable to get trophies");
     return res.status(400).json({ message: defaultMessage });
   }
 
-  const formattedResponse = formatResponse(
-    titleGroups,
-    titleTrophies,
+  const mergedGroups = mergeGroups(titleGroups, titleEarnedGroups);
+  const mergedTrophies = mergeTrophies(titleTrophies, titleEarnedTrophies);
+
+  const formattedResponse = formatEarnedResponse(
+    mergedGroups,
+    mergedTrophies,
     withTrophies !== undefined
   );
 
@@ -101,7 +130,7 @@ const handler: NextApiHandler = async (req, res) => {
   const { method = "[Not Found]" } = req;
   switch (method) {
     case "GET":
-      return getGameTrophies(req, res);
+      return getTrophiesByGame(req, res);
     default:
       res.setHeader("Allow", ["GET"]);
       return res.status(405).end(`Method ${method} Not Allowed`);

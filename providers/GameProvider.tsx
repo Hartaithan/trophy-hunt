@@ -55,15 +55,18 @@ const initialContextValue: IGameContext = {
 };
 
 const initializeProgress = (trophies: IFormattedResponse): IProgressPayload => {
-  const payload = trophies.groups.reduce<IProgressItem[]>((acc, cur) => {
-    const items: IProgressItem[] = cur.trophies.map((i) => ({
-      id: i.id,
-      earned: i.earned ?? false,
-      dlc: cur.id !== "default",
-    }));
-    acc = acc.concat(items);
-    return acc;
-  }, []);
+  const payload: IProgressItem[] = [];
+  for (let i = 0; i < trophies.groups.length; i++) {
+    const group = trophies.groups[i];
+    for (let n = 0; n < group.trophies.length; n++) {
+      const trophy = group.trophies[n];
+      payload.push({
+        id: trophy.id,
+        earned: false,
+        dlc: group.id !== "default",
+      });
+    }
+  }
   return { payload };
 };
 
@@ -110,7 +113,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const refetchTrophies = (): void => {
     if (typeof id !== "string") return;
     setStatus("refetching");
-    API.get("/games/" + id + "/earned")
+    API.get("/games/" + id + "/trophies")
       .then(({ data }) => {
         setTrophies(data ?? null);
       })
