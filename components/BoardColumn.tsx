@@ -5,6 +5,8 @@ import {
   createStyles,
   useMantineTheme,
   UnstyledButton,
+  Button,
+  Transition,
 } from "@mantine/core";
 import { type FC } from "react";
 import { useDroppable } from "@dnd-kit/core";
@@ -14,7 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import BoardCard from "./BoardCard";
 import { type IGame } from "@/models/GameModel";
-import { PlaylistAdd } from "tabler-icons-react";
+import { ArticleOff, PlaylistAdd } from "tabler-icons-react";
 import { columnColors, columnsLabels } from "@/constants/board";
 import { useBoard } from "@/providers/BoardProvider";
 
@@ -95,6 +97,34 @@ const useStyles = createStyles(
           stroke: colors[color][shade],
         },
       },
+      list: {
+        position: "relative",
+      },
+      empty: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: 250,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: spacing.lg,
+        "& > svg": {
+          stroke: colors[color][shade],
+          marginBottom: -12,
+        },
+        "& > button": {
+          background: colors[color][shade],
+          ":hover": {
+            background: colors[color][shade] + "80",
+          },
+        },
+        "& > div > #column": {
+          color: colors[color][shade],
+          filter: "brightness(1.3)",
+        },
+      },
     };
   }
 );
@@ -128,7 +158,37 @@ const BoardColumn: FC<IBoardColumnProps> = (props) => {
             <PlaylistAdd size={20} />
           </UnstyledButton>
         </Flex>
-        <Flex direction="column" gap={spacing.sm} ref={setNodeRef}>
+        <Flex
+          className={classes.list}
+          direction="column"
+          gap={spacing.sm}
+          ref={setNodeRef}
+        >
+          <Transition
+            mounted={items.length === 0}
+            transition="fade"
+            duration={400}
+            timingFunction="ease"
+          >
+            {(styles) => (
+              <Flex className={classes.empty} style={styles}>
+                <ArticleOff size={100} />
+                <Text align="center" fw={500}>
+                  <Text id="column" span>
+                    [{columnsLabels[column]}]{" "}
+                  </Text>
+                  column is empty
+                </Text>
+                <Button
+                  onClick={handleAddGame}
+                  leftIcon={<PlaylistAdd size={20} />}
+                  compact
+                >
+                  Add game
+                </Button>
+              </Flex>
+            )}
+          </Transition>
           {items.map((item) => (
             <BoardCard key={item.id} item={item} />
           ))}

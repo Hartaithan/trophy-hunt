@@ -1,4 +1,4 @@
-import { Flex } from "@mantine/core";
+import { Flex, createStyles } from "@mantine/core";
 import { useRef, type FC } from "react";
 import BoardColumn from "./BoardColumn";
 import { type IBoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
@@ -36,7 +36,14 @@ const measuring = {
 
 const activationConstraint: PointerActivationConstraint = { distance: 15 };
 
+const useStyles = createStyles(() => ({
+  container: {
+    flex: 1,
+  },
+}));
+
 const BoardContainer: FC = () => {
+  const { classes } = useStyles();
   const { columns, setColumns } = useBoard();
   const move = useRef<IMove>({ start: null, end: null });
   const columnsRef = useRef<IBoardColumns>(columns);
@@ -198,7 +205,7 @@ const BoardContainer: FC = () => {
       onDragOver={handleDragOver}
       collisionDetection={closestCorners}
     >
-      <Flex gap="xl" py="xl">
+      <Flex className={classes.container} gap="xl" py="xl">
         {Object.keys(columns).map((col) => {
           const key = col as BOARD_COLUMNS;
           const items = columns[key];
