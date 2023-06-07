@@ -55,7 +55,7 @@ const useStyles = createStyles(
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
-  const { progress, updateProgress } = useGame();
+  const { progress, toggleTrophy } = useGame();
   const { classes, cx } = useStyles(trophy);
 
   const { id, name, detail, icon_url, type, rare, earnedRate } = trophy;
@@ -71,7 +71,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
           id="check"
           className={cx(classes.check, "check")}
           checked={checked}
-          onChange={() => updateProgress(id)}
+          onChange={() => toggleTrophy(id)}
           size="xl"
         />
         <Image

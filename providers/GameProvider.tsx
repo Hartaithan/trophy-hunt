@@ -37,7 +37,8 @@ interface IGameContext {
   isCompleted: boolean;
   refetchGame: () => void;
   refetchTrophies: () => void;
-  updateProgress: (id: number) => void;
+  syncProgress: () => void;
+  toggleTrophy: (id: number) => void;
 }
 
 const initialContextValue: IGameContext = {
@@ -51,7 +52,8 @@ const initialContextValue: IGameContext = {
   isCompleted: false,
   refetchGame: () => null,
   refetchTrophies: () => null,
-  updateProgress: () => null,
+  syncProgress: () => null,
+  toggleTrophy: () => null,
 };
 
 const initializeProgress = (trophies: IFormattedResponse): IProgressPayload => {
@@ -125,7 +127,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
       });
   };
 
-  const updateProgress = (id: number): void => {
+  const toggleTrophy = (id: number): void => {
     setStatus("syncing");
     notifications.show({
       id: "sync",
@@ -145,6 +147,46 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     });
   };
 
+  const syncProgress = (): void => {
+    if (typeof id !== "string") return;
+    setStatus("syncing");
+    notifications.show({
+      id: "sync",
+      loading: true,
+      title: "Sync...",
+      message:
+        "Synchronizing progress on trophies... It shouldn't take long, don't reload the page.",
+      autoClose: false,
+      withCloseButton: false,
+    });
+    API.get("/games/" + id + "/sync")
+      .then(({ data }) => {
+        if (data.progress == null) return;
+        setProgress(data.progress ?? null);
+        notifications.update({
+          id: "sync",
+          title: "Success!",
+          message: data.message,
+          icon: <Check size="1rem" />,
+          autoClose: 3000,
+        });
+      })
+      .catch((error) => {
+        console.error("unable to refetch trophies", error);
+        notifications.update({
+          id: "sync",
+          color: "red",
+          title: "Something went wrong!",
+          message:
+            "For some reason the synchronization did not complete, please try again.",
+          icon: <AlertOctagon size="1rem" />,
+        });
+      })
+      .finally(() => {
+        setStatus("completed");
+      });
+  };
+
   const exposed: IGameContext = {
     game,
     trophies,
@@ -156,7 +198,8 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     isCompleted,
     refetchGame,
     refetchTrophies,
-    updateProgress,
+    syncProgress,
+    toggleTrophy,
   };
 
   useEffect(() => {
