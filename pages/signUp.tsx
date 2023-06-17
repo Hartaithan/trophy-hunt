@@ -91,12 +91,16 @@ const SignUpPage: IPage = () => {
         setUser(data.user);
       })
       .catch((error) => {
+        const message = error.response?.data?.message ?? "Unable to sign up";
         notifications.show({
           title: "Something went wrong!",
           color: "red",
-          message: error.response.data.message,
+          message,
           autoClose: false,
         });
+        if (error.response.status === 405) {
+          form.setFieldError("email", message);
+        }
         console.error("sign up error", error);
       });
   };

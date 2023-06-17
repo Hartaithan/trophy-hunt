@@ -69,6 +69,9 @@ const signUp: NextApiHandler = async (req, res) => {
     console.error("unable to sign up", error);
     return res.status(400).json({ message: "Unable to sign up" });
   }
+  if (data?.user?.identities?.length === 0) {
+    return res.status(405).json({ message: "Email already in use" });
+  }
   return res
     .status(201)
     .json({ message: "User successfully created!", user: data.user });
