@@ -1,54 +1,67 @@
 import { rarityLabels, trophyColors } from "@/constants/trophy";
 import { type ITrophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
-import { Checkbox, Flex, Text, Title, createStyles } from "@mantine/core";
+import {
+  Badge,
+  Checkbox,
+  Flex,
+  Text,
+  Title,
+  createStyles,
+} from "@mantine/core";
+import dayjs from "dayjs";
 import Image from "next/image";
 import { type FC } from "react";
+import { Check } from "tabler-icons-react";
 
-const IMAGE_SIZE = 80;
+const IMAGE_SIZE = 70;
 
 interface ITrophyCardProps {
   trophy: ITrophy;
 }
 
 const useStyles = createStyles(
-  ({ spacing }, { type, earnedRate }: ITrophy) => ({
+  ({ colors, spacing, radius }, { type }: ITrophy) => ({
     container: {
-      padding: `${spacing.xs} ${spacing.md}`,
-      alignItems: "center",
-      background: `linear-gradient(110deg, transparent 0%, transparent ${
-        earnedRate == null ? 87 : 75
-      }%, ${trophyColors[type] + "66"} ${earnedRate == null ? 94 : 90}%, ${
-        trophyColors[type] + "D9"
-      } 100%)`,
-      ":first-of-type": {
-        paddingTop: spacing.md,
-      },
-      ":last-of-type": {
-        paddingBottom: spacing.md,
-      },
+      minHeight: 100,
+      gap: spacing.xs,
     },
-    content: {
-      flexDirection: "column",
-      justifyContent: "center",
-      flex: 1,
+    checked: {
+      filter: "grayscale(100%) opacity(50%)",
     },
     icon: {
       borderRadius: spacing.xs,
     },
-    wrapper: {
-      width: IMAGE_SIZE,
-      height: IMAGE_SIZE,
+    badge: {
+      width: 60,
+      flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+      gap: spacing.xs,
+      background: colors.primary[7],
+      borderRadius: radius.lg,
     },
-    check: {
-      opacity: 0,
-      transition: "all 0.3s ease",
-      position: "absolute",
+    content: {
+      flex: 1,
+      alignItems: "center",
+      backgroundColor: colors.primary[7],
+      borderRadius: radius.lg,
+      gap: spacing.sm,
+      padding: spacing.sm,
+      background: `linear-gradient(110deg, transparent 0%, transparent 85%, ${
+        trophyColors[type] + "66"
+      } 95%, ${trophyColors[type] + "D9"} 100%), ${colors.primary[7]}`,
     },
-    checked: {
-      filter: "grayscale(100%) opacity(50%)",
+    info: {
+      flex: 1,
+      flexDirection: "column",
+    },
+    rate: {
+      flexDirection: "column",
+      marginRight: spacing.md,
+      "& > *": {
+        textShadow: "2px 2px 5px black",
+      },
     },
   })
 );
@@ -58,22 +71,29 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { progress, toggleTrophy } = useGame();
   const { classes, cx } = useStyles(trophy);
 
-  const { id, name, detail, icon_url, type, rare, earnedRate } = trophy;
+  const { id, name, detail, icon_url, type, rare, earnedRate, earnedDateTime } =
+    trophy;
   const checked = progress.find((i) => i.id === id)?.earned ?? false;
 
   return (
     <Flex
       className={cx(classes.container, checked && classes.checked, "trophy")}
-      gap="lg"
     >
-      <Flex className={classes.wrapper}>
+      <Flex className={classes.badge}>
+        <Image
+          width={30}
+          height={30}
+          alt="trophy type icon"
+          src={`/trophy/${type}.png`}
+          unoptimized
+        />
         <Checkbox
-          id="check"
-          className={cx(classes.check, "check")}
           checked={checked}
           onChange={() => toggleTrophy(id)}
-          size="xl"
+          size="md"
         />
+      </Flex>
+      <Flex className={classes.content}>
         <Image
           width={IMAGE_SIZE}
           height={IMAGE_SIZE}
@@ -82,31 +102,35 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
           src={icon_url ?? ""}
           unoptimized
         />
-      </Flex>
-      <Flex className={classes.content}>
-        {name != null && (
-          <Text fw="bold" mb="xs" strikethrough={checked}>
-            {name}
-          </Text>
-        )}
-        {detail != null && <Text strikethrough={checked}>{detail}</Text>}
-      </Flex>
-      {rare !== undefined && (
-        <Flex direction="column" mr="md">
-          <Title align="center" order={3}>
-            {earnedRate}%
-          </Title>
-          <Text>{rarityLabels[rare]}</Text>
+        <Flex className={classes.info}>
+          {name != null && (
+            <Flex mb="xs" align="center">
+              <Text fw="bold" strikethrough={checked}>
+                {name}
+              </Text>
+              {earnedDateTime != null && (
+                <Badge
+                  ml="xs"
+                  leftSection={<Check size="0.75rem" />}
+                  style={{
+                    textDecoration: checked ? "line-through" : "none",
+                  }}
+                >
+                  {dayjs(earnedDateTime).format("DD.MM.YYYY HH:mm")}
+                </Badge>
+              )}
+            </Flex>
+          )}
+          {detail != null && <Text strikethrough={checked}>{detail}</Text>}
         </Flex>
-      )}
-      <Flex w={100} h={60} justify="center" align="center">
-        <Image
-          width={40}
-          height={40}
-          alt="trophy type icon"
-          src={`/trophy/${type}.png`}
-          unoptimized
-        />
+        {rare !== undefined && (
+          <Flex className={classes.rate}>
+            <Title align="center" order={3}>
+              {earnedRate}%
+            </Title>
+            <Text>{rarityLabels[rare]}</Text>
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );

@@ -38,6 +38,11 @@ const BadgeStyles: BadgeProps["styles"] = ({ fontSizes }) => ({
     fontWeight: 500,
     textTransform: "unset",
   },
+  leftSection: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 const NotificationStyles: NotificationProps["styles"] = ({ colors }) => ({

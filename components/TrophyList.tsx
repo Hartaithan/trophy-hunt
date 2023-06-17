@@ -4,13 +4,8 @@ import { Box, createStyles, Stack } from "@mantine/core";
 import TrophyGroup from "./TrophyGroup";
 import { useGame } from "@/providers/GameProvider";
 
-const useStyles = createStyles(({ colors, radius }) => ({
+const useStyles = createStyles(() => ({
   container: { width: "100%" },
-  list: {
-    background: colors.primary[7],
-    borderRadius: radius.lg,
-    overflow: "hidden",
-  },
 }));
 
 const TrophyList: FC = () => {
@@ -24,7 +19,7 @@ const TrophyList: FC = () => {
       {trophies.groups.map((group) => (
         <Box key={group.id}>
           <TrophyGroup group={group} />
-          <Stack mt="xl" spacing={0} className={classes.list}>
+          <Stack mt="xl" spacing="xs">
             {group.trophies.map((trophy) => (
               <TrophyCard key={trophy.id} trophy={trophy} />
             ))}
