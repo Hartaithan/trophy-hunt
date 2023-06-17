@@ -52,6 +52,7 @@ export interface ITrophy {
   earned?: boolean;
   rare?: TrophyRare;
   earnedRate?: string;
+  earnedDateTime?: string;
 }
 
 export interface ITrophyCount {

@@ -96,7 +96,7 @@ export const formatEarnedTrophies = (
   const grouped: GroupedTrophies = {};
   for (let i = 0; i < array.length; i++) {
     const el = array[i];
-    const trophy = {
+    const trophy: ITrophy = {
       id: el.trophyId,
       hidden: el.trophyHidden,
       type: el.trophyType,
@@ -107,6 +107,7 @@ export const formatEarnedTrophies = (
       earned: el.earned,
       rare: el.trophyRare,
       earnedRate: el.trophyEarnedRate,
+      earnedDateTime: el.earnedDateTime,
     };
     formatted.push(trophy);
     if (el.trophyGroupId != null) {

@@ -56,8 +56,8 @@ const getTrophiesByGame: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Unable to get profile" });
   }
   if (game.error !== null) {
-    console.error("unable to update game by id", id, game.error);
-    return res.status(400).json({ message: "Unable to update game by id", id });
+    console.error("unable to get game by id", id, game.error);
+    return res.status(400).json({ message: "Unable to get game by id", id });
   }
 
   const auth: AuthorizationPayload = { accessToken: access_token };
