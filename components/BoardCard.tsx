@@ -3,7 +3,7 @@ import {
   defaultAnimateLayoutChanges,
   useSortable,
 } from "@dnd-kit/sortable";
-import { Box, Flex, Overlay, Text, createStyles } from "@mantine/core";
+import { Box, Flex, Text, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { memo, type FC, type MouseEventHandler } from "react";
 import { CSS } from "@dnd-kit/utilities";
@@ -13,6 +13,7 @@ import PlatformBadge from "./PlatformBadge";
 import ProgressStats from "./ProgressStats";
 import { useRouter } from "next/router";
 import BoardCardMenu from "./BoardCardMenu";
+import BoardCardOverlay from "./BoardCardOverlay";
 
 interface IBoardCardProps {
   item: IGame;
@@ -59,15 +60,6 @@ const useStyles = createStyles(({ colors, radius, spacing }) => ({
     marginBottom: spacing.xs,
   },
 }));
-
-const CardOverlay: FC = () => (
-  <Overlay
-    zIndex={2}
-    gradient="linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))"
-  />
-);
-
-const MemoizedCardOverlay = memo(CardOverlay);
 
 const BoardCard: FC<IBoardCardProps> = (props) => {
   const { item } = props;
@@ -118,7 +110,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           alt="image card"
           unoptimized
         />
-        {platform === "ps5" && <MemoizedCardOverlay />}
+        {platform === "ps5" && <BoardCardOverlay />}
         <Image
           className={classes.background}
           src={image_url}
