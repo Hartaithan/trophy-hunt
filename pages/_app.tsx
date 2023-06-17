@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import { MantineProvider } from "@mantine/core";
 import {
@@ -24,6 +24,8 @@ import {
 import ProfileProvider from "@/providers/ProfileProvider";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
+import { useRouter } from "next/router";
+import { deleteCookie, getCookie } from "cookies-next";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -37,7 +39,7 @@ const getSession = async (
   const { data } = await supabase.auth.getSession();
   const user: NullableUser = data.session?.user ?? null;
   if (user === null || data === null) {
-    console.error("unable to get user");
+    console.error("unable to get initial user");
     return { session: data.session, profile: null };
   }
   const { data: profile, error: profileError } = await supabase
@@ -46,7 +48,7 @@ const getSession = async (
     .eq("id", user.id)
     .single();
   if (profileError !== null || profile === null) {
-    console.error("unable to get profile", profileError);
+    console.error("unable to get initial profile", profileError);
     return { session: data.session, profile: null };
   }
   return { session: data.session, profile: profile as NullableProfile };
@@ -129,6 +131,21 @@ const App = (props: IAppProps): JSX.Element => {
 
   const supabaseClient = createBrowserSupabaseClient();
   const [supabase] = useState(supabaseClient);
+  const router = useRouter();
+
+  const invalidSessionHandler = useCallback(() => {
+    const auth = getCookie("supabase-auth-token");
+    if (auth != null && initialSession === null) {
+      deleteCookie("psn-access-token");
+      deleteCookie("psn-refresh-token");
+      deleteCookie("supabase-auth-token");
+      router.reload();
+    }
+  }, [initialSession, router]);
+
+  useEffect(() => {
+    invalidSessionHandler();
+  }, [invalidSessionHandler]);
 
   return (
     <SessionContextProvider
