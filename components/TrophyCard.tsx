@@ -69,12 +69,15 @@ const useStyles = createStyles(
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
-  const { progress, toggleTrophy } = useGame();
+  const { progress, filters, toggleTrophy } = useGame();
   const { classes, cx } = useStyles(trophy);
 
   const { id, name, detail, icon_url, type, rare, earnedRate, earnedDateTime } =
     trophy;
   const checked = progress.find((i) => i.id === id)?.earned ?? false;
+
+  if (filters.earned === "earned" && checked) return null;
+  if (filters.earned === "unearned" && !checked) return null;
 
   return (
     <Flex

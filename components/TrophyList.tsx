@@ -9,7 +9,7 @@ const useStyles = createStyles(() => ({
 }));
 
 const TrophyList: FC = () => {
-  const { trophies } = useGame();
+  const { trophies, filters } = useGame();
   const { classes } = useStyles();
 
   if (trophies === null) return null;
@@ -20,9 +20,11 @@ const TrophyList: FC = () => {
         <Box key={group.id}>
           <TrophyGroup group={group} />
           <Stack mt="xl" spacing="xs">
-            {group.trophies.map((trophy) => (
-              <TrophyCard key={trophy.id} trophy={trophy} />
-            ))}
+            {group.trophies.map((trophy) => {
+              if (filters.type !== "all" && filters.type !== trophy.type)
+                return null;
+              return <TrophyCard key={trophy.id} trophy={trophy} />;
+            })}
           </Stack>
         </Box>
       ))}
