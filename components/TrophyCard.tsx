@@ -40,6 +40,7 @@ const useStyles = createStyles(
       gap: spacing.xs,
       background: colors.primary[7],
       borderRadius: radius.lg,
+      padding: spacing.sm,
     },
     content: {
       flex: 1,

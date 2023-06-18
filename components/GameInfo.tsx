@@ -1,11 +1,10 @@
-import { Button, Flex, Group, Title, createStyles } from "@mantine/core";
+import { Flex, Group, Title, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { type FC } from "react";
 import ProgressStats from "./ProgressStats";
 import PlatformBadge from "./PlatformBadge";
 import ColumnBadge from "./ColumnBadge";
 import { useGame } from "@/providers/GameProvider";
-import { CloudDownload } from "tabler-icons-react";
 
 const useStyles = createStyles(({ radius }) => ({
   container: {
@@ -24,7 +23,7 @@ const useStyles = createStyles(({ radius }) => ({
 }));
 
 const GameInfo: FC = () => {
-  const { game, progress, syncProgress } = useGame();
+  const { game, progress } = useGame();
   const { classes } = useStyles();
 
   if (game === null) return null;
@@ -49,15 +48,6 @@ const GameInfo: FC = () => {
           <ColumnBadge status={status} />
           <PlatformBadge platform={platform} />
         </Group>
-        <Button
-          mt="xs"
-          compact
-          leftIcon={<CloudDownload size={20} />}
-          w="fit-content"
-          onClick={() => syncProgress()}
-        >
-          Sync
-        </Button>
       </Flex>
       <ProgressStats width={300} progress={progress} />
     </Group>

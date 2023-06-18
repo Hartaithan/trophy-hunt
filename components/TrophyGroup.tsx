@@ -16,7 +16,7 @@ const useStyles = createStyles(({ spacing, radius, colors }) => ({
     width: "100%",
     background: colors.primary[7],
     borderRadius: radius.lg,
-    padding: spacing.xs,
+    padding: spacing.sm,
     zIndex: 10,
   },
   icon: {

@@ -16,7 +16,7 @@ const TrophyList: FC = () => {
 
   return (
     <Stack spacing="xl" className={classes.container}>
-      {trophies.groups.map((group) => (
+      {trophies.groups?.map((group) => (
         <Box key={group.id}>
           <TrophyGroup group={group} />
           <Stack mt="xl" spacing="xs">

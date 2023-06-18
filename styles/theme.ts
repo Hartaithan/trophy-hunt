@@ -8,6 +8,7 @@ import {
   type BadgeProps,
   type Styles,
   type MenuStylesNames,
+  type SegmentedControlProps,
 } from "@mantine/core";
 import { globalStyles } from "./global";
 import { type NotificationProps } from "@mantine/notifications";
@@ -57,6 +58,15 @@ const MenuStyles: Styles<MenuStylesNames, object> = ({ colors, radius }) => ({
   dropdown: {
     background: colors.primary[7],
     borderRadius: radius.md,
+  },
+});
+
+const SegmentedControlStyles: SegmentedControlProps["styles"] = () => ({
+  control: {
+    borderWidth: 0,
+    ":not(:first-of-type)": {
+      borderWidth: 0,
+    },
   },
 });
 
@@ -133,6 +143,9 @@ const theme: MantineThemeOverride = {
     },
     Menu: {
       styles: MenuStyles,
+    },
+    SegmentedControl: {
+      styles: SegmentedControlStyles,
     },
   },
 };
