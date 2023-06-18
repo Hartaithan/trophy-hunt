@@ -30,7 +30,6 @@ import { deleteCookie, getCookie } from "cookies-next";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
-const isServerSide = typeof window === "undefined";
 
 const getSession = async (
   ctx: IInitialProps["ctx"]
@@ -39,8 +38,7 @@ const getSession = async (
   const { data } = await supabase.auth.getSession();
   const user: NullableUser = data.session?.user ?? null;
   if (user === null || data === null) {
-    console.error("unable to get initial user");
-    return { session: data.session, profile: null };
+    throw new Error("unable to get initial user");
   }
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
@@ -48,8 +46,7 @@ const getSession = async (
     .eq("id", user.id)
     .single();
   if (profileError !== null || profile === null) {
-    console.error("unable to get initial profile", profileError);
-    return { session: data.session, profile: null };
+    throw new Error("unable to get initial profile");
   }
   return { session: data.session, profile: profile as NullableProfile };
 };
@@ -91,7 +88,7 @@ const getPSNProfile = async (
     }).then(async (res) => await res.json());
     profile = response.profile ?? null;
   } catch (error) {
-    console.error("unable to fetch profile", error);
+    throw new Error("unable to fetch profile");
   }
   return profile;
 };
@@ -99,15 +96,20 @@ const getPSNProfile = async (
 const getInitialProps = async ({
   ctx,
 }: IInitialProps): Promise<IExtendedInitialProps> => {
+  const isServerSide = typeof window === "undefined";
   let initialSession: NullableSession = null;
   let initialProfile: NullableProfile = null;
   let initialPSNProfile: NullablePSNProfile = null;
+  let isInitialFailed: boolean = false;
 
   if (isServerSide) {
     const [session, profile] = await Promise.allSettled([
       getSession(ctx),
       getPSNProfile(ctx),
     ]);
+    if (session.status === "rejected" || profile.status === "rejected") {
+      isInitialFailed = true;
+    }
     if (session.status === "fulfilled") {
       initialSession = session.value.session;
       initialProfile = session.value.profile;
@@ -117,7 +119,7 @@ const getInitialProps = async ({
     }
   }
 
-  return { initialSession, initialProfile, initialPSNProfile };
+  return { initialSession, initialProfile, initialPSNProfile, isInitialFailed };
 };
 
 const App = (props: IAppProps): JSX.Element => {
@@ -127,21 +129,22 @@ const App = (props: IAppProps): JSX.Element => {
     initialSession,
     initialProfile,
     initialPSNProfile,
+    isInitialFailed,
   } = props;
 
   const supabaseClient = createBrowserSupabaseClient();
   const [supabase] = useState(supabaseClient);
-  const router = useRouter();
+  const { reload } = useRouter();
 
   const invalidSessionHandler = useCallback(() => {
     const auth = getCookie("supabase-auth-token");
-    if (auth != null && initialSession === null) {
+    if (auth != null && isInitialFailed) {
       deleteCookie("psn-access-token");
       deleteCookie("psn-refresh-token");
       deleteCookie("supabase-auth-token");
-      router.reload();
+      reload();
     }
-  }, [initialSession, router]);
+  }, [isInitialFailed, reload]);
 
   useEffect(() => {
     invalidSessionHandler();

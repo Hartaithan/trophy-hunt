@@ -17,6 +17,7 @@ export interface IExtendedInitialProps {
   initialSession: NullableSession;
   initialProfile: NullableProfile;
   initialPSNProfile: NullablePSNProfile;
+  isInitialFailed: boolean;
 }
 
 export interface IAppProps<P = object>
