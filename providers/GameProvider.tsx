@@ -4,7 +4,10 @@ import {
   type IProgressPayload,
   type IProgressItem,
 } from "@/models/ProgressModel";
-import { type IFormattedResponse } from "@/models/TrophyModel";
+import {
+  type ITrophyFilters,
+  type IFormattedResponse,
+} from "@/models/TrophyModel";
 import { useDebouncedValue } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import {
@@ -15,6 +18,8 @@ import {
   useContext,
   useEffect,
   useRef,
+  type Dispatch,
+  type SetStateAction,
 } from "react";
 import { AlertOctagon, Check } from "tabler-icons-react";
 
@@ -39,7 +44,15 @@ interface IGameContext {
   refetchTrophies: () => void;
   syncProgress: () => void;
   toggleTrophy: (id: number) => void;
+  filters: ITrophyFilters;
+  setFilters: Dispatch<SetStateAction<ITrophyFilters>>;
+  resetFilters: () => void;
 }
+
+const initialFilters: ITrophyFilters = {
+  type: "all",
+  earned: "all",
+};
 
 const initialContextValue: IGameContext = {
   game: null,
@@ -54,6 +67,9 @@ const initialContextValue: IGameContext = {
   refetchTrophies: () => null,
   syncProgress: () => null,
   toggleTrophy: () => null,
+  filters: initialFilters,
+  setFilters: () => null,
+  resetFilters: () => null,
 };
 
 const initializeProgress = (trophies: IFormattedResponse): IProgressPayload => {
@@ -84,6 +100,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const [trophies, setTrophies] = useState<IFormattedResponse | null>(
     initialTrophies
   );
+  const [filters, setFilters] = useState<ITrophyFilters>(initialFilters);
 
   const [status, setStatus] = useState<Status>("idle");
   const isIdle = status === "idle";
@@ -187,6 +204,10 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
       });
   };
 
+  const resetFilters = (): void => {
+    setFilters(initialFilters);
+  };
+
   const exposed: IGameContext = {
     game,
     trophies,
@@ -200,6 +221,9 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     refetchTrophies,
     syncProgress,
     toggleTrophy,
+    filters,
+    setFilters,
+    resetFilters,
   };
 
   useEffect(() => {

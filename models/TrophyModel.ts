@@ -39,6 +39,10 @@ export const TrophyRareLabels: Record<TrophyRare, string> = {
 
 export type TrophyType = "platinum" | "gold" | "silver" | "bronze";
 
+export type TrophyTypeFilter = "all" | TrophyType;
+
+export type TrophyEarnedFilter = "all" | "earned" | "unearned";
+
 export type TrophyGroupId = "default" | string;
 
 export interface ITrophy {
@@ -115,3 +119,8 @@ export interface EarnedTrophies extends Partial<EarnedTrophiesDetails> {
 }
 
 export type MergedTrophies = TitleTrophiesResponse & EarnedTrophies;
+
+export interface ITrophyFilters {
+  type: TrophyTypeFilter;
+  earned: TrophyEarnedFilter;
+}

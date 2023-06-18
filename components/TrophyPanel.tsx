@@ -1,3 +1,7 @@
+import {
+  type TrophyEarnedFilter,
+  type TrophyTypeFilter,
+} from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
 import {
   Button,
@@ -9,13 +13,17 @@ import {
 import { type FC } from "react";
 import { CloudDownload } from "tabler-icons-react";
 
-const earnedOptions: SegmentedControlItem[] = [
+interface IOptions<T> extends Omit<SegmentedControlItem, "value"> {
+  value: T;
+}
+
+const earnedOptions: Array<IOptions<TrophyEarnedFilter>> = [
   { label: "All", value: "all" },
   { label: "Earned", value: "earned" },
   { label: "Unearned", value: "unearned" },
 ];
 
-const typesOptions: SegmentedControlItem[] = [
+const typesOptions: Array<IOptions<TrophyTypeFilter>> = [
   { label: "All", value: "all" },
   { label: "Platinum", value: "platinum" },
   { label: "Gold", value: "gold" },
@@ -32,12 +40,32 @@ const useStyles = createStyles(({ spacing }) => ({
 
 const TrophyPanel: FC = () => {
   const { classes } = useStyles();
-  const { syncProgress } = useGame();
+  const { syncProgress, filters, setFilters } = useGame();
+
+  const handleEarnedChange = (value: TrophyEarnedFilter): void => {
+    setFilters((prev) => ({ ...prev, earned: value }));
+  };
+
+  const handleTypeChange = (value: TrophyTypeFilter): void => {
+    setFilters((prev) => ({ ...prev, type: value }));
+  };
 
   return (
     <Group className={classes.container}>
-      <SegmentedControl color="accent" radius="lg" data={earnedOptions} />
-      <SegmentedControl color="accent" radius="lg" data={typesOptions} />
+      <SegmentedControl
+        color="accent"
+        radius="lg"
+        data={earnedOptions}
+        value={filters.earned}
+        onChange={handleEarnedChange}
+      />
+      <SegmentedControl
+        color="accent"
+        radius="lg"
+        data={typesOptions}
+        value={filters.type}
+        onChange={handleTypeChange}
+      />
       <Button
         ml="auto"
         radius="lg"
