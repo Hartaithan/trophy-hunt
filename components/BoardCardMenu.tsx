@@ -1,12 +1,13 @@
 import { type IGame } from "@/models/GameModel";
 import { Menu, UnstyledButton, createStyles, Text } from "@mantine/core";
 import { memo, type FC, type MouseEventHandler } from "react";
-import { Dots, Edit, Trash } from "tabler-icons-react";
+import { Dots, ArrowUpRight, Trash } from "tabler-icons-react";
 import { modals } from "@mantine/modals";
 import { useBoard } from "@/providers/BoardProvider";
 import API from "@/helpers/api";
 import { type IBoardColumns } from "@/models/BoardModel";
 import { notifications } from "@mantine/notifications";
+import Link from "next/link";
 
 interface IBoardCardMenuProps {
   item: IGame;
@@ -74,11 +75,6 @@ const BoardCardMenu: FC<IBoardCardMenuProps> = (props) => {
     });
   };
 
-  const handleEditModal: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
-    alert("TODO: add edit modal");
-  };
-
   return (
     <Menu shadow="md" width={150} data-no-dnd="true" position="bottom-end">
       <Menu.Target>
@@ -87,8 +83,12 @@ const BoardCardMenu: FC<IBoardCardMenuProps> = (props) => {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown data-no-dnd="true">
-        <Menu.Item icon={<Edit size="1rem" />} onClick={handleEditModal}>
-          Edit
+        <Menu.Item
+          icon={<ArrowUpRight size="1rem" />}
+          component={Link}
+          href={`/game/${id}`}
+        >
+          Open
         </Menu.Item>
         <Menu.Item icon={<Trash size="1rem" />} onClick={handleDeleteModal}>
           Delete
