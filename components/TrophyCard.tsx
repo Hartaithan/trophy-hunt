@@ -112,7 +112,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
               <Text fw="bold" strikethrough={checked}>
                 {name}
               </Text>
-              {earnedDateTime != null && (
+              {checked && earnedDateTime != null && (
                 <Badge
                   ml="xs"
                   leftSection={<Check size="0.75rem" />}
