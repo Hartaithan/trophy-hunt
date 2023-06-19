@@ -5,14 +5,18 @@
 }
 
 html,
-body,
-#__next {
+body {
   height: 100%;
   width: 100%;
-  scrollbar-gutter: stable;
+}
+
+html {
+  overflow-y: scroll;
 }
 
 #__next {
+  min-height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }

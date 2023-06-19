@@ -132,7 +132,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
             <Title align="center" order={3}>
               {earnedRate}%
             </Title>
-            <Text>{rarityLabels[rare]}</Text>
+            <Text align="center">{rarityLabels[rare]}</Text>
           </Flex>
         )}
       </Flex>
