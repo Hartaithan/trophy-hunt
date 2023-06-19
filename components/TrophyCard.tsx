@@ -76,8 +76,8 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
     trophy;
   const checked = progress.find((i) => i.id === id)?.earned ?? false;
 
-  if (filters.earned === "earned" && checked) return null;
-  if (filters.earned === "unearned" && !checked) return null;
+  if (filters.earned === "earned" && !checked) return null;
+  if (filters.earned === "unearned" && checked) return null;
 
   return (
     <Flex
