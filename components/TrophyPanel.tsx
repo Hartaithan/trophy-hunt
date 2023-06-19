@@ -56,6 +56,7 @@ const TrophyPanel: FC = () => {
         color="accent"
         radius="lg"
         data={earnedOptions}
+        defaultValue="all"
         value={filters.earned}
         onChange={handleEarnedChange}
       />
@@ -63,6 +64,7 @@ const TrophyPanel: FC = () => {
         color="accent"
         radius="lg"
         data={typesOptions}
+        defaultValue="all"
         value={filters.type}
         onChange={handleTypeChange}
       />
