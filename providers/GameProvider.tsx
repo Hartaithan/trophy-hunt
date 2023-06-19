@@ -72,6 +72,11 @@ const initialContextValue: IGameContext = {
   resetFilters: () => null,
 };
 
+const syncStartedMessage =
+  "Synchronizing progress on trophies... It shouldn't take long, don't reload the page.";
+const syncErrorMessage =
+  "For some reason the synchronization did not complete, please try again.";
+
 const initializeProgress = (trophies: IFormattedResponse): IProgressPayload => {
   const payload: IProgressItem[] = [];
   for (let i = 0; i < trophies.groups.length; i++) {
@@ -150,8 +155,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
       id: "sync",
       loading: true,
       title: "Sync...",
-      message:
-        "Synchronizing progress on trophies... It shouldn't take long, don't reload the page.",
+      message: syncStartedMessage,
       autoClose: false,
       withCloseButton: false,
     });
@@ -171,8 +175,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
       id: "sync",
       loading: true,
       title: "Sync...",
-      message:
-        "Synchronizing progress on trophies... It shouldn't take long, don't reload the page.",
+      message: syncStartedMessage,
       autoClose: false,
       withCloseButton: false,
     });
@@ -194,8 +197,8 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
           id: "sync",
           color: "red",
           title: "Something went wrong!",
-          message:
-            "For some reason the synchronization did not complete, please try again.",
+          autoClose: false,
+          message: error.response.data.message ?? syncErrorMessage,
           icon: <AlertOctagon size="1rem" />,
         });
       })
@@ -247,8 +250,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
           id: "sync",
           color: "red",
           title: "Something went wrong!",
-          message:
-            "For some reason the synchronization did not complete, please try again.",
+          message: error.response.data.message ?? syncErrorMessage,
           icon: <AlertOctagon size="1rem" />,
         });
       })
