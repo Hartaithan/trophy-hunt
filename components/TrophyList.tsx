@@ -1,13 +1,6 @@
 import { useState, type FC } from "react";
 import { type ITrophy } from "@/models/TrophyModel";
-import {
-  Box,
-  Flex,
-  Stack,
-  Text,
-  Transition,
-  createStyles,
-} from "@mantine/core";
+import { Box, Collapse, Flex, Stack, Text, createStyles } from "@mantine/core";
 import TrophyCard from "./TrophyCard";
 import { useGame } from "@/providers/GameProvider";
 import { useElementSize } from "@mantine/hooks";
@@ -19,9 +12,11 @@ interface ITrophyListProps {
 
 const useStyles = createStyles(({ colors, radius, spacing }) => ({
   container: { position: "relative" },
+  collapsible: {
+    position: "relative",
+    top: spacing.xl,
+  },
   empty: {
-    position: "absolute",
-    top: 0,
     height: 130,
     width: "100%",
     background: colors.primary[7],
@@ -44,6 +39,14 @@ const TrophyList: FC<ITrophyListProps> = (props) => {
 
   return (
     <Box className={classes.container}>
+      <Collapse in={isEmpty} className={classes.collapsible}>
+        <Flex className={classes.empty}>
+          <MoodSad size={60} />
+          <Text fw="bold" size="md" mt={4}>
+            I couldn&apos;t find any trophies for the selected filters
+          </Text>
+        </Flex>
+      </Collapse>
       <Stack ref={ref} mt="xl" spacing="xs" onLoad={() => setLoaded(true)}>
         {trophies.map((trophy) => {
           if (filters.type !== "all" && filters.type !== trophy.type)
@@ -51,16 +54,6 @@ const TrophyList: FC<ITrophyListProps> = (props) => {
           return <TrophyCard key={trophy.id} trophy={trophy} />;
         })}
       </Stack>
-      <Transition mounted={isEmpty} transition="slide-down">
-        {(styles) => (
-          <Flex className={classes.empty} style={styles}>
-            <MoodSad size={60} />
-            <Text fw="bold" size="md" mt={4}>
-              I couldn&apos;t find any trophies for the selected filters
-            </Text>
-          </Flex>
-        )}
-      </Transition>
     </Box>
   );
 };
