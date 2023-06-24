@@ -1,34 +1,67 @@
-import { type FC } from "react";
+import { useState, type FC } from "react";
+import { type ITrophy } from "@/models/TrophyModel";
+import {
+  Box,
+  Flex,
+  Stack,
+  Text,
+  Transition,
+  createStyles,
+} from "@mantine/core";
 import TrophyCard from "./TrophyCard";
-import { Box, createStyles, Stack } from "@mantine/core";
-import TrophyGroup from "./TrophyGroup";
 import { useGame } from "@/providers/GameProvider";
+import { useElementSize } from "@mantine/hooks";
+import { MoodSad } from "tabler-icons-react";
 
-const useStyles = createStyles(() => ({
-  container: { width: "100%" },
+interface ITrophyListProps {
+  trophies: ITrophy[];
+}
+
+const useStyles = createStyles(({ colors, radius, spacing }) => ({
+  container: { position: "relative" },
+  empty: {
+    position: "absolute",
+    top: 0,
+    height: 130,
+    width: "100%",
+    background: colors.primary[7],
+    borderRadius: radius.lg,
+    padding: spacing.sm,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
-const TrophyList: FC = () => {
-  const { trophies, filters } = useGame();
+const TrophyList: FC<ITrophyListProps> = (props) => {
+  const { trophies } = props;
+  const { filters } = useGame();
   const { classes } = useStyles();
+  const { ref, height } = useElementSize();
 
-  if (trophies === null) return null;
+  const [isLoaded, setLoaded] = useState(false);
+  const isEmpty = isLoaded && height < 100;
 
   return (
-    <Stack spacing="xl" className={classes.container}>
-      {trophies.groups?.map((group) => (
-        <Box key={group.id}>
-          <TrophyGroup group={group} />
-          <Stack mt="xl" spacing="xs">
-            {group.trophies.map((trophy) => {
-              if (filters.type !== "all" && filters.type !== trophy.type)
-                return null;
-              return <TrophyCard key={trophy.id} trophy={trophy} />;
-            })}
-          </Stack>
-        </Box>
-      ))}
-    </Stack>
+    <Box className={classes.container}>
+      <Stack ref={ref} mt="xl" spacing="xs" onLoad={() => setLoaded(true)}>
+        {trophies.map((trophy) => {
+          if (filters.type !== "all" && filters.type !== trophy.type)
+            return null;
+          return <TrophyCard key={trophy.id} trophy={trophy} />;
+        })}
+      </Stack>
+      <Transition mounted={isEmpty} transition="slide-down">
+        {(styles) => (
+          <Flex className={classes.empty} style={styles}>
+            <MoodSad size={60} />
+            <Text fw="bold" size="md" mt={4}>
+              I couldn&apos;t find any trophies for the selected filters
+            </Text>
+          </Flex>
+        )}
+      </Transition>
+    </Box>
   );
 };
 

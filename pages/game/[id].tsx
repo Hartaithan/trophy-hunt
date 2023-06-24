@@ -1,6 +1,6 @@
 import GameInfo from "@/components/GameInfo";
 import TrophyPanel from "@/components/TrophyPanel";
-import TrophyList from "@/components/TrophyList";
+import TrophyGroups from "@/components/TrophyGroups";
 import { type IPage } from "@/models/AppModel";
 import { type IGame } from "@/models/GameModel";
 import { type IFormattedResponse } from "@/models/TrophyModel";
@@ -86,7 +86,7 @@ const GamePage: IPage<IGamePageProps> = (props) => {
       <Stack spacing="xl" py="xl">
         <GameInfo />
         <TrophyPanel />
-        <TrophyList />
+        <TrophyGroups />
       </Stack>
     </GameProvider>
   );
