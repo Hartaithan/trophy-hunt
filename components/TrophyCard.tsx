@@ -10,7 +10,7 @@ import {
   createStyles,
 } from "@mantine/core";
 import dayjs from "dayjs";
-import Image from "next/image";
+import Image from "./Image";
 import { type FC } from "react";
 import { Check } from "tabler-icons-react";
 
@@ -89,7 +89,6 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
           height={30}
           alt="trophy type icon"
           src={`/trophy/${type}.png`}
-          unoptimized
         />
         <Checkbox
           checked={checked}
@@ -104,7 +103,6 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
           className={classes.icon}
           alt={name ?? "trophy icon url"}
           src={icon_url ?? ""}
-          unoptimized
         />
         <Flex className={classes.info}>
           {name != null && (

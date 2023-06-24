@@ -1,5 +1,5 @@
 import { Flex, Group, Title, createStyles } from "@mantine/core";
-import Image from "next/image";
+import Image from "./Image";
 import { type FC } from "react";
 import ProgressStats from "./ProgressStats";
 import PlatformBadge from "./PlatformBadge";
@@ -38,7 +38,6 @@ const GameInfo: FC = () => {
         className={classes.icon}
         src={image_url}
         alt={title ?? "game image"}
-        unoptimized
       />
       <Flex className={classes.content}>
         <Title order={4} mb={4}>

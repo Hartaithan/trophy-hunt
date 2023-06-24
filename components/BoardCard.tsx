@@ -4,7 +4,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { Box, Flex, Text, createStyles } from "@mantine/core";
-import Image from "next/image";
+import Image from "./Image";
 import { memo, type FC, type MouseEventHandler } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { type IGame } from "@/models/GameModel";
@@ -108,7 +108,6 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           src={image_url}
           fill
           alt="image card"
-          unoptimized
         />
         {platform === "ps5" && <BoardCardOverlay />}
         <Image
@@ -116,7 +115,6 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           src={image_url}
           fill
           alt="image card"
-          unoptimized
         />
       </Box>
       <Text mt={6} fw={500} lineClamp={2}>

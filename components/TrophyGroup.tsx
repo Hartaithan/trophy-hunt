@@ -1,6 +1,6 @@
 import { type IGroup } from "@/models/TrophyModel";
 import { Text, Flex, createStyles, Group, Badge } from "@mantine/core";
-import Image from "next/image";
+import Image from "./Image";
 import { type FC } from "react";
 import TrophyIcon from "./TrophyIcon";
 import { trophyColors } from "@/constants/trophy";
@@ -48,7 +48,6 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
         className={classes.icon}
         src={icon_url}
         alt={name ?? "group icon url"}
-        unoptimized
       />
       <Flex className={classes.info}>
         <Flex align="center" mb="xs">
