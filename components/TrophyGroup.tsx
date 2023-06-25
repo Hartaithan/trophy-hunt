@@ -1,9 +1,8 @@
-import { type IGroup } from "@/models/TrophyModel";
-import { Text, Flex, createStyles, Group, Badge } from "@mantine/core";
+import { type TrophyCountItem, type IGroup } from "@/models/TrophyModel";
+import { Text, Flex, createStyles, Badge } from "@mantine/core";
 import Image from "./Image";
 import { type FC } from "react";
-import TrophyIcon from "./TrophyIcon";
-import { trophyColors } from "@/constants/trophy";
+import TrophyCounts from "./TrophyCounts";
 
 interface ITrophyGroupProps {
   group: IGroup;
@@ -38,7 +37,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
 
   const { id, icon_url, name, counts } = group;
 
-  const countsArray = Object.entries(counts).reverse();
+  const countsArray: TrophyCountItem[] = Object.entries(counts).reverse();
 
   return (
     <Flex className={classes.container}>
@@ -54,19 +53,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
           <Text fw="bold">{name}</Text>
           <Badge ml="sm">{id === "default" ? "Base Game" : "DLC"}</Badge>
         </Flex>
-        <Group>
-          {countsArray.map(([key, value]) => {
-            if (value === 0) return null;
-            return (
-              <Flex key={key}>
-                <TrophyIcon type={key} />
-                <Text ml={4} fw="bold" color={trophyColors[key]}>
-                  {value}
-                </Text>
-              </Flex>
-            );
-          })}
-        </Group>
+        <TrophyCounts counts={countsArray} />
       </Flex>
     </Flex>
   );

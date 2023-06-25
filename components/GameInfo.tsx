@@ -5,6 +5,8 @@ import ProgressStats from "./ProgressStats";
 import PlatformBadge from "./PlatformBadge";
 import ColumnBadge from "./ColumnBadge";
 import { useGame } from "@/providers/GameProvider";
+import { type TrophyCountItem } from "@/models/TrophyModel";
+import TrophyCounts from "./TrophyCounts";
 
 const useStyles = createStyles(({ radius }) => ({
   container: {
@@ -23,12 +25,15 @@ const useStyles = createStyles(({ radius }) => ({
 }));
 
 const GameInfo: FC = () => {
-  const { game, progress } = useGame();
+  const { game, progress, trophies } = useGame();
   const { classes } = useStyles();
 
   if (game === null) return null;
 
   const { title, status, platform, image_url } = game;
+  const counts = trophies?.counts ?? null;
+  const countsArray: TrophyCountItem[] =
+    counts != null ? Object.entries(counts).reverse() : [];
 
   return (
     <Group className={classes.container}>
@@ -40,12 +45,11 @@ const GameInfo: FC = () => {
         alt={title ?? "game image"}
       />
       <Flex className={classes.content}>
-        <Title order={4} mb={4}>
-          {title}
-        </Title>
-        <Group>
+        <Title order={4}>{title}</Title>
+        <Group mt={4}>
           <ColumnBadge status={status} />
           <PlatformBadge platform={platform} />
+          <TrophyCounts counts={countsArray} size="small" />
         </Group>
       </Flex>
       <ProgressStats width={300} progress={progress} />

@@ -70,6 +70,8 @@ export interface ITrophyCount {
   platinum: number;
 }
 
+export type TrophyCountItem = [string, number];
+
 export interface IGroup {
   id: string;
   name: string;
