@@ -57,6 +57,10 @@ export interface ITrophy {
   rare?: TrophyRare;
   earnedRate?: string;
   earnedDateTime?: string;
+  progress_value?: string;
+  progress_percentage?: number;
+  progress_target?: string;
+  progress_updated?: string;
 }
 
 export interface ITrophyCount {
@@ -112,8 +116,14 @@ export type EarnedTrophiesDetails = Omit<
   "trophies" | "lastUpdatedDateTime" | "rarestTrophies"
 >;
 
+export interface TrophyProgress {
+  progress: string;
+  progressRate: number;
+  progressedDateTime: string;
+}
+
 export interface EarnedTrophies extends Partial<EarnedTrophiesDetails> {
-  trophies: Array<Partial<UserThinTrophy>>;
+  trophies: Array<Partial<UserThinTrophy> & Partial<TrophyProgress>>;
   rarestTrophies?: Array<Partial<RarestThinTrophy>>;
   lastUpdatedDateTime?: string | undefined;
 }

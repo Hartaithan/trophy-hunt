@@ -108,6 +108,10 @@ export const formatEarnedTrophies = (
       rare: el.trophyRare,
       earnedRate: el.trophyEarnedRate,
       earnedDateTime: el.earnedDateTime,
+      progress_value: el.progress,
+      progress_percentage: el.progressRate,
+      progress_target: el.trophyProgressTargetValue,
+      progress_updated: el.progressedDateTime,
     };
     formatted.push(trophy);
     if (el.trophyGroupId != null) {
