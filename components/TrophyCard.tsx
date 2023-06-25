@@ -49,9 +49,7 @@ const useStyles = createStyles(
       borderRadius: radius.lg,
       gap: spacing.sm,
       padding: spacing.sm,
-      background: `linear-gradient(110deg, transparent 0%, transparent 85%, ${
-        trophyColors[type] + "66"
-      } 95%, ${trophyColors[type] + "D9"} 100%), ${colors.primary[7]}`,
+      background: `linear-gradient(110deg, transparent 0%, transparent 75%, ${trophyColors[type]}4D 85%, ${trophyColors[type]}99 95%, ${trophyColors[type]} 100%), ${colors.primary[7]}`,
     },
     info: {
       flex: 1,
@@ -72,9 +70,25 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { progress, filters, toggleTrophy } = useGame();
   const { classes, cx } = useStyles(trophy);
 
-  const { id, name, detail, icon_url, type, rare, earnedRate, earnedDateTime } =
-    trophy;
+  const {
+    id,
+    name,
+    detail,
+    icon_url,
+    type,
+    rare,
+    earnedRate,
+    earnedDateTime,
+    progress_value,
+    progress_target,
+    progress_percentage,
+  } = trophy;
   const checked = progress.find((i) => i.id === id)?.earned ?? false;
+
+  const hasProgress =
+    progress_value != null &&
+    progress_target != null &&
+    progress_percentage != null;
 
   if (filters.earned === "earned" && !checked) return null;
   if (filters.earned === "unearned" && checked) return null;
@@ -125,6 +139,14 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
           )}
           {detail != null && <Text strikethrough={checked}>{detail}</Text>}
         </Flex>
+        {hasProgress && (
+          <Flex className={classes.rate}>
+            <Title align="center" order={3}>
+              {progress_value} / {progress_target}
+            </Title>
+            <Text align="center">Progress: {progress_percentage}%</Text>
+          </Flex>
+        )}
         {rare !== undefined && (
           <Flex className={classes.rate}>
             <Title align="center" order={3}>
