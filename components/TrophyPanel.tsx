@@ -11,7 +11,7 @@ import {
   createStyles,
 } from "@mantine/core";
 import { type FC } from "react";
-import { CloudDownload } from "tabler-icons-react";
+import { CloudDownload, ListCheck } from "tabler-icons-react";
 
 interface IOptions<T> extends Omit<SegmentedControlItem, "value"> {
   value: T;
@@ -40,7 +40,10 @@ const useStyles = createStyles(({ spacing }) => ({
 
 const TrophyPanel: FC = () => {
   const { classes } = useStyles();
-  const { syncProgress, filters, setFilters } = useGame();
+  const { progress, filters, syncProgress, setFilters, handleCheckAll } =
+    useGame();
+
+  const isAllChecked = progress.every((i) => i.earned);
 
   const handleEarnedChange = (value: TrophyEarnedFilter): void => {
     setFilters((prev) => ({ ...prev, earned: value }));
@@ -70,6 +73,13 @@ const TrophyPanel: FC = () => {
       />
       <Button
         ml="auto"
+        radius="lg"
+        leftIcon={<ListCheck size={20} />}
+        onClick={() => handleCheckAll(!isAllChecked)}
+      >
+        {isAllChecked ? "Uncheck" : "Check"} all
+      </Button>
+      <Button
         radius="lg"
         leftIcon={<CloudDownload size={20} />}
         onClick={() => syncProgress()}
