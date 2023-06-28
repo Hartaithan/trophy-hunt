@@ -17,6 +17,7 @@ const useStyles = createStyles(({ spacing, radius, colors }) => ({
     borderRadius: radius.lg,
     padding: spacing.sm,
     zIndex: 10,
+    alignItems: "center",
   },
   icon: {
     minHeight: 80,
@@ -25,6 +26,7 @@ const useStyles = createStyles(({ spacing, radius, colors }) => ({
     borderRadius: radius.md,
   },
   info: {
+    flex: 1,
     marginLeft: spacing.md,
     flexDirection: "column",
     justifyContent: "center",

@@ -11,7 +11,7 @@ import {
   createStyles,
 } from "@mantine/core";
 import { type FC } from "react";
-import { CloudDownload, ListCheck } from "tabler-icons-react";
+import { CloudDownload, ListCheck, Search } from "tabler-icons-react";
 
 interface IOptions<T> extends Omit<SegmentedControlItem, "value"> {
   value: T;
@@ -40,7 +40,7 @@ const useStyles = createStyles(({ spacing }) => ({
 
 const TrophyPanel: FC = () => {
   const { classes } = useStyles();
-  const { progress, filters, syncProgress, setFilters, handleCheckAll } =
+  const { game, progress, filters, syncProgress, setFilters, handleCheckAll } =
     useGame();
 
   const isAllChecked = progress.every((i) => i.earned);
@@ -51,6 +51,14 @@ const TrophyPanel: FC = () => {
 
   const handleTypeChange = (value: TrophyTypeFilter): void => {
     setFilters((prev) => ({ ...prev, type: value }));
+  };
+
+  const handleGoogleSearch = (): void => {
+    if (typeof window === "undefined") return;
+    if (game == null) return;
+    const query = `${game.title.toLowerCase()} trophies`;
+    const url = "https://google.com/search?q=";
+    window.open(url + query, "_blank");
   };
 
   return (
@@ -78,6 +86,13 @@ const TrophyPanel: FC = () => {
         onClick={() => handleCheckAll(!isAllChecked)}
       >
         {isAllChecked ? "Uncheck" : "Check"} all
+      </Button>
+      <Button
+        radius="lg"
+        leftIcon={<Search size={20} />}
+        onClick={() => handleGoogleSearch()}
+      >
+        Find in Google
       </Button>
       <Button
         radius="lg"
