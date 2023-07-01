@@ -1,3 +1,6 @@
+import { validatePayload } from "@/helpers/payload";
+import { type INewNotePayload, type IAddNotePayload } from "@/models/NoteModel";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
 const getNoteByGame: NextApiHandler = async (req, res) => {
@@ -5,7 +8,70 @@ const getNoteByGame: NextApiHandler = async (req, res) => {
 };
 
 const addNote: NextApiHandler = async (req, res) => {
-  return res.status(200).json({ message: "Hello World!" });
+  const { game_id, trophy_id, content = null } = req.body as IAddNotePayload;
+  const supabase = createServerSupabaseClient({ req, res });
+
+  const results = validatePayload(
+    req.body,
+    ["game_id", "trophy_id"],
+    ["content"]
+  );
+  if (results !== null) {
+    console.error("invalid payload", results.errors);
+    return res.status(400).json(results);
+  }
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+  if (userError !== null || user === null) {
+    console.error("unable to get user", userError);
+    return res.status(400).json({ message: "Unable to get user" });
+  }
+
+  const { error: gameError } = await supabase
+    .from("games")
+    .select("id")
+    .eq("id", game_id)
+    .single();
+  if (gameError !== null || user === null) {
+    console.error("game not exist", game_id, gameError);
+    return res
+      .status(400)
+      .json({ message: `There is no game with this ID (${game_id})` });
+  }
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("username, language")
+    .eq("id", user.id)
+    .single();
+  if (profileError !== null || profile === null) {
+    console.error("unable to get profile", profileError);
+    return res.status(400).json({ message: "Unable to get profile" });
+  }
+
+  const payload: INewNotePayload = {
+    game_id,
+    trophy_id,
+    content,
+    user_id: user.id,
+    username: profile.username,
+  };
+  const { data: newNote, error: newNoteError } = await supabase
+    .from("notes")
+    .insert([payload])
+    .select("*")
+    .single();
+  if (newNoteError !== null) {
+    console.error("unable to create new note", newNoteError);
+    return res.status(400).json({ message: "Unable to create new note" });
+  }
+
+  return res
+    .status(201)
+    .json({ message: "New note successfully created!", game: newNote });
 };
 
 const handler: NextApiHandler = async (req, res) => {
