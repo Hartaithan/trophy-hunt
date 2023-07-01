@@ -23,7 +23,7 @@ export type INewGamePayload = Omit<
 >;
 
 export interface IAddGamePayload {
-  gameId: string;
+  game_id: string;
   status: BOARD_COLUMNS;
 }
 

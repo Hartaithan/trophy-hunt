@@ -21,7 +21,7 @@ const splitId = (game: string): ISplittedId => {
   let platform: ISplittedId = { id: null, platform: null };
   const splitted = game.split("/");
   if (typeof game !== "string" || !game.includes("/")) {
-    console.error("invalid gameId", game);
+    console.error("invalid game_id", game);
     return platform;
   }
   if (splitted.length > 0 && splitted.every((i) => i.length > 0)) {
@@ -76,7 +76,7 @@ const getCode = (value: string | null): string | null => {
 };
 
 const addGame: NextApiHandler = async (req, res) => {
-  const { gameId, status } = req.body as IAddGamePayload;
+  const { game_id, status } = req.body as IAddGamePayload;
   const options = { req, res };
   const access_token = getCookie("psn-access-token", options);
   const supabase = createServerSupabaseClient({ req, res });
@@ -86,9 +86,9 @@ const addGame: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Unable to get access token" });
   }
 
-  if (typeof gameId !== "string") {
-    console.error("invalid gameId type", gameId);
-    return res.status(400).json({ message: "Invalid gameId type" });
+  if (typeof game_id !== "string") {
+    console.error("invalid game_id type", game_id);
+    return res.status(400).json({ message: "Invalid game_id type" });
   }
 
   const results = validatePayload(req.body);
@@ -97,9 +97,9 @@ const addGame: NextApiHandler = async (req, res) => {
     return res.status(400).json(results);
   }
 
-  const { id, platform } = splitId(gameId);
+  const { id, platform } = splitId(game_id);
   if (id === null || platform === null) {
-    console.error("unable to get id or platform", gameId);
+    console.error("unable to get id or platform", game_id);
     return res.status(400).json({ message: "Unable to get id or platform" });
   }
 

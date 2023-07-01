@@ -115,7 +115,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
 
   const handleSubmit = (): void => {
     const payload: Partial<IAddGamePayload> = {
-      gameId: value ?? undefined,
+      game_id: value ?? undefined,
       status: status ?? undefined,
     };
     setSubmit(true);
