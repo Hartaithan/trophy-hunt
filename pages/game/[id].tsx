@@ -8,6 +8,7 @@ import GameProvider from "@/providers/GameProvider";
 import { Stack } from "@mantine/core";
 import { type GetServerSidePropsContext, type GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import CongratulationProvider from "@/providers/CongratulationProvider";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -82,13 +83,15 @@ const GamePage: IPage<IGamePageProps> = (props) => {
   const { query } = useRouter();
 
   return (
-    <GameProvider id={query.id} initialGame={game} initialTrophies={trophies}>
-      <Stack spacing="xl" py="xl">
-        <GameInfo />
-        <TrophyPanel />
-        <TrophyGroups />
-      </Stack>
-    </GameProvider>
+    <CongratulationProvider>
+      <GameProvider id={query.id} initialGame={game} initialTrophies={trophies}>
+        <Stack spacing="xl" py="xl">
+          <GameInfo />
+          <TrophyPanel />
+          <TrophyGroups />
+        </Stack>
+      </GameProvider>
+    </CongratulationProvider>
   );
 };
 

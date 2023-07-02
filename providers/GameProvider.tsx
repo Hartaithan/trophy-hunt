@@ -24,6 +24,10 @@ import {
 } from "react";
 import { useReward } from "react-rewards";
 import { AlertOctagon, Check } from "tabler-icons-react";
+import {
+  type CongratulationValue,
+  useCongratulation,
+} from "./CongratulationProvider";
 
 interface IGameProviderProps extends PropsWithChildren {
   id: string | string[] | undefined;
@@ -132,20 +136,34 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const isAlreadyUpdated = useRef<boolean>(false);
 
   const { reward } = useReward("reward", "confetti", rewardConfig);
+  const { show } = useCongratulation();
 
   const isAllChecked = useMemo(() => {
     if (!isMounted.current) return true;
     if (typeof window === "undefined") return true;
-    let count = 0;
+    let base_count = 0;
+    let base_completed = 0;
+    let all_completed = 0;
     for (let i = 0; i < progress.length; i++) {
       const el = progress[i];
-      count = count + (el.earned ? 1 : 0);
+      base_count = base_count + (!el.dlc ? 1 : 0);
+      base_completed = base_completed + (el.earned && !el.dlc ? 1 : 0);
+      all_completed = all_completed + (el.earned ? 1 : 0);
     }
-    const value = progress.length === count;
-    if (value) {
+    let value: CongratulationValue | null = null;
+    const isPlatinum = base_count === base_completed;
+    const isComplete = all_completed === progress.length;
+    if (isPlatinum) {
+      value = "platinum";
+    }
+    if (isComplete) {
+      value = "complete";
+    }
+    if (value !== null) {
       reward();
+      show(value);
     }
-    return value;
+    return isComplete;
   }, [progress]); // eslint-disable-line
 
   const refetchGame = (): void => {
