@@ -20,7 +20,9 @@ import {
   useRef,
   type Dispatch,
   type SetStateAction,
+  useMemo,
 } from "react";
+import { useReward } from "react-rewards";
 import { AlertOctagon, Check } from "tabler-icons-react";
 
 interface IGameProviderProps extends PropsWithChildren {
@@ -40,6 +42,7 @@ interface IGameContext {
   isSyncing: boolean;
   isUpdating: boolean;
   isCompleted: boolean;
+  isAllChecked: boolean;
   refetchGame: () => void;
   refetchTrophies: () => void;
   syncProgress: () => void;
@@ -49,6 +52,12 @@ interface IGameContext {
   resetFilters: () => void;
   handleCheckAll: (value: boolean) => void;
 }
+
+const rewardConfig = {
+  spread: 100,
+  startVelocity: 50,
+  elementCount: 100,
+};
 
 const initialFilters: ITrophyFilters = {
   type: "all",
@@ -64,6 +73,7 @@ const initialContextValue: IGameContext = {
   isSyncing: false,
   isUpdating: false,
   isCompleted: false,
+  isAllChecked: false,
   refetchGame: () => null,
   refetchTrophies: () => null,
   syncProgress: () => null,
@@ -118,7 +128,25 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
 
   const [debouncedProgress] = useDebouncedValue(progress, 700);
   const isUserInteract = useRef<boolean>(false);
+  const isMounted = useRef<boolean>(false);
   const isAlreadyUpdated = useRef<boolean>(false);
+
+  const { reward } = useReward("reward", "confetti", rewardConfig);
+
+  const isAllChecked = useMemo(() => {
+    if (!isMounted.current) return true;
+    if (typeof window === "undefined") return true;
+    let count = 0;
+    for (let i = 0; i < progress.length; i++) {
+      const el = progress[i];
+      count = count + (el.earned ? 1 : 0);
+    }
+    const value = progress.length === count;
+    if (value) {
+      reward();
+    }
+    return value;
+  }, [progress]); // eslint-disable-line
 
   const refetchGame = (): void => {
     if (typeof id !== "string") return;
@@ -236,6 +264,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     isSyncing,
     isUpdating,
     isCompleted,
+    isAllChecked,
     refetchGame,
     refetchTrophies,
     syncProgress,
@@ -325,6 +354,10 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
       console.info("doesn't need update");
     }
   }, [progress, trophies]); // eslint-disable-line
+
+  useEffect(() => {
+    isMounted.current = true;
+  }, []);
 
   return <Context.Provider value={exposed}>{children}</Context.Provider>;
 };

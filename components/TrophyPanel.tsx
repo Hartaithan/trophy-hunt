@@ -40,10 +40,14 @@ const useStyles = createStyles(({ spacing }) => ({
 
 const TrophyPanel: FC = () => {
   const { classes } = useStyles();
-  const { game, progress, filters, syncProgress, setFilters, handleCheckAll } =
-    useGame();
-
-  const isAllChecked = progress.every((i) => i.earned);
+  const {
+    game,
+    filters,
+    isAllChecked,
+    syncProgress,
+    setFilters,
+    handleCheckAll,
+  } = useGame();
 
   const handleEarnedChange = (value: TrophyEarnedFilter): void => {
     setFilters((prev) => ({ ...prev, earned: value }));

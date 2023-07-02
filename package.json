@@ -37,6 +37,7 @@
     "psn-api": "^2.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-rewards": "^2.0.4",
     "tabler-icons-react": "^1.56.0"
   },
   "devDependencies": {

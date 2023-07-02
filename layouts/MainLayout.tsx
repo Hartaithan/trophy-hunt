@@ -23,6 +23,7 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
+      <div id="reward" />
       <Container className={classes.container}>{children}</Container>
     </>
   );
