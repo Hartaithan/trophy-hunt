@@ -107,6 +107,8 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           className={classes.image}
           src={image_url}
           fill
+          priority
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           alt="image card"
         />
         {platform === "ps5" && <BoardCardOverlay />}
@@ -114,6 +116,8 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
           className={classes.background}
           src={image_url}
           fill
+          priority
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           alt="image card"
         />
       </Box>

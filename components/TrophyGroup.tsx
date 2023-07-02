@@ -12,6 +12,7 @@ const useStyles = createStyles(({ spacing, radius, colors }) => ({
   container: {
     position: "sticky",
     top: spacing.md,
+    minHeight: 100,
     width: "100%",
     background: colors.primary[7],
     borderRadius: radius.lg,
@@ -20,7 +21,6 @@ const useStyles = createStyles(({ spacing, radius, colors }) => ({
     alignItems: "center",
   },
   icon: {
-    minHeight: 80,
     width: "auto",
     objectFit: "contain",
     borderRadius: radius.md,

@@ -17,7 +17,6 @@ const useStyles = createStyles(({ radius }) => ({
     flex: 1,
   },
   icon: {
-    minHeight: 100,
     width: "auto",
     objectFit: "contain",
     borderRadius: radius.md,
@@ -41,6 +40,7 @@ const GameInfo: FC = () => {
         width={250}
         height={100}
         className={classes.icon}
+        priority
         src={image_url}
         alt={title ?? "game image"}
       />
