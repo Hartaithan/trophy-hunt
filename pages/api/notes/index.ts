@@ -4,7 +4,33 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
 const getNoteByGame: NextApiHandler = async (req, res) => {
-  return res.status(200).json({ message: "Hello World!" });
+  const {
+    query: { game_id, trophy_id },
+  } = req;
+  const supabase = createServerSupabaseClient({ req, res });
+
+  const results = validatePayload(req.query, ["game_id", "trophy_id"]);
+  if (results !== null) {
+    console.error("invalid queries", results.errors);
+    return res.status(400).json(results);
+  }
+
+  const { data, error } = await supabase
+    .from("notes")
+    .select("*")
+    .match({
+      game_id,
+      trophy_id,
+    })
+    .single();
+  if (error !== null) {
+    console.error("note not exist", game_id, error);
+    return res
+      .status(400)
+      .json({ message: "There are no notes on this query" });
+  }
+
+  return res.status(200).json({ note: data });
 };
 
 const addNote: NextApiHandler = async (req, res) => {
