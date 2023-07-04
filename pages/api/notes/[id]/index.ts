@@ -63,7 +63,24 @@ const updateNote: NextApiHandler = async (req, res) => {
 };
 
 const deleteNote: NextApiHandler = async (req, res) => {
-  return res.status(200).json({ message: "Hello World!" });
+  const {
+    query: { id },
+  } = req;
+  const supabase = createServerSupabaseClient({ req, res });
+
+  if (id === undefined || Array.isArray(id)) {
+    console.error("invalid [id] query", req.query);
+    return res.status(400).json({ message: "Invalid [id] query" });
+  }
+
+  const { error } = await supabase.from("notes").delete().eq("id", id);
+
+  if (error !== null) {
+    console.error("unable to delete note by id", id, error);
+    return res.status(400).json({ message: "Unable to delete note by id", id });
+  }
+
+  return res.status(200).json({ message: "Note successfully deleted!", id });
 };
 
 const handler: NextApiHandler = async (req, res) => {
