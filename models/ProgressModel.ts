@@ -1,6 +1,7 @@
 export interface IProgressItem {
   id: number;
   earned: boolean;
+  group: string;
   dlc: boolean;
 }
 

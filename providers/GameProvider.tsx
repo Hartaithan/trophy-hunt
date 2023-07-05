@@ -102,6 +102,7 @@ const initializeProgress = (trophies: IFormattedResponse): IProgressPayload => {
       payload.push({
         id: trophy.id,
         earned: false,
+        group: group.id,
         dlc: group.id !== "default",
       });
     }

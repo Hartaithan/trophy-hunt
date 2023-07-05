@@ -88,6 +88,7 @@ const syncGameProgress: NextApiHandler = async (req, res) => {
   const progress: IProgressItem[] = trophies.map((i) => ({
     id: i.trophyId,
     earned: i.earned ?? false,
+    group: i.trophyGroupId ?? "default",
     dlc: i.trophyGroupId === undefined ? false : i.trophyGroupId !== "default",
   }));
 
