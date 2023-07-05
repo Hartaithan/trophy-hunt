@@ -79,7 +79,7 @@ const ProfilePage: IPage<IProfilePageProps> = (props) => {
   };
 
   return (
-    <Flex w="100%" h="100%" direction="column" py="xl">
+    <Flex direction="column" py="xl">
       <Title order={3} mb="md">
         Edit Profile
       </Title>

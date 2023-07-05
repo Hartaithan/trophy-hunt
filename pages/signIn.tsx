@@ -58,7 +58,7 @@ const SignInPage: IPage = () => {
   };
 
   return (
-    <Flex w="100%" h="100%" direction="column" justify="center" align="center">
+    <Flex direction="column" justify="center" align="center">
       <Title order={2} align="center" mb="md">
         Welcome back!
       </Title>

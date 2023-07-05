@@ -8,14 +8,7 @@ const Home: IPage = () => {
   const { profile, psn, updatePSNProfile } = useProfiles();
 
   return (
-    <Flex
-      h="100%"
-      justify="center"
-      align="center"
-      direction="column"
-      gap={12}
-      py={24}
-    >
+    <Flex justify="center" align="center" direction="column" gap={12} py={24}>
       <Title>Hello world!</Title>
       <Button onClick={() => updatePSNProfile()}>update</Button>
       <Group align="flex-start">
