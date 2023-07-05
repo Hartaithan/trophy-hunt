@@ -1,8 +1,9 @@
 import { type TrophyCountItem, type IGroup } from "@/models/TrophyModel";
-import { Text, Flex, createStyles, Badge } from "@mantine/core";
+import { Text, Flex, createStyles, Badge, Switch } from "@mantine/core";
 import Image from "./Image";
-import { type FC } from "react";
+import { useMemo, type FC, type ChangeEventHandler } from "react";
 import TrophyCounts from "./TrophyCounts";
+import { useGame } from "@/providers/GameProvider";
 
 interface ITrophyGroupProps {
   group: IGroup;
@@ -36,10 +37,28 @@ const useStyles = createStyles(({ spacing, radius, colors }) => ({
 const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
   const { group } = props;
   const { classes } = useStyles();
+  const { progress, handleCheckGroup } = useGame();
 
   const { id, icon_url, name, counts } = group;
 
   const countsArray: TrophyCountItem[] = Object.entries(counts).reverse();
+
+  const isAllChecked = useMemo(() => {
+    let count = 0;
+    let earned = 0;
+    for (let i = 0; i < progress.length; i++) {
+      const el = progress[i];
+      const isMatch = el.group === id;
+      const isEarned = el.earned;
+      count = count + (isMatch ? 1 : 0);
+      earned = earned + (isMatch && isEarned ? 1 : 0);
+    }
+    return count === earned;
+  }, [id, progress]);
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = () => {
+    handleCheckGroup(id, !isAllChecked);
+  };
 
   return (
     <Flex className={classes.container}>
@@ -57,6 +76,12 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
         </Flex>
         <TrophyCounts counts={countsArray} />
       </Flex>
+      <Switch
+        checked={isAllChecked}
+        onChange={handleChange}
+        size="md"
+        mr="md"
+      />
     </Flex>
   );
 };

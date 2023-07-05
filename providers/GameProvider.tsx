@@ -55,6 +55,7 @@ interface IGameContext {
   setFilters: Dispatch<SetStateAction<ITrophyFilters>>;
   resetFilters: () => void;
   handleCheckAll: (value: boolean) => void;
+  handleCheckGroup: (group: string, value: boolean) => void;
 }
 
 const rewardConfig = {
@@ -86,6 +87,7 @@ const initialContextValue: IGameContext = {
   setFilters: () => null,
   resetFilters: () => null,
   handleCheckAll: () => null,
+  handleCheckGroup: () => null,
 };
 
 const syncStartedMessage =
@@ -274,6 +276,25 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     setProgress((prev) => prev.map((item) => ({ ...item, earned: value })));
   };
 
+  const handleCheckGroup = (group: string, value: boolean): void => {
+    setStatus("syncing");
+    notifications.show({
+      id: "sync",
+      loading: true,
+      title: "Sync...",
+      message: syncStartedMessage,
+      autoClose: false,
+      withCloseButton: false,
+    });
+    isUserInteract.current = true;
+    setProgress((prev) =>
+      prev.map((item) => {
+        const isMatch = item.group === group;
+        return { ...item, earned: isMatch ? value : item.earned };
+      })
+    );
+  };
+
   const exposed: IGameContext = {
     game,
     trophies,
@@ -292,6 +313,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     setFilters,
     resetFilters,
     handleCheckAll,
+    handleCheckGroup,
   };
 
   useEffect(() => {
