@@ -21,6 +21,7 @@ interface Checked {
   earned: number;
   label: string;
   isAll: boolean;
+  incomplete: boolean;
 }
 
 const useStyles = createStyles(({ spacing, radius, colors }) => ({
@@ -72,6 +73,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
       earned,
       label: `${earned} / ${count}`,
       isAll: count === earned,
+      incomplete: count === earned ? false : earned !== 0,
     };
   }, [id, progress]);
 
@@ -106,6 +108,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
         </Title>
         <Checkbox
           checked={checked.isAll}
+          indeterminate={checked.incomplete}
           onChange={handleChange}
           radius="md"
           size="lg"
