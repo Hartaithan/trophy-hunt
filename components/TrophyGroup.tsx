@@ -1,5 +1,12 @@
 import { type TrophyCountItem, type IGroup } from "@/models/TrophyModel";
-import { Text, Flex, createStyles, Badge, Switch } from "@mantine/core";
+import {
+  Text,
+  Flex,
+  createStyles,
+  Badge,
+  Checkbox,
+  Title,
+} from "@mantine/core";
 import Image from "./Image";
 import { useMemo, type FC, type ChangeEventHandler } from "react";
 import TrophyCounts from "./TrophyCounts";
@@ -7,6 +14,13 @@ import { useGame } from "@/providers/GameProvider";
 
 interface ITrophyGroupProps {
   group: IGroup;
+}
+
+interface Checked {
+  count: number;
+  earned: number;
+  label: string;
+  isAll: boolean;
 }
 
 const useStyles = createStyles(({ spacing, radius, colors }) => ({
@@ -43,7 +57,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
 
   const countsArray: TrophyCountItem[] = Object.entries(counts).reverse();
 
-  const isAllChecked = useMemo(() => {
+  const checked = useMemo<Checked>(() => {
     let count = 0;
     let earned = 0;
     for (let i = 0; i < progress.length; i++) {
@@ -53,11 +67,16 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
       count = count + (isMatch ? 1 : 0);
       earned = earned + (isMatch && isEarned ? 1 : 0);
     }
-    return count === earned;
+    return {
+      count,
+      earned,
+      label: `${earned} / ${count}`,
+      isAll: count === earned,
+    };
   }, [id, progress]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = () => {
-    handleCheckGroup(id, !isAllChecked);
+    handleCheckGroup(id, !checked.isAll);
   };
 
   return (
@@ -76,12 +95,23 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
         </Flex>
         <TrophyCounts counts={countsArray} />
       </Flex>
-      <Switch
-        checked={isAllChecked}
-        onChange={handleChange}
-        size="md"
-        mr="md"
-      />
+      <Flex align="center">
+        <Title
+          order={4}
+          mr="md"
+          td={checked.isAll ? "line-through" : "unset"}
+          c={checked.isAll ? "dimmed" : undefined}
+        >
+          {checked.label}
+        </Title>
+        <Checkbox
+          checked={checked.isAll}
+          onChange={handleChange}
+          radius="md"
+          size="lg"
+          mr="md"
+        />
+      </Flex>
     </Flex>
   );
 };
