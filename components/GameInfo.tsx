@@ -31,6 +31,7 @@ const GameInfo: FC = () => {
 
   const { title, status, platform, image_url } = game;
   const counts = trophies?.counts ?? null;
+  const count = trophies?.count ?? null;
   const countsArray: TrophyCountItem[] =
     counts != null ? Object.entries(counts).reverse() : [];
 
@@ -49,7 +50,7 @@ const GameInfo: FC = () => {
         <Group mt={4}>
           <ColumnBadge status={status} />
           <PlatformBadge platform={platform} />
-          <TrophyCounts counts={countsArray} size="small" />
+          <TrophyCounts counts={countsArray} count={count} size="small" />
         </Group>
       </Flex>
       <ProgressStats width={300} progress={progress} />

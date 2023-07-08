@@ -5,20 +5,25 @@ import {
   type SpacingValue,
   type SystemProp,
   Text,
+  useMantineTheme,
+  Divider,
 } from "@mantine/core";
 import { type FC } from "react";
 import TrophyIcon from "./TrophyIcon";
 import { trophyColors } from "@/constants/trophy";
+import { ListDetails } from "tabler-icons-react";
 
 interface ITrophyCountsProps {
   counts: TrophyCountItem[];
+  count?: number | null;
   size?: "normal" | "small";
   mt?: SystemProp<SpacingValue>;
 }
 
 const TrophyCounts: FC<ITrophyCountsProps> = (props) => {
-  const { counts, size = "normal", mt } = props;
+  const { counts, count, size = "normal", mt } = props;
   const isSmall = size === "small";
+  const { colors } = useMantineTheme();
 
   if (counts.length === 0) return null;
 
@@ -40,6 +45,20 @@ const TrophyCounts: FC<ITrophyCountsProps> = (props) => {
           </Flex>
         );
       })}
+      {count != null && (
+        <Flex align="center">
+          <Divider orientation="vertical" size="sm" mr="md" />
+          <ListDetails size={isSmall ? 20 : undefined} color={colors.dark[2]} />
+          <Text
+            ml={4}
+            fw="bold"
+            color="dark.2"
+            size={isSmall ? "sm" : undefined}
+          >
+            {count}
+          </Text>
+        </Flex>
+      )}
     </Group>
   );
 };

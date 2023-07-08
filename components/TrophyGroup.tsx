@@ -54,7 +54,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
   const { classes } = useStyles();
   const { progress, handleCheckGroup } = useGame();
 
-  const { id, icon_url, name, counts } = group;
+  const { id, icon_url, name, count, counts } = group;
 
   const countsArray: TrophyCountItem[] = Object.entries(counts).reverse();
 
@@ -95,7 +95,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
           <Text fw="bold">{name}</Text>
           <Badge ml="sm">{id === "default" ? "Base Game" : "DLC"}</Badge>
         </Flex>
-        <TrophyCounts counts={countsArray} />
+        <TrophyCounts counts={countsArray} count={count} />
       </Flex>
       <Flex align="center">
         <Title
