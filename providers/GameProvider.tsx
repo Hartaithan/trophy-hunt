@@ -28,6 +28,8 @@ import {
   type CongratulationValue,
   useCongratulation,
 } from "./CongratulationProvider";
+import { type INoteModal, type INoteModalState } from "@/models/NoteModel";
+import NoteModal from "@/modals/NoteModal";
 
 interface IGameProviderProps extends PropsWithChildren {
   id: string | string[] | undefined;
@@ -56,6 +58,7 @@ interface IGameContext {
   resetFilters: () => void;
   handleCheckAll: (value: boolean) => void;
   handleCheckGroup: (group: string, value: boolean) => void;
+  noteModal: INoteModal;
 }
 
 const rewardConfig = {
@@ -67,6 +70,12 @@ const rewardConfig = {
 const initialFilters: ITrophyFilters = {
   type: "all",
   earned: "all",
+};
+
+const initialNoteState: INoteModalState = {
+  opened: false,
+  game_id: null,
+  trophy_id: null,
 };
 
 const initialContextValue: IGameContext = {
@@ -88,6 +97,12 @@ const initialContextValue: IGameContext = {
   resetFilters: () => null,
   handleCheckAll: () => null,
   handleCheckGroup: () => null,
+  noteModal: {
+    ...initialNoteState,
+    setState: () => null,
+    open: () => null,
+    close: () => null,
+  },
 };
 
 const syncStartedMessage =
@@ -125,6 +140,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     initialTrophies
   );
   const [filters, setFilters] = useState<ITrophyFilters>(initialFilters);
+  const [noteModal, setNoteModal] = useState<INoteModalState>(initialNoteState);
 
   const [status, setStatus] = useState<Status>("idle");
   const isIdle = status === "idle";
@@ -295,6 +311,14 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     );
   };
 
+  const handleNoteOpen = (params?: Partial<INoteModalState>): void => {
+    setNoteModal((prev) => ({ ...prev, ...params, opened: true }));
+  };
+
+  const handleNoteClose = (): void => {
+    setNoteModal((prev) => ({ ...prev, opened: false }));
+  };
+
   const exposed: IGameContext = {
     game,
     trophies,
@@ -314,6 +338,12 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     resetFilters,
     handleCheckAll,
     handleCheckGroup,
+    noteModal: {
+      ...noteModal,
+      setState: setNoteModal,
+      open: handleNoteOpen,
+      close: handleNoteClose,
+    },
   };
 
   useEffect(() => {
@@ -400,7 +430,16 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     isMounted.current = true;
   }, []);
 
-  return <Context.Provider value={exposed}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={exposed}>
+      {children}
+      <NoteModal
+        state={noteModal}
+        setState={setNoteModal}
+        initial={initialNoteState}
+      />
+    </Context.Provider>
+  );
 };
 
 export const useGame = (): IGameContext => useContext(Context);

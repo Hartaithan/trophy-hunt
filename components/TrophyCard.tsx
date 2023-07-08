@@ -1,4 +1,8 @@
-import { rarityLabels, trophyColors } from "@/constants/trophy";
+import {
+  rarityLabels,
+  trophyColors,
+  trophyColorsAccented,
+} from "@/constants/trophy";
 import { type ITrophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
 import {
@@ -7,12 +11,13 @@ import {
   Flex,
   Text,
   Title,
+  UnstyledButton,
   createStyles,
 } from "@mantine/core";
 import dayjs from "dayjs";
 import Image from "./Image";
 import { type FC } from "react";
-import { Check } from "tabler-icons-react";
+import { Check, Notes } from "tabler-icons-react";
 
 const IMAGE_SIZE = 70;
 
@@ -49,7 +54,7 @@ const useStyles = createStyles(
       borderRadius: radius.lg,
       gap: spacing.sm,
       padding: spacing.sm,
-      background: `linear-gradient(110deg, transparent 0%, transparent 75%, ${trophyColors[type]}4D 85%, ${trophyColors[type]}99 95%, ${trophyColors[type]} 100%), ${colors.primary[7]}`,
+      background: `linear-gradient(110deg, transparent 0%, transparent 70%, ${trophyColors[type]}4D 80%, ${trophyColors[type]}99 95%, ${trophyColors[type]} 100%), ${colors.primary[7]}`,
     },
     info: {
       flex: 1,
@@ -62,13 +67,29 @@ const useStyles = createStyles(
         textShadow: "2px 2px 5px black",
       },
     },
+    note: {
+      width: 50,
+      height: 50,
+      display: "flex",
+      padding: spacing.sm,
+      backgroundColor: trophyColorsAccented[type] + "E3",
+      borderRadius: 10,
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: spacing.sm,
+      "& > svg": {
+        stroke: trophyColors[type],
+      },
+    },
   })
 );
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
-  const { progress, filters, toggleTrophy } = useGame();
+  const { game, progress, filters, toggleTrophy, noteModal } = useGame();
   const { classes, cx } = useStyles(trophy);
+  const { open } = noteModal;
 
   const {
     id,
@@ -89,6 +110,10 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
     progress_value != null &&
     progress_target != null &&
     progress_percentage != null;
+
+  const handleOpenModal = (): void => {
+    open({ trophy_id: trophy.id, game_id: game?.id });
+  };
 
   if (filters.earned === "earned" && !checked) return null;
   if (filters.earned === "unearned" && checked) return null;
@@ -155,6 +180,9 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
             <Text align="center">{rarityLabels[rare]}</Text>
           </Flex>
         )}
+        <UnstyledButton className={classes.note} onClick={handleOpenModal}>
+          <Notes size={32} />
+        </UnstyledButton>
       </Flex>
     </Flex>
   );
