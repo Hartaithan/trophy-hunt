@@ -9,6 +9,7 @@ import {
   type Styles,
   type MenuStylesNames,
   type SegmentedControlProps,
+  type ModalProps,
 } from "@mantine/core";
 import { globalStyles } from "./global";
 import { type NotificationProps } from "@mantine/notifications";
@@ -69,6 +70,11 @@ const SegmentedControlStyles: SegmentedControlProps["styles"] = () => ({
     },
   },
 });
+
+const ModalDefaultProps: Partial<ModalProps> = {
+  zIndex: 10000,
+  centered: true,
+};
 
 const extendedColors: MantineThemeOverride["colors"] = {
   primary: [
@@ -132,7 +138,11 @@ const theme: MantineThemeOverride = {
       defaultProps: ContainerDefaultProps,
     },
     Modal: {
+      defaultProps: ModalDefaultProps,
       styles: ModalStyles,
+    },
+    ModalRoot: {
+      defaultProps: ModalDefaultProps,
     },
     Badge: {
       styles: BadgeStyles,

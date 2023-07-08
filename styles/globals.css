@@ -4,19 +4,23 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html {
   height: 100%;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  scrollbar-gutter: stable;
 }
 
-html {
-  overflow-y: scroll;
+body {
+  flex: 1;
+}
+
+html > body {
+  margin-right: 0px !important;
 }
 
 #__next {
-  min-height: 100%;
-  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
