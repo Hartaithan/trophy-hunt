@@ -27,6 +27,11 @@ export interface IAddGamePayload {
   status: BOARD_COLUMNS;
 }
 
+export interface IAddGameState {
+  status: BOARD_COLUMNS | null;
+  opened: boolean;
+}
+
 export interface IReorderItem {
   id: number;
   position: number;

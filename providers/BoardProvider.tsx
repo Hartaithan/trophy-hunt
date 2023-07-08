@@ -1,5 +1,6 @@
 import AddGameModal from "@/modals/AddGameModal";
 import { type IBoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
+import { type IAddGameState } from "@/models/GameModel";
 import {
   type PropsWithChildren,
   type FC,
@@ -12,11 +13,6 @@ import {
 
 interface IBoardProviderProps extends PropsWithChildren {
   initializedBoard: IBoardColumns;
-}
-
-interface IAddGameState {
-  status: BOARD_COLUMNS | null;
-  opened: boolean;
 }
 
 interface IAddGameModal extends IAddGameState {
@@ -76,9 +72,9 @@ const BoardProvider: FC<IBoardProviderProps> = (props) => {
     <Context.Provider value={exposed}>
       {children}
       <AddGameModal
-        status={addGameModal.status}
-        opened={addGameModal.opened}
-        close={handleClose}
+        state={addGameModal}
+        setState={setAddGameModal}
+        initial={initialState}
       />
     </Context.Provider>
   );

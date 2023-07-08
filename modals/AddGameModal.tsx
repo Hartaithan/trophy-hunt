@@ -5,6 +5,7 @@ import {
   type IGame,
   type IAddGamePayload,
   type IReorderItem,
+  type IAddGameState,
 } from "@/models/GameModel";
 import { type ISearchResult } from "@/models/SearchModel";
 import { useBoard } from "@/providers/BoardProvider";
@@ -18,13 +19,19 @@ import {
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { useState, type FC, useEffect } from "react";
+import {
+  useState,
+  type FC,
+  useEffect,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { AlertOctagon, Check, SquarePlus } from "tabler-icons-react";
 
 interface IAddGameModalProps {
-  status: BOARD_COLUMNS | null;
-  opened: boolean;
-  close: () => void;
+  state: IAddGameState;
+  setState: Dispatch<SetStateAction<IAddGameState>>;
+  initial: IAddGameState;
 }
 
 const isValidSearch = (value: string): boolean => {
@@ -34,7 +41,8 @@ const isValidSearch = (value: string): boolean => {
 };
 
 const AddGameModal: FC<IAddGameModalProps> = (props) => {
-  const { status, opened, close } = props;
+  const { state, setState, initial } = props;
+  const { opened, status } = state;
   const { spacing } = useMantineTheme();
   const { setColumns } = useBoard();
 
@@ -63,6 +71,14 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
     setSearch(value);
     const isValid = isValidSearch(value);
     setLoading(isValid);
+  };
+
+  const onClose = (): void => {
+    setState((prev) => ({ ...prev, opened: false }));
+  };
+
+  const onAnimationEnd = (): void => {
+    setState(initial);
   };
 
   const addNewGame = (game: IGame): void => {
@@ -163,7 +179,12 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   }, [opened]);
 
   return (
-    <Modal.Root opened={opened} onClose={close} centered>
+    <Modal.Root
+      opened={opened}
+      onClose={onClose}
+      onAnimationEnd={onAnimationEnd}
+      centered
+    >
       <Modal.Overlay />
       <Modal.Content>
         <LoadingOverlay visible={isSubmit} zIndex={1001} />
