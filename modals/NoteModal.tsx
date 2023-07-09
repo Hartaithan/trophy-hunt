@@ -37,7 +37,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       Link,
       Highlight,
       TaskList,
-      TaskItem,
+      TaskItem.configure({ nested: true }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
     content: "",

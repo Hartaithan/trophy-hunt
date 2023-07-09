@@ -8,12 +8,13 @@ export default css.global`
 
   ul[data-type="taskList"] li {
     display: flex;
-    align-items: center;
   }
 
   ul[data-type="taskList"] li > label {
     flex: 0 0 auto;
     margin-right: 0.5rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
     user-select: none;
   }
 
@@ -22,6 +23,10 @@ export default css.global`
   }
 
   ul[data-type="taskList"] li > div > p {
+    margin: 0;
+  }
+
+  ul[data-type="taskList"] p {
     margin: 0;
   }
 
