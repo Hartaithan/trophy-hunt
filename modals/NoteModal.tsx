@@ -93,8 +93,6 @@ const NoteModal: FC<INoteModalProps> = (props) => {
                 <RichTextEditor.H4 />
               </RichTextEditor.ControlsGroup>
               <RichTextEditor.ControlsGroup>
-                <RichTextEditor.Blockquote />
-                <RichTextEditor.Hr />
                 <RichTextEditor.BulletList />
                 <RichTextEditor.OrderedList />
               </RichTextEditor.ControlsGroup>

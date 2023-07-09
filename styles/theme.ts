@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import { globalStyles } from "./global";
 import { type NotificationProps } from "@mantine/notifications";
+import { type RichTextEditorProps } from "@mantine/tiptap";
 
 const ContainerDefaultProps: DefaultProps<ContainerProps> = ({ spacing }) => ({
   size: "xl",
@@ -74,6 +75,15 @@ const SegmentedControlStyles: SegmentedControlProps["styles"] = () => ({
 const ModalDefaultProps: Partial<ModalProps> = {
   zIndex: 10000,
   centered: true,
+};
+
+const RichTextEditorStyles: RichTextEditorProps["styles"] = {
+  control: {
+    ":disabled": {
+      opacity: 0.5,
+      pointerEvents: "none",
+    },
+  },
 };
 
 const extendedColors: MantineThemeOverride["colors"] = {
@@ -156,6 +166,9 @@ const theme: MantineThemeOverride = {
     },
     SegmentedControl: {
       styles: SegmentedControlStyles,
+    },
+    RichTextEditor: {
+      styles: RichTextEditorStyles,
     },
   },
 };

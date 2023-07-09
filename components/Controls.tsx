@@ -26,6 +26,7 @@ export const SplitListItemControl: FC = () => {
   return (
     <RichTextEditor.Control
       onClick={() => editor.chain().focus().splitListItem("taskItem").run()}
+      interactive={editor.can().splitListItem("taskItem")}
       disabled={!editor.can().splitListItem("taskItem")}
       aria-label="Split list item"
       title="Split list item"
@@ -40,6 +41,7 @@ export const SinkListItemControl: FC = () => {
   return (
     <RichTextEditor.Control
       onClick={() => editor.chain().focus().sinkListItem("taskItem").run()}
+      interactive={editor.can().sinkListItem("taskItem")}
       disabled={!editor.can().sinkListItem("taskItem")}
       aria-label="Sink list item"
       title="Sink list item"
@@ -54,6 +56,7 @@ export const LiftListItemControl: FC = () => {
   return (
     <RichTextEditor.Control
       onClick={() => editor.chain().focus().liftListItem("taskItem").run()}
+      interactive={editor.can().liftListItem("taskItem")}
       disabled={!editor.can().liftListItem("taskItem")}
       aria-label="Lift list item"
       title="Lift list item"
