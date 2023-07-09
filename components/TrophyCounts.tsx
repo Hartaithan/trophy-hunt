@@ -11,7 +11,7 @@ import {
 import { type FC } from "react";
 import TrophyIcon from "./TrophyIcon";
 import { trophyColors } from "@/constants/trophy";
-import { ListDetails } from "tabler-icons-react";
+import { IconListDetails } from "@tabler/icons-react";
 
 interface ITrophyCountsProps {
   counts: TrophyCountItem[];
@@ -48,7 +48,10 @@ const TrophyCounts: FC<ITrophyCountsProps> = (props) => {
       {count != null && (
         <Flex align="center">
           <Divider orientation="vertical" size="sm" mr="md" />
-          <ListDetails size={isSmall ? 20 : undefined} color={colors.dark[2]} />
+          <IconListDetails
+            size={isSmall ? 20 : undefined}
+            color={colors.dark[2]}
+          />
           <Text
             ml={4}
             fw="bold"

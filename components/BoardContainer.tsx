@@ -21,7 +21,7 @@ import { useBoard } from "@/providers/BoardProvider";
 import { type IReorderItem, type IReorderPayload } from "@/models/GameModel";
 import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
-import { AlertOctagon, Check } from "tabler-icons-react";
+import { IconAlertOctagon, IconCheck } from "@tabler/icons-react";
 
 interface IMove {
   start: string | null;
@@ -99,7 +99,7 @@ const BoardContainer: FC = () => {
           id: "reorder",
           title: "Success!",
           message: res.data.message,
-          icon: <Check size="1rem" />,
+          icon: <IconCheck size="1rem" />,
           autoClose: 3000,
         });
       })
@@ -111,7 +111,7 @@ const BoardContainer: FC = () => {
           title: "Something went wrong!",
           message:
             "For some reason the synchronization did not complete, please try again.",
-          icon: <AlertOctagon size="1rem" />,
+          icon: <IconAlertOctagon size="1rem" />,
         });
         console.error("reorder columns error", error);
       });

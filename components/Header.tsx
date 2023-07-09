@@ -18,7 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { type FC } from "react";
-import { DoorExit, User } from "tabler-icons-react";
+import { IconDoorExit, IconUser } from "@tabler/icons-react";
 
 const HEADER_HEIGHT = 48;
 
@@ -150,14 +150,14 @@ const Header: FC = () => {
               <Menu.Item
                 component={Link}
                 href="/profile"
-                icon={<User size="1rem" />}
+                icon={<IconUser size="1rem" />}
                 lh="initial"
               >
                 Profile
               </Menu.Item>
               <Menu.Item
                 onClick={() => handleSignOut()}
-                icon={<DoorExit size="1rem" />}
+                icon={<IconDoorExit size="1rem" />}
               >
                 Sign out
               </Menu.Item>
@@ -169,7 +169,7 @@ const Header: FC = () => {
             component={Link}
             href="/signIn"
             size="xs"
-            leftIcon={<User size="0.75rem" />}
+            leftIcon={<IconUser size="0.75rem" />}
             variant="light"
             compact
           >

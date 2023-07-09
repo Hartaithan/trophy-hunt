@@ -19,7 +19,7 @@ import {
 import { useForm, isEmail, hasLength, isNotEmpty } from "@mantine/form";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useDebouncedValue } from "@mantine/hooks";
-import { UserCheck, UserX } from "tabler-icons-react";
+import { IconUserCheck, IconUserX } from "@tabler/icons-react";
 import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
 import LanguageSelect from "@/components/LanguageSelect";
@@ -49,8 +49,8 @@ const SignUpPage: IPage = () => {
     () => ({
       idle: undefined,
       checking: <Loader size="xs" />,
-      unique: <UserCheck size={20} color={colors.green[8]} />,
-      notUnique: <UserX size={20} color={colors.red[8]} />,
+      unique: <IconUserCheck size={20} color={colors.green[8]} />,
+      notUnique: <IconUserX size={20} color={colors.red[8]} />,
     }),
     [] // eslint-disable-line
   );

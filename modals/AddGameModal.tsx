@@ -26,7 +26,11 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { AlertOctagon, Check, SquarePlus } from "tabler-icons-react";
+import {
+  IconAlertOctagon,
+  IconCheck,
+  IconSquarePlus,
+} from "@tabler/icons-react";
 
 interface IAddGameModalProps {
   state: IAddGameState;
@@ -107,7 +111,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
             id: "reorder",
             title: "Success!",
             message: res.data.message,
-            icon: <Check size="1rem" />,
+            icon: <IconCheck size="1rem" />,
             autoClose: 3000,
           });
         })
@@ -118,7 +122,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
             title: "Something went wrong!",
             message:
               "For some reason the synchronization did not complete, please try again.",
-            icon: <AlertOctagon size="1rem" />,
+            icon: <IconAlertOctagon size="1rem" />,
           });
           console.error("reorder columns error", error);
         });
@@ -215,7 +219,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
             fullWidth
             disabled={value === null || status === null}
             onClick={handleSubmit}
-            leftIcon={<SquarePlus size={20} />}
+            leftIcon={<IconSquarePlus size={20} />}
           >
             Add
           </Button>

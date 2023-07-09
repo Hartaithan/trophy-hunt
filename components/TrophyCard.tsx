@@ -17,7 +17,7 @@ import {
 import dayjs from "dayjs";
 import Image from "./Image";
 import { type FC } from "react";
-import { Check, Notes } from "tabler-icons-react";
+import { IconCheck, IconNotes } from "@tabler/icons-react";
 
 const IMAGE_SIZE = 70;
 
@@ -152,7 +152,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
               {checked && earnedDateTime != null && (
                 <Badge
                   ml="xs"
-                  leftSection={<Check size="0.75rem" />}
+                  leftSection={<IconCheck size="0.75rem" />}
                   style={{
                     textDecoration: checked ? "line-through" : "none",
                   }}
@@ -181,7 +181,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
           </Flex>
         )}
         <UnstyledButton className={classes.note} onClick={handleOpenModal}>
-          <Notes size={32} />
+          <IconNotes size={32} />
         </UnstyledButton>
       </Flex>
     </Flex>

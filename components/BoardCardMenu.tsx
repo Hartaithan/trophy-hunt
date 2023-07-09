@@ -1,7 +1,7 @@
 import { type IGame } from "@/models/GameModel";
 import { Menu, UnstyledButton, createStyles, Text } from "@mantine/core";
 import { memo, type FC, type MouseEventHandler } from "react";
-import { Dots, ArrowUpRight, Trash } from "tabler-icons-react";
+import { IconDots, IconArrowUpRight, IconTrash } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
 import { useBoard } from "@/providers/BoardProvider";
 import API from "@/helpers/api";
@@ -79,18 +79,18 @@ const BoardCardMenu: FC<IBoardCardMenuProps> = (props) => {
     <Menu shadow="md" width={150} data-no-dnd="true" position="bottom-end">
       <Menu.Target>
         <UnstyledButton className={classes.actions} onClick={stopPropagation}>
-          <Dots size="1.5rem" />
+          <IconDots size="1.5rem" />
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown data-no-dnd="true">
         <Menu.Item
-          icon={<ArrowUpRight size="1rem" />}
+          icon={<IconArrowUpRight size="1rem" />}
           component={Link}
           href={`/game/${id}`}
         >
           Open
         </Menu.Item>
-        <Menu.Item icon={<Trash size="1rem" />} onClick={handleDeleteModal}>
+        <Menu.Item icon={<IconTrash size="1rem" />} onClick={handleDeleteModal}>
           Delete
         </Menu.Item>
       </Menu.Dropdown>

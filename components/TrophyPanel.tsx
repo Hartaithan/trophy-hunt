@@ -11,7 +11,11 @@ import {
   createStyles,
 } from "@mantine/core";
 import { type FC } from "react";
-import { CloudDownload, ListCheck, Search } from "tabler-icons-react";
+import {
+  IconCloudDownload,
+  IconListCheck,
+  IconSearch,
+} from "@tabler/icons-react";
 
 interface IOptions<T> extends Omit<SegmentedControlItem, "value"> {
   value: T;
@@ -86,21 +90,21 @@ const TrophyPanel: FC = () => {
       <Button
         ml="auto"
         radius="lg"
-        leftIcon={<ListCheck size={20} />}
+        leftIcon={<IconListCheck size={20} />}
         onClick={() => handleCheckAll(!isAllChecked)}
       >
         {isAllChecked ? "Uncheck" : "Check"} all
       </Button>
       <Button
         radius="lg"
-        leftIcon={<Search size={20} />}
+        leftIcon={<IconSearch size={20} />}
         onClick={() => handleGoogleSearch()}
       >
         Find in Google
       </Button>
       <Button
         radius="lg"
-        leftIcon={<CloudDownload size={20} />}
+        leftIcon={<IconCloudDownload size={20} />}
         onClick={() => syncProgress()}
       >
         Sync

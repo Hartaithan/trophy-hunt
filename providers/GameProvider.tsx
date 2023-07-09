@@ -23,7 +23,7 @@ import {
   useMemo,
 } from "react";
 import { useReward } from "react-rewards";
-import { AlertOctagon, Check } from "tabler-icons-react";
+import { IconAlertOctagon, IconCheck } from "@tabler/icons-react";
 import {
   type CongratulationValue,
   useCongratulation,
@@ -254,7 +254,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
           id: "sync",
           title: "Success!",
           message: data.message,
-          icon: <Check size="1rem" />,
+          icon: <IconCheck size="1rem" />,
           autoClose: 3000,
         });
       })
@@ -266,7 +266,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
           title: "Something went wrong!",
           autoClose: false,
           message: error.response.data.message ?? syncErrorMessage,
-          icon: <AlertOctagon size="1rem" />,
+          icon: <IconAlertOctagon size="1rem" />,
         });
       })
       .finally(() => {
@@ -357,7 +357,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
           id: "sync",
           title: "Success!",
           message: res.data.message,
-          icon: <Check size="1rem" />,
+          icon: <IconCheck size="1rem" />,
           autoClose: 3000,
         });
       })
@@ -368,7 +368,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
           color: "red",
           title: "Something went wrong!",
           message: error.response.data.message ?? syncErrorMessage,
-          icon: <AlertOctagon size="1rem" />,
+          icon: <IconAlertOctagon size="1rem" />,
         });
       })
       .finally(() => {
@@ -403,7 +403,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
             id: "update",
             title: "Success!",
             message: res.data.message,
-            icon: <Check size="1rem" />,
+            icon: <IconCheck size="1rem" />,
             autoClose: 3000,
           });
         })
@@ -415,7 +415,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
             title: "Something went wrong!",
             message:
               "For some reason the update is not complete, please try again later.",
-            icon: <AlertOctagon size="1rem" />,
+            icon: <IconAlertOctagon size="1rem" />,
           });
         })
         .finally(() => {

@@ -16,7 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import BoardCard from "./BoardCard";
 import { type IGame } from "@/models/GameModel";
-import { ArticleOff, PlaylistAdd } from "tabler-icons-react";
+import { IconArticleOff, IconPlaylistAdd } from "@tabler/icons-react";
 import { columnColors, columnsLabels } from "@/constants/board";
 import { useBoard } from "@/providers/BoardProvider";
 
@@ -155,7 +155,7 @@ const BoardColumn: FC<IBoardColumnProps> = (props) => {
             {items.length}
           </Text>
           <UnstyledButton className={classes.add} onClick={handleAddGame}>
-            <PlaylistAdd size={20} />
+            <IconPlaylistAdd size={20} />
           </UnstyledButton>
         </Flex>
         <Flex
@@ -172,7 +172,7 @@ const BoardColumn: FC<IBoardColumnProps> = (props) => {
           >
             {(styles) => (
               <Flex className={classes.empty} style={styles}>
-                <ArticleOff size={100} />
+                <IconArticleOff size={100} />
                 <Text align="center" fw={500}>
                   <Text id="column" span>
                     [{columnsLabels[column]}]{" "}
@@ -181,7 +181,7 @@ const BoardColumn: FC<IBoardColumnProps> = (props) => {
                 </Text>
                 <Button
                   onClick={handleAddGame}
-                  leftIcon={<PlaylistAdd size={20} />}
+                  leftIcon={<IconPlaylistAdd size={20} />}
                   compact
                 >
                   Add game

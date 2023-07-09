@@ -4,7 +4,7 @@ import { Box, Collapse, Flex, Stack, Text, createStyles } from "@mantine/core";
 import TrophyCard from "./TrophyCard";
 import { useGame } from "@/providers/GameProvider";
 import { useElementSize } from "@mantine/hooks";
-import { MoodSad } from "tabler-icons-react";
+import { IconMoodSad } from "@tabler/icons-react";
 
 interface ITrophyListProps {
   trophies: ITrophy[];
@@ -41,7 +41,7 @@ const TrophyList: FC<ITrophyListProps> = (props) => {
     <Box className={classes.container}>
       <Collapse in={isEmpty} className={classes.collapsible}>
         <Flex className={classes.empty}>
-          <MoodSad size={60} />
+          <IconMoodSad size={60} />
           <Text fw="bold" size="md" mt={4}>
             I couldn&apos;t find any trophies for the selected filters
           </Text>
