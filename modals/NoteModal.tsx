@@ -12,6 +12,12 @@ import TaskItem from "@tiptap/extension-task-item";
 import { useGame } from "@/providers/GameProvider";
 import PlatformBadge from "@/components/PlatformBadge";
 import editorStyles from "@/styles/editor";
+import {
+  LiftListItemControl,
+  SinkListItemControl,
+  SplitListItemControl,
+  ToggleTaskListControl,
+} from "@/components/Controls";
 
 interface INoteModalProps {
   state: INoteModalState;
@@ -101,6 +107,12 @@ const NoteModal: FC<INoteModalProps> = (props) => {
                 <RichTextEditor.AlignCenter />
                 <RichTextEditor.AlignJustify />
                 <RichTextEditor.AlignRight />
+              </RichTextEditor.ControlsGroup>
+              <RichTextEditor.ControlsGroup>
+                <ToggleTaskListControl />
+                <SplitListItemControl />
+                <SinkListItemControl />
+                <LiftListItemControl />
               </RichTextEditor.ControlsGroup>
             </RichTextEditor.Toolbar>
             <RichTextEditor.Content />
