@@ -11,6 +11,7 @@ import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import { useGame } from "@/providers/GameProvider";
 import PlatformBadge from "@/components/PlatformBadge";
+import editorStyles from "@/styles/editor";
 
 interface INoteModalProps {
   state: INoteModalState;
@@ -106,6 +107,9 @@ const NoteModal: FC<INoteModalProps> = (props) => {
           </RichTextEditor>
         </Modal.Body>
       </Modal.Content>
+      <style jsx global>
+        {editorStyles}
+      </style>
     </Modal.Root>
   );
 };
