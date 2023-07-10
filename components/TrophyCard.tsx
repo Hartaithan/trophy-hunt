@@ -7,7 +7,6 @@ import { type ITrophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
 import {
   Badge,
-  Checkbox,
   Flex,
   Text,
   Title,
@@ -15,9 +14,10 @@ import {
   createStyles,
 } from "@mantine/core";
 import dayjs from "dayjs";
-import Image from "./Image";
-import { type FC } from "react";
+import { memo, type FC } from "react";
 import { IconCheck, IconNotes } from "@tabler/icons-react";
+import Image from "next/image";
+import TrophyBadge from "./TrophyBadge";
 
 const IMAGE_SIZE = 70;
 
@@ -87,7 +87,7 @@ const useStyles = createStyles(
 
 const TrophyCard: FC<ITrophyCardProps> = (props) => {
   const { trophy } = props;
-  const { game, progress, filters, toggleTrophy, noteModal } = useGame();
+  const { game, progress, filters, noteModal } = useGame();
   const { classes, cx } = useStyles(trophy);
   const { open } = noteModal;
 
@@ -96,7 +96,6 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
     name,
     detail,
     icon_url,
-    type,
     rare,
     earnedRate,
     earnedDateTime,
@@ -122,19 +121,7 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
     <Flex
       className={cx(classes.container, checked && classes.checked, "trophy")}
     >
-      <Flex className={classes.badge}>
-        <Image
-          width={30}
-          height={30}
-          alt="trophy type icon"
-          src={`/trophy/${type}.png`}
-        />
-        <Checkbox
-          checked={checked}
-          onChange={() => toggleTrophy(id)}
-          size="md"
-        />
-      </Flex>
+      <TrophyBadge {...props} checked={checked} />
       <Flex className={classes.content}>
         <Image
           width={IMAGE_SIZE}
@@ -188,4 +175,4 @@ const TrophyCard: FC<ITrophyCardProps> = (props) => {
   );
 };
 
-export default TrophyCard;
+export default memo(TrophyCard);

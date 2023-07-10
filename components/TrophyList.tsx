@@ -1,31 +1,17 @@
 import { useState, type FC } from "react";
 import { type ITrophy } from "@/models/TrophyModel";
-import { Box, Collapse, Flex, Stack, Text, createStyles } from "@mantine/core";
+import { Box, Stack, createStyles } from "@mantine/core";
 import TrophyCard from "./TrophyCard";
 import { useGame } from "@/providers/GameProvider";
 import { useElementSize } from "@mantine/hooks";
-import { IconMoodSad } from "@tabler/icons-react";
+import TrophyListEmpty from "./TrophyListEmpty";
 
 interface ITrophyListProps {
   trophies: ITrophy[];
 }
 
-const useStyles = createStyles(({ colors, radius, spacing }) => ({
+const useStyles = createStyles(() => ({
   container: { position: "relative" },
-  collapsible: {
-    position: "relative",
-    top: spacing.xl,
-  },
-  empty: {
-    height: 130,
-    width: "100%",
-    background: colors.primary[7],
-    borderRadius: radius.lg,
-    padding: spacing.sm,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
 }));
 
 const TrophyList: FC<ITrophyListProps> = (props) => {
@@ -39,14 +25,7 @@ const TrophyList: FC<ITrophyListProps> = (props) => {
 
   return (
     <Box className={classes.container}>
-      <Collapse in={isEmpty} className={classes.collapsible}>
-        <Flex className={classes.empty}>
-          <IconMoodSad size={60} />
-          <Text fw="bold" size="md" mt={4}>
-            I couldn&apos;t find any trophies for the selected filters
-          </Text>
-        </Flex>
-      </Collapse>
+      <TrophyListEmpty in={isEmpty} />
       <Stack ref={ref} mt="xl" spacing="xs" onLoad={() => setLoaded(true)}>
         {trophies.map((trophy) => {
           if (filters.type !== "all" && filters.type !== trophy.type)
