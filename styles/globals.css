@@ -8,15 +8,16 @@ html {
   height: 100%;
   display: flex;
   flex-direction: column;
-  scrollbar-gutter: stable;
 }
 
 body {
   flex: 1;
 }
 
-html > body {
-  margin-right: 0px !important;
+html,
+body {
+  overflow: auto;
+  scrollbar-gutter: stable;
 }
 
 #__next {
