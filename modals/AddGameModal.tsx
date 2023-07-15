@@ -148,7 +148,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
           message: res.data.message,
           autoClose: 3000,
         });
-        close();
+        onClose();
       })
       .catch((error) => {
         notifications.show({
