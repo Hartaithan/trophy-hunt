@@ -5,13 +5,21 @@ import {
   useEffect,
   useCallback,
   useState,
+  type ReactNode,
 } from "react";
 import {
   type IAddNotePayload,
   type INote,
   type INoteModalState,
 } from "@/models/NoteModel";
-import { Button, Group, LoadingOverlay, Modal, Text } from "@mantine/core";
+import {
+  Button,
+  Group,
+  Loader,
+  LoadingOverlay,
+  Modal,
+  Text,
+} from "@mantine/core";
 import { RichTextEditor, Link } from "@mantine/tiptap";
 import { useEditor } from "@tiptap/react";
 import Highlight from "@tiptap/extension-highlight";
@@ -30,6 +38,7 @@ import {
   ToggleTaskListControl,
 } from "@/components/Controls";
 import API from "@/helpers/api";
+import { IconBookUpload, IconUpload } from "@tabler/icons-react";
 
 interface INoteModalProps {
   state: INoteModalState;
@@ -37,13 +46,39 @@ interface INoteModalProps {
   initial: INoteModalState;
 }
 
+type Status = "loading" | "completed" | "creation" | "saving";
+
+const statusIcons: Record<Status, ReactNode> = {
+  loading: <Loader size="xs" />,
+  completed: undefined,
+  creation: <IconBookUpload size={20} />,
+  saving: <IconUpload size={20} />,
+};
+
+const statusLabels: Record<Status, string> = {
+  loading: "Loading...",
+  completed: "Save",
+  creation: "Creating...",
+  saving: "Saving...",
+};
+
+const statusDisabled: Record<Status, boolean> = {
+  loading: true,
+  completed: false,
+  creation: true,
+  saving: true,
+};
+
 const NoteModal: FC<INoteModalProps> = (props) => {
   const { state, setState } = props;
   const { opened, game_id, trophy_id } = state;
   const { game } = useGame();
 
   const [note, setNote] = useState<INote | null>(null);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<Status>("loading");
+  const isLoading = status === "loading";
+  const isSaving = status === "saving";
+  const isCreation = status === "creation";
 
   const editor = useEditor({
     extensions: [
@@ -83,7 +118,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
 
   const getNote = useCallback(() => {
     if (game_id == null || trophy_id == null) return;
-    setLoading(true);
+    setStatus("loading");
     API.get(`/notes?game_id=${game_id}&trophy_id=${trophy_id}`)
       .then(({ data }) => {
         const noteRes: INote | null = data.note ?? null;
@@ -92,11 +127,12 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       .catch((error) => {
         console.error("get note error", game_id, trophy_id, error);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setStatus("completed"));
   }, [game_id, setNoteContent, trophy_id]);
 
   const createNewNote = (content: string): void => {
     if (game_id == null || trophy_id == null) return;
+    setStatus("creation");
     const payload: IAddNotePayload = {
       game_id,
       trophy_id,
@@ -110,11 +146,12 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       .catch((error) => {
         console.error("create note error", game_id, trophy_id, error);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setStatus("completed"));
   };
 
   const updateNote = (content: string): void => {
     if (note == null) return;
+    setStatus("saving");
     const payload: Partial<INote> = {
       content,
     };
@@ -126,7 +163,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       .catch((error) => {
         console.error("update note error", game_id, trophy_id, error);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setStatus("completed"));
   };
 
   const handleSubmit = (): void => {
@@ -159,7 +196,10 @@ const NoteModal: FC<INoteModalProps> = (props) => {
           <Modal.CloseButton />
         </Modal.Header>
         <Modal.Body>
-          <LoadingOverlay visible={isLoading} zIndex={9999} />
+          <LoadingOverlay
+            visible={isLoading || isCreation || isSaving}
+            zIndex={9999}
+          />
           <RichTextEditor editor={editor}>
             <RichTextEditor.Toolbar sticky stickyOffset={54}>
               <RichTextEditor.ControlsGroup>
@@ -202,9 +242,10 @@ const NoteModal: FC<INoteModalProps> = (props) => {
           <Group mt="md" position="right">
             <Button
               onClick={() => handleSubmit()}
-              disabled={editor?.isEmpty ?? true}
+              leftIcon={statusIcons[status]}
+              disabled={editor?.isEmpty ?? statusDisabled[status]}
             >
-              Save
+              {statusLabels[status]}
             </Button>
           </Group>
         </Modal.Body>
