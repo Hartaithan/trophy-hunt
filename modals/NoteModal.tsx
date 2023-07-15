@@ -14,11 +14,13 @@ import {
 } from "@/models/NoteModel";
 import {
   Button,
+  Flex,
   Group,
   Loader,
   LoadingOverlay,
   Modal,
   Text,
+  useMantineTheme,
 } from "@mantine/core";
 import { RichTextEditor, Link } from "@mantine/tiptap";
 import { useEditor } from "@tiptap/react";
@@ -38,7 +40,11 @@ import {
   ToggleTaskListControl,
 } from "@/components/Controls";
 import API from "@/helpers/api";
-import { IconBookUpload, IconUpload } from "@tabler/icons-react";
+import {
+  IconBookUpload,
+  IconCircleCheck,
+  IconUpload,
+} from "@tabler/icons-react";
 
 interface INoteModalProps {
   state: INoteModalState;
@@ -46,13 +52,14 @@ interface INoteModalProps {
   initial: INoteModalState;
 }
 
-type Status = "loading" | "completed" | "creation" | "saving";
+type Status = "loading" | "completed" | "creation" | "saving" | "saved";
 
 const statusIcons: Record<Status, ReactNode> = {
   loading: <Loader size="xs" />,
   completed: undefined,
   creation: <IconBookUpload size={20} />,
   saving: <IconUpload size={20} />,
+  saved: undefined,
 };
 
 const statusLabels: Record<Status, string> = {
@@ -60,6 +67,7 @@ const statusLabels: Record<Status, string> = {
   completed: "Save",
   creation: "Creating...",
   saving: "Saving...",
+  saved: "Save",
 };
 
 const statusDisabled: Record<Status, boolean> = {
@@ -67,18 +75,21 @@ const statusDisabled: Record<Status, boolean> = {
   completed: false,
   creation: true,
   saving: true,
+  saved: false,
 };
 
 const NoteModal: FC<INoteModalProps> = (props) => {
   const { state, setState } = props;
   const { opened, game_id, trophy_id } = state;
   const { game } = useGame();
+  const { colors } = useMantineTheme();
 
   const [note, setNote] = useState<INote | null>(null);
   const [status, setStatus] = useState<Status>("loading");
   const isLoading = status === "loading";
   const isSaving = status === "saving";
   const isCreation = status === "creation";
+  const isSaved = status === "saved";
 
   const editor = useEditor({
     extensions: [
@@ -142,11 +153,12 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       .then(({ data }) => {
         const noteRes: INote | null = data.note ?? null;
         setNoteContent(noteRes);
+        setStatus("saved");
       })
       .catch((error) => {
         console.error("create note error", game_id, trophy_id, error);
-      })
-      .finally(() => setStatus("completed"));
+        setStatus("completed");
+      });
   };
 
   const updateNote = (content: string): void => {
@@ -159,11 +171,12 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       .then(({ data }) => {
         const noteRes: INote | null = data.note ?? null;
         setNoteContent(noteRes);
+        setStatus("saved");
       })
       .catch((error) => {
         console.error("update note error", game_id, trophy_id, error);
-      })
-      .finally(() => setStatus("completed"));
+        setStatus("completed");
+      });
   };
 
   const handleSubmit = (): void => {
@@ -238,6 +251,14 @@ const NoteModal: FC<INoteModalProps> = (props) => {
             <RichTextEditor.Content />
           </RichTextEditor>
           <Group mt="md" position="right">
+            {isSaved && (
+              <Flex align="center">
+                <IconCircleCheck size={20} color={colors.green[8]} />
+                <Text size="sm" ml={4}>
+                  The note is saved.
+                </Text>
+              </Flex>
+            )}
             <Button
               onClick={() => handleSubmit()}
               leftIcon={statusIcons[status]}
