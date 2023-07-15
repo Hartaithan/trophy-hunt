@@ -12,12 +12,12 @@ html {
 
 body {
   flex: 1;
+  scrollbar-gutter: stable;
 }
 
 html,
 body {
   overflow: auto;
-  scrollbar-gutter: stable;
 }
 
 #__next {
