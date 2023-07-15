@@ -73,7 +73,6 @@ const SegmentedControlStyles: SegmentedControlProps["styles"] = () => ({
 });
 
 const ModalDefaultProps: Partial<ModalProps> = {
-  zIndex: 10000,
   centered: true,
 };
 

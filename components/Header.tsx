@@ -107,7 +107,7 @@ const Header: FC = () => {
   };
 
   return (
-    <MantineHeader className={classes.root} height={HEADER_HEIGHT}>
+    <MantineHeader className={classes.root} height={HEADER_HEIGHT} zIndex={100}>
       <Container className={classes.container}>
         <Title order={4}>Trophy Hunt</Title>
         <Flex className={classes.links}>
