@@ -188,9 +188,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       <Modal.Content>
         <Modal.Header>
           <Modal.Title display="flex">
-            <Text mr="sm">
-              Note for {game?.title ?? "[Not Found]"} G:{game_id} T:{trophy_id}
-            </Text>
+            <Text mr="sm">Note for {game?.title ?? "[Not Found]"}</Text>
             {game != null && <PlatformBadge platform={game.platform} />}
           </Modal.Title>
           <Modal.CloseButton />

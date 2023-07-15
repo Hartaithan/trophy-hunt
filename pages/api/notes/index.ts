@@ -101,7 +101,7 @@ const addNote: NextApiHandler = async (req, res) => {
 
   return res
     .status(201)
-    .json({ message: "New note successfully created!", game: newNote });
+    .json({ message: "New note successfully created!", note: newNote });
 };
 
 const handler: NextApiHandler = async (req, res) => {

@@ -59,7 +59,7 @@ const updateNote: NextApiHandler = async (req, res) => {
 
   return res
     .status(200)
-    .json({ message: "Note successfully updated!", game: data });
+    .json({ message: "Note successfully updated!", note: data });
 };
 
 const deleteNote: NextApiHandler = async (req, res) => {
