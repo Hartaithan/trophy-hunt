@@ -78,6 +78,20 @@ const addNote: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Unable to get profile" });
   }
 
+  const { data: existingNote } = await supabase
+    .from("notes")
+    .select("id")
+    .match({
+      game_id,
+      trophy_id,
+    })
+    .single();
+  if (existingNote != null) {
+    return res
+      .status(400)
+      .json({ message: "There is already a note for this trophy" });
+  }
+
   const payload: INewNotePayload = {
     game_id,
     trophy_id,
@@ -91,12 +105,8 @@ const addNote: NextApiHandler = async (req, res) => {
     .select("*")
     .single();
   if (newNoteError !== null) {
-    let message = "Unable to create new note";
-    if (newNoteError.code === "23505") {
-      message = "There is already a note for this trophy";
-    }
     console.error("unable to create new note", newNoteError);
-    return res.status(400).json({ message });
+    return res.status(400).json({ message: "Unable to create new note" });
   }
 
   return res
