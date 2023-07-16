@@ -45,6 +45,7 @@ import {
   IconCircleCheck,
   IconUpload,
 } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 
 interface INoteModalProps {
   state: INoteModalState;
@@ -157,6 +158,12 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       })
       .catch((error) => {
         console.error("create note error", game_id, trophy_id, error);
+        notifications.show({
+          title: "Something went wrong!",
+          color: "red",
+          message: error.response.data.message,
+          autoClose: false,
+        });
         setStatus("completed");
       });
   };
@@ -175,6 +182,12 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       })
       .catch((error) => {
         console.error("update note error", game_id, trophy_id, error);
+        notifications.show({
+          title: "Something went wrong!",
+          color: "red",
+          message: error.response.data.message,
+          autoClose: false,
+        });
         setStatus("completed");
       });
   };
