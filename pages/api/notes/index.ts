@@ -1,6 +1,9 @@
 import { validatePayload } from "@/helpers/payload";
 import { type INewNotePayload, type IAddNotePayload } from "@/models/NoteModel";
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import {
+  type User,
+  createServerSupabaseClient,
+} from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
 const getNoteByGame: NextApiHandler = async (req, res) => {
@@ -47,25 +50,61 @@ const addNote: NextApiHandler = async (req, res) => {
     return res.status(400).json(results);
   }
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-  if (userError !== null || user === null) {
-    console.error("unable to get user", userError);
-    return res.status(400).json({ message: "Unable to get user" });
+  const matcher = { game_id, trophy_id };
+  let user: User | null = null;
+
+  try {
+    const [userRes, gameRes, noteRes] = await Promise.allSettled([
+      supabase.auth.getUser(),
+      supabase.from("games").select("id").eq("id", game_id).single(),
+      supabase.from("notes").select("id").match(matcher).single(),
+    ]);
+
+    if (userRes.status === "rejected") {
+      console.error("user request rejected");
+      return res.status(400).json({ message: "Unable to get user" });
+    }
+
+    if (
+      userRes.status === "fulfilled" &&
+      (userRes.value.error !== null || userRes.value.data === null)
+    ) {
+      console.error("unable to get user", userRes.value.error);
+      return res.status(400).json({ message: "Unable to get user" });
+    }
+
+    user = userRes.value.data.user;
+
+    if (gameRes.status === "rejected") {
+      console.error("game request rejected");
+      return res.status(400).json({ message: "Unable to get game" });
+    }
+
+    if (gameRes.status === "fulfilled" && gameRes.value.error !== null) {
+      console.error("game not exist", game_id, gameRes.value.error);
+      return res
+        .status(400)
+        .json({ message: `There is no game with this ID (${game_id})` });
+    }
+
+    if (noteRes.status === "rejected") {
+      console.error("note request rejected");
+      return res.status(400).json({ message: "Unable to get note" });
+    }
+
+    if (noteRes.status === "fulfilled" && noteRes.value.data != null) {
+      return res
+        .status(400)
+        .json({ message: "There is already a note for this trophy" });
+    }
+  } catch (error) {
+    console.error("unable to create new note", error);
+    return res.status(400).json({ message: "Unable to create new note" });
   }
 
-  const { error: gameError } = await supabase
-    .from("games")
-    .select("id")
-    .eq("id", game_id)
-    .single();
-  if (gameError !== null || user === null) {
-    console.error("game not exist", game_id, gameError);
-    return res
-      .status(400)
-      .json({ message: `There is no game with this ID (${game_id})` });
+  if (user === null) {
+    console.error("user not found");
+    return res.status(400).json({ message: "User not found" });
   }
 
   const { data: profile, error: profileError } = await supabase
@@ -76,20 +115,6 @@ const addNote: NextApiHandler = async (req, res) => {
   if (profileError !== null || profile === null) {
     console.error("unable to get profile", profileError);
     return res.status(400).json({ message: "Unable to get profile" });
-  }
-
-  const { data: existingNote } = await supabase
-    .from("notes")
-    .select("id")
-    .match({
-      game_id,
-      trophy_id,
-    })
-    .single();
-  if (existingNote != null) {
-    return res
-      .status(400)
-      .json({ message: "There is already a note for this trophy" });
   }
 
   const payload: INewNotePayload = {
