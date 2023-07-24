@@ -153,6 +153,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const isUserInteract = useRef<boolean>(false);
   const isMounted = useRef<boolean>(false);
   const isAlreadyUpdated = useRef<boolean>(false);
+  const allCount = useRef<number>(0);
 
   const { reward } = useReward("reward", "confetti", rewardConfig);
   const { show } = useCongratulation();
@@ -161,25 +162,23 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     if (!isMounted.current) return true;
     if (typeof window === "undefined") return true;
     let base_count = 0;
-    let all_completed = 0;
+    let all_count = 0;
     for (let i = 0; i < progress.length; i++) {
       const el = progress[i];
       base_count = base_count + (!el.dlc ? 1 : 0);
-      all_completed = all_completed + (el.earned ? 1 : 0);
+      all_count = all_count + (el.earned ? 1 : 0);
     }
+    const countIsDecrement = all_count < allCount.current;
+    allCount.current = all_count;
     let value: CongratulationValue | null = null;
-    const isPlatinum = base_count === all_completed;
-    const isComplete = all_completed === progress.length;
-    if (isPlatinum) {
-      value = "platinum";
-    }
-    if (isComplete) {
-      value = "complete";
-    }
-    if (value !== null) {
-      reward();
-      show(value);
-    }
+    const isPlatinum = base_count === all_count;
+    const isComplete = all_count === progress.length;
+    if (isPlatinum) value = "platinum";
+    if (isComplete) value = "complete";
+    if (countIsDecrement) return isComplete;
+    if (value === null) return isComplete;
+    reward();
+    show(value);
     return isComplete;
   }, [progress]); // eslint-disable-line
 
