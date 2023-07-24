@@ -161,16 +161,14 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     if (!isMounted.current) return true;
     if (typeof window === "undefined") return true;
     let base_count = 0;
-    let base_completed = 0;
     let all_completed = 0;
     for (let i = 0; i < progress.length; i++) {
       const el = progress[i];
       base_count = base_count + (!el.dlc ? 1 : 0);
-      base_completed = base_completed + (el.earned && !el.dlc ? 1 : 0);
       all_completed = all_completed + (el.earned ? 1 : 0);
     }
     let value: CongratulationValue | null = null;
-    const isPlatinum = base_count === base_completed;
+    const isPlatinum = base_count === all_completed;
     const isComplete = all_completed === progress.length;
     if (isPlatinum) {
       value = "platinum";
