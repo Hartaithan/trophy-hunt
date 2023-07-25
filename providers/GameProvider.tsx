@@ -136,6 +136,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const [progress, setProgress] = useState<IProgressItem[]>(
     initialGame?.progress ?? []
   );
+  const [debouncedProgress] = useDebouncedValue(progress, 700);
   const [trophies, setTrophies] = useState<IFormattedResponse | null>(
     initialTrophies
   );
@@ -149,7 +150,6 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const isUpdating = status === "updating";
   const isCompleted = status === "completed";
 
-  const [debouncedProgress] = useDebouncedValue(progress, 700);
   const isUserInteract = useRef<boolean>(false);
   const isMounted = useRef<boolean>(false);
   const isAlreadyUpdated = useRef<boolean>(false);
@@ -159,8 +159,8 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const { show } = useCongratulation();
 
   const isAllChecked = useMemo(() => {
-    if (!isMounted.current) return true;
-    if (typeof window === "undefined") return true;
+    if (!isMounted.current) return false;
+    if (typeof window === "undefined") return false;
     let base_count = 0;
     let all_count = 0;
     for (let i = 0; i < progress.length; i++) {
