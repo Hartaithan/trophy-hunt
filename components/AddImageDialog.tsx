@@ -28,6 +28,7 @@ const AddImageDialog: FC<IModalProps> = (props) => {
 
   const handleSubmit = (values: TransformedValues<typeof form>): void => {
     editor.chain().focus().setImage({ src: values.image_url }).run();
+    form.reset();
     setOpened(false);
   };
 

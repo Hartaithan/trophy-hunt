@@ -33,6 +33,7 @@ const AddYoutubeLinkDialog: FC<IModalProps> = (props) => {
       width: 640,
       height: 480,
     });
+    form.reset();
     setOpened(false);
   };
 
