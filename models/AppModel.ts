@@ -10,6 +10,7 @@ import {
   type NullablePSNProfile,
   type NullableSession,
 } from "./AuthModel";
+import { type CSSProperties } from "react";
 
 export type IExtendedPageProps = object;
 
@@ -35,3 +36,11 @@ export interface IInitialProps {
 }
 
 export type IPage<P = object, IP = P> = NextPage<P & IExtendedPageProps, IP>;
+
+export interface ICustomPosition {
+  top?: string | number;
+  left?: string | number;
+  bottom?: string | number;
+  right?: string | number;
+  transform: CSSProperties["transform"];
+}

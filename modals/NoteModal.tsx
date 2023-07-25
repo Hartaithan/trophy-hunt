@@ -40,6 +40,7 @@ import {
   SinkListItemControl,
   SplitListItemControl,
   ToggleTaskListControl,
+  YoutubeControl,
 } from "@/components/Controls";
 import API from "@/helpers/api";
 import {
@@ -49,6 +50,8 @@ import {
 } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import AddImageDialog from "@/components/AddImageDialog";
+import Youtube from "@tiptap/extension-youtube";
+import AddYoutubeLinkDialog from "@/components/AddYoutubeLinkDialog";
 
 interface INoteModalProps {
   state: INoteModalState;
@@ -90,6 +93,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
 
   const [note, setNote] = useState<INote | null>(null);
   const [addImage, setAddImage] = useState<boolean>(false);
+  const [addYoutube, setAddYoutube] = useState<boolean>(false);
 
   const [status, setStatus] = useState<Status>("loading");
   const isLoading = status === "loading";
@@ -104,7 +108,8 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       Link,
       Highlight,
       TaskList,
-      Image.configure(),
+      Image,
+      Youtube,
       TaskItem.configure({ nested: true }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
@@ -215,7 +220,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
   }, [getNote, opened, reset]);
 
   return (
-    <Modal.Root opened={opened} onClose={onClose} centered size="xl">
+    <Modal.Root opened={opened} onClose={onClose} centered size={900}>
       <Modal.Overlay />
       <Modal.Content>
         <Modal.Header>
@@ -269,6 +274,11 @@ const NoteModal: FC<INoteModalProps> = (props) => {
               <RichTextEditor.ControlsGroup>
                 <ImageControl onClick={() => setAddImage(true)} />
                 <AddImageDialog opened={addImage} setOpened={setAddImage} />
+                <YoutubeControl onClick={() => setAddYoutube(true)} />
+                <AddYoutubeLinkDialog
+                  opened={addYoutube}
+                  setOpened={setAddYoutube}
+                />
               </RichTextEditor.ControlsGroup>
             </RichTextEditor.Toolbar>
             <RichTextEditor.Content />

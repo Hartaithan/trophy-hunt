@@ -33,4 +33,11 @@ export default css.global`
   ul[data-type="taskList"] input[type="checkbox"] {
     cursor: pointer;
   }
+
+  div[data-youtube-video] iframe {
+    border: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+  }
 `;

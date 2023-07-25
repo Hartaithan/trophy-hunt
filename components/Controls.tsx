@@ -2,13 +2,14 @@ import { type FC } from "react";
 import { RichTextEditor, useRichTextEditorContext } from "@mantine/tiptap";
 import {
   IconArrowBarBoth,
+  IconBrandYoutube,
   IconCheckbox,
   IconIndentDecrease,
   IconIndentIncrease,
   IconPhotoPlus,
 } from "@tabler/icons-react";
 
-interface IImageControlProps {
+interface IControlProps {
   onClick: () => void;
 }
 
@@ -71,7 +72,7 @@ export const LiftListItemControl: FC = () => {
   );
 };
 
-export const ImageControl: FC<IImageControlProps> = ({ onClick }) => {
+export const ImageControl: FC<IControlProps> = ({ onClick }) => {
   return (
     <RichTextEditor.Control
       onClick={onClick}
@@ -79,6 +80,18 @@ export const ImageControl: FC<IImageControlProps> = ({ onClick }) => {
       title="Add image"
     >
       <IconPhotoPlus stroke={1.5} size="1rem" />
+    </RichTextEditor.Control>
+  );
+};
+
+export const YoutubeControl: FC<IControlProps> = ({ onClick }) => {
+  return (
+    <RichTextEditor.Control
+      onClick={onClick}
+      aria-label="Add youtube video"
+      title="Add youtube video"
+    >
+      <IconBrandYoutube stroke={1.5} size="1rem" />
     </RichTextEditor.Control>
   );
 };

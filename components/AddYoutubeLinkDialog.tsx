@@ -12,22 +12,27 @@ import { type TransformedValues, matches, useForm } from "@mantine/form";
 import { useRichTextEditorContext } from "@mantine/tiptap";
 import { type FC, memo } from "react";
 
-const AddImageDialog: FC<IModalProps> = (props) => {
+const AddYoutubeLinkDialog: FC<IModalProps> = (props) => {
   const { opened, setOpened } = props;
   const { editor } = useRichTextEditorContext();
 
   const form = useForm({
-    initialValues: { image_url: "" },
+    initialValues: { url: "" },
     validate: {
-      image_url: matches(
-        /^(http(s?):)([/|.|\w|\s|-])*\.(?:png|gif|webp|jpeg|jpg)$/,
-        "Enter a valid image url"
+      url: matches(
+        // eslint-disable-next-line no-useless-escape
+        /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.be)\/.+$/,
+        "Enter a valid youtube url"
       ),
     },
   });
 
   const handleSubmit = (values: TransformedValues<typeof form>): void => {
-    editor.chain().focus().setImage({ src: values.image_url }).run();
+    editor.commands.setYoutubeVideo({
+      src: values.url,
+      width: 640,
+      height: 480,
+    });
     setOpened(false);
   };
 
@@ -42,11 +47,11 @@ const AddImageDialog: FC<IModalProps> = (props) => {
       zIndex={9999}
     >
       <Text size="sm" mb="xs" weight={500}>
-        Add image link
+        Add youtube link
       </Text>
       <Group align="flex-end">
         <TextInput
-          {...form.getInputProps("image_url")}
+          {...form.getInputProps("url")}
           placeholder="https://example.com/image.png"
           sx={{ flex: 1 }}
         />
@@ -61,4 +66,4 @@ const AddImageDialog: FC<IModalProps> = (props) => {
   );
 };
 
-export default memo(AddImageDialog);
+export default memo(AddYoutubeLinkDialog);
