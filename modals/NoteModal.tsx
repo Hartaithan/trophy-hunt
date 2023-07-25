@@ -231,11 +231,8 @@ const NoteModal: FC<INoteModalProps> = (props) => {
           <Modal.CloseButton />
         </Modal.Header>
         <Modal.Body>
-          <LoadingOverlay
-            visible={isLoading || isCreation || isSaving}
-            zIndex={9999}
-          />
           <RichTextEditor editor={editor}>
+            <LoadingOverlay visible={isLoading || isCreation || isSaving} />
             <RichTextEditor.Toolbar sticky stickyOffset={54}>
               <RichTextEditor.ControlsGroup>
                 <RichTextEditor.Bold />
@@ -295,7 +292,9 @@ const NoteModal: FC<INoteModalProps> = (props) => {
             <Button
               onClick={() => handleSubmit()}
               leftIcon={statusIcons[status]}
-              disabled={editor?.isEmpty ?? statusDisabled[status]}
+              disabled={
+                isLoading || (editor?.isEmpty ?? statusDisabled[status])
+              }
             >
               {statusLabels[status]}
             </Button>
