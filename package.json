@@ -29,6 +29,7 @@
     "@supabase/supabase-js": "^2.21.0",
     "@tabler/icons-react": "^2.24.0",
     "@tiptap/extension-highlight": "^2.0.3",
+    "@tiptap/extension-image": "^2.0.4",
     "@tiptap/extension-link": "^2.0.3",
     "@tiptap/extension-task-item": "^2.0.3",
     "@tiptap/extension-task-list": "^2.0.3",

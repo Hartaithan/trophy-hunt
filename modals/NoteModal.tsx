@@ -30,10 +30,12 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
+import Image from "@tiptap/extension-image";
 import { useGame } from "@/providers/GameProvider";
 import PlatformBadge from "@/components/PlatformBadge";
 import editorStyles from "@/styles/editor";
 import {
+  ImageControl,
   LiftListItemControl,
   SinkListItemControl,
   SplitListItemControl,
@@ -46,6 +48,7 @@ import {
   IconUpload,
 } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
+import AddImageDialog from "@/components/AddImageDialog";
 
 interface INoteModalProps {
   state: INoteModalState;
@@ -86,6 +89,8 @@ const NoteModal: FC<INoteModalProps> = (props) => {
   const { colors } = useMantineTheme();
 
   const [note, setNote] = useState<INote | null>(null);
+  const [addImage, setAddImage] = useState<boolean>(false);
+
   const [status, setStatus] = useState<Status>("loading");
   const isLoading = status === "loading";
   const isSaving = status === "saving";
@@ -99,6 +104,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       Link,
       Highlight,
       TaskList,
+      Image.configure(),
       TaskItem.configure({ nested: true }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
@@ -259,6 +265,10 @@ const NoteModal: FC<INoteModalProps> = (props) => {
                 <SplitListItemControl />
                 <SinkListItemControl />
                 <LiftListItemControl />
+              </RichTextEditor.ControlsGroup>
+              <RichTextEditor.ControlsGroup>
+                <ImageControl onClick={() => setAddImage(true)} />
+                <AddImageDialog opened={addImage} setOpened={setAddImage} />
               </RichTextEditor.ControlsGroup>
             </RichTextEditor.Toolbar>
             <RichTextEditor.Content />

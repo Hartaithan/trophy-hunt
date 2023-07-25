@@ -5,7 +5,12 @@ import {
   IconCheckbox,
   IconIndentDecrease,
   IconIndentIncrease,
+  IconPhotoPlus,
 } from "@tabler/icons-react";
+
+interface IImageControlProps {
+  onClick: () => void;
+}
 
 export const ToggleTaskListControl: FC = () => {
   const { editor } = useRichTextEditorContext();
@@ -62,6 +67,18 @@ export const LiftListItemControl: FC = () => {
       title="Lift list item"
     >
       <IconIndentDecrease stroke={1.5} size="1rem" />
+    </RichTextEditor.Control>
+  );
+};
+
+export const ImageControl: FC<IImageControlProps> = ({ onClick }) => {
+  return (
+    <RichTextEditor.Control
+      onClick={onClick}
+      aria-label="Add image"
+      title="Add image"
+    >
+      <IconPhotoPlus stroke={1.5} size="1rem" />
     </RichTextEditor.Control>
   );
 };
