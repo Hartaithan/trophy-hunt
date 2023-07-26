@@ -83,6 +83,10 @@ const RichTextEditorStyles: RichTextEditorProps["styles"] = {
       pointerEvents: "none",
     },
   },
+  content: {
+    maxHeight: "70vh",
+    overflowY: "auto",
+  },
 };
 
 const extendedColors: MantineThemeOverride["colors"] = {
