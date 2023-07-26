@@ -167,7 +167,7 @@ const App = (props: IAppProps): JSX.Element => {
           initialProfile={initialProfile}
           initialPSNProfile={initialPSNProfile}
         >
-          <ModalsProvider>
+          <ModalsProvider modalProps={{ zIndex: 299 }}>
             <MainLayout>
               <Notifications />
               <Component {...pageProps} />

@@ -53,6 +53,7 @@ import { notifications } from "@mantine/notifications";
 import AddImageDialog from "@/components/AddImageDialog";
 import Youtube from "@tiptap/extension-youtube";
 import AddYoutubeLinkDialog from "@/components/AddYoutubeLinkDialog";
+import { modals } from "@mantine/modals";
 
 interface INoteModalProps {
   state: INoteModalState;
@@ -131,7 +132,21 @@ const NoteModal: FC<INoteModalProps> = (props) => {
   });
 
   const onClose = (): void => {
-    setState((prev) => ({ ...prev, opened: false }));
+    if (isDirty) {
+      modals.openConfirmModal({
+        title: "Are you sure?",
+        centered: true,
+        children: (
+          <Text size="sm">Content has been modified but not saved</Text>
+        ),
+        labels: { confirm: "Close", cancel: "Cancel" },
+        confirmProps: { color: "red" },
+        onCancel: () => console.info("user cancelled modal close"),
+        onConfirm: () => setState((prev) => ({ ...prev, opened: false })),
+      });
+    } else {
+      setState((prev) => ({ ...prev, opened: false }));
+    }
   };
 
   const reset = useCallback((): void => {
@@ -234,7 +249,13 @@ const NoteModal: FC<INoteModalProps> = (props) => {
   }, [getNote, opened, reset]);
 
   return (
-    <Modal.Root opened={opened} onClose={onClose} centered size={900}>
+    <Modal.Root
+      opened={opened}
+      onClose={onClose}
+      centered
+      size={900}
+      closeOnClickOutside={!isDirty}
+    >
       <Modal.Overlay />
       <Modal.Content>
         <Modal.Header>
