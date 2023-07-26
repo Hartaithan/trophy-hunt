@@ -44,6 +44,7 @@ import {
 } from "@/components/Controls";
 import API from "@/helpers/api";
 import {
+  IconAlertCircle,
   IconBookUpload,
   IconCircleCheck,
   IconUpload,
@@ -59,7 +60,13 @@ interface INoteModalProps {
   initial: INoteModalState;
 }
 
-type Status = "loading" | "completed" | "creation" | "saving" | "saved";
+type Status =
+  | "loading"
+  | "completed"
+  | "creation"
+  | "saving"
+  | "saved"
+  | "dirty";
 
 const statusIcons: Record<Status, ReactNode> = {
   loading: <Loader size="xs" />,
@@ -67,6 +74,7 @@ const statusIcons: Record<Status, ReactNode> = {
   creation: <IconBookUpload size={20} />,
   saving: <IconUpload size={20} />,
   saved: undefined,
+  dirty: undefined,
 };
 
 const statusLabels: Record<Status, string> = {
@@ -75,6 +83,7 @@ const statusLabels: Record<Status, string> = {
   creation: "Creating...",
   saving: "Saving...",
   saved: "Save",
+  dirty: "Save",
 };
 
 const statusDisabled: Record<Status, boolean> = {
@@ -83,6 +92,7 @@ const statusDisabled: Record<Status, boolean> = {
   creation: true,
   saving: true,
   saved: false,
+  dirty: false,
 };
 
 const NoteModal: FC<INoteModalProps> = (props) => {
@@ -100,6 +110,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
   const isSaving = status === "saving";
   const isCreation = status === "creation";
   const isSaved = status === "saved";
+  const isDirty = status === "dirty";
 
   const editor = useEditor({
     extensions: [
@@ -114,6 +125,9 @@ const NoteModal: FC<INoteModalProps> = (props) => {
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
     content: "",
+    onUpdate: () => {
+      setStatus("dirty");
+    },
   });
 
   const onClose = (): void => {
@@ -286,6 +300,14 @@ const NoteModal: FC<INoteModalProps> = (props) => {
                 <IconCircleCheck size={20} color={colors.green[8]} />
                 <Text size="sm" ml={4}>
                   The note is saved.
+                </Text>
+              </Flex>
+            )}
+            {isDirty && (
+              <Flex align="center">
+                <IconAlertCircle size={20} color={colors.yellow[8]} />
+                <Text size="sm" ml={4}>
+                  Content has been modified.
                 </Text>
               </Flex>
             )}
