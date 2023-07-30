@@ -41,6 +41,8 @@ export interface IProfile {
   type: ProfileType;
 }
 
+export type ProfileEditBody = Pick<IProfile, "language" | "type">;
+
 export interface ISessionResponse {
   session: NullableSession;
   profile: NullableProfile;

@@ -1,8 +1,9 @@
 import LanguageSelect from "@/components/LanguageSelect";
+import { profileTypeOptions } from "@/constants/options";
 import API from "@/helpers/api";
 import { type IPage } from "@/models/AppModel";
-import { type IProfile } from "@/models/AuthModel";
-import { Box, Button, Flex, Group, Input, Title } from "@mantine/core";
+import { type ProfileEditBody, type IProfile } from "@/models/AuthModel";
+import { Box, Button, Flex, Grid, Input, Select, Title } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { type GetServerSideProps } from "next";
@@ -44,9 +45,10 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
 const ProfilePage: IPage<IProfilePageProps> = (props) => {
   const { profile } = props;
 
-  const form = useForm({
+  const form = useForm<ProfileEditBody>({
     initialValues: {
       language: profile?.language ?? "en-US",
+      type: profile?.type ?? "public",
     },
     validate: {
       language: isNotEmpty("Language is required"),
@@ -84,44 +86,58 @@ const ProfilePage: IPage<IProfilePageProps> = (props) => {
         Edit Profile
       </Title>
       <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
-        <Group grow>
-          <Input.Wrapper id="username" withAsterisk>
-            <Flex justify="space-between" align="flex-end">
-              <Input.Label>Username</Input.Label>
-              <Input.Label size="xs">Non-editable</Input.Label>
-            </Flex>
-            <Input
-              id="username"
-              readOnly
-              disabled
-              placeholder="Your username"
-              value={profile?.username ?? "Username not found"}
-            />
-          </Input.Wrapper>
-          <Input.Wrapper id="created" withAsterisk>
-            <Flex justify="space-between" align="flex-end">
-              <Input.Label>Profile creation date</Input.Label>
-              <Input.Label size="xs">Non-editable</Input.Label>
-            </Flex>
-            <Input
-              id="created"
-              readOnly
-              disabled
-              placeholder="Profile creation date"
-              value={
-                profile != null
-                  ? new Date(profile.created_at).toLocaleString()
-                  : "Created date not found"
+        <Grid>
+          <Grid.Col span={6}>
+            <Input.Wrapper id="username" withAsterisk>
+              <Flex justify="space-between" align="flex-end">
+                <Input.Label>Username</Input.Label>
+                <Input.Label size="xs">Non-editable</Input.Label>
+              </Flex>
+              <Input
+                id="username"
+                readOnly
+                disabled
+                placeholder="Your username"
+                value={profile?.username ?? "Username not found"}
+              />
+            </Input.Wrapper>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <Input.Wrapper id="created" withAsterisk>
+              <Flex justify="space-between" align="flex-end">
+                <Input.Label>Profile creation date</Input.Label>
+                <Input.Label size="xs">Non-editable</Input.Label>
+              </Flex>
+              <Input
+                id="created"
+                readOnly
+                disabled
+                placeholder="Profile creation date"
+                value={
+                  profile != null
+                    ? new Date(profile.created_at).toLocaleString()
+                    : "Created date not found"
+                }
+              />
+            </Input.Wrapper>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <LanguageSelect
+              value={form.values.language}
+              onChange={(value) =>
+                form.setFieldValue("language", value ?? "en-US")
               }
             />
-          </Input.Wrapper>
-          <LanguageSelect
-            value={form.values.language}
-            onChange={(value) =>
-              form.setFieldValue("language", value ?? "en-US")
-            }
-          />
-        </Group>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <Select
+              data={profileTypeOptions}
+              label="Profile type"
+              placeholder="Pick profile type"
+              {...form.getInputProps("type")}
+            />
+          </Grid.Col>
+        </Grid>
         <Flex justify="flex-end">
           <Button
             type="submit"

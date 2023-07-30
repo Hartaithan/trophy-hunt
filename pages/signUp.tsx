@@ -212,7 +212,7 @@ const SignUpPage: IPage = () => {
             <Select
               required
               data={profileTypeOptions}
-              label="Profile Type"
+              label="Profile type"
               placeholder="Pick profile type"
               {...form.getInputProps("type")}
             />
