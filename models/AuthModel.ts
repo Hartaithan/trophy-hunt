@@ -10,18 +10,22 @@ export type NullableProfile = IProfile | null;
 export type NullablePSNProfile = ProfileFromUserNameResponse["profile"] | null;
 export type NullableAuthResponse = AuthTokensResponse | null;
 
+export type ProfileType = "public" | "private";
+
 export interface ISignUpBody extends Record<string, string> {
   email: string;
   password: string;
   npsso: string;
   language: string;
   username: string;
+  type: ProfileType;
 }
 
 interface IUserData {
   language: string;
   username: string;
   onlineId: string;
+  type: ProfileType;
 }
 
 export interface IUser extends User {
@@ -34,6 +38,7 @@ export interface IProfile {
   language: string;
   username: string;
   online_id: string;
+  type: ProfileType;
 }
 
 export interface ISessionResponse {

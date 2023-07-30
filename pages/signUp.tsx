@@ -15,6 +15,7 @@ import {
   Box,
   Input,
   Anchor,
+  Select,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength, isNotEmpty } from "@mantine/form";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -24,6 +25,7 @@ import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
 import LanguageSelect from "@/components/LanguageSelect";
 import Link from "next/link";
+import { profileTypeOptions } from "@/constants/options";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -62,6 +64,7 @@ const SignUpPage: IPage = () => {
       password: "",
       npsso: "",
       language: "en-US",
+      type: "public",
     },
     validate: {
       email: isEmail("Invalid email"),
@@ -205,6 +208,13 @@ const SignUpPage: IPage = () => {
               onChange={(value) =>
                 form.setFieldValue("language", value ?? "en-US")
               }
+            />
+            <Select
+              required
+              data={profileTypeOptions}
+              label="Profile Type"
+              placeholder="Pick profile type"
+              {...form.getInputProps("type")}
             />
           </Stack>
           <Button
