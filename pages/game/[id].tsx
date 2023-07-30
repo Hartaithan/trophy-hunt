@@ -5,16 +5,18 @@ import { type IPage } from "@/models/AppModel";
 import { type IGame } from "@/models/GameModel";
 import { type IFormattedResponse } from "@/models/TrophyModel";
 import GameProvider from "@/providers/GameProvider";
-import { Stack } from "@mantine/core";
+import { Flex, Stack, Text, Title } from "@mantine/core";
 import { type GetServerSidePropsContext, type GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import CongratulationProvider from "@/providers/CongratulationProvider";
+import { IconMoodSadDizzy } from "@tabler/icons-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface IGamePageProps {
   game: IGame | null;
   trophies: IFormattedResponse | null;
+  status: "fulfilled" | "rejected";
   message?: string;
 }
 
@@ -29,6 +31,7 @@ const fetchOptions = (ctx: GetServerSidePropsContext): RequestInit => ({
 const errorResponse: IGamePageProps = {
   game: null,
   trophies: null,
+  status: "rejected",
   message: "Something wrong...",
 };
 
@@ -53,34 +56,47 @@ export const getServerSideProps: GetServerSideProps<IGamePageProps> = async (
   try {
     let game: IGame | null = null;
     let trophies: IFormattedResponse | null = null;
-    const [gameResponse, trophiesResponse] = await Promise.allSettled([
-      fetch(`${API_URL}/games/${id}`, options).then(
-        async (res) => await res.json()
-      ),
-      fetch(`${API_URL}/games/${id}/trophies`, options).then(
-        async (res) => await res.json()
-      ),
+    const [gameResponse, trophiesResponse] = await Promise.all([
+      fetch(`${API_URL}/games/${id}`, options).then(async (res) => {
+        const data = await res.json();
+        if (res.ok) return data;
+        throw new Error(data);
+      }),
+      fetch(`${API_URL}/games/${id}/trophies`, options).then(async (res) => {
+        const data = await res.json();
+        if (res.ok) return data;
+        throw new Error(data);
+      }),
     ]);
-    if (gameResponse.status === "fulfilled") {
-      game = gameResponse.value.game ?? null;
-    }
-    if (trophiesResponse.status === "fulfilled") {
-      trophies = trophiesResponse.value;
-    }
+    game = gameResponse.game ?? gameResponse.message ?? null;
+    trophies = trophiesResponse ?? trophiesResponse.message ?? null;
     return {
-      props: { game, trophies },
+      props: { game, trophies, status: "fulfilled" },
     };
   } catch (error) {
     console.error("unable to fetch games", error);
     return {
-      props: { ...errorResponse, message: "Unable to fetch games" },
+      props: {
+        ...errorResponse,
+        message: "Unable to fetch games",
+        status: "rejected",
+      },
     };
   }
 };
 
 const GamePage: IPage<IGamePageProps> = (props) => {
-  const { game, trophies } = props;
+  const { game, trophies, status } = props;
   const { query } = useRouter();
+
+  if (status === "rejected")
+    return (
+      <Flex justify="center" align="center" direction="column">
+        <IconMoodSadDizzy size={120} />
+        <Title order={3}>Game not exist!</Title>
+        <Text c="dimmed">Or you don&apos;t have access to this page</Text>
+      </Flex>
+    );
 
   return (
     <CongratulationProvider>
