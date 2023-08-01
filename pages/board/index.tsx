@@ -27,9 +27,11 @@ export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
       headers: {
         Cookie: ctx.req.headers.cookie ?? "",
       },
-    }).then(async (res) => await res.json());
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data);
     return {
-      props: { items: response.games ?? [] },
+      props: { items: data.games ?? [] },
     };
   } catch (error) {
     console.error("unable to fetch games", error);

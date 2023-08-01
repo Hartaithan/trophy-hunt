@@ -41,7 +41,10 @@ const getGame = async (id: string): Promise<string | null> => {
 
   try {
     const fetchUrl = `${SEARCH_URL}/trophies_list/games/${id}`;
-    game = await fetch(fetchUrl, { headers }).then(async (r) => await r.json());
+    const response = await fetch(fetchUrl, { headers });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data);
+    game = data;
   } catch (error) {
     console.error("get game content error", error);
   }
@@ -50,10 +53,10 @@ const getGame = async (id: string): Promise<string | null> => {
 
   try {
     const fetchUrl = `${SEARCH_URL}/trophies/trophies_list/${game.id}`;
-    const response = await fetch(fetchUrl, { headers }).then(
-      async (r) => await r.json()
-    );
-    content = response.length > 0 ? response[0].image : null;
+    const response = await fetch(fetchUrl, { headers });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data);
+    content = data != null && data.length > 0 ? data[0].image : null;
   } catch (error) {
     console.error("get game list error", error);
   }

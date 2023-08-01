@@ -30,9 +30,11 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
       headers: {
         Cookie: ctx.req.headers.cookie ?? "",
       },
-    }).then(async (res) => await res.json());
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data);
     return {
-      props: { profile: response.profile ?? null },
+      props: { profile: data.profile ?? null },
     };
   } catch (error) {
     console.error("unable to fetch profile", error);

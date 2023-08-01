@@ -25,9 +25,12 @@ const searchByQuery: NextApiHandler = async (req, res) => {
 
   let results = null;
   try {
-    results = await fetch(`${SEARCH_URL}/games/search?search=${query}`, {
+    const response = await fetch(`${SEARCH_URL}/games/search?search=${query}`, {
       headers,
-    }).then(async (r) => await r.json());
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data);
+    results = data;
   } catch (error) {
     console.error("search error", error);
     return res
