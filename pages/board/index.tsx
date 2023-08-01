@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
   }
 };
 
-const BoardPage: IPage<IBoardPageProps> = (props) => {
+const MyBoardPage: IPage<IBoardPageProps> = (props) => {
   const { items } = props;
   const initializedBoard = initializeBoard(items);
 
@@ -50,4 +50,4 @@ const BoardPage: IPage<IBoardPageProps> = (props) => {
   );
 };
 
-export default BoardPage;
+export default MyBoardPage;
