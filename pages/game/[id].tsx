@@ -60,27 +60,27 @@ export const getServerSideProps: GetServerSideProps<IGamePageProps> = async (
       fetch(`${API_URL}/games/${id}`, options).then(async (res) => {
         const data = await res.json();
         if (res.ok) return data;
-        throw new Error(data);
+        throw new Error(data.message);
       }),
       fetch(`${API_URL}/games/${id}/trophies`, options).then(async (res) => {
         const data = await res.json();
         if (res.ok) return data;
-        throw new Error(data);
+        throw new Error(data.message);
       }),
     ]);
-    game = gameResponse.game ?? gameResponse.message ?? null;
-    trophies = trophiesResponse ?? trophiesResponse.message ?? null;
+    game = gameResponse.game ?? null;
+    trophies = trophiesResponse ?? null;
     return {
       props: { game, trophies, status: "fulfilled" },
     };
   } catch (error) {
+    let message = "Unable to fetch games";
+    if (error instanceof Error) {
+      message = error.message;
+    }
     console.error("unable to fetch games", error);
     return {
-      props: {
-        ...errorResponse,
-        message: "Unable to fetch games",
-        status: "rejected",
-      },
+      props: { ...errorResponse, message, status: "rejected" },
     };
   }
 };

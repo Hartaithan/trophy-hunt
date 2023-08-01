@@ -24,18 +24,17 @@ const searchByQuery: NextApiHandler = async (req, res) => {
   }
 
   let results = null;
+  const errorMessage = `Unable to search by query: ${query}`;
   try {
     const response = await fetch(`${SEARCH_URL}/games/search?search=${query}`, {
       headers,
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data);
+    if (!response.ok) throw new Error(errorMessage);
     results = data;
   } catch (error) {
     console.error("search error", error);
-    return res
-      .status(400)
-      .json({ message: `Unable to search by query: ${query}` });
+    return res.status(400).json({ message: errorMessage });
   }
 
   const games: ISearchItem[] = results?.games ?? [];

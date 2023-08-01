@@ -29,14 +29,18 @@ export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
       },
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data);
+    if (!response.ok) throw new Error(data.message);
     return {
       props: { items: data.games ?? [] },
     };
   } catch (error) {
+    let message = "Unable to fetch games";
+    if (error instanceof Error) {
+      message = error.message;
+    }
     console.error("unable to fetch games", error);
     return {
-      props: { items: [], message: "Unable to fetch games" },
+      props: { items: [], message },
     };
   }
 };

@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
       },
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data);
+    if (!response.ok) throw new Error(data.message);
     return {
       props: { profile: data.profile ?? null },
     };
