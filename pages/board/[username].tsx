@@ -83,7 +83,14 @@ const BoardPage: IPage<IBoardPageProps> = (props) => {
         {Object.keys(initializedBoard).map((col) => {
           const key = col as BOARD_COLUMNS;
           const items = initializedBoard[key];
-          return <BoardColumn key={col} column={key} items={items} />;
+          return (
+            <BoardColumn
+              key={col}
+              column={key}
+              items={items}
+              interactive={false}
+            />
+          );
         })}
       </Flex>
     </Flex>

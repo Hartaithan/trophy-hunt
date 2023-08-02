@@ -17,6 +17,7 @@ import BoardCardOverlay from "./BoardCardOverlay";
 
 interface IBoardCardProps {
   item: IGame;
+  interactive?: boolean;
 }
 
 const animateLayoutChanges: AnimateLayoutChanges = (args) => {
@@ -25,48 +26,50 @@ const animateLayoutChanges: AnimateLayoutChanges = (args) => {
   return true;
 };
 
-const useStyles = createStyles(({ colors, radius, spacing }) => ({
-  container: {
-    width: "100%",
-    padding: spacing.xs,
-    background: colors.primary[6],
-    borderRadius: radius.md,
-    cursor: "pointer",
-  },
-  imageWrapper: {
-    position: "relative",
-    width: "100%",
-    aspectRatio: "320 / 176",
-    overflow: "hidden",
-    borderRadius: radius.md,
-  },
-  image: {
-    objectFit: "contain",
-    zIndex: 3,
-    filter:
-      "drop-shadow(0 0 100px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 100px rgba(0, 0, 0, 0.9))",
-  },
-  background: {
-    objectFit: "cover",
-    zIndex: 1,
-    filter: "blur(5px)",
-  },
-  draggable: {
-    zIndex: 99999,
-  },
-  header: {
-    justifyContent: "flex-start",
-    gap: spacing.xs,
-    marginBottom: spacing.xs,
-  },
-}));
+const useStyles = createStyles(
+  ({ colors, radius, spacing }, { interactive = true }: IBoardCardProps) => ({
+    container: {
+      width: "100%",
+      padding: spacing.xs,
+      background: colors.primary[6],
+      borderRadius: radius.md,
+      cursor: interactive ? "pointer" : "default",
+    },
+    imageWrapper: {
+      position: "relative",
+      width: "100%",
+      aspectRatio: "320 / 176",
+      overflow: "hidden",
+      borderRadius: radius.md,
+    },
+    image: {
+      objectFit: "contain",
+      zIndex: 3,
+      filter:
+        "drop-shadow(0 0 100px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 100px rgba(0, 0, 0, 0.9))",
+    },
+    background: {
+      objectFit: "cover",
+      zIndex: 1,
+      filter: "blur(5px)",
+    },
+    draggable: {
+      zIndex: 99999,
+    },
+    header: {
+      justifyContent: "flex-start",
+      gap: spacing.xs,
+      marginBottom: spacing.xs,
+    },
+  })
+);
 
 const BoardCard: FC<IBoardCardProps> = (props) => {
-  const { item } = props;
+  const { item, interactive = true } = props;
   const { id, title, image_url, status, platform, progress } = item;
 
   const { push } = useRouter();
-  const { classes, cx } = useStyles();
+  const { classes, cx } = useStyles(props);
   const {
     attributes,
     listeners,
@@ -74,10 +77,11 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id, animateLayoutChanges });
+  } = useSortable({ id, animateLayoutChanges, disabled: !interactive });
 
   const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
+    if (!interactive) return;
     const route = `/game/${id}`;
     push(route).finally(() => console.info(`routed to ${route}`));
   };
@@ -100,7 +104,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       <Flex className={classes.header}>
         <ColumnBadge status={status} />
         <PlatformBadge platform={platform} />
-        <BoardCardMenu item={item} />
+        {interactive && <BoardCardMenu item={item} />}
       </Flex>
       <Box className={classes.imageWrapper}>
         <Image

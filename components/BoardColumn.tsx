@@ -23,6 +23,7 @@ import { useBoard } from "@/providers/BoardProvider";
 interface IBoardColumnProps {
   column: BOARD_COLUMNS;
   items: IGame[];
+  interactive?: boolean;
 }
 
 const useStyles = createStyles(
@@ -130,13 +131,14 @@ const useStyles = createStyles(
 );
 
 const BoardColumn: FC<IBoardColumnProps> = (props) => {
-  const { column, items } = props;
+  const { column, items, interactive = true } = props;
   const { classes } = useStyles({ column });
   const { spacing } = useMantineTheme();
-  const { setNodeRef } = useDroppable({ id: column });
+  const { setNodeRef } = useDroppable({ id: column, disabled: !interactive });
   const { addGameModal } = useBoard();
 
   const handleAddGame = (): void => {
+    if (!interactive) return;
     addGameModal.open(column);
   };
 
@@ -154,9 +156,11 @@ const BoardColumn: FC<IBoardColumnProps> = (props) => {
           <Text className={classes.count} size={10} fw={600} align="center">
             {items.length}
           </Text>
-          <UnstyledButton className={classes.add} onClick={handleAddGame}>
-            <IconPlaylistAdd size={20} />
-          </UnstyledButton>
+          {interactive && (
+            <UnstyledButton className={classes.add} onClick={handleAddGame}>
+              <IconPlaylistAdd size={20} />
+            </UnstyledButton>
+          )}
         </Flex>
         <Flex
           className={classes.list}
@@ -179,18 +183,20 @@ const BoardColumn: FC<IBoardColumnProps> = (props) => {
                   </Text>
                   column is empty
                 </Text>
-                <Button
-                  onClick={handleAddGame}
-                  leftIcon={<IconPlaylistAdd size={20} />}
-                  compact
-                >
-                  Add game
-                </Button>
+                {interactive && (
+                  <Button
+                    onClick={handleAddGame}
+                    leftIcon={<IconPlaylistAdd size={20} />}
+                    compact
+                  >
+                    Add game
+                  </Button>
+                )}
               </Flex>
             )}
           </Transition>
           {items.map((item) => (
-            <BoardCard key={item.id} item={item} />
+            <BoardCard key={item.id} item={item} interactive={interactive} />
           ))}
         </Flex>
       </Flex>
