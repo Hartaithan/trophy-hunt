@@ -1,6 +1,9 @@
+import BoardColumn from "@/components/BoardColumn";
+import { initializeBoard } from "@/helpers/board";
 import { type IPage } from "@/models/AppModel";
+import { type BOARD_COLUMNS } from "@/models/BoardModel";
 import { type IGame } from "@/models/GameModel";
-import { Flex, Text, Title } from "@mantine/core";
+import { Flex, Title, createStyles } from "@mantine/core";
 import { type GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
@@ -59,17 +62,30 @@ export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
   }
 };
 
+const useStyles = createStyles(() => ({
+  container: {
+    flex: 1,
+  },
+}));
+
 const BoardPage: IPage<IBoardPageProps> = (props) => {
+  const { items } = props;
+  const { classes } = useStyles();
   const { query } = useRouter();
+  const initializedBoard = initializeBoard(items);
+
   return (
-    <Flex direction="column" py="xl">
-      <Title order={3} mb="md">
-        Board Page
+    <Flex direction="column" pt="md" pb="xl">
+      <Title order={3} mb="sm" tt="capitalize">
+        {query.username}&apos;s board
       </Title>
-      <Text mb="md">username: {query.username}</Text>
-      <Text component="pre" size="xs">
-        props: {JSON.stringify(props, null, 2)}
-      </Text>
+      <Flex className={classes.container} gap="xl">
+        {Object.keys(initializedBoard).map((col) => {
+          const key = col as BOARD_COLUMNS;
+          const items = initializedBoard[key];
+          return <BoardColumn key={col} column={key} items={items} />;
+        })}
+      </Flex>
     </Flex>
   );
 };
