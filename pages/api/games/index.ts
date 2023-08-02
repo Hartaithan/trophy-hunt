@@ -1,3 +1,4 @@
+import { type IProfile } from "@/models/AuthModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
@@ -40,11 +41,11 @@ const getGamesByUsername: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Invalid [username] query" });
   }
 
-  const { error: profileError } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from("profiles")
-    .select("id")
+    .select("id, type")
     .eq("username", username)
-    .single();
+    .single<IProfile>();
   if (profileError !== null) {
     console.error(
       "there is no user with this username.",
@@ -54,6 +55,10 @@ const getGamesByUsername: NextApiHandler = async (req, res) => {
     return res
       .status(400)
       .json({ message: "There is no user with this username" });
+  }
+
+  if (profile.type === "private") {
+    return res.status(400).json({ message: "The user has a private profile." });
   }
 
   const { data: games, error: gamesError } = await supabase
