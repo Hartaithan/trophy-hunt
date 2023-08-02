@@ -1,5 +1,7 @@
 import { validatePayload } from "@/helpers/payload";
+import { type IGame } from "@/models/GameModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { type User } from "@supabase/supabase-js";
 import { type NextApiHandler } from "next";
 
 const getGameById: NextApiHandler = async (req, res) => {
@@ -13,18 +15,61 @@ const getGameById: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Invalid [id] query" });
   }
 
-  const { data, error } = await supabase
-    .from("games")
-    .select("*")
-    .eq("id", id)
-    .single();
+  let user: User | null = null;
+  let game: IGame | null = null;
+  const [userRes, gameRes] = await Promise.allSettled([
+    await supabase.auth.getUser(),
+    await supabase.from("games").select("*").eq("id", id).single<IGame>(),
+  ]);
 
-  if (error !== null) {
-    console.error("unable to get game by id", id, error);
+  if (userRes.status === "rejected") {
+    console.error("user request rejected");
+    return res.status(400).json({ message: "Unable to get user" });
+  }
+
+  if (
+    userRes.status === "fulfilled" &&
+    (userRes.value.error !== null || userRes.value.data === null)
+  ) {
+    console.error("unable to get user", userRes.value.error);
+    return res.status(400).json({ message: "Unable to get user" });
+  }
+
+  user = userRes.value.data.user;
+
+  if (user === null) {
+    console.error("user is empty", id);
+    return res.status(400).json({ message: "Unable to get user" });
+  }
+
+  if (gameRes.status === "rejected") {
+    console.error("game request rejected");
     return res.status(400).json({ message: "Unable to get game by id", id });
   }
 
-  return res.status(200).json({ game: data });
+  if (
+    gameRes.status === "fulfilled" &&
+    (gameRes.value.error !== null || gameRes.value.data === null)
+  ) {
+    console.error("unable to get game by id", id, gameRes.value.error);
+    return res.status(400).json({ message: "Unable to get game by id", id });
+  }
+
+  game = gameRes.value.data;
+
+  if (game === null) {
+    console.error("game is empty", id);
+    return res.status(400).json({ message: "Unable to get game by id", id });
+  }
+
+  if (game.user_id !== user.id) {
+    console.error("game access is restricted", id);
+    return res
+      .status(400)
+      .json({ message: "You don't have access to this game" });
+  }
+
+  return res.status(200).json({ game });
 };
 
 const updateGameById: NextApiHandler = async (req, res) => {
