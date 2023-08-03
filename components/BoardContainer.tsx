@@ -234,7 +234,9 @@ const BoardContainer: FC = () => {
           return <BoardColumn key={col} column={key} items={items} />;
         })}
       </Flex>
-      <DragOverlay>{active != null && <BoardCard item={active} />}</DragOverlay>
+      <DragOverlay>
+        {active != null && <BoardCard item={active} overlay />}
+      </DragOverlay>
     </DndContext>
   );
 };

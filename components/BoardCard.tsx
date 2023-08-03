@@ -19,6 +19,7 @@ interface IBoardCardProps {
   item: IGame;
   interactive?: boolean;
   divider?: boolean;
+  overlay?: boolean;
 }
 
 const animateLayoutChanges: AnimateLayoutChanges = (args) => {
@@ -70,7 +71,7 @@ const useStyles = createStyles(
 );
 
 const BoardCard: FC<IBoardCardProps> = (props) => {
-  const { item, interactive = true } = props;
+  const { item, interactive = true, overlay = false } = props;
   const { id, title, image_url, status, platform, progress } = item;
 
   const { push } = useRouter();
@@ -105,6 +106,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
         transform: CSS.Transform.toString(transform),
         transition,
         zIndex: isDragging ? 99999 : undefined,
+        visibility: isDragging && !overlay ? "hidden" : "unset",
       }}
     >
       <Flex className={classes.header}>
