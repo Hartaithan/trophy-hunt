@@ -18,6 +18,7 @@ import BoardCardOverlay from "./BoardCardOverlay";
 interface IBoardCardProps {
   item: IGame;
   interactive?: boolean;
+  divider?: boolean;
 }
 
 const animateLayoutChanges: AnimateLayoutChanges = (args) => {
@@ -27,13 +28,17 @@ const animateLayoutChanges: AnimateLayoutChanges = (args) => {
 };
 
 const useStyles = createStyles(
-  ({ colors, radius, spacing }, { interactive = true }: IBoardCardProps) => ({
+  (
+    { colors, radius, spacing },
+    { interactive = true, divider = false }: IBoardCardProps
+  ) => ({
     container: {
       width: "100%",
       padding: spacing.xs,
       background: colors.primary[6],
       borderRadius: radius.md,
       cursor: interactive ? "pointer" : "default",
+      marginBottom: divider ? spacing.sm : 0,
     },
     imageWrapper: {
       position: "relative",
@@ -99,6 +104,7 @@ const BoardCard: FC<IBoardCardProps> = (props) => {
       style={{
         transform: CSS.Transform.toString(transform),
         transition,
+        zIndex: isDragging ? 99999 : undefined,
       }}
     >
       <Flex className={classes.header}>

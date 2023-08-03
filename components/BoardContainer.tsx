@@ -11,6 +11,8 @@ import {
   useSensors,
   MeasuringStrategy,
   type PointerActivationConstraint,
+  type DragStartEvent,
+  DragOverlay,
 } from "@dnd-kit/core";
 import {
   PointerSensor,
@@ -22,6 +24,7 @@ import { type IReorderItem, type IReorderPayload } from "@/models/GameModel";
 import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
 import { IconAlertOctagon, IconCheck } from "@tabler/icons-react";
+import BoardCard from "./BoardCard";
 
 interface IMove {
   start: string | null;
@@ -44,10 +47,11 @@ const useStyles = createStyles(() => ({
 
 const BoardContainer: FC = () => {
   const { classes } = useStyles();
-  const { columns, setColumns } = useBoard();
+  const { columns, setColumns, active, setActive } = useBoard();
   const move = useRef<IMove>({ start: null, end: null });
   const columnsRef = useRef<IBoardColumns>(columns);
   const previousRef = useRef<IBoardColumns>(columns);
+  const lastActiveContainer = useRef<BOARD_COLUMNS | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint })
@@ -118,17 +122,30 @@ const BoardContainer: FC = () => {
     move.current = { start: null, end: null };
   };
 
+  const handleDragStart = ({ active }: DragStartEvent): void => {
+    if (active.data.current === undefined) return;
+
+    const activeContainer: BOARD_COLUMNS =
+      active.data.current.sortable.containerId;
+    lastActiveContainer.current = activeContainer;
+
+    const item = columns[activeContainer].find((item) => item.id === active.id);
+    if (item === undefined) return;
+
+    setActive(item);
+  };
+
   const handleDragOver = ({ over, active }: DragOverEvent): void => {
     if (over == null || active.data.current === undefined || over === null) {
       return;
     }
 
     const activeContainer: BOARD_COLUMNS =
-      active.data.current.sortable.containerId;
+      active.data.current?.sortable?.containerId ?? lastActiveContainer.current;
     const overContainer: BOARD_COLUMNS =
-      over.data.current?.sortable.containerId ?? over.id;
-    const activeIndex: number = active.data.current.sortable.index;
-    const overIndex: number = over.data.current?.sortable.index ?? 0;
+      over.data.current?.sortable?.containerId ?? lastActiveContainer.current;
+    const activeIndex: number = active.data.current?.sortable?.index ?? 0;
+    const overIndex: number = over.data.current?.sortable?.index ?? 0;
 
     if (move.current.start === null) {
       move.current.start = activeContainer;
@@ -152,16 +169,19 @@ const BoardContainer: FC = () => {
   };
 
   const handleDragEnd = ({ active, over }: DragEndEvent): void => {
+    setActive(null);
+    lastActiveContainer.current = null;
+
     if (over == null || active.data.current === undefined || over === null) {
       return;
     }
 
     const activeContainer: BOARD_COLUMNS =
-      active.data.current.sortable.containerId;
+      active.data.current?.sortable?.containerId ?? lastActiveContainer.current;
     const overContainer: BOARD_COLUMNS =
-      over.data.current?.sortable.containerId ?? over.id;
-    const activeIndex: number = active.data.current.sortable.index;
-    const overIndex: number = over.data.current?.sortable.index ?? 0;
+      over.data.current?.sortable?.containerId ?? lastActiveContainer.current;
+    const activeIndex: number = active.data.current?.sortable?.index ?? 0;
+    const overIndex: number = over.data.current?.sortable?.index ?? 0;
 
     if (active.id !== over.id) {
       setColumns((items) => {
@@ -201,6 +221,7 @@ const BoardContainer: FC = () => {
     <DndContext
       sensors={sensors}
       measuring={measuring}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       collisionDetection={closestCorners}
@@ -212,6 +233,7 @@ const BoardContainer: FC = () => {
           return <BoardColumn key={col} column={key} items={items} />;
         })}
       </Flex>
+      <DragOverlay>{active != null && <BoardCard item={active} />}</DragOverlay>
     </DndContext>
   );
 };

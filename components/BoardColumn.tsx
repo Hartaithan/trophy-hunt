@@ -3,7 +3,6 @@ import {
   Text,
   Flex,
   createStyles,
-  useMantineTheme,
   UnstyledButton,
   Button,
   Transition,
@@ -19,6 +18,7 @@ import { type IGame } from "@/models/GameModel";
 import { IconArticleOff, IconPlaylistAdd } from "@tabler/icons-react";
 import { columnColors, columnsLabels } from "@/constants/board";
 import { useBoard } from "@/providers/BoardProvider";
+import { Virtuoso } from "react-virtuoso";
 
 interface IBoardColumnProps {
   column: BOARD_COLUMNS;
@@ -98,8 +98,19 @@ const useStyles = createStyles(
           stroke: colors[color][shade],
         },
       },
-      list: {
+      listWrapper: {
         position: "relative",
+        flex: 1,
+        "& > div": {
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        },
+      },
+      list: {
+        height: "100%",
       },
       empty: {
         position: "absolute",
@@ -133,7 +144,6 @@ const useStyles = createStyles(
 const BoardColumn: FC<IBoardColumnProps> = (props) => {
   const { column, items, interactive = true } = props;
   const { classes } = useStyles({ column });
-  const { spacing } = useMantineTheme();
   const { setNodeRef } = useDroppable({ id: column, disabled: !interactive });
   const { addGameModal } = useBoard();
 
@@ -163,9 +173,8 @@ const BoardColumn: FC<IBoardColumnProps> = (props) => {
           )}
         </Flex>
         <Flex
-          className={classes.list}
+          className={classes.listWrapper}
           direction="column"
-          gap={spacing.sm}
           ref={setNodeRef}
         >
           <Transition
@@ -195,9 +204,22 @@ const BoardColumn: FC<IBoardColumnProps> = (props) => {
               </Flex>
             )}
           </Transition>
-          {items.map((item) => (
-            <BoardCard key={item.id} item={item} interactive={interactive} />
-          ))}
+          <Virtuoso
+            data={items}
+            className={classes.list}
+            totalCount={items.length}
+            itemContent={(index, item) => {
+              const isLast = index + 1 === items.length;
+              return (
+                <BoardCard
+                  key={item.id}
+                  item={item}
+                  divider={!isLast}
+                  interactive={interactive}
+                />
+              );
+            }}
+          />
         </Flex>
       </Flex>
     </SortableContext>

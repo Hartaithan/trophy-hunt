@@ -1,6 +1,6 @@
 import AddGameModal from "@/modals/AddGameModal";
 import { type IBoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
-import { type IAddGameState } from "@/models/GameModel";
+import { type IGame, type IAddGameState } from "@/models/GameModel";
 import {
   type PropsWithChildren,
   type FC,
@@ -23,6 +23,8 @@ interface IAddGameModal extends IAddGameState {
 interface IBoardContext {
   columns: IBoardColumns;
   setColumns: Dispatch<SetStateAction<IBoardColumns>>;
+  active: IGame | null;
+  setActive: Dispatch<SetStateAction<IGame | null>>;
   addGameModal: IAddGameModal;
 }
 
@@ -34,6 +36,8 @@ const initialState: IAddGameState = {
 const initialContextValue: IBoardContext = {
   columns: {},
   setColumns: () => null,
+  active: null,
+  setActive: () => null,
   addGameModal: {
     ...initialState,
     open: () => null,
@@ -48,6 +52,7 @@ const BoardProvider: FC<IBoardProviderProps> = (props) => {
 
   const [columns, setColumns] = useState<IBoardColumns>(initializedBoard);
   const [addGameModal, setAddGameModal] = useState<IAddGameState>(initialState);
+  const [active, setActive] = useState<IGame | null>(null);
 
   const handleOpen: IAddGameModal["open"] = (status) => {
     setAddGameModal((prev) => ({ ...prev, status, opened: true }));
@@ -60,6 +65,8 @@ const BoardProvider: FC<IBoardProviderProps> = (props) => {
   const exposed: IBoardContext = {
     columns,
     setColumns,
+    active,
+    setActive,
     addGameModal: {
       status: addGameModal.status,
       opened: addGameModal.opened,
