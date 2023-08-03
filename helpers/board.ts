@@ -61,12 +61,11 @@ export const moveBetweenContainers = (
   const item = items[activeContainer].find((item) => item.id === itemId);
   if (item === undefined) return items;
   const active = removeAtIndex(items[activeContainer], activeIndex);
-  const over = insertAtIndex(items[overContainer], overIndex, item);
-  return {
-    ...items,
-    [activeContainer]: active.map((i) => ({ ...i, status: activeContainer })),
-    [overContainer]: over.map((i) => ({ ...i, status: overContainer })),
-  };
+  const over = insertAtIndex(items[overContainer], overIndex, {
+    ...item,
+    status: overContainer,
+  });
+  return { ...items, [activeContainer]: active, [overContainer]: over };
 };
 
 export const removeAtIndex = (array: IGame[], index: number): IGame[] => {
