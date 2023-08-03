@@ -51,6 +51,7 @@ const BoardContainer: FC = () => {
   const move = useRef<IMove>({ start: null, end: null });
   const columnsRef = useRef<IBoardColumns>(columns);
   const previousRef = useRef<IBoardColumns>(columns);
+  const lastActiveIndex = useRef<number>(0);
   const lastActiveContainer = useRef<BOARD_COLUMNS | null>(null);
 
   const sensors = useSensors(
@@ -127,7 +128,9 @@ const BoardContainer: FC = () => {
 
     const activeContainer: BOARD_COLUMNS =
       active.data.current.sortable.containerId;
+    const activeIndex: number = active.data.current.sortable.index;
     lastActiveContainer.current = activeContainer;
+    lastActiveIndex.current = activeIndex;
 
     const item = columns[activeContainer].find((item) => item.id === active.id);
     if (item === undefined) return;
@@ -136,15 +139,17 @@ const BoardContainer: FC = () => {
   };
 
   const handleDragOver = ({ over, active }: DragOverEvent): void => {
-    if (over == null || active.data.current === undefined || over === null) {
-      return;
-    }
+    if (over == null || active.data.current == null) return;
 
+    const container: BOARD_COLUMNS | undefined =
+      active.data.current?.sortable?.containerId;
+    if (container) {
+      lastActiveContainer.current = container;
+    }
     const activeContainer: BOARD_COLUMNS =
       active.data.current?.sortable?.containerId ?? lastActiveContainer.current;
     const overContainer: BOARD_COLUMNS =
       over.data.current?.sortable?.containerId ?? lastActiveContainer.current;
-    const activeIndex: number = active.data.current?.sortable?.index ?? 0;
     const overIndex: number = over.data.current?.sortable?.index ?? 0;
 
     if (move.current.start === null) {
@@ -157,7 +162,7 @@ const BoardContainer: FC = () => {
         const movedItems = moveBetweenContainers(
           items,
           activeContainer,
-          activeIndex,
+          lastActiveIndex.current,
           overContainer,
           overIndex,
           active.id
@@ -169,18 +174,12 @@ const BoardContainer: FC = () => {
   };
 
   const handleDragEnd = ({ active, over }: DragEndEvent): void => {
-    setActive(null);
-    lastActiveContainer.current = null;
-
-    if (over == null || active.data.current === undefined || over === null) {
-      return;
-    }
+    if (over == null || active.data.current == null) return;
 
     const activeContainer: BOARD_COLUMNS =
       active.data.current?.sortable?.containerId ?? lastActiveContainer.current;
     const overContainer: BOARD_COLUMNS =
       over.data.current?.sortable?.containerId ?? lastActiveContainer.current;
-    const activeIndex: number = active.data.current?.sortable?.index ?? 0;
     const overIndex: number = over.data.current?.sortable?.index ?? 0;
 
     if (active.id !== over.id) {
@@ -189,7 +188,7 @@ const BoardContainer: FC = () => {
         if (activeContainer === overContainer) {
           const movedItems = arrayMove(
             items[overContainer],
-            activeIndex,
+            lastActiveIndex.current,
             overIndex
           );
           const movedInsideContainer = {
@@ -201,7 +200,7 @@ const BoardContainer: FC = () => {
           const movedBetweenContainers = moveBetweenContainers(
             items,
             activeContainer,
-            activeIndex,
+            lastActiveIndex.current,
             overContainer,
             overIndex,
             active.id
@@ -213,7 +212,9 @@ const BoardContainer: FC = () => {
       });
     }
 
+    setActive(null);
     move.current.end = overContainer;
+    lastActiveContainer.current = null;
     handleMoveEnd();
   };
 
