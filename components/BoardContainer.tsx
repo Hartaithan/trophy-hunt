@@ -146,11 +146,22 @@ const BoardContainer: FC = () => {
     if (container) {
       lastActiveContainer.current = container;
     }
-    const activeContainer: BOARD_COLUMNS =
-      active.data.current?.sortable?.containerId ?? lastActiveContainer.current;
-    const overContainer: BOARD_COLUMNS =
-      over.data.current?.sortable?.containerId ?? lastActiveContainer.current;
-    const overIndex: number = over.data.current?.sortable?.index ?? 0;
+    const activeContainer: BOARD_COLUMNS | undefined =
+      active.data.current?.sortable?.containerId;
+    const activeIndex: number | undefined =
+      active.data.current?.sortable?.index;
+    const overContainer: BOARD_COLUMNS | undefined =
+      over.data.current?.sortable?.containerId;
+    const overIndex: number | undefined = over.data.current?.sortable?.index;
+
+    if (
+      activeContainer == null ||
+      activeIndex == null ||
+      overContainer == null ||
+      overIndex == null
+    ) {
+      return;
+    }
 
     if (move.current.start === null) {
       move.current.start = activeContainer;
@@ -162,7 +173,7 @@ const BoardContainer: FC = () => {
         const movedItems = moveBetweenContainers(
           items,
           activeContainer,
-          lastActiveIndex.current,
+          activeIndex,
           overContainer,
           overIndex,
           active.id
@@ -178,6 +189,8 @@ const BoardContainer: FC = () => {
 
     const activeContainer: BOARD_COLUMNS =
       active.data.current?.sortable?.containerId ?? lastActiveContainer.current;
+    const activeIndex: number =
+      active.data.current?.sortable?.index ?? lastActiveIndex.current;
     const overContainer: BOARD_COLUMNS =
       over.data.current?.sortable?.containerId ?? lastActiveContainer.current;
     const overIndex: number = over.data.current?.sortable?.index ?? 0;
@@ -188,7 +201,7 @@ const BoardContainer: FC = () => {
         if (activeContainer === overContainer) {
           const movedItems = arrayMove(
             items[overContainer],
-            lastActiveIndex.current,
+            activeIndex,
             overIndex
           );
           const movedInsideContainer = {
@@ -200,7 +213,7 @@ const BoardContainer: FC = () => {
           const movedBetweenContainers = moveBetweenContainers(
             items,
             activeContainer,
-            lastActiveIndex.current,
+            activeIndex,
             overContainer,
             overIndex,
             active.id
