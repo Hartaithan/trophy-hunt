@@ -159,8 +159,6 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const { show } = useCongratulation();
 
   const isAllChecked = useMemo(() => {
-    if (!isMounted.current) return false;
-    if (typeof window === "undefined") return false;
     let base_count = 0;
     let all_count = 0;
     for (let i = 0; i < progress.length; i++) {
@@ -177,6 +175,8 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     if (isComplete) value = "complete";
     if (countIsDecrement) return isComplete;
     if (value === null) return isComplete;
+    if (!isMounted.current) return isComplete;
+    if (typeof window === "undefined") return isComplete;
     reward();
     show(value);
     return isComplete;
