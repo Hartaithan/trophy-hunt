@@ -51,8 +51,10 @@ const BoardContainer: FC = () => {
   const move = useRef<IMove>({ start: null, end: null });
   const columnsRef = useRef<IBoardColumns>(columns);
   const previousRef = useRef<IBoardColumns>(columns);
-  const lastActiveIndex = useRef<number>(0);
   const lastActiveContainer = useRef<BOARD_COLUMNS | null>(null);
+  const lastActiveIndex = useRef<number>(0);
+  const lastOverContainer = useRef<BOARD_COLUMNS | null>(null);
+  const lastOverIndex = useRef<number>(0);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint })
@@ -138,14 +140,9 @@ const BoardContainer: FC = () => {
     setActive(item);
   };
 
-  const handleDragOver = ({ over, active }: DragOverEvent): void => {
+  const handleDragOver = ({ active, over }: DragOverEvent): void => {
     if (over == null || active.data.current == null) return;
 
-    const container: BOARD_COLUMNS | undefined =
-      active.data.current?.sortable?.containerId;
-    if (container) {
-      lastActiveContainer.current = container;
-    }
     const activeContainer: BOARD_COLUMNS | undefined =
       active.data.current?.sortable?.containerId;
     const activeIndex: number | undefined =
@@ -153,6 +150,10 @@ const BoardContainer: FC = () => {
     const overContainer: BOARD_COLUMNS | undefined =
       over.data.current?.sortable?.containerId;
     const overIndex: number | undefined = over.data.current?.sortable?.index;
+    if (activeContainer != null) lastActiveContainer.current = activeContainer;
+    if (activeIndex != null) lastActiveIndex.current = activeIndex;
+    if (overContainer != null) lastOverContainer.current = overContainer;
+    if (overIndex != null) lastOverIndex.current = overIndex;
 
     if (
       activeContainer == null ||
@@ -192,8 +193,9 @@ const BoardContainer: FC = () => {
     const activeIndex: number =
       active.data.current?.sortable?.index ?? lastActiveIndex.current;
     const overContainer: BOARD_COLUMNS =
-      over.data.current?.sortable?.containerId ?? lastActiveContainer.current;
-    const overIndex: number = over.data.current?.sortable?.index ?? 0;
+      over.data.current?.sortable?.containerId ?? lastOverContainer.current;
+    const overIndex: number =
+      over.data.current?.sortable?.index ?? lastOverIndex.current;
 
     if (active.id !== over.id) {
       setColumns((items) => {
@@ -228,6 +230,9 @@ const BoardContainer: FC = () => {
     setActive(null);
     move.current.end = overContainer;
     lastActiveContainer.current = null;
+    lastActiveIndex.current = 0;
+    lastOverContainer.current = null;
+    lastOverIndex.current = 0;
     handleMoveEnd();
   };
 
