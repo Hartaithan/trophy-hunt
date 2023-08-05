@@ -11,8 +11,8 @@ const ProfilePage: IPage = () => {
       <Flex justify="flex-end">
         <Button
           component={Link}
-          href="/profile/edit"
           prefetch={false}
+          href="/profile/edit"
           type="submit"
           w={150}
           mt="xl"

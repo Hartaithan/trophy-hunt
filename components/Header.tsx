@@ -117,9 +117,9 @@ const Header: FC = () => {
               <Anchor
                 size="sm"
                 component={Link}
+                prefetch={false}
                 key={link.id}
                 href={link.href}
-                prefetch={false}
                 className={cx(
                   classes.link,
                   link.disabled && classes.disabledLink,
@@ -149,6 +149,7 @@ const Header: FC = () => {
             <Menu.Dropdown>
               <Menu.Item
                 component={Link}
+                prefetch={false}
                 href="/profile"
                 icon={<IconUser size="1rem" />}
                 lh="initial"
@@ -167,6 +168,7 @@ const Header: FC = () => {
         {!isAuth && (
           <Button
             component={Link}
+            prefetch={false}
             href="/signIn"
             size="xs"
             leftIcon={<IconUser size="0.75rem" />}

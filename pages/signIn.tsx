@@ -96,6 +96,7 @@ const SignInPage: IPage = () => {
         Don&apos;t have an account?&nbsp;
         <Anchor
           component={Link}
+          prefetch={false}
           href="/signUp"
           span
           color="accented.9"

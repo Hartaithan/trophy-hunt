@@ -229,6 +229,7 @@ const SignUpPage: IPage = () => {
             Already have account?&nbsp;
             <Anchor
               component={Link}
+              prefetch={false}
               href="/signIn"
               span
               color="accented.9"

@@ -86,6 +86,7 @@ const BoardCardMenu: FC<IBoardCardMenuProps> = (props) => {
         <Menu.Item
           icon={<IconArrowUpRight size="1rem" />}
           component={Link}
+          prefetch={false}
           href={`/game/${id}`}
         >
           Open
