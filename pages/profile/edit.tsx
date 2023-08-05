@@ -10,14 +10,14 @@ import { type GetServerSideProps } from "next";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-interface IProfilePageProps {
+interface IEditProfilePageProps {
   profile: IProfile | null;
   message?: string;
 }
 
-export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
-  ctx
-) => {
+export const getServerSideProps: GetServerSideProps<
+  IEditProfilePageProps
+> = async (ctx) => {
   if (API_URL === undefined) {
     console.error("env variables not found");
     return { props: { profile: null, message: "Something wrong..." } };
@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
   }
 };
 
-const ProfilePage: IPage<IProfilePageProps> = (props) => {
+const EditProfilePage: IPage<IEditProfilePageProps> = (props) => {
   const { profile } = props;
 
   const form = useForm<ProfileEditBody>({
@@ -155,4 +155,4 @@ const ProfilePage: IPage<IProfilePageProps> = (props) => {
   );
 };
 
-export default ProfilePage;
+export default EditProfilePage;
