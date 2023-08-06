@@ -20,16 +20,11 @@ import {
   useRef,
   type Dispatch,
   type SetStateAction,
-  useMemo,
 } from "react";
-import { useReward } from "react-rewards";
 import { IconAlertOctagon, IconCheck } from "@tabler/icons-react";
-import {
-  type CongratulationValue,
-  useCongratulation,
-} from "./CongratulationProvider";
 import { type INoteModal, type INoteModalState } from "@/models/NoteModel";
 import NoteModal from "@/modals/NoteModal";
+import useCompletion from "@/hooks/useCompletion";
 
 interface IGameProviderProps extends PropsWithChildren {
   id: string | string[] | undefined;
@@ -60,12 +55,6 @@ interface IGameContext {
   checkGroup: (group: string, value: boolean) => void;
   noteModal: INoteModal;
 }
-
-const rewardConfig = {
-  spread: 100,
-  startVelocity: 50,
-  elementCount: 100,
-};
 
 const initialFilters: ITrophyFilters = {
   type: "all",
@@ -151,36 +140,9 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   const isCompleted = status === "completed";
 
   const isUserInteract = useRef<boolean>(false);
-  const isMounted = useRef<boolean>(false);
   const isAlreadyUpdated = useRef<boolean>(false);
-  const allCount = useRef<number>(0);
 
-  const { reward } = useReward("reward", "confetti", rewardConfig);
-  const { show } = useCongratulation();
-
-  const isAllChecked = useMemo(() => {
-    let base_count = 0;
-    let all_count = 0;
-    for (let i = 0; i < progress.length; i++) {
-      const el = progress[i];
-      base_count = base_count + (!el.dlc ? 1 : 0);
-      all_count = all_count + (el.earned ? 1 : 0);
-    }
-    const countIsDecrement = all_count < allCount.current;
-    allCount.current = all_count;
-    let value: CongratulationValue | null = null;
-    const isPlatinum = base_count === all_count;
-    const isComplete = all_count === progress.length;
-    if (isPlatinum) value = "platinum";
-    if (isComplete) value = "complete";
-    if (countIsDecrement) return isComplete;
-    if (value === null) return isComplete;
-    if (!isMounted.current) return isComplete;
-    if (typeof window === "undefined") return isComplete;
-    reward();
-    show(value);
-    return isComplete;
-  }, [progress]); // eslint-disable-line
+  const isAllChecked = useCompletion(progress);
 
   const refetchGame = (): void => {
     if (typeof id !== "string") return;
@@ -372,7 +334,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
         setStatus("completed");
         isUserInteract.current = false;
       });
-  }, [debouncedProgress]); // eslint-disable-line
+  }, [id, debouncedProgress]);
 
   useEffect(() => {
     if (typeof id !== "string") return;
@@ -421,11 +383,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     } else {
       console.info("doesn't need update");
     }
-  }, [progress, trophies]); // eslint-disable-line
-
-  useEffect(() => {
-    isMounted.current = true;
-  }, []);
+  }, [id, progress, trophies]);
 
   return (
     <Context.Provider value={exposed}>

@@ -6,6 +6,7 @@ import {
   type FC,
   type PropsWithChildren,
   useState,
+  useCallback,
 } from "react";
 
 export type CongratulationValue = "platinum" | "complete";
@@ -36,13 +37,13 @@ const CongratulationProvider: FC<PropsWithChildren> = (props) => {
   const [state, setState] = useState(initialState);
   const { isVisible, value } = state;
 
-  const show = (value: CongratulationValue): void => {
+  const show = useCallback((value: CongratulationValue): void => {
     setState((prev) => ({ ...prev, isVisible: true, value }));
     const timeout = setTimeout(() => {
       setState((prev) => ({ ...prev, isVisible: false }));
       clearTimeout(timeout);
     }, 3000);
-  };
+  }, []);
 
   const clear = (): void => {
     setState(initialState);
