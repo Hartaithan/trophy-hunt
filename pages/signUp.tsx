@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode, useCallback } from "react";
 import { type IPage } from "@/models/AppModel";
 import { type IUser, type ISignUpBody } from "@/models/AuthModel";
 import {
@@ -11,11 +11,11 @@ import {
   TextInput,
   Title,
   Loader,
-  useMantineTheme,
   Box,
   Input,
   Anchor,
   Select,
+  DEFAULT_THEME as theme,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength, isNotEmpty } from "@mantine/form";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -31,6 +31,13 @@ type Status = "idle" | "checking" | "notUnique" | "unique";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+const statusIcons: Record<Status, ReactNode> = {
+  idle: undefined,
+  checking: <Loader size="xs" />,
+  unique: <IconUserCheck size={20} color={theme.colors.green[8]} />,
+  notUnique: <IconUserX size={20} color={theme.colors.red[8]} />,
+};
+
 const useStyles = createStyles(({ colors, fontSizes }, isUnique: boolean) => ({
   unique: {
     fontSize: fontSizes.xs,
@@ -40,22 +47,11 @@ const useStyles = createStyles(({ colors, fontSizes }, isUnique: boolean) => ({
 
 const SignUpPage: IPage = () => {
   const supabase = useSupabaseClient();
-  const { colors } = useMantineTheme();
   const [user, setUser] = useState<IUser | null>(null);
   const [status, setStatus] = useState<Status>("idle");
   const isChecking = status === "checking";
   const isUnique = status === "unique";
   const { classes } = useStyles(isUnique);
-
-  const statusIcons: Record<Status, ReactNode> = useMemo(
-    () => ({
-      idle: undefined,
-      checking: <Loader size="xs" />,
-      unique: <IconUserCheck size={20} color={colors.green[8]} />,
-      notUnique: <IconUserX size={20} color={colors.red[8]} />,
-    }),
-    [] // eslint-disable-line
-  );
 
   const form = useForm<ISignUpBody>({
     initialValues: {
@@ -82,7 +78,7 @@ const SignUpPage: IPage = () => {
     validateInputOnChange: ["username"],
   });
 
-  const [debounced] = useDebouncedValue(form.values.username, 500);
+  const [username] = useDebouncedValue(form.values.username, 500);
 
   const handleSubmit = (values: typeof form.values): void => {
     if (API_URL === undefined) {
@@ -108,22 +104,24 @@ const SignUpPage: IPage = () => {
       });
   };
 
-  const isUsernameUnique = async (): Promise<boolean> => {
+  const isUsernameUnique = useCallback(async (): Promise<boolean> => {
     const { error } = await supabase
       .from("profiles")
       .select("id")
-      .eq("username", form.values.username)
+      .eq("username", username)
       .single();
     return error != null;
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username]);
 
   useEffect(() => {
-    if (debounced.length === 0 || !form.isValid("username")) return;
+    if (username.length === 0 || !form.isValid("username")) return;
     setStatus("checking");
     isUsernameUnique()
       .then((unique) => setStatus(unique ? "unique" : "notUnique"))
       .catch((error) => console.error("check if username unique error", error));
-  }, [debounced]); // eslint-disable-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username, isUsernameUnique]);
 
   return (
     <Flex direction="column" justify="center" align="center">
