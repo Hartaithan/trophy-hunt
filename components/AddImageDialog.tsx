@@ -26,10 +26,18 @@ const AddImageDialog: FC<IModalProps> = (props) => {
     },
   });
 
-  const handleSubmit = (values: TransformedValues<typeof form>): void => {
+  const handleClose = (): void => {
+    setOpened(false);
+  };
+
+  const submitImage = (values: TransformedValues<typeof form>): void => {
     editor.chain().focus().setImage({ src: values.image_url }).run();
     form.reset();
     setOpened(false);
+  };
+
+  const handleSubmit = (): void => {
+    form.onSubmit(submitImage)();
   };
 
   return (
@@ -37,7 +45,7 @@ const AddImageDialog: FC<IModalProps> = (props) => {
       opened={opened}
       withCloseButton
       position={centeredDialog as DialogProps["position"]}
-      onClose={() => setOpened(false)}
+      onClose={handleClose}
       size="lg"
       radius="md"
       zIndex={9999}
@@ -51,10 +59,7 @@ const AddImageDialog: FC<IModalProps> = (props) => {
           placeholder="https://example.com/image.png"
           sx={{ flex: 1 }}
         />
-        <Button
-          onClick={() => form.onSubmit(handleSubmit)()}
-          sx={{ alignSelf: "flex-start" }}
-        >
+        <Button onClick={handleSubmit} sx={{ alignSelf: "flex-start" }}>
           Add
         </Button>
       </Group>

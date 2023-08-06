@@ -23,10 +23,14 @@ const TrophyList: FC<ITrophyListProps> = (props) => {
   const [isLoaded, setLoaded] = useState(false);
   const isEmpty = isLoaded && height < 100;
 
+  const handleLoad = (): void => {
+    setLoaded(true);
+  };
+
   return (
     <Box className={classes.container}>
       <TrophyListEmpty in={isEmpty} />
-      <Stack ref={ref} mt="xl" spacing="xs" onLoad={() => setLoaded(true)}>
+      <Stack ref={ref} mt="xl" spacing="xs" onLoad={handleLoad}>
         {trophies.map((trophy) => {
           if (filters.type !== "all" && filters.type !== trophy.type)
             return null;

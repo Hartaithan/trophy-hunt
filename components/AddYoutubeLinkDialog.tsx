@@ -27,7 +27,11 @@ const AddYoutubeLinkDialog: FC<IModalProps> = (props) => {
     },
   });
 
-  const handleSubmit = (values: TransformedValues<typeof form>): void => {
+  const handleClose = (): void => {
+    setOpened(false);
+  };
+
+  const submitLink = (values: TransformedValues<typeof form>): void => {
     editor.commands.setYoutubeVideo({
       src: values.url,
       width: 640,
@@ -37,12 +41,16 @@ const AddYoutubeLinkDialog: FC<IModalProps> = (props) => {
     setOpened(false);
   };
 
+  const handleSubmit = (): void => {
+    form.onSubmit(submitLink)();
+  };
+
   return (
     <Dialog
       opened={opened}
       withCloseButton
       position={centeredDialog as DialogProps["position"]}
-      onClose={() => setOpened(false)}
+      onClose={handleClose}
       size="lg"
       radius="md"
       zIndex={9999}
@@ -56,10 +64,7 @@ const AddYoutubeLinkDialog: FC<IModalProps> = (props) => {
           placeholder="https://example.com/image.png"
           sx={{ flex: 1 }}
         />
-        <Button
-          onClick={() => form.onSubmit(handleSubmit)()}
-          sx={{ alignSelf: "flex-start" }}
-        >
+        <Button onClick={handleSubmit} sx={{ alignSelf: "flex-start" }}>
           Add
         </Button>
       </Group>

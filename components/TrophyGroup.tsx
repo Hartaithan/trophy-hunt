@@ -52,7 +52,7 @@ const useStyles = createStyles(({ spacing, radius, colors }) => ({
 const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
   const { group } = props;
   const { classes } = useStyles();
-  const { progress, handleCheckGroup } = useGame();
+  const { progress, checkGroup } = useGame();
 
   const { id, icon_url, name, count, counts } = group;
 
@@ -78,7 +78,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
   }, [id, progress]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = () => {
-    handleCheckGroup(id, !checked.isAll);
+    checkGroup(id, !checked.isAll);
   };
 
   return (

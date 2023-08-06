@@ -242,6 +242,14 @@ const NoteModal: FC<INoteModalProps> = (props) => {
     }
   };
 
+  const openImageDialog = (): void => {
+    setAddImage(true);
+  };
+
+  const openYoutubeDialog = (): void => {
+    setAddYoutube(true);
+  };
+
   useEffect(() => {
     if (!opened) return;
     reset();
@@ -304,9 +312,9 @@ const NoteModal: FC<INoteModalProps> = (props) => {
                 <LiftListItemControl />
               </RichTextEditor.ControlsGroup>
               <RichTextEditor.ControlsGroup>
-                <ImageControl onClick={() => setAddImage(true)} />
+                <ImageControl onClick={openImageDialog} />
                 <AddImageDialog opened={addImage} setOpened={setAddImage} />
-                <YoutubeControl onClick={() => setAddYoutube(true)} />
+                <YoutubeControl onClick={openYoutubeDialog} />
                 <AddYoutubeLinkDialog
                   opened={addYoutube}
                   setOpened={setAddYoutube}
@@ -333,7 +341,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
               </Flex>
             )}
             <Button
-              onClick={() => handleSubmit()}
+              onClick={handleSubmit}
               leftIcon={statusIcons[status]}
               disabled={
                 isLoading || (editor?.isEmpty ?? statusDisabled[status])

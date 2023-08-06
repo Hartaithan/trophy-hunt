@@ -7,10 +7,14 @@ const Home: IPage = () => {
   const session = useSession();
   const { profile, psn, updatePSNProfile } = useProfiles();
 
+  const handleUpdate = (): void => {
+    updatePSNProfile();
+  };
+
   return (
     <Flex justify="center" align="center" direction="column" gap={12} py={24}>
       <Title>Hello world!</Title>
-      <Button onClick={() => updatePSNProfile()}>update</Button>
+      <Button onClick={handleUpdate}>update</Button>
       <Group align="flex-start">
         <Text
           component="pre"

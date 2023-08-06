@@ -44,14 +44,8 @@ const useStyles = createStyles(({ spacing }) => ({
 
 const TrophyPanel: FC = () => {
   const { classes } = useStyles();
-  const {
-    game,
-    filters,
-    isAllChecked,
-    syncProgress,
-    setFilters,
-    handleCheckAll,
-  } = useGame();
+  const { game, filters, isAllChecked, syncProgress, setFilters, checkAll } =
+    useGame();
 
   const handleEarnedChange = (value: TrophyEarnedFilter): void => {
     setFilters((prev) => ({ ...prev, earned: value }));
@@ -67,6 +61,10 @@ const TrophyPanel: FC = () => {
     const query = `${game.title.toLowerCase()} trophies`;
     const url = "https://google.com/search?q=";
     window.open(url + query, "_blank");
+  };
+
+  const handleCheckAll = (): void => {
+    checkAll(!isAllChecked);
   };
 
   return (
@@ -91,21 +89,21 @@ const TrophyPanel: FC = () => {
         ml="auto"
         radius="lg"
         leftIcon={<IconListCheck size={20} />}
-        onClick={() => handleCheckAll(!isAllChecked)}
+        onClick={handleCheckAll}
       >
         {isAllChecked ? "Uncheck" : "Check"} all
       </Button>
       <Button
         radius="lg"
         leftIcon={<IconSearch size={20} />}
-        onClick={() => handleGoogleSearch()}
+        onClick={handleGoogleSearch}
       >
         Find in Google
       </Button>
       <Button
         radius="lg"
         leftIcon={<IconCloudDownload size={20} />}
-        onClick={() => syncProgress()}
+        onClick={syncProgress}
       >
         Sync
       </Button>

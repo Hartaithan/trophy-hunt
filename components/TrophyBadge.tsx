@@ -2,7 +2,7 @@ import { type ITrophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
 import { Checkbox, Flex, createStyles } from "@mantine/core";
 import Image from "next/image";
-import { memo, type FC } from "react";
+import { memo, type FC, type ChangeEventHandler } from "react";
 
 interface ITrophyBadgeProps {
   trophy: ITrophy;
@@ -29,6 +29,10 @@ const TrophyBadge: FC<ITrophyBadgeProps> = (props) => {
 
   const { id, type } = trophy;
 
+  const handleChange: ChangeEventHandler<HTMLInputElement> = () => {
+    toggleTrophy(id);
+  };
+
   return (
     <Flex className={classes.badge}>
       <Image
@@ -37,7 +41,7 @@ const TrophyBadge: FC<ITrophyBadgeProps> = (props) => {
         alt="trophy type icon"
         src={`/trophy/${type}.png`}
       />
-      <Checkbox checked={checked} onChange={() => toggleTrophy(id)} size="md" />
+      <Checkbox checked={checked} onChange={handleChange} size="md" />
     </Flex>
   );
 };

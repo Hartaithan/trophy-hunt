@@ -15,9 +15,14 @@ interface IControlProps {
 
 export const ToggleTaskListControl: FC = () => {
   const { editor } = useRichTextEditorContext();
+
+  const handleToggle = (): void => {
+    editor.commands.toggleTaskList();
+  };
+
   return (
     <RichTextEditor.Control
-      onClick={() => editor.commands.toggleTaskList()}
+      onClick={handleToggle}
       active={editor.isActive("taskList")}
       aria-label="Toggle task list"
       title="Toggle task list"
@@ -29,9 +34,14 @@ export const ToggleTaskListControl: FC = () => {
 
 export const SplitListItemControl: FC = () => {
   const { editor } = useRichTextEditorContext();
+
+  const handleSplit = (): void => {
+    editor.chain().focus().splitListItem("taskItem").run();
+  };
+
   return (
     <RichTextEditor.Control
-      onClick={() => editor.chain().focus().splitListItem("taskItem").run()}
+      onClick={handleSplit}
       interactive={editor.can().splitListItem("taskItem")}
       disabled={!editor.can().splitListItem("taskItem")}
       aria-label="Split list item"
@@ -44,9 +54,14 @@ export const SplitListItemControl: FC = () => {
 
 export const SinkListItemControl: FC = () => {
   const { editor } = useRichTextEditorContext();
+
+  const handleSink = (): void => {
+    editor.chain().focus().sinkListItem("taskItem").run();
+  };
+
   return (
     <RichTextEditor.Control
-      onClick={() => editor.chain().focus().sinkListItem("taskItem").run()}
+      onClick={handleSink}
       interactive={editor.can().sinkListItem("taskItem")}
       disabled={!editor.can().sinkListItem("taskItem")}
       aria-label="Sink list item"
@@ -59,9 +74,14 @@ export const SinkListItemControl: FC = () => {
 
 export const LiftListItemControl: FC = () => {
   const { editor } = useRichTextEditorContext();
+
+  const handleLift = (): void => {
+    editor.chain().focus().liftListItem("taskItem").run();
+  };
+
   return (
     <RichTextEditor.Control
-      onClick={() => editor.chain().focus().liftListItem("taskItem").run()}
+      onClick={handleLift}
       interactive={editor.can().liftListItem("taskItem")}
       disabled={!editor.can().liftListItem("taskItem")}
       aria-label="Lift list item"

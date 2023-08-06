@@ -56,8 +56,8 @@ interface IGameContext {
   filters: ITrophyFilters;
   setFilters: Dispatch<SetStateAction<ITrophyFilters>>;
   resetFilters: () => void;
-  handleCheckAll: (value: boolean) => void;
-  handleCheckGroup: (group: string, value: boolean) => void;
+  checkAll: (value: boolean) => void;
+  checkGroup: (group: string, value: boolean) => void;
   noteModal: INoteModal;
 }
 
@@ -95,8 +95,8 @@ const initialContextValue: IGameContext = {
   filters: initialFilters,
   setFilters: () => null,
   resetFilters: () => null,
-  handleCheckAll: () => null,
-  handleCheckGroup: () => null,
+  checkAll: () => null,
+  checkGroup: () => null,
   noteModal: {
     ...initialNoteState,
     setState: () => null,
@@ -275,7 +275,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     setFilters(initialFilters);
   };
 
-  const handleCheckAll = (value: boolean): void => {
+  const checkAll = (value: boolean): void => {
     setStatus("syncing");
     notifications.show({
       id: "sync",
@@ -289,7 +289,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     setProgress((prev) => prev.map((item) => ({ ...item, earned: value })));
   };
 
-  const handleCheckGroup = (group: string, value: boolean): void => {
+  const checkGroup = (group: string, value: boolean): void => {
     setStatus("syncing");
     notifications.show({
       id: "sync",
@@ -308,11 +308,11 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     );
   };
 
-  const handleNoteOpen = (params?: Partial<INoteModalState>): void => {
+  const openNote = (params?: Partial<INoteModalState>): void => {
     setNoteModal((prev) => ({ ...prev, ...params, opened: true }));
   };
 
-  const handleNoteClose = (): void => {
+  const closeNote = (): void => {
     setNoteModal((prev) => ({ ...prev, opened: false }));
   };
 
@@ -333,13 +333,13 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     filters,
     setFilters,
     resetFilters,
-    handleCheckAll,
-    handleCheckGroup,
+    checkAll,
+    checkGroup,
     noteModal: {
       ...noteModal,
       setState: setNoteModal,
-      open: handleNoteOpen,
-      close: handleNoteClose,
+      open: openNote,
+      close: closeNote,
     },
   };
 
