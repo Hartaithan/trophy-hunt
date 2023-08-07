@@ -1,13 +1,17 @@
+import PSNProfile from "@/components/PSNProfile";
 import { type IPage } from "@/models/AppModel";
+import { useProfiles } from "@/providers/ProfileProvider";
 import { Button, Flex, Title } from "@mantine/core";
 import Link from "next/link";
 
 const ProfilePage: IPage = () => {
+  const { psn } = useProfiles();
   return (
     <Flex direction="column" py="xl">
       <Title order={3} mb="md">
         Profile
       </Title>
+      <PSNProfile profile={psn} />
       <Flex justify="flex-end">
         <Button
           component={Link}

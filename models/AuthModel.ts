@@ -4,10 +4,17 @@ import {
   type ProfileFromUserNameResponse,
 } from "psn-api";
 
+type PSNProfileResponse = ProfileFromUserNameResponse["profile"];
+type PersonalDetail = PSNProfileResponse["personalDetail"];
+
+export interface PSNProfile extends Omit<PSNProfileResponse, "personalDetail"> {
+  personalDetail: PersonalDetail & { middleName: string | undefined };
+}
+
 export type NullableSession = Session | null;
 export type NullableUser = User | null;
 export type NullableProfile = IProfile | null;
-export type NullablePSNProfile = ProfileFromUserNameResponse["profile"] | null;
+export type NullablePSNProfile = PSNProfile | null;
 export type NullableAuthResponse = AuthTokensResponse | null;
 
 export type ProfileType = "public" | "private";
@@ -47,5 +54,3 @@ export interface ISessionResponse {
   session: NullableSession;
   profile: NullableProfile;
 }
-
-export type PSNProfile = ProfileFromUserNameResponse["profile"];
