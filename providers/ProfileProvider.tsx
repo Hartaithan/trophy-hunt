@@ -10,6 +10,8 @@ import {
   createContext,
   useState,
   useContext,
+  type Dispatch,
+  type SetStateAction,
 } from "react";
 
 interface IProfileProvider extends PropsWithChildren {
@@ -24,6 +26,8 @@ interface IProfilesState {
 
 interface IProfileContext extends IProfilesState {
   isAuth: boolean;
+  setProfile: Dispatch<SetStateAction<NullableProfile>>;
+  updateProfile: () => void;
   updatePSNProfile: () => void;
 }
 
@@ -31,34 +35,45 @@ const initialContextValue: IProfileContext = {
   psn: null,
   profile: null,
   isAuth: false,
+  setProfile: () => null,
+  updateProfile: () => null,
   updatePSNProfile: () => null,
 };
 
 const Context = createContext(initialContextValue);
 
 const ProfileProvider: FC<IProfileProvider> = (props) => {
-  const { children, initialProfile, initialPSNProfile } = props;
-  const initialProfiles: IProfilesState = {
-    psn: initialPSNProfile ?? null,
-    profile: initialProfile ?? null,
-  };
-  const [profiles, setProfiles] = useState<IProfilesState>(initialProfiles);
+  const { children, initialProfile = null, initialPSNProfile = null } = props;
+  const [profile, setProfile] = useState<NullableProfile>(initialProfile);
+  const [psn, setPSN] = useState<NullablePSNProfile>(initialPSNProfile);
   const user = useUser();
 
-  const updatePSNProfile = (): void => {
-    API.get("/profile/psn")
+  const updateProfile = (): void => {
+    API.get("/profile")
       .then(({ data }) => {
-        const psn_profile = data.profile;
-        setProfiles((prev) => ({ ...prev, psn: psn_profile }));
+        setProfile(data?.profile ?? null);
       })
       .catch((error) => {
         console.error("unable to fetch profile", error);
       });
   };
 
+  const updatePSNProfile = (): void => {
+    API.get("/profile/psn")
+      .then(({ data }) => {
+        setPSN(data?.profile ?? null);
+      })
+      .catch((error) => {
+        console.error("unable to fetch psn profile", error);
+      });
+  };
+
   const exposed: IProfileContext = {
-    ...profiles,
-    isAuth: profiles.psn !== null && user !== null,
+    psn,
+    profile,
+    isAuth: psn !== null && user !== null,
+    setProfile,
+    updateProfile,
     updatePSNProfile,
   };
 
