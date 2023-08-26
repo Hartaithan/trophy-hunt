@@ -18,6 +18,7 @@ export type NullablePSNProfile = PSNProfile | null;
 export type NullableAuthResponse = AuthTokensResponse | null;
 
 export type ProfileType = "public" | "private";
+export type Presence = PSNProfile["presences"][0];
 
 export interface ISignUpBody extends Record<string, string> {
   email: string;
