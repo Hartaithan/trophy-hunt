@@ -110,6 +110,7 @@ const useStyles = createStyles(
         justifyContent: "center",
         alignItems: "center",
         gap: spacing.lg,
+        zIndex: 1,
         "& > svg": {
           stroke: colors[color][shade],
           marginBottom: -12,
