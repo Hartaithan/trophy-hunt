@@ -148,8 +148,10 @@ const BoardContainer: FC = () => {
     const activeIndex: number | undefined =
       active.data.current?.sortable?.index;
     const overContainer: BOARD_COLUMNS | undefined =
-      over.data.current?.sortable?.containerId;
-    const overIndex: number | undefined = over.data.current?.sortable?.index;
+      over.data.current?.sortable?.containerId ?? over.id;
+    const overIndex: number | undefined =
+      over.data.current?.sortable?.index ?? 0;
+
     if (activeContainer != null) lastActiveContainer.current = activeContainer;
     if (activeIndex != null) lastActiveIndex.current = activeIndex;
     if (overContainer != null) lastOverContainer.current = overContainer;

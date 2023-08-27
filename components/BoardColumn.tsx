@@ -99,6 +99,9 @@ const useStyles = createStyles(
       },
       list: {
         height: "100%",
+        "& > div > div": {
+          height: "100%",
+        },
       },
       empty: {
         position: "absolute",
