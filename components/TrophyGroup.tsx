@@ -24,6 +24,14 @@ interface Checked {
   incomplete: boolean;
 }
 
+const emptyProgress: Checked = {
+  count: 0,
+  earned: 0,
+  label: "",
+  isAll: false,
+  incomplete: false,
+};
+
 const useStyles = createStyles(({ spacing, radius, colors }) => ({
   container: {
     position: "sticky",
@@ -59,6 +67,7 @@ const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
   const countsArray: TrophyCountItem[] = Object.entries(counts).reverse();
 
   const checked = useMemo<Checked>(() => {
+    if (progress.length === 0) return emptyProgress;
     let count = 0;
     let earned = 0;
     for (let i = 0; i < progress.length; i++) {
