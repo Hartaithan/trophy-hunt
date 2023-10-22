@@ -1,11 +1,11 @@
-import { type ITrophy } from "@/models/TrophyModel";
+import { type Trophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
 import { Checkbox, Flex, createStyles } from "@mantine/core";
 import Image from "next/image";
 import { memo, type FC, type ChangeEventHandler } from "react";
 
-interface ITrophyBadgeProps {
-  trophy: ITrophy;
+interface TrophyBadgeProps {
+  trophy: Trophy;
   checked: boolean;
 }
 
@@ -22,7 +22,7 @@ const useStyles = createStyles(({ colors, spacing, radius }) => ({
   },
 }));
 
-const TrophyBadge: FC<ITrophyBadgeProps> = (props) => {
+const TrophyBadge: FC<TrophyBadgeProps> = (props) => {
   const { trophy, checked } = props;
   const { classes } = useStyles();
   const { toggleTrophy } = useGame();

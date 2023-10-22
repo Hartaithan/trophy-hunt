@@ -1,5 +1,5 @@
 import { validatePayload } from "@/helpers/payload";
-import { type ISignUpBody } from "@/models/AuthModel";
+import { type SignUpBody } from "@/models/AuthModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { deleteCookie, setCookie } from "cookies-next";
 import { type NextApiRequest, type NextApiHandler } from "next";
@@ -12,12 +12,12 @@ import {
 
 const REDIRECT_URL = process.env.NEXT_PUBLIC_REDIRECT_URL;
 
-interface ISignUpRequest extends NextApiRequest {
-  body: ISignUpBody;
+interface SignUpRequest extends NextApiRequest {
+  body: SignUpBody;
 }
 
 const signUp: NextApiHandler = async (req, res) => {
-  const { body }: ISignUpRequest = req;
+  const { body }: SignUpRequest = req;
   const { email, password, npsso, language, username, type } = body;
   const supabase = createServerSupabaseClient({ req, res });
 

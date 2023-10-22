@@ -3,7 +3,7 @@ import {
   trophyColors,
   trophyColorsAccented,
 } from "@/constants/trophy";
-import { type ITrophy } from "@/models/TrophyModel";
+import { type Trophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
 import {
   Badge,
@@ -21,12 +21,12 @@ import TrophyBadge from "./TrophyBadge";
 
 const IMAGE_SIZE = 70;
 
-interface ITrophyCardProps {
-  trophy: ITrophy;
+interface TrophyCardProps {
+  trophy: Trophy;
 }
 
 const useStyles = createStyles(
-  ({ colors, spacing, radius }, { type }: ITrophy) => ({
+  ({ colors, spacing, radius }, { type }: Trophy) => ({
     container: {
       minHeight: 100,
       gap: spacing.xs,
@@ -85,7 +85,7 @@ const useStyles = createStyles(
   })
 );
 
-const TrophyCard: FC<ITrophyCardProps> = (props) => {
+const TrophyCard: FC<TrophyCardProps> = (props) => {
   const { trophy } = props;
   const { game, progress, filters, noteModal } = useGame();
   const { classes, cx } = useStyles(trophy);

@@ -1,4 +1,4 @@
-import { type IProgressItem } from "@/models/ProgressModel";
+import { type ProgressItem } from "@/models/ProgressModel";
 import {
   useCongratulation,
   type CongratulationValue,
@@ -12,7 +12,7 @@ const rewardConfig = {
   elementCount: 100,
 };
 
-const useCompletion = (progress: IProgressItem[]): boolean => {
+const useCompletion = (progress: ProgressItem[]): boolean => {
   const { reward } = useReward("reward", "confetti", rewardConfig);
   const { show } = useCongratulation();
 

@@ -5,4 +5,4 @@ interface DefaultModalProps {
   setOpened: Dispatch<SetStateAction<boolean>>;
 }
 
-export type IModalProps<T = object> = T & DefaultModalProps;
+export type ModalProps<T = object> = T & DefaultModalProps;

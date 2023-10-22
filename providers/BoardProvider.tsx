@@ -1,6 +1,6 @@
 import AddGameModal from "@/modals/AddGameModal";
-import { type IBoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
-import { type IGame, type IAddGameState } from "@/models/GameModel";
+import { type BoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
+import { type Game, type AddGameState } from "@/models/GameModel";
 import {
   type PropsWithChildren,
   type FC,
@@ -11,29 +11,29 @@ import {
   type SetStateAction,
 } from "react";
 
-interface IBoardProviderProps extends PropsWithChildren {
-  initializedBoard: IBoardColumns;
+interface BoardProviderProps extends PropsWithChildren {
+  initializedBoard: BoardColumns;
 }
 
-interface IAddGameModal extends IAddGameState {
+interface AddGameModalHandler extends AddGameState {
   open: (status: BOARD_COLUMNS) => void;
   close: () => void;
 }
 
-interface IBoardContext {
-  columns: IBoardColumns;
-  setColumns: Dispatch<SetStateAction<IBoardColumns>>;
-  active: IGame | null;
-  setActive: Dispatch<SetStateAction<IGame | null>>;
-  addGameModal: IAddGameModal;
+interface BoardContext {
+  columns: BoardColumns;
+  setColumns: Dispatch<SetStateAction<BoardColumns>>;
+  active: Game | null;
+  setActive: Dispatch<SetStateAction<Game | null>>;
+  addGameModal: AddGameModalHandler;
 }
 
-const initialState: IAddGameState = {
+const initialState: AddGameState = {
   status: null,
   opened: false,
 };
 
-const initialContextValue: IBoardContext = {
+const initialContextValue: BoardContext = {
   columns: {},
   setColumns: () => null,
   active: null,
@@ -45,24 +45,24 @@ const initialContextValue: IBoardContext = {
   },
 };
 
-const Context = createContext<IBoardContext>(initialContextValue);
+const Context = createContext<BoardContext>(initialContextValue);
 
-const BoardProvider: FC<IBoardProviderProps> = (props) => {
+const BoardProvider: FC<BoardProviderProps> = (props) => {
   const { children, initializedBoard } = props;
 
-  const [columns, setColumns] = useState<IBoardColumns>(initializedBoard);
-  const [addGameModal, setAddGameModal] = useState<IAddGameState>(initialState);
-  const [active, setActive] = useState<IGame | null>(null);
+  const [columns, setColumns] = useState<BoardColumns>(initializedBoard);
+  const [addGameModal, setAddGameModal] = useState<AddGameState>(initialState);
+  const [active, setActive] = useState<Game | null>(null);
 
-  const handleOpen: IAddGameModal["open"] = (status) => {
+  const handleOpen: AddGameModalHandler["open"] = (status) => {
     setAddGameModal((prev) => ({ ...prev, status, opened: true }));
   };
 
-  const handleClose: IAddGameModal["close"] = () => {
+  const handleClose: AddGameModalHandler["close"] = () => {
     setAddGameModal(initialState);
   };
 
-  const exposed: IBoardContext = {
+  const exposed: BoardContext = {
     columns,
     setColumns,
     active,
@@ -87,6 +87,6 @@ const BoardProvider: FC<IBoardProviderProps> = (props) => {
   );
 };
 
-export const useBoard = (): IBoardContext => useContext(Context);
+export const useBoard = (): BoardContext => useContext(Context);
 
 export default BoardProvider;

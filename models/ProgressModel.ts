@@ -1,17 +1,17 @@
-export interface IProgressItem {
+export interface ProgressItem {
   id: number;
   earned: boolean;
   group: string;
   dlc: boolean;
 }
 
-export interface IProgressPayload {
-  payload: IProgressItem[];
+export interface ProgressPayload {
+  payload: ProgressItem[];
 }
 
 export type ProgressType = "platinum" | "complete";
 
-export interface IProgressStats {
+export interface ProgressStats {
   base: number;
   baseCompleted: number;
   baseProgress: number;

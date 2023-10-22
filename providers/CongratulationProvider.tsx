@@ -11,21 +11,21 @@ import {
 
 export type CongratulationValue = "platinum" | "complete";
 
-interface ICongratulationState {
+interface CongratulationState {
   value: CongratulationValue | null;
   isVisible: boolean;
 }
 
-interface ICongratulationContext extends ICongratulationState {
+interface CongratulationContext extends CongratulationState {
   show: (value: CongratulationValue) => void;
 }
 
-const initialState: ICongratulationState = {
+const initialState: CongratulationState = {
   value: "platinum",
   isVisible: false,
 };
 
-const initialContextValue: ICongratulationContext = {
+const initialContextValue: CongratulationContext = {
   ...initialState,
   show: () => null,
 };
@@ -49,7 +49,7 @@ const CongratulationProvider: FC<PropsWithChildren> = (props) => {
     setState(initialState);
   };
 
-  const exposed: ICongratulationContext = {
+  const exposed: CongratulationContext = {
     ...state,
     show,
   };
@@ -70,7 +70,7 @@ const CongratulationProvider: FC<PropsWithChildren> = (props) => {
   );
 };
 
-export const useCongratulation = (): ICongratulationContext =>
+export const useCongratulation = (): CongratulationContext =>
   useContext(Context);
 
 export default CongratulationProvider;

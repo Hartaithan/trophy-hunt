@@ -1,9 +1,9 @@
 import {
   type GroupedTrophies,
-  type IFormattedResponse,
-  type IFormattedTrophies,
-  type IGroup,
-  type ITrophy,
+  type FormattedResponse,
+  type FormattedTrophies,
+  type Group,
+  type Trophy,
   type MergedGroups,
   type MergedTrophies,
 } from "@/models/TrophyModel";
@@ -63,9 +63,9 @@ export const mergeTrophies = (
 
 export const formatTrophies = (
   trophies: TitleTrophiesResponse
-): IFormattedTrophies => {
+): FormattedTrophies => {
   const array = [...trophies.trophies];
-  const formatted: ITrophy[] = [];
+  const formatted: Trophy[] = [];
   const grouped: GroupedTrophies = {};
   for (let i = 0; i < array.length; i++) {
     const el = array[i];
@@ -90,13 +90,13 @@ export const formatTrophies = (
 
 export const formatEarnedTrophies = (
   trophies: MergedTrophies
-): IFormattedTrophies => {
+): FormattedTrophies => {
   const array = [...trophies.trophies];
-  const formatted: ITrophy[] = [];
+  const formatted: Trophy[] = [];
   const grouped: GroupedTrophies = {};
   for (let i = 0; i < array.length; i++) {
     const el = array[i];
-    const trophy: ITrophy = {
+    const trophy: Trophy = {
       id: el.trophyId,
       hidden: el.trophyHidden,
       type: el.trophyType,
@@ -127,12 +127,12 @@ export const formatGroups = (
   groups: MergedGroups,
   trophies: GroupedTrophies,
   earned: boolean = false
-): IGroup[] => {
+): Group[] => {
   const array = [...groups.trophyGroups];
-  const formatted: IGroup[] = [];
+  const formatted: Group[] = [];
   for (let i = 0; i < array.length; i++) {
     const el = array[i];
-    let group: IGroup = {
+    let group: Group = {
       id: el.trophyGroupId,
       name: el.trophyGroupName,
       detail: el.trophyGroupDetail,
@@ -153,7 +153,7 @@ export const formatResponse = (
   groups: TitleTrophyGroupsResponse,
   trophies: TitleTrophiesResponse,
   withTrophies: boolean = false
-): IFormattedResponse => {
+): FormattedResponse => {
   const {
     trophyTitleName,
     trophyTitleDetail,
@@ -163,7 +163,7 @@ export const formatResponse = (
   } = groups;
   const { trophies: formattedTrophies, grouped } = formatTrophies(trophies);
   const formattedGroups = formatGroups(groups, grouped);
-  let response: IFormattedResponse = {
+  let response: FormattedResponse = {
     name: trophyTitleName,
     detail: trophyTitleDetail,
     icon_url: trophyTitleIconUrl,
@@ -182,7 +182,7 @@ export const formatEarnedResponse = (
   groups: MergedGroups,
   trophies: MergedTrophies,
   withTrophies: boolean = false
-): IFormattedResponse => {
+): FormattedResponse => {
   const {
     trophyTitleName,
     trophyTitleDetail,
@@ -194,7 +194,7 @@ export const formatEarnedResponse = (
   const { trophies: formattedTrophies, grouped } =
     formatEarnedTrophies(trophies);
   const formattedGroups = formatGroups(groups, grouped, true);
-  let response: IFormattedResponse = {
+  let response: FormattedResponse = {
     name: trophyTitleName,
     detail: trophyTitleDetail,
     icon_url: trophyTitleIconUrl,

@@ -1,4 +1,4 @@
-import { type TrophyCountItem, type IGroup } from "@/models/TrophyModel";
+import { type TrophyCountItem, type Group } from "@/models/TrophyModel";
 import {
   Text,
   Flex,
@@ -12,8 +12,8 @@ import { useMemo, type FC, type ChangeEventHandler } from "react";
 import TrophyCounts from "./TrophyCounts";
 import { useGame } from "@/providers/GameProvider";
 
-interface ITrophyGroupProps {
-  group: IGroup;
+interface TrophyGroupProps {
+  group: Group;
 }
 
 interface Checked {
@@ -57,7 +57,7 @@ const useStyles = createStyles(({ spacing, radius, colors }) => ({
   },
 }));
 
-const TrophyGroup: FC<ITrophyGroupProps> = (props) => {
+const TrophyGroup: FC<TrophyGroupProps> = (props) => {
   const { group } = props;
   const { classes } = useStyles();
   const { progress, checkGroup } = useGame();

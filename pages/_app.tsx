@@ -3,9 +3,9 @@ import { useCallback, useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import { MantineProvider } from "@mantine/core";
 import {
-  type IExtendedInitialProps,
-  type IAppProps,
-  type IInitialProps,
+  type ExtendedInitialProps,
+  type AppProps,
+  type InitialProps,
 } from "@/models/AppModel";
 import MainLayout from "@/layouts/MainLayout";
 import theme from "@/styles/theme";
@@ -18,7 +18,7 @@ import {
   type NullableUser,
   type NullablePSNProfile,
   type NullableSession,
-  type ISessionResponse,
+  type SessionResponse,
   type NullableProfile,
 } from "@/models/AuthModel";
 import ProfileProvider from "@/providers/ProfileProvider";
@@ -32,8 +32,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 
 const getSession = async (
-  ctx: IInitialProps["ctx"]
-): Promise<ISessionResponse> => {
+  ctx: InitialProps["ctx"]
+): Promise<SessionResponse> => {
   const supabase = createServerSupabaseClient(ctx);
   const { data } = await supabase.auth.getSession();
   const user: NullableUser = data.session?.user ?? null;
@@ -51,7 +51,7 @@ const getSession = async (
   return { session: data.session, profile: profile as NullableProfile };
 };
 
-const getRefreshedCookies = (ctx: IInitialProps["ctx"]): string => {
+const getRefreshedCookies = (ctx: InitialProps["ctx"]): string => {
   let cookies: string = ctx.req.headers.cookie?.toString() ?? "";
 
   if (cookies.includes("psn-access-token")) {
@@ -67,7 +67,7 @@ const getRefreshedCookies = (ctx: IInitialProps["ctx"]): string => {
 };
 
 const getPSNProfile = async (
-  ctx: IInitialProps["ctx"]
+  ctx: InitialProps["ctx"]
 ): Promise<NullablePSNProfile> => {
   let profile: NullablePSNProfile = null;
   const cookies = getRefreshedCookies(ctx);
@@ -95,7 +95,7 @@ const getPSNProfile = async (
 
 const getInitialProps = async ({
   ctx,
-}: IInitialProps): Promise<IExtendedInitialProps> => {
+}: InitialProps): Promise<ExtendedInitialProps> => {
   const isServerSide = typeof window === "undefined";
   let initialSession: NullableSession = null;
   let initialProfile: NullableProfile = null;
@@ -122,7 +122,7 @@ const getInitialProps = async ({
   return { initialSession, initialProfile, initialPSNProfile, isInitialFailed };
 };
 
-const App = (props: IAppProps): JSX.Element => {
+const App = (props: AppProps): JSX.Element => {
   const {
     Component,
     pageProps,

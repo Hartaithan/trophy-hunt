@@ -1,7 +1,7 @@
-import { type IGame } from "@/models/GameModel";
-import { type IProgressStats } from "@/models/ProgressModel";
+import { type Game } from "@/models/GameModel";
+import { type ProgressStats } from "@/models/ProgressModel";
 
-export const emptyProgress: IProgressStats = {
+export const emptyProgress: ProgressStats = {
   base: 0,
   baseCompleted: 0,
   baseProgress: 0,
@@ -11,8 +11,8 @@ export const emptyProgress: IProgressStats = {
 };
 
 export const calculateProgress = (
-  progress: IGame["progress"]
-): IProgressStats => {
+  progress: Game["progress"]
+): ProgressStats => {
   if (progress === null) return emptyProgress;
   const array = [...progress];
   let base = 0;

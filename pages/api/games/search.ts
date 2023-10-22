@@ -1,8 +1,8 @@
 import {
-  type ISearchResponse,
-  type ISearchQueries,
-  type ISearchResult,
-  type ISearchItem,
+  type SearchResponse,
+  type SearchQueries,
+  type SearchResult,
+  type SearchItem,
 } from "@/models/SearchModel";
 import { type NextApiHandler } from "next";
 import { search as headers } from "@/helpers/headers";
@@ -12,7 +12,7 @@ const SEARCH_URL = process.env.NEXT_PUBLIC_SEARCH_URL;
 const allowedPlatforms: string[] = ["PS5", "PS4", "PS3", "Vita"];
 
 const searchByQuery: NextApiHandler = async (req, res) => {
-  const { query } = req.query as ISearchQueries;
+  const { query } = req.query as SearchQueries;
 
   if (SEARCH_URL === undefined) {
     console.error("SEARCH_URL not found", SEARCH_URL);
@@ -37,8 +37,8 @@ const searchByQuery: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: errorMessage });
   }
 
-  const games: ISearchItem[] = results?.games ?? [];
-  const formattedGames: ISearchResult[] = [];
+  const games: SearchItem[] = results?.games ?? [];
+  const formattedGames: SearchResult[] = [];
   for (let i = 0; i < games.length; i++) {
     const { id, title, platform_title, count_tlist } = games[i];
     if (allowedPlatforms.includes(platform_title) && count_tlist > 0) {
@@ -51,7 +51,7 @@ const searchByQuery: NextApiHandler = async (req, res) => {
     }
   }
 
-  const response: ISearchResponse = { query, results: formattedGames };
+  const response: SearchResponse = { query, results: formattedGames };
   return res.status(200).json(response);
 };
 

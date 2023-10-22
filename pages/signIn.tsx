@@ -1,5 +1,5 @@
 import API from "@/helpers/api";
-import { type IPage } from "@/models/AppModel";
+import { type Page } from "@/models/AppModel";
 import {
   Anchor,
   Box,
@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const SignInPage: IPage = () => {
+const SignInPage: Page = () => {
   const { reload } = useRouter();
 
   const form = useForm({

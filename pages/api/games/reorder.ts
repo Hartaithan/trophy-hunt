@@ -1,9 +1,9 @@
-import { type IReorderPayload } from "@/models/GameModel";
+import { type ReorderPayload } from "@/models/GameModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
 const reorderGames: NextApiHandler = async (req, res) => {
-  const { items } = req.body as IReorderPayload;
+  const { items } = req.body as ReorderPayload;
   const supabase = createServerSupabaseClient({ req, res });
 
   if (items == null || items.length === 0) {

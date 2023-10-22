@@ -1,4 +1,4 @@
-import { type IModalProps } from "@/models/ModalModel";
+import { type ModalProps } from "@/models/ModalModel";
 import { centeredDialog } from "@/styles/global";
 import {
   Button,
@@ -12,7 +12,7 @@ import { type TransformedValues, matches, useForm } from "@mantine/form";
 import { useRichTextEditorContext } from "@mantine/tiptap";
 import { type FC, memo } from "react";
 
-const AddImageDialog: FC<IModalProps> = (props) => {
+const AddImageDialog: FC<ModalProps> = (props) => {
   const { opened, setOpened } = props;
   const { editor } = useRichTextEditorContext();
 

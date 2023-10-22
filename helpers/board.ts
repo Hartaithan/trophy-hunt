@@ -1,14 +1,14 @@
 import { type MouseEvent } from "react";
-import { BOARD_COLUMNS, type IBoardColumns } from "@/models/BoardModel";
+import { BOARD_COLUMNS, type BoardColumns } from "@/models/BoardModel";
 import { randomNum } from "./number";
 import { arrayMove as dndKitArrayMove } from "@dnd-kit/sortable";
 import {
   type UniqueIdentifier,
   PointerSensor as LibPointerSensor,
 } from "@dnd-kit/core";
-import { type IGame } from "@/models/GameModel";
+import { type Game } from "@/models/GameModel";
 
-export const generateItems = (from: number, to: number): IGame[] => {
+export const generateItems = (from: number, to: number): Game[] => {
   const a = Array(to).fill(from);
   let b = from - 1;
   while (b < to) {
@@ -28,8 +28,8 @@ export const generateItems = (from: number, to: number): IGame[] => {
   return a;
 };
 
-export const initializeBoard = (items: IGame[]): IBoardColumns => {
-  const columns: IBoardColumns = {
+export const initializeBoard = (items: Game[]): BoardColumns => {
+  const columns: BoardColumns = {
     [BOARD_COLUMNS.Backlog]: [],
     [BOARD_COLUMNS.InProgress]: [],
     [BOARD_COLUMNS.Platinum]: [],
@@ -51,13 +51,13 @@ export const initializeBoard = (items: IGame[]): IBoardColumns => {
 };
 
 export const moveBetweenContainers = (
-  items: IBoardColumns,
+  items: BoardColumns,
   activeContainer: BOARD_COLUMNS,
   activeIndex: number,
   overContainer: BOARD_COLUMNS,
   overIndex: number,
   itemId: UniqueIdentifier
-): IBoardColumns => {
+): BoardColumns => {
   const item = items[activeContainer].find((item) => item.id === itemId);
   if (item === undefined) return items;
   const active = removeAtIndex(items[activeContainer], activeIndex);
@@ -68,23 +68,23 @@ export const moveBetweenContainers = (
   return { ...items, [activeContainer]: active, [overContainer]: over };
 };
 
-export const removeAtIndex = (array: IGame[], index: number): IGame[] => {
+export const removeAtIndex = (array: Game[], index: number): Game[] => {
   return [...array.slice(0, index), ...array.slice(index + 1)];
 };
 
 export const insertAtIndex = (
-  array: IGame[],
+  array: Game[],
   index: number,
-  item: IGame
-): IGame[] => {
+  item: Game
+): Game[] => {
   return [...array.slice(0, index), item, ...array.slice(index)];
 };
 
 export const arrayMove = (
-  array: IGame[],
+  array: Game[],
   oldIndex: number,
   newIndex: number
-): IGame[] => {
+): Game[] => {
   return dndKitArrayMove(array, oldIndex, newIndex);
 };
 

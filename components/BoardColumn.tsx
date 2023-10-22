@@ -14,15 +14,15 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import BoardCard from "./BoardCard";
-import { type IGame } from "@/models/GameModel";
+import { type Game } from "@/models/GameModel";
 import { IconArticleOff, IconPlaylistAdd } from "@tabler/icons-react";
 import { columnColors, columnsLabels } from "@/constants/board";
 import { useBoard } from "@/providers/BoardProvider";
 import { Virtuoso } from "react-virtuoso";
 
-interface IBoardColumnProps {
+interface BoardColumnProps {
   column: BOARD_COLUMNS;
-  items: IGame[];
+  items: Game[];
   interactive?: boolean;
 }
 
@@ -133,7 +133,7 @@ const useStyles = createStyles(
   }
 );
 
-const BoardColumn: FC<IBoardColumnProps> = (props) => {
+const BoardColumn: FC<BoardColumnProps> = (props) => {
   const { column, items, interactive = true } = props;
   const { classes } = useStyles({ column });
   const { setNodeRef } = useDroppable({ id: column, disabled: !interactive });

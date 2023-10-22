@@ -1,24 +1,24 @@
 type PayloadItem = [string, unknown];
 type PayloadObject = Record<string, unknown>;
 
-interface IValidationResult {
+interface ValidationResult {
   message: string;
   errors: string[];
 }
 
-interface IRequiredResult {
+interface RequiredResult {
   hasAllFields: boolean;
   errors: string[];
 }
 
-interface IEmptyResult {
+interface EmptyResult {
   results: string[];
 }
 
 export const checkRequiredFields = (
   items: PayloadItem[],
   fields: string[]
-): IRequiredResult => {
+): RequiredResult => {
   const results: string[] = [];
   let hasAllFields = true;
   for (let n = 0; n < fields.length; n++) {
@@ -34,7 +34,7 @@ export const checkRequiredFields = (
 const checkEmptyFields = (
   items: PayloadItem[],
   ignore: string[]
-): IEmptyResult => {
+): EmptyResult => {
   const results: string[] = [];
   for (let i = 0; i < items.length; i++) {
     const [key, value] = items[i];
@@ -55,7 +55,7 @@ export const validatePayload = (
   payload: PayloadObject,
   required: string[] | null = null,
   ignore: string[] = []
-): IValidationResult | null => {
+): ValidationResult | null => {
   const items = Object.entries(payload);
   if (required != null) {
     const { hasAllFields, errors } = checkRequiredFields(items, required);

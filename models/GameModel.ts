@@ -1,8 +1,8 @@
 import { type BOARD_COLUMNS } from "./BoardModel";
 import { type Platform } from "./PlatformModel";
-import { type IProgressItem } from "./ProgressModel";
+import { type ProgressItem } from "./ProgressModel";
 
-export interface IGame {
+export interface Game {
   id: number;
   created_at: string;
   updated_at: string;
@@ -10,34 +10,34 @@ export interface IGame {
   image_url: string;
   platform: Platform;
   status: BOARD_COLUMNS;
-  progress: IProgressItem[] | null;
+  progress: ProgressItem[] | null;
   user_id: string;
   username: string;
   code: string;
   position: number;
 }
 
-export type INewGamePayload = Omit<
-  IGame,
+export type NewGamePayload = Omit<
+  Game,
   "id" | "created_at" | "updated_at" | "progress" | "position"
 >;
 
-export interface IAddGamePayload {
+export interface AddGamePayload {
   game_id: string;
   status: BOARD_COLUMNS;
 }
 
-export interface IAddGameState {
+export interface AddGameState {
   status: BOARD_COLUMNS | null;
   opened: boolean;
 }
 
-export interface IReorderItem {
+export interface ReorderItem {
   id: number;
   position: number;
   status: BOARD_COLUMNS;
 }
 
-export interface IReorderPayload {
-  items: IReorderItem[];
+export interface ReorderPayload {
+  items: ReorderItem[];
 }

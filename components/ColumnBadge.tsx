@@ -3,11 +3,11 @@ import { Badge, createStyles } from "@mantine/core";
 import { columnColors, columnsLabels } from "@/constants/board";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
 
-interface IColumnBadgeProps {
+interface ColumnBadgeProps {
   status: BOARD_COLUMNS | null;
 }
 
-const useStyles = createStyles(({ colors }, { status }: IColumnBadgeProps) => {
+const useStyles = createStyles(({ colors }, { status }: ColumnBadgeProps) => {
   const { color, shade } = columnColors[status ?? "backlog"];
   return {
     status: {
@@ -17,7 +17,7 @@ const useStyles = createStyles(({ colors }, { status }: IColumnBadgeProps) => {
   };
 });
 
-const ColumnBadge: FC<IColumnBadgeProps> = (props) => {
+const ColumnBadge: FC<ColumnBadgeProps> = (props) => {
   const { status } = props;
   const { classes } = useStyles(props);
 

@@ -1,4 +1,4 @@
-import { type ICustomPosition } from "@/models/AppModel";
+import { type CustomPosition } from "@/models/AppModel";
 import { type CSSObject, type MantineTheme } from "@mantine/core";
 
 export const globalStyles = (theme: MantineTheme): CSSObject => ({
@@ -22,7 +22,7 @@ export const globalStyles = (theme: MantineTheme): CSSObject => ({
   },
 });
 
-export const centeredDialog: ICustomPosition = {
+export const centeredDialog: CustomPosition = {
   top: 20,
   left: "50%",
   transform: "translateX(-50%)",

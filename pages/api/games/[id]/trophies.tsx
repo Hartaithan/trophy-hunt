@@ -5,10 +5,10 @@ import {
 } from "@/helpers/psn";
 import {
   type TitleTrophiesOptions,
-  type ITitleGroups,
-  type ITitleTrophies,
-  type ITitleEarnedTrophies,
-  type ITitleEarnedGroups,
+  type TitleGroups,
+  type TitleTrophies,
+  type TitleEarnedTrophies,
+  type TitleEarnedGroups,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getCookie } from "cookies-next";
@@ -72,15 +72,15 @@ const getTrophiesByGame: NextApiHandler = async (req, res) => {
   }
 
   type Response = [
-    PromiseSettledResult<ITitleGroups>,
-    PromiseSettledResult<ITitleEarnedGroups>,
-    PromiseSettledResult<ITitleTrophies>,
-    PromiseSettledResult<ITitleEarnedTrophies>
+    PromiseSettledResult<TitleGroups>,
+    PromiseSettledResult<TitleEarnedGroups>,
+    PromiseSettledResult<TitleTrophies>,
+    PromiseSettledResult<TitleEarnedTrophies>
   ];
-  let titleGroups: ITitleGroups | null = null;
-  let titleEarnedGroups: ITitleEarnedGroups | null = null;
-  let titleTrophies: ITitleTrophies | null = null;
-  let titleEarnedTrophies: ITitleEarnedTrophies | null = null;
+  let titleGroups: TitleGroups | null = null;
+  let titleEarnedGroups: TitleEarnedGroups | null = null;
+  let titleTrophies: TitleTrophies | null = null;
+  let titleEarnedTrophies: TitleEarnedTrophies | null = null;
   const [resGroups, resGroupsEarned, resTrophies, resEarned]: Response =
     await Promise.allSettled([
       getTitleTrophyGroups(auth, code, options),

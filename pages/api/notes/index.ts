@@ -1,5 +1,5 @@
 import { validatePayload } from "@/helpers/payload";
-import { type INewNotePayload, type IAddNotePayload } from "@/models/NoteModel";
+import { type NewNotePayload, type AddNotePayload } from "@/models/NoteModel";
 import {
   type User,
   createServerSupabaseClient,
@@ -37,7 +37,7 @@ const getNoteByGame: NextApiHandler = async (req, res) => {
 };
 
 const addNote: NextApiHandler = async (req, res) => {
-  const { game_id, trophy_id, content = null } = req.body as IAddNotePayload;
+  const { game_id, trophy_id, content = null } = req.body as AddNotePayload;
   const supabase = createServerSupabaseClient({ req, res });
 
   const results = validatePayload(
@@ -117,7 +117,7 @@ const addNote: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Unable to get profile" });
   }
 
-  const payload: INewNotePayload = {
+  const payload: NewNotePayload = {
     game_id,
     trophy_id,
     content,

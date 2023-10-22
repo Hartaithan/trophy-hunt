@@ -1,6 +1,6 @@
 import {
-  type IProgressItem,
-  type IProgressPayload,
+  type ProgressItem,
+  type ProgressPayload,
 } from "@/models/ProgressModel";
 import {
   type SupabaseClient,
@@ -10,7 +10,7 @@ import { type NextApiResponse, type NextApiHandler } from "next";
 
 const updateProgress = async (
   id: string,
-  progress: IProgressItem[],
+  progress: ProgressItem[],
   supabase: SupabaseClient,
   res: NextApiResponse
 ): Promise<unknown> => {
@@ -37,7 +37,7 @@ const saveGameProgress: NextApiHandler = async (req, res) => {
     query: { id },
     body,
   } = req;
-  const { payload } = body as IProgressPayload;
+  const { payload } = body as ProgressPayload;
   const supabase = createServerSupabaseClient({ req, res });
 
   if (id === undefined || Array.isArray(id)) {
@@ -54,7 +54,7 @@ const saveGameProgress: NextApiHandler = async (req, res) => {
     .from("games")
     .select("progress")
     .eq("id", id)
-    .single<{ progress: IProgressItem[] | null }>();
+    .single<{ progress: ProgressItem[] | null }>();
 
   if (error !== null) {
     console.error("unable to get game progress", id, error);
@@ -65,7 +65,7 @@ const saveGameProgress: NextApiHandler = async (req, res) => {
     return await updateProgress(id, payload, supabase, res);
   }
 
-  const map = new Map<number, IProgressItem>();
+  const map = new Map<number, ProgressItem>();
   const combined = data.progress.concat(payload);
   for (let n = 0; n < combined.length; n++) {
     const el = combined[n];

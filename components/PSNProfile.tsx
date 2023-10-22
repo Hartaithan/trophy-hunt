@@ -4,7 +4,7 @@ import { type FC } from "react";
 import ImageWithFallback from "./Image";
 import { getName, getPresence } from "@/helpers/profile";
 
-interface IPSNProfileProps {
+interface PSNProfileProps {
   profile: NullablePSNProfile | undefined;
 }
 
@@ -20,7 +20,7 @@ const useStyles = createStyles(({ spacing, colors, radius }) => ({
   },
 }));
 
-const PSNProfile: FC<IPSNProfileProps> = (props) => {
+const PSNProfile: FC<PSNProfileProps> = (props) => {
   const { profile } = props;
   const { classes } = useStyles();
 

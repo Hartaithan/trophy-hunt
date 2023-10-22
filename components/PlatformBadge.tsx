@@ -3,7 +3,7 @@ import { type Platform } from "@/models/PlatformModel";
 import { Badge, createStyles } from "@mantine/core";
 import { memo, type FC } from "react";
 
-interface IPlatformBadgeProps {
+interface PlatformBadgeProps {
   platform: Platform | null;
 }
 
@@ -14,7 +14,7 @@ const useStyles = createStyles(({ colors }) => ({
   },
 }));
 
-const PlatformBadge: FC<IPlatformBadgeProps> = (props) => {
+const PlatformBadge: FC<PlatformBadgeProps> = (props) => {
   const { platform } = props;
   const { classes } = useStyles();
 

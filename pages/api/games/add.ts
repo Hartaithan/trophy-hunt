@@ -1,7 +1,7 @@
 import { validatePayload } from "@/helpers/payload";
-import { type INewGamePayload, type IAddGamePayload } from "@/models/GameModel";
+import { type NewGamePayload, type AddGamePayload } from "@/models/GameModel";
 import {
-  type ITitleGroups,
+  type TitleGroups,
   type TitleTrophiesOptions,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
@@ -12,13 +12,13 @@ import { search as headers } from "@/helpers/headers";
 
 const SEARCH_URL = process.env.NEXT_PUBLIC_SEARCH_URL;
 
-interface ISplittedId {
+interface SplittedId {
   id: string | null;
   platform: string | null;
 }
 
-const splitId = (game: string): ISplittedId => {
-  let platform: ISplittedId = { id: null, platform: null };
+const splitId = (game: string): SplittedId => {
+  let platform: SplittedId = { id: null, platform: null };
   const splitted = game.split("/");
   if (typeof game !== "string" || !game.includes("/")) {
     console.error("invalid game_id", game);
@@ -79,7 +79,7 @@ const getCode = (value: string | null): string | null => {
 };
 
 const addGame: NextApiHandler = async (req, res) => {
-  const { game_id, status } = req.body as IAddGamePayload;
+  const { game_id, status } = req.body as AddGamePayload;
   const options = { req, res };
   const access_token = getCookie("psn-access-token", options);
   const supabase = createServerSupabaseClient({ req, res });
@@ -142,7 +142,7 @@ const addGame: NextApiHandler = async (req, res) => {
     listOptions = { ...listOptions, npServiceName: "trophy" };
   }
 
-  let titleGroups: ITitleGroups | null = null;
+  let titleGroups: TitleGroups | null = null;
   try {
     titleGroups = await getTitleTrophyGroups(authorization, code, listOptions);
   } catch (error) {
@@ -150,7 +150,7 @@ const addGame: NextApiHandler = async (req, res) => {
     return res.status(400).json({ message: "Unable to get trophy groups" });
   }
 
-  const payload: INewGamePayload = {
+  const payload: NewGamePayload = {
     title: titleGroups.trophyTitleName,
     image_url: titleGroups.trophyTitleIconUrl,
     platform,

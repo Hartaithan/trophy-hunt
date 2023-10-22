@@ -8,9 +8,9 @@ import {
   type ReactNode,
 } from "react";
 import {
-  type IAddNotePayload,
-  type INote,
-  type INoteModalState,
+  type AddNotePayload,
+  type Note,
+  type NoteModalState,
 } from "@/models/NoteModel";
 import {
   Button,
@@ -55,10 +55,10 @@ import Youtube from "@tiptap/extension-youtube";
 import AddYoutubeLinkDialog from "@/components/AddYoutubeLinkDialog";
 import { modals } from "@mantine/modals";
 
-interface INoteModalProps {
-  state: INoteModalState;
-  setState: Dispatch<SetStateAction<INoteModalState>>;
-  initial: INoteModalState;
+interface NoteModalProps {
+  state: NoteModalState;
+  setState: Dispatch<SetStateAction<NoteModalState>>;
+  initial: NoteModalState;
 }
 
 type Status =
@@ -96,13 +96,13 @@ const statusDisabled: Record<Status, boolean> = {
   dirty: false,
 };
 
-const NoteModal: FC<INoteModalProps> = (props) => {
+const NoteModal: FC<NoteModalProps> = (props) => {
   const { state, setState } = props;
   const { opened, game_id, trophy_id } = state;
   const { game } = useGame();
   const { colors } = useMantineTheme();
 
-  const [note, setNote] = useState<INote | null>(null);
+  const [note, setNote] = useState<Note | null>(null);
   const [addImage, setAddImage] = useState<boolean>(false);
   const [addYoutube, setAddYoutube] = useState<boolean>(false);
 
@@ -156,7 +156,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
   }, [editor]);
 
   const setNoteContent = useCallback(
-    (response: INote | null): void => {
+    (response: Note | null): void => {
       if (response == null) return;
       setNote(response);
       if (editor != null) {
@@ -173,7 +173,7 @@ const NoteModal: FC<INoteModalProps> = (props) => {
     setStatus("loading");
     API.get(`/notes?game_id=${game_id}&trophy_id=${trophy_id}`)
       .then(({ data }) => {
-        const noteRes: INote | null = data.note ?? null;
+        const noteRes: Note | null = data.note ?? null;
         setNoteContent(noteRes);
       })
       .catch((error) => {
@@ -185,14 +185,14 @@ const NoteModal: FC<INoteModalProps> = (props) => {
   const createNewNote = (content: string): void => {
     if (game_id == null || trophy_id == null) return;
     setStatus("creation");
-    const payload: IAddNotePayload = {
+    const payload: AddNotePayload = {
       game_id,
       trophy_id,
       content,
     };
     API.post(`/notes`, JSON.stringify(payload))
       .then(({ data }) => {
-        const noteRes: INote | null = data.note ?? null;
+        const noteRes: Note | null = data.note ?? null;
         setNoteContent(noteRes);
         setStatus("saved");
       })
@@ -211,12 +211,12 @@ const NoteModal: FC<INoteModalProps> = (props) => {
   const updateNote = (content: string): void => {
     if (note == null) return;
     setStatus("saving");
-    const payload: Partial<INote> = {
+    const payload: Partial<Note> = {
       content,
     };
     API.put(`/notes/${note.id}`, JSON.stringify(payload))
       .then(({ data }) => {
-        const noteRes: INote | null = data.note ?? null;
+        const noteRes: Note | null = data.note ?? null;
         setNoteContent(noteRes);
         setStatus("saved");
       })

@@ -1,6 +1,6 @@
 import { useState, useEffect, type ReactNode, useCallback } from "react";
-import { type IPage } from "@/models/AppModel";
-import { type IUser, type ISignUpBody } from "@/models/AuthModel";
+import { type Page } from "@/models/AppModel";
+import { type User, type SignUpBody } from "@/models/AuthModel";
 import {
   Button,
   createStyles,
@@ -45,15 +45,15 @@ const useStyles = createStyles(({ colors, fontSizes }, isUnique: boolean) => ({
   },
 }));
 
-const SignUpPage: IPage = () => {
+const SignUpPage: Page = () => {
   const supabase = useSupabaseClient();
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<Status>("idle");
   const isChecking = status === "checking";
   const isUnique = status === "unique";
   const { classes } = useStyles(isUnique);
 
-  const form = useForm<ISignUpBody>({
+  const form = useForm<SignUpBody>({
     initialValues: {
       email: "",
       username: "",

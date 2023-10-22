@@ -1,5 +1,5 @@
 import { locales } from "@/constants/locales";
-import { type ILocale } from "@/models/LocaleModel";
+import { type Locale } from "@/models/LocaleModel";
 import {
   Avatar,
   Group,
@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { forwardRef, type FC } from "react";
 
-interface ILanguageSelectProps extends Omit<SelectProps, "data"> {
+interface LanguageSelectProps extends Omit<SelectProps, "data"> {
   data?: ReadonlyArray<string | SelectItem>;
 }
 
@@ -35,8 +35,8 @@ const SelectStyles: SelectProps["styles"] = () => ({
   },
 });
 
-const CustomSelectItem = forwardRef<HTMLDivElement, ILocale>(
-  ({ id: _, label, icon_url, ...rest }: ILocale, ref) => (
+const CustomSelectItem = forwardRef<HTMLDivElement, Locale>(
+  ({ id: _, label, icon_url, ...rest }: Locale, ref) => (
     <div ref={ref} {...rest}>
       <Group noWrap>
         <Avatar size={24} src={icon_url} />
@@ -46,7 +46,7 @@ const CustomSelectItem = forwardRef<HTMLDivElement, ILocale>(
   )
 );
 
-const LanguageSelect: FC<ILanguageSelectProps> = (props) => {
+const LanguageSelect: FC<LanguageSelectProps> = (props) => {
   const {
     value,
     data = locales,

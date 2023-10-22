@@ -1,10 +1,10 @@
 import PSNProfile from "@/components/PSNProfile";
-import { type IPage } from "@/models/AppModel";
+import { type Page } from "@/models/AppModel";
 import { useProfiles } from "@/providers/ProfileProvider";
 import { Button, Flex, Title } from "@mantine/core";
 import Link from "next/link";
 
-const ProfilePage: IPage = () => {
+const ProfilePage: Page = () => {
   const { psn } = useProfiles();
   return (
     <Flex direction="column" py="xl">

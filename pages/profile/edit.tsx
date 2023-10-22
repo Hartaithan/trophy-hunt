@@ -1,8 +1,8 @@
 import LanguageSelect from "@/components/LanguageSelect";
 import { profileTypeOptions } from "@/constants/options";
 import API from "@/helpers/api";
-import { type IPage } from "@/models/AppModel";
-import { type ProfileEditBody, type IProfile } from "@/models/AuthModel";
+import { type Page } from "@/models/AppModel";
+import { type ProfileEditBody, type Profile } from "@/models/AuthModel";
 import { Box, Button, Flex, Grid, Input, Select, Title } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
@@ -10,13 +10,13 @@ import { type GetServerSideProps } from "next";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-interface IEditProfilePageProps {
-  profile: IProfile | null;
+interface EditProfilePageProps {
+  profile: Profile | null;
   message?: string;
 }
 
 export const getServerSideProps: GetServerSideProps<
-  IEditProfilePageProps
+  EditProfilePageProps
 > = async (ctx) => {
   if (API_URL === undefined) {
     console.error("env variables not found");
@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 };
 
-const EditProfilePage: IPage<IEditProfilePageProps> = (props) => {
+const EditProfilePage: Page<EditProfilePageProps> = (props) => {
   const { profile } = props;
 
   const form = useForm<ProfileEditBody>({

@@ -1,5 +1,5 @@
 import { validatePayload } from "@/helpers/payload";
-import { type ISignUpBody } from "@/models/AuthModel";
+import { type SignUpBody } from "@/models/AuthModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { setCookie } from "cookies-next";
 import { type NextApiRequest, type NextApiHandler } from "next";
@@ -9,12 +9,12 @@ import {
   exchangeNpssoForCode,
 } from "psn-api";
 
-interface ISignInRequest extends NextApiRequest {
-  body: ISignUpBody;
+interface SignInRequest extends NextApiRequest {
+  body: SignUpBody;
 }
 
 const signIn: NextApiHandler = async (req, res) => {
-  const { body }: ISignInRequest = req;
+  const { body }: SignInRequest = req;
   const { email, password, npsso } = body;
   const supabase = createServerSupabaseClient({ req, res });
 

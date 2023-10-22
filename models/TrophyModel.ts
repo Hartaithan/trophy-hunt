@@ -14,19 +14,19 @@ export type TitleTrophiesOptions = Pick<
   "headerOverrides" | "limit" | "npServiceName" | "offset"
 >;
 
-export interface IError {
+export interface Error {
   error: Error;
 }
 
-export type ITitleTrophies = TitleTrophiesResponse | IError;
+export type TitleTrophies = TitleTrophiesResponse | Error;
 
-export type ITitleGroups = TitleTrophyGroupsResponse | IError;
+export type TitleGroups = TitleTrophyGroupsResponse | Error;
 
-export type ITitleEarnedGroups =
+export type TitleEarnedGroups =
   | UserTrophyGroupEarningsForTitleResponse
-  | IError;
+  | Error;
 
-export type ITitleEarnedTrophies = UserTrophiesEarnedForTitleResponse | IError;
+export type TitleEarnedTrophies = UserTrophiesEarnedForTitleResponse | Error;
 
 export type TrophyRare = 0 | 1 | 2 | 3;
 
@@ -45,7 +45,7 @@ export type TrophyEarnedFilter = "all" | "earned" | "unearned";
 
 export type TrophyGroupId = "default" | string;
 
-export interface ITrophy {
+export interface Trophy {
   id: number;
   hidden: boolean;
   type: TrophyType;
@@ -63,7 +63,7 @@ export interface ITrophy {
   progress_updated?: string;
 }
 
-export interface ITrophyCount {
+export interface TrophyCount {
   bronze: number;
   silver: number;
   gold: number;
@@ -72,34 +72,34 @@ export interface ITrophyCount {
 
 export type TrophyCountItem = [string, number];
 
-export interface IGroup {
+export interface Group {
   id: string;
   name: string;
   detail?: string;
   icon_url: string;
   count: number;
-  counts: ITrophyCount;
-  earned_counts?: ITrophyCount;
-  trophies: ITrophy[];
+  counts: TrophyCount;
+  earned_counts?: TrophyCount;
+  trophies: Trophy[];
 }
 
-export type GroupedTrophies = Record<TrophyGroupId, ITrophy[]>;
+export type GroupedTrophies = Record<TrophyGroupId, Trophy[]>;
 
-export interface IFormattedTrophies {
+export interface FormattedTrophies {
   grouped: GroupedTrophies;
-  trophies: ITrophy[];
+  trophies: Trophy[];
 }
 
-export interface IFormattedResponse {
+export interface FormattedResponse {
   name: string;
   detail?: string;
   icon_url: string;
   platform: string;
   count: number;
-  counts: ITrophyCount;
-  earned_counts?: ITrophyCount;
-  groups: IGroup[];
-  trophies?: ITrophy[];
+  counts: TrophyCount;
+  earned_counts?: TrophyCount;
+  groups: Group[];
+  trophies?: Trophy[];
 }
 
 export type EarnedGroupsDetails = Omit<
@@ -132,7 +132,7 @@ export interface EarnedTrophies extends Partial<EarnedTrophiesDetails> {
 
 export type MergedTrophies = TitleTrophiesResponse & EarnedTrophies;
 
-export interface ITrophyFilters {
+export interface TrophyFilters {
   type: TrophyTypeFilter;
   earned: TrophyEarnedFilter;
 }

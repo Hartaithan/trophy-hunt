@@ -1,4 +1,4 @@
-import { type IProfile } from "@/models/AuthModel";
+import { type Profile } from "@/models/AuthModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type NextApiHandler } from "next";
 
@@ -45,7 +45,7 @@ const getGamesByUsername: NextApiHandler = async (req, res) => {
     .from("profiles")
     .select("id, type")
     .eq("username", username)
-    .single<IProfile>();
+    .single<Profile>();
   if (profileError !== null) {
     console.error(
       "there is no user with this username.",

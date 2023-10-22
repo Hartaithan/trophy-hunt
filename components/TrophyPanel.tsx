@@ -17,17 +17,17 @@ import {
   IconSearch,
 } from "@tabler/icons-react";
 
-interface IOptions<T> extends Omit<SegmentedControlItem, "value"> {
+interface Options<T> extends Omit<SegmentedControlItem, "value"> {
   value: T;
 }
 
-const earnedOptions: Array<IOptions<TrophyEarnedFilter>> = [
+const earnedOptions: Array<Options<TrophyEarnedFilter>> = [
   { label: "All", value: "all" },
   { label: "Earned", value: "earned" },
   { label: "Unearned", value: "unearned" },
 ];
 
-const typesOptions: Array<IOptions<TrophyTypeFilter>> = [
+const typesOptions: Array<Options<TrophyTypeFilter>> = [
   { label: "All", value: "all" },
   { label: "Platinum", value: "platinum" },
   { label: "Gold", value: "gold" },

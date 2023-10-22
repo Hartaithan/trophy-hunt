@@ -1,7 +1,7 @@
 import { Flex, createStyles } from "@mantine/core";
 import { useRef, type FC } from "react";
 import BoardColumn from "./BoardColumn";
-import { type IBoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
+import { type BoardColumns, type BOARD_COLUMNS } from "@/models/BoardModel";
 import {
   DndContext,
   type DragEndEvent,
@@ -20,13 +20,13 @@ import {
   moveBetweenContainers,
 } from "@/helpers/board";
 import { useBoard } from "@/providers/BoardProvider";
-import { type IReorderItem, type IReorderPayload } from "@/models/GameModel";
+import { type ReorderItem, type ReorderPayload } from "@/models/GameModel";
 import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
 import { IconAlertOctagon, IconCheck } from "@tabler/icons-react";
 import BoardCard from "./BoardCard";
 
-interface IMove {
+interface Move {
   start: string | null;
   end: string | null;
 }
@@ -48,9 +48,9 @@ const useStyles = createStyles(() => ({
 const BoardContainer: FC = () => {
   const { classes } = useStyles();
   const { columns, setColumns, active, setActive } = useBoard();
-  const move = useRef<IMove>({ start: null, end: null });
-  const columnsRef = useRef<IBoardColumns>(columns);
-  const previousRef = useRef<IBoardColumns>(columns);
+  const move = useRef<Move>({ start: null, end: null });
+  const columnsRef = useRef<BoardColumns>(columns);
+  const previousRef = useRef<BoardColumns>(columns);
   const lastActiveContainer = useRef<BOARD_COLUMNS | null>(null);
   const lastActiveIndex = useRef<number>(0);
   const lastOverContainer = useRef<BOARD_COLUMNS | null>(null);
@@ -61,11 +61,11 @@ const BoardContainer: FC = () => {
   );
 
   const handleMoveEnd = (): void => {
-    let payload: IReorderPayload | null = null;
+    let payload: ReorderPayload | null = null;
     const { start, end } = move.current;
     if (start === null || end === null) return;
     if (start === end) {
-      const items: IReorderItem[] = columnsRef.current[start].map(
+      const items: ReorderItem[] = columnsRef.current[start].map(
         (i, index) => ({
           id: i.id,
           position: index,
@@ -74,14 +74,14 @@ const BoardContainer: FC = () => {
       );
       payload = { items };
     } else {
-      const startItems: IReorderItem[] = columnsRef.current[start].map(
+      const startItems: ReorderItem[] = columnsRef.current[start].map(
         (i, index) => ({
           id: i.id,
           position: index,
           status: i.status,
         })
       );
-      const endItems: IReorderItem[] = columnsRef.current[end].map(
+      const endItems: ReorderItem[] = columnsRef.current[end].map(
         (i, index) => ({
           id: i.id,
           position: index,
@@ -201,7 +201,7 @@ const BoardContainer: FC = () => {
 
     if (active.id !== over.id) {
       setColumns((items) => {
-        let newItems: IBoardColumns = { ...items };
+        let newItems: BoardColumns = { ...items };
         if (activeContainer === overContainer) {
           const movedItems = arrayMove(
             items[overContainer],

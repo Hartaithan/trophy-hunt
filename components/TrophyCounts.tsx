@@ -13,14 +13,14 @@ import TrophyIcon from "./TrophyIcon";
 import { trophyColors } from "@/constants/trophy";
 import { IconListDetails } from "@tabler/icons-react";
 
-interface ITrophyCountsProps {
+interface TrophyCountsProps {
   counts: TrophyCountItem[];
   count?: number | null;
   size?: "normal" | "small";
   mt?: SystemProp<SpacingValue>;
 }
 
-const TrophyCounts: FC<ITrophyCountsProps> = (props) => {
+const TrophyCounts: FC<TrophyCountsProps> = (props) => {
   const { counts, count, size = "normal", mt } = props;
   const isSmall = size === "small";
   const { colors } = useMantineTheme();

@@ -1,18 +1,18 @@
 import BoardContainer from "@/components/BoardContainer";
 import { initializeBoard } from "@/helpers/board";
-import { type IPage } from "@/models/AppModel";
-import { type IGame } from "@/models/GameModel";
+import { type Page } from "@/models/AppModel";
+import { type Game } from "@/models/GameModel";
 import BoardProvider from "@/providers/BoardProvider";
 import { type GetServerSideProps } from "next";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-interface IBoardPageProps {
-  items: IGame[];
+interface BoardPageProps {
+  items: Game[];
   message?: string;
 }
 
-export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
+export const getServerSideProps: GetServerSideProps<BoardPageProps> = async (
   ctx
 ) => {
   if (API_URL === undefined) {
@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
   }
 };
 
-const MyBoardPage: IPage<IBoardPageProps> = (props) => {
+const MyBoardPage: Page<BoardPageProps> = (props) => {
   const { items } = props;
   const initializedBoard = initializeBoard(items);
 

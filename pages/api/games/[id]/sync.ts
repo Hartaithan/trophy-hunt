@@ -1,8 +1,8 @@
 import { mergeTrophies } from "@/helpers/psn";
-import { type IProgressItem } from "@/models/ProgressModel";
+import { type ProgressItem } from "@/models/ProgressModel";
 import {
-  type ITitleTrophies,
-  type ITitleEarnedTrophies,
+  type TitleTrophies,
+  type TitleEarnedTrophies,
   type TitleTrophiesOptions,
 } from "@/models/TrophyModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
@@ -49,12 +49,12 @@ const syncGameProgress: NextApiHandler = async (req, res) => {
   }
 
   type Response = [
-    PromiseSettledResult<ITitleTrophies>,
-    PromiseSettledResult<ITitleEarnedTrophies>
+    PromiseSettledResult<TitleTrophies>,
+    PromiseSettledResult<TitleEarnedTrophies>
   ];
 
-  let titleTrophies: ITitleTrophies | null = null;
-  let titleEarnedTrophies: ITitleEarnedTrophies | null = null;
+  let titleTrophies: TitleTrophies | null = null;
+  let titleEarnedTrophies: TitleEarnedTrophies | null = null;
 
   const [resTrophies, resEarned]: Response = await Promise.allSettled([
     getTitleTrophies(auth, code, "all", options),
@@ -85,7 +85,7 @@ const syncGameProgress: NextApiHandler = async (req, res) => {
   const mergedTrophies = mergeTrophies(titleTrophies, titleEarnedTrophies);
 
   const trophies = [...mergedTrophies.trophies] ?? [];
-  const progress: IProgressItem[] = trophies.map((i) => ({
+  const progress: ProgressItem[] = trophies.map((i) => ({
     id: i.trophyId,
     earned: i.earned ?? false,
     group: i.trophyGroupId ?? "default",

@@ -14,24 +14,24 @@ import {
   type SetStateAction,
 } from "react";
 
-interface IProfileProvider extends PropsWithChildren {
+interface ProfileProviderProps extends PropsWithChildren {
   initialProfile: NullableProfile;
   initialPSNProfile: NullablePSNProfile;
 }
 
-interface IProfilesState {
+interface ProfilesState {
   psn: NullablePSNProfile;
   profile: NullableProfile;
 }
 
-interface IProfileContext extends IProfilesState {
+interface ProfileContext extends ProfilesState {
   isAuth: boolean;
   setProfile: Dispatch<SetStateAction<NullableProfile>>;
   updateProfile: () => void;
   updatePSNProfile: () => void;
 }
 
-const initialContextValue: IProfileContext = {
+const initialContextValue: ProfileContext = {
   psn: null,
   profile: null,
   isAuth: false,
@@ -42,7 +42,7 @@ const initialContextValue: IProfileContext = {
 
 const Context = createContext(initialContextValue);
 
-const ProfileProvider: FC<IProfileProvider> = (props) => {
+const ProfileProvider: FC<ProfileProviderProps> = (props) => {
   const { children, initialProfile = null, initialPSNProfile = null } = props;
   const [profile, setProfile] = useState<NullableProfile>(initialProfile);
   const [psn, setPSN] = useState<NullablePSNProfile>(initialPSNProfile);
@@ -68,7 +68,7 @@ const ProfileProvider: FC<IProfileProvider> = (props) => {
       });
   };
 
-  const exposed: IProfileContext = {
+  const exposed: ProfileContext = {
     psn,
     profile,
     isAuth: psn !== null && user !== null,
@@ -80,6 +80,6 @@ const ProfileProvider: FC<IProfileProvider> = (props) => {
   return <Context.Provider value={exposed}>{children}</Context.Provider>;
 };
 
-export const useProfiles = (): IProfileContext => useContext(Context);
+export const useProfiles = (): ProfileContext => useContext(Context);
 
 export default ProfileProvider;

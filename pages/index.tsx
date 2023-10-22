@@ -1,9 +1,9 @@
-import { type IPage } from "@/models/AppModel";
+import { type Page } from "@/models/AppModel";
 import { useProfiles } from "@/providers/ProfileProvider";
 import { Flex, Title, Text, Button, Group } from "@mantine/core";
 import { useSession } from "@supabase/auth-helpers-react";
 
-const Home: IPage = () => {
+const Home: Page = () => {
   const session = useSession();
   const { profile, psn, updatePSNProfile } = useProfiles();
 

@@ -1,16 +1,16 @@
-import { type IGame } from "@/models/GameModel";
+import { type Game } from "@/models/GameModel";
 import { Menu, UnstyledButton, createStyles, Text } from "@mantine/core";
 import { memo, type FC, type MouseEventHandler } from "react";
 import { IconDots, IconArrowUpRight, IconTrash } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
 import { useBoard } from "@/providers/BoardProvider";
 import API from "@/helpers/api";
-import { type IBoardColumns } from "@/models/BoardModel";
+import { type BoardColumns } from "@/models/BoardModel";
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
 
-interface IBoardCardMenuProps {
-  item: IGame;
+interface BoardCardMenuProps {
+  item: Game;
 }
 
 const useStyles = createStyles(() => ({
@@ -23,7 +23,7 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-const BoardCardMenu: FC<IBoardCardMenuProps> = (props) => {
+const BoardCardMenu: FC<BoardCardMenuProps> = (props) => {
   const { id, status } = props.item;
   const { classes } = useStyles();
   const { columns, setColumns } = useBoard();
@@ -32,7 +32,7 @@ const BoardCardMenu: FC<IBoardCardMenuProps> = (props) => {
     e.stopPropagation();
 
   const handleDelete = (): void => {
-    let previousState: IBoardColumns = { ...columns };
+    let previousState: BoardColumns = { ...columns };
     setColumns((prev) => {
       previousState = prev;
       const column = [...prev[status]];

@@ -1,4 +1,4 @@
-export interface IHeaderLink {
+export interface HeaderLink {
   id: number;
   label: string;
   href: string;

@@ -7,7 +7,7 @@ import { Box, Flex, Text, createStyles } from "@mantine/core";
 import Image from "./Image";
 import { memo, type FC, type MouseEventHandler } from "react";
 import { CSS } from "@dnd-kit/utilities";
-import { type IGame } from "@/models/GameModel";
+import { type Game } from "@/models/GameModel";
 import ColumnBadge from "./ColumnBadge";
 import PlatformBadge from "./PlatformBadge";
 import ProgressStats from "./ProgressStats";
@@ -15,8 +15,8 @@ import { useRouter } from "next/router";
 import BoardCardMenu from "./BoardCardMenu";
 import BoardCardOverlay from "./BoardCardOverlay";
 
-interface IBoardCardProps {
-  item: IGame;
+interface BoardCardProps {
+  item: Game;
   interactive?: boolean;
   divider?: boolean;
   overlay?: boolean;
@@ -31,7 +31,7 @@ const animateLayoutChanges: AnimateLayoutChanges = (args) => {
 const useStyles = createStyles(
   (
     { colors, radius, spacing },
-    { interactive = true, divider = false }: IBoardCardProps
+    { interactive = true, divider = false }: BoardCardProps
   ) => ({
     container: {
       width: "100%",
@@ -70,7 +70,7 @@ const useStyles = createStyles(
   })
 );
 
-const BoardCard: FC<IBoardCardProps> = (props) => {
+const BoardCard: FC<BoardCardProps> = (props) => {
   const { item, interactive = true, overlay = false } = props;
   const { id, title, image_url, status, platform, progress } = item;
 

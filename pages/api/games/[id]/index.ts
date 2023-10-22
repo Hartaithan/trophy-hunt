@@ -1,5 +1,5 @@
 import { validatePayload } from "@/helpers/payload";
-import { type IGame } from "@/models/GameModel";
+import { type Game } from "@/models/GameModel";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type User } from "@supabase/supabase-js";
 import { type NextApiHandler } from "next";
@@ -16,10 +16,10 @@ const getGameById: NextApiHandler = async (req, res) => {
   }
 
   let user: User | null = null;
-  let game: IGame | null = null;
+  let game: Game | null = null;
   const [userRes, gameRes] = await Promise.allSettled([
     await supabase.auth.getUser(),
-    await supabase.from("games").select("*").eq("id", id).single<IGame>(),
+    await supabase.from("games").select("*").eq("id", id).single<Game>(),
   ]);
 
   if (userRes.status === "rejected") {

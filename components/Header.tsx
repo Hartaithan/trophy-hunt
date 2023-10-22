@@ -1,5 +1,5 @@
 import API from "@/helpers/api";
-import { type IHeaderLink } from "@/models/LinkModel";
+import { type HeaderLink } from "@/models/LinkModel";
 import { useProfiles } from "@/providers/ProfileProvider";
 import {
   Container,
@@ -22,7 +22,7 @@ import { IconDoorExit, IconUser } from "@tabler/icons-react";
 
 const HEADER_HEIGHT = 48;
 
-const links: IHeaderLink[] = [
+const links: HeaderLink[] = [
   {
     id: 1,
     label: "Home",

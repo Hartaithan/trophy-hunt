@@ -1,12 +1,12 @@
 import API from "@/helpers/api";
-import { type IGame } from "@/models/GameModel";
+import { type Game } from "@/models/GameModel";
 import {
-  type IProgressPayload,
-  type IProgressItem,
+  type ProgressPayload,
+  type ProgressItem,
 } from "@/models/ProgressModel";
 import {
-  type ITrophyFilters,
-  type IFormattedResponse,
+  type TrophyFilters,
+  type FormattedResponse,
 } from "@/models/TrophyModel";
 import { useDebouncedValue } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -22,22 +22,22 @@ import {
   type SetStateAction,
 } from "react";
 import { IconAlertOctagon, IconCheck } from "@tabler/icons-react";
-import { type INoteModal, type INoteModalState } from "@/models/NoteModel";
+import { type NoteModalHandler, type NoteModalState } from "@/models/NoteModel";
 import NoteModal from "@/modals/NoteModal";
 import useCompletion from "@/hooks/useCompletion";
 
-interface IGameProviderProps extends PropsWithChildren {
+interface GameProviderProps extends PropsWithChildren {
   id: string | string[] | undefined;
-  initialGame?: IGame | null;
-  initialTrophies?: IFormattedResponse | null;
+  initialGame?: Game | null;
+  initialTrophies?: FormattedResponse | null;
 }
 
 type Status = "idle" | "syncing" | "refetching" | "updating" | "completed";
 
-interface IGameContext {
-  game: IGame | null;
-  trophies: IFormattedResponse | null;
-  progress: IProgressItem[];
+interface GameContext {
+  game: Game | null;
+  trophies: FormattedResponse | null;
+  progress: ProgressItem[];
   isIdle: boolean;
   isRefetching: boolean;
   isSyncing: boolean;
@@ -48,26 +48,26 @@ interface IGameContext {
   refetchTrophies: () => void;
   syncProgress: () => void;
   toggleTrophy: (id: number) => void;
-  filters: ITrophyFilters;
-  setFilters: Dispatch<SetStateAction<ITrophyFilters>>;
+  filters: TrophyFilters;
+  setFilters: Dispatch<SetStateAction<TrophyFilters>>;
   resetFilters: () => void;
   checkAll: (value: boolean) => void;
   checkGroup: (group: string, value: boolean) => void;
-  noteModal: INoteModal;
+  noteModal: NoteModalHandler;
 }
 
-const initialFilters: ITrophyFilters = {
+const initialFilters: TrophyFilters = {
   type: "all",
   earned: "all",
 };
 
-const initialNoteState: INoteModalState = {
+const initialNoteState: NoteModalState = {
   opened: false,
   game_id: null,
   trophy_id: null,
 };
 
-const initialContextValue: IGameContext = {
+const initialContextValue: GameContext = {
   game: null,
   trophies: null,
   progress: [],
@@ -99,8 +99,8 @@ const syncStartedMessage =
 const syncErrorMessage =
   "For some reason the synchronization did not complete, please try again.";
 
-const initializeProgress = (trophies: IFormattedResponse): IProgressPayload => {
-  const payload: IProgressItem[] = [];
+const initializeProgress = (trophies: FormattedResponse): ProgressPayload => {
+  const payload: ProgressItem[] = [];
   for (let i = 0; i < trophies.groups.length; i++) {
     const group = trophies.groups[i];
     for (let n = 0; n < group.trophies.length; n++) {
@@ -116,21 +116,21 @@ const initializeProgress = (trophies: IFormattedResponse): IProgressPayload => {
   return { payload };
 };
 
-const Context = createContext<IGameContext>(initialContextValue);
+const Context = createContext<GameContext>(initialContextValue);
 
-const GameProvider: FC<IGameProviderProps> = (props) => {
+const GameProvider: FC<GameProviderProps> = (props) => {
   const { children, id, initialGame = null, initialTrophies = null } = props;
 
-  const [game, setGame] = useState<IGame | null>(initialGame);
-  const [progress, setProgress] = useState<IProgressItem[]>(
+  const [game, setGame] = useState<Game | null>(initialGame);
+  const [progress, setProgress] = useState<ProgressItem[]>(
     initialGame?.progress ?? []
   );
   const [debouncedProgress] = useDebouncedValue(progress, 700);
-  const [trophies, setTrophies] = useState<IFormattedResponse | null>(
+  const [trophies, setTrophies] = useState<FormattedResponse | null>(
     initialTrophies
   );
-  const [filters, setFilters] = useState<ITrophyFilters>(initialFilters);
-  const [noteModal, setNoteModal] = useState<INoteModalState>(initialNoteState);
+  const [filters, setFilters] = useState<TrophyFilters>(initialFilters);
+  const [noteModal, setNoteModal] = useState<NoteModalState>(initialNoteState);
 
   const [status, setStatus] = useState<Status>("idle");
   const isIdle = status === "idle";
@@ -270,7 +270,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     );
   };
 
-  const openNote = (params?: Partial<INoteModalState>): void => {
+  const openNote = (params?: Partial<NoteModalState>): void => {
     setNoteModal((prev) => ({ ...prev, ...params, opened: true }));
   };
 
@@ -278,7 +278,7 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
     setNoteModal((prev) => ({ ...prev, opened: false }));
   };
 
-  const exposed: IGameContext = {
+  const exposed: GameContext = {
     game,
     trophies,
     progress,
@@ -397,6 +397,6 @@ const GameProvider: FC<IGameProviderProps> = (props) => {
   );
 };
 
-export const useGame = (): IGameContext => useContext(Context);
+export const useGame = (): GameContext => useContext(Context);
 
 export default GameProvider;

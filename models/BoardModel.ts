@@ -1,8 +1,8 @@
 import { type MantineColor } from "@mantine/core";
-import { type IGame } from "./GameModel";
+import { type Game } from "./GameModel";
 import { type Range } from "@/helpers/types";
 
-export interface IColumnColor {
+export interface ColumnColor {
   color: MantineColor;
   shade: Range<0, 10>;
 }
@@ -14,4 +14,4 @@ export enum BOARD_COLUMNS {
   Complete = "complete",
 }
 
-export type IBoardColumns = Record<BOARD_COLUMNS | string, IGame[]>;
+export type BoardColumns = Record<BOARD_COLUMNS | string, Game[]>;

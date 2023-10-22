@@ -1,11 +1,11 @@
-import { BOARD_COLUMNS, type IColumnColor } from "@/models/BoardModel";
+import { BOARD_COLUMNS, type ColumnColor } from "@/models/BoardModel";
 import {
   type Platform,
-  type IPlatformColor,
-  type IPlatformLabel,
+  type PlatformColor,
+  type PlatformLabel,
 } from "@/models/PlatformModel";
 
-export const columnColors: Record<BOARD_COLUMNS, IColumnColor> = {
+export const columnColors: Record<BOARD_COLUMNS, ColumnColor> = {
   [BOARD_COLUMNS.Backlog]: {
     color: "gray",
     shade: 6,
@@ -31,7 +31,7 @@ export const columnsLabels: Record<BOARD_COLUMNS, string> = {
   [BOARD_COLUMNS.Complete]: "100%",
 };
 
-export const platformColors: Record<Platform, IPlatformColor> = {
+export const platformColors: Record<Platform, PlatformColor> = {
   ps3: {
     bg: "gray",
     fg: "white",
@@ -50,7 +50,7 @@ export const platformColors: Record<Platform, IPlatformColor> = {
   },
 };
 
-export const platformLabels: Record<Platform, IPlatformLabel> = {
+export const platformLabels: Record<Platform, PlatformLabel> = {
   ps3: { short: "PS3", full: "Playstation 3" },
   ps4: { short: "PS4", full: "Playstation 4" },
   ps5: { short: "PS5", full: "Playstation 5" },

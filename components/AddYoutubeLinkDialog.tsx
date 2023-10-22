@@ -1,4 +1,4 @@
-import { type IModalProps } from "@/models/ModalModel";
+import { type ModalProps } from "@/models/ModalModel";
 import { centeredDialog } from "@/styles/global";
 import {
   Button,
@@ -15,7 +15,7 @@ import { type FC, memo } from "react";
 const isYoutubeLink =
   /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w-_]+)/gim;
 
-const AddYoutubeLinkDialog: FC<IModalProps> = (props) => {
+const AddYoutubeLinkDialog: FC<ModalProps> = (props) => {
   const { opened, setOpened } = props;
   const { editor } = useRichTextEditorContext();
 

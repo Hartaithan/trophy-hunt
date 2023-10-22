@@ -1,4 +1,4 @@
-export interface ILocale {
+export interface Locale {
   id: number;
   value: string;
   label: string;

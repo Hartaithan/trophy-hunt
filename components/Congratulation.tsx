@@ -2,7 +2,7 @@ import { type CongratulationValue } from "@/providers/CongratulationProvider";
 import { type MantineGradient, Title, createStyles } from "@mantine/core";
 import { type CSSProperties, type FC } from "react";
 
-interface ICongratulationProps {
+interface CongratulationProps {
   styles: CSSProperties;
   value: CongratulationValue | null;
 }
@@ -34,7 +34,7 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-const Congratulation: FC<ICongratulationProps> = (props) => {
+const Congratulation: FC<CongratulationProps> = (props) => {
   const { value, styles } = props;
   const { classes } = useStyles();
 

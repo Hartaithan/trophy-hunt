@@ -1,6 +1,6 @@
-import { type ILocale } from "@/models/LocaleModel";
+import { type Locale } from "@/models/LocaleModel";
 
-export const locales: ILocale[] = [
+export const locales: Locale[] = [
   { id: 1, value: "cs-CZ", icon_url: "/locales/cs.png", label: "Czech" },
   { id: 2, value: "da-DK", icon_url: "/locales/da.png", label: "Danish" },
   { id: 3, value: "de-DE", icon_url: "/locales/de.png", label: "German" },

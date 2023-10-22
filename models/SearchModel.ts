@@ -1,9 +1,9 @@
-export interface ISearchQueries {
+export interface SearchQueries {
   [key: string]: string | string[];
   query: string;
 }
 
-export interface ISearchItem {
+export interface SearchItem {
   id: string;
   title: string;
   platform_title: string;
@@ -12,14 +12,14 @@ export interface ISearchItem {
   release_date: string;
 }
 
-export interface ISearchResult {
+export interface SearchResult {
   id: number;
   name: string;
   platform: string;
   url: string;
 }
 
-export interface ISearchResponse {
+export interface SearchResponse {
   query: string;
-  results: ISearchResult[];
+  results: SearchResult[];
 }

@@ -1,4 +1,4 @@
-import { type Session, type User } from "@supabase/supabase-js";
+import { type Session, type User as SupabaseUser } from "@supabase/supabase-js";
 import {
   type AuthTokensResponse,
   type ProfileFromUserNameResponse,
@@ -12,15 +12,15 @@ export interface PSNProfile extends Omit<PSNProfileResponse, "personalDetail"> {
 }
 
 export type NullableSession = Session | null;
-export type NullableUser = User | null;
-export type NullableProfile = IProfile | null;
+export type NullableUser = SupabaseUser | null;
+export type NullableProfile = Profile | null;
 export type NullablePSNProfile = PSNProfile | null;
 export type NullableAuthResponse = AuthTokensResponse | null;
 
 export type ProfileType = "public" | "private";
 export type Presence = PSNProfile["presences"][0];
 
-export interface ISignUpBody extends Record<string, string> {
+export interface SignUpBody extends Record<string, string> {
   email: string;
   password: string;
   npsso: string;
@@ -29,18 +29,18 @@ export interface ISignUpBody extends Record<string, string> {
   type: ProfileType;
 }
 
-interface IUserData {
+interface UserData {
   language: string;
   username: string;
   onlineId: string;
   type: ProfileType;
 }
 
-export interface IUser extends User {
-  user_metadata: User["user_metadata"] & IUserData;
+export interface User extends SupabaseUser {
+  user_metadata: SupabaseUser["user_metadata"] & UserData;
 }
 
-export interface IProfile {
+export interface Profile {
   id: string;
   created_at: string;
   language: string;
@@ -49,9 +49,9 @@ export interface IProfile {
   type: ProfileType;
 }
 
-export type ProfileEditBody = Pick<IProfile, "language" | "type">;
+export type ProfileEditBody = Pick<Profile, "language" | "type">;
 
-export interface ISessionResponse {
+export interface SessionResponse {
   session: NullableSession;
   profile: NullableProfile;
 }

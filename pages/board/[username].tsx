@@ -1,8 +1,8 @@
 import BoardColumn from "@/components/BoardColumn";
 import { initializeBoard } from "@/helpers/board";
-import { type IPage } from "@/models/AppModel";
+import { type Page } from "@/models/AppModel";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
-import { type IGame } from "@/models/GameModel";
+import { type Game } from "@/models/GameModel";
 import { Flex, Text, Title, createStyles } from "@mantine/core";
 import { IconMoodSadDizzy } from "@tabler/icons-react";
 import { type GetServerSideProps } from "next";
@@ -10,13 +10,13 @@ import { useRouter } from "next/router";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-interface IBoardPageProps {
-  items: IGame[];
+interface BoardPageProps {
+  items: Game[];
   message?: string;
   status: "fulfilled" | "rejected";
 }
 
-export const getServerSideProps: GetServerSideProps<IBoardPageProps> = async (
+export const getServerSideProps: GetServerSideProps<BoardPageProps> = async (
   ctx
 ) => {
   const {
@@ -82,7 +82,7 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-const BoardPage: IPage<IBoardPageProps> = (props) => {
+const BoardPage: Page<BoardPageProps> = (props) => {
   const { items, status } = props;
   const { classes } = useStyles();
   const { query } = useRouter();

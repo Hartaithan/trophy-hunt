@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction } from "react";
 
-export interface INote {
+export interface Note {
   id: number;
   created_at: string;
   updated_at: string;
@@ -11,25 +11,25 @@ export interface INote {
   content: string;
 }
 
-export interface IAddNotePayload {
+export interface AddNotePayload {
   game_id: number;
   trophy_id: number;
   content: string;
 }
 
-export interface INewNotePayload
-  extends Omit<INote, "id" | "created_at" | "updated_at" | "content"> {
+export interface NewNotePayload
+  extends Omit<Note, "id" | "created_at" | "updated_at" | "content"> {
   content: string | null;
 }
 
-export interface INoteModalState {
+export interface NoteModalState {
   opened: boolean;
   game_id: number | null;
   trophy_id: number | null;
 }
 
-export interface INoteModal extends INoteModalState {
-  setState: Dispatch<SetStateAction<INoteModalState>>;
-  open: (params?: Partial<INoteModalState>) => void;
+export interface NoteModalHandler extends NoteModalState {
+  setState: Dispatch<SetStateAction<NoteModalState>>;
+  open: (params?: Partial<NoteModalState>) => void;
   close: () => void;
 }

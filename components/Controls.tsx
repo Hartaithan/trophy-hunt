@@ -9,7 +9,7 @@ import {
   IconPhotoPlus,
 } from "@tabler/icons-react";
 
-interface IControlProps {
+interface ControlProps {
   onClick: () => void;
 }
 
@@ -92,7 +92,7 @@ export const LiftListItemControl: FC = () => {
   );
 };
 
-export const ImageControl: FC<IControlProps> = ({ onClick }) => {
+export const ImageControl: FC<ControlProps> = ({ onClick }) => {
   return (
     <RichTextEditor.Control
       onClick={onClick}
@@ -104,7 +104,7 @@ export const ImageControl: FC<IControlProps> = ({ onClick }) => {
   );
 };
 
-export const YoutubeControl: FC<IControlProps> = ({ onClick }) => {
+export const YoutubeControl: FC<ControlProps> = ({ onClick }) => {
   return (
     <RichTextEditor.Control
       onClick={onClick}

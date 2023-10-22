@@ -2,12 +2,12 @@ import ColumnBadge from "@/components/ColumnBadge";
 import API from "@/helpers/api";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
 import {
-  type IGame,
-  type IAddGamePayload,
-  type IReorderItem,
-  type IAddGameState,
+  type Game,
+  type AddGamePayload,
+  type ReorderItem,
+  type AddGameState,
 } from "@/models/GameModel";
-import { type ISearchResult } from "@/models/SearchModel";
+import { type SearchResult } from "@/models/SearchModel";
 import { useBoard } from "@/providers/BoardProvider";
 import {
   Modal,
@@ -32,10 +32,10 @@ import {
   IconSquarePlus,
 } from "@tabler/icons-react";
 
-interface IAddGameModalProps {
-  state: IAddGameState;
-  setState: Dispatch<SetStateAction<IAddGameState>>;
-  initial: IAddGameState;
+interface AddGameModalProps {
+  state: AddGameState;
+  setState: Dispatch<SetStateAction<AddGameState>>;
+  initial: AddGameState;
 }
 
 const isValidSearch = (value: string): boolean => {
@@ -44,7 +44,7 @@ const isValidSearch = (value: string): boolean => {
   return !isEmpty && !hasTags;
 };
 
-const AddGameModal: FC<IAddGameModalProps> = (props) => {
+const AddGameModal: FC<AddGameModalProps> = (props) => {
   const { state, setState, initial } = props;
   const { opened, status } = state;
   const { spacing } = useMantineTheme();
@@ -54,7 +54,7 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   const [isSubmit, setSubmit] = useState<boolean>(false);
   const [value, setValue] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [results, setResults] = useState<ISearchResult[]>([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [debouncedSearch] = useDebouncedValue(search, 500);
 
   const data = results.map((item) => ({
@@ -85,12 +85,12 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
     setState(initial);
   };
 
-  const addNewGame = (game: IGame): void => {
+  const addNewGame = (game: Game): void => {
     const status: BOARD_COLUMNS | null = game?.status ?? null;
     if (status == null) return;
     setColumns((items) => {
       const newItems = [game, ...items[status]];
-      const reorderItems: IReorderItem[] = newItems.map((i, index) => ({
+      const reorderItems: ReorderItem[] = newItems.map((i, index) => ({
         id: i.id,
         position: index,
         status: i.status,
@@ -134,14 +134,14 @@ const AddGameModal: FC<IAddGameModalProps> = (props) => {
   };
 
   const handleSubmit = (): void => {
-    const payload: Partial<IAddGamePayload> = {
+    const payload: Partial<AddGamePayload> = {
       game_id: value ?? undefined,
       status: status ?? undefined,
     };
     setSubmit(true);
     API.post("/games/add", JSON.stringify(payload))
       .then((res) => {
-        const game: IGame = res.data.game;
+        const game: Game = res.data.game;
         addNewGame(game);
         notifications.show({
           title: "Success!",

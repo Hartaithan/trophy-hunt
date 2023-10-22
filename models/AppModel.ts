@@ -4,7 +4,7 @@ import {
   type GetServerSidePropsContext,
   type NextPage,
 } from "next";
-import { type AppProps } from "next/app";
+import { type AppProps as NextAppProps } from "next/app";
 import {
   type NullableProfile,
   type NullablePSNProfile,
@@ -12,32 +12,32 @@ import {
 } from "./AuthModel";
 import { type CSSProperties } from "react";
 
-export type IExtendedPageProps = object;
+export type ExtendedPageProps = object;
 
-export interface IExtendedInitialProps {
+export interface ExtendedInitialProps {
   initialSession: NullableSession;
   initialProfile: NullableProfile;
   initialPSNProfile: NullablePSNProfile;
   isInitialFailed: boolean;
 }
 
-export interface IAppProps<P = object>
-  extends AppProps<P>,
-    IExtendedInitialProps {
+export interface AppProps<P = object>
+  extends NextAppProps<P>,
+    ExtendedInitialProps {
   Component: NextComponentType<
     NextPageContext,
-    IExtendedInitialProps,
-    IExtendedPageProps
+    ExtendedInitialProps,
+    ExtendedPageProps
   >;
 }
 
-export interface IInitialProps {
+export interface InitialProps {
   ctx: GetServerSidePropsContext;
 }
 
-export type IPage<P = object, IP = P> = NextPage<P & IExtendedPageProps, IP>;
+export type Page<P = object, IP = P> = NextPage<P & ExtendedPageProps, IP>;
 
-export interface ICustomPosition {
+export interface CustomPosition {
   top?: string | number;
   left?: string | number;
   bottom?: string | number;

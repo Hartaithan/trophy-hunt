@@ -1,9 +1,9 @@
 import GameInfo from "@/components/GameInfo";
 import TrophyPanel from "@/components/TrophyPanel";
 import TrophyGroups from "@/components/TrophyGroups";
-import { type IPage } from "@/models/AppModel";
-import { type IGame } from "@/models/GameModel";
-import { type IFormattedResponse } from "@/models/TrophyModel";
+import { type Page } from "@/models/AppModel";
+import { type Game } from "@/models/GameModel";
+import { type FormattedResponse } from "@/models/TrophyModel";
 import GameProvider from "@/providers/GameProvider";
 import { Flex, Stack, Text, Title } from "@mantine/core";
 import { type GetServerSidePropsContext, type GetServerSideProps } from "next";
@@ -13,9 +13,9 @@ import { IconMoodSadDizzy } from "@tabler/icons-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-interface IGamePageProps {
-  game: IGame | null;
-  trophies: IFormattedResponse | null;
+interface GamePageProps {
+  game: Game | null;
+  trophies: FormattedResponse | null;
   status: "fulfilled" | "rejected";
   message?: string;
 }
@@ -28,14 +28,14 @@ const fetchOptions = (ctx: GetServerSidePropsContext): RequestInit => ({
   },
 });
 
-const errorResponse: IGamePageProps = {
+const errorResponse: GamePageProps = {
   game: null,
   trophies: null,
   status: "rejected",
   message: "Something wrong...",
 };
 
-export const getServerSideProps: GetServerSideProps<IGamePageProps> = async (
+export const getServerSideProps: GetServerSideProps<GamePageProps> = async (
   ctx
 ) => {
   const {
@@ -54,8 +54,8 @@ export const getServerSideProps: GetServerSideProps<IGamePageProps> = async (
   const options = fetchOptions(ctx);
 
   try {
-    let game: IGame | null = null;
-    let trophies: IFormattedResponse | null = null;
+    let game: Game | null = null;
+    let trophies: FormattedResponse | null = null;
     const [gameResponse, trophiesResponse] = await Promise.all([
       fetch(`${API_URL}/games/${id}`, options).then(async (res) => {
         const data = await res.json();
@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps<IGamePageProps> = async (
   }
 };
 
-const GamePage: IPage<IGamePageProps> = (props) => {
+const GamePage: Page<GamePageProps> = (props) => {
   const { game, trophies, status } = props;
   const { query } = useRouter();
 
