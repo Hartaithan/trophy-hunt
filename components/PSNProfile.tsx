@@ -3,6 +3,7 @@ import { Flex, createStyles, Text } from "@mantine/core";
 import { type FC } from "react";
 import ImageWithFallback from "./Image";
 import { getName, getPresence } from "@/helpers/profile";
+import PlusBadge from "./PlusBadge";
 
 interface PSNProfileProps {
   profile: NullablePSNProfile | undefined;
@@ -38,13 +39,19 @@ const PSNProfile: FC<PSNProfileProps> = (props) => {
         rounded="50%"
       />
       <Flex direction="column">
-        <Text fz="xl" fw={700}>
-          {name}
-        </Text>
+        <Flex align="center">
+          <Text fz="xl" fw={700}>
+            {name}
+          </Text>
+          {profile?.plus === 1 && <PlusBadge ml="sm" />}
+        </Flex>
         <Flex gap="sm">
           <Text fw={600}>{profile?.onlineId ?? "PSN ID Not Found"}</Text>
           {presence != null && <Text c="dimmed">{presence}</Text>}
         </Flex>
+        {profile?.aboutMe != null && profile.aboutMe.trim().length > 0 && (
+          <Text mt="sm">{profile.aboutMe}</Text>
+        )}
       </Flex>
     </Flex>
   );
