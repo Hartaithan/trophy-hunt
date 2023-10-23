@@ -1,13 +1,9 @@
-import { type NullablePSNProfile } from "@/models/AuthModel";
 import { Flex, createStyles, Text } from "@mantine/core";
 import { type FC } from "react";
 import ImageWithFallback from "./Image";
 import { getName, getPresence } from "@/helpers/profile";
 import PlusBadge from "./PlusBadge";
-
-interface PSNProfileProps {
-  profile: NullablePSNProfile | undefined;
-}
+import { useProfiles } from "@/providers/ProfileProvider";
 
 const useStyles = createStyles(({ spacing, colors, radius }) => ({
   container: {
@@ -21,8 +17,8 @@ const useStyles = createStyles(({ spacing, colors, radius }) => ({
   },
 }));
 
-const PSNProfile: FC<PSNProfileProps> = (props) => {
-  const { profile } = props;
+const PSNProfile: FC = () => {
+  const { psn: profile } = useProfiles();
   const { classes } = useStyles();
 
   const name = getName(profile);

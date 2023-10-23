@@ -1,12 +1,8 @@
 import { trophyColors } from "@/constants/trophy";
-import { type NullablePSNProfile } from "@/models/AuthModel";
 import { Flex, Progress, Text, createStyles } from "@mantine/core";
 import { useMemo, type FC } from "react";
 import TrophyIcon from "./TrophyIcon";
-
-interface PSNTrophiesProps {
-  profile: NullablePSNProfile | undefined;
-}
+import { useProfiles } from "@/providers/ProfileProvider";
 
 const useStyles = createStyles(({ spacing, colors, radius }) => ({
   container: {
@@ -41,8 +37,8 @@ const useStyles = createStyles(({ spacing, colors, radius }) => ({
   },
 }));
 
-const PSNTrophies: FC<PSNTrophiesProps> = (props) => {
-  const { profile } = props;
+const PSNTrophies: FC = () => {
+  const { psn: profile } = useProfiles();
   const { classes } = useStyles();
 
   const total = useMemo(() => {

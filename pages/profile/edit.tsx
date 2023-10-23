@@ -2,50 +2,16 @@ import LanguageSelect from "@/components/LanguageSelect";
 import { profileTypeOptions } from "@/constants/options";
 import API from "@/helpers/api";
 import { type Page } from "@/models/AppModel";
-import { type ProfileEditBody, type Profile } from "@/models/AuthModel";
+import { type NullableProfile, type ProfileEditBody } from "@/models/AuthModel";
+import { useProfiles } from "@/providers/ProfileProvider";
 import { Box, Button, Flex, Grid, Input, Select, Title } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { type GetServerSideProps } from "next";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-interface EditProfilePageProps {
-  profile: Profile | null;
-  message?: string;
-}
-
-export const getServerSideProps: GetServerSideProps<
-  EditProfilePageProps
-> = async (ctx) => {
-  if (API_URL === undefined) {
-    console.error("env variables not found");
-    return { props: { profile: null, message: "Something wrong..." } };
-  }
-
-  try {
-    const response = await fetch(`${API_URL}/profile`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Cookie: ctx.req.headers.cookie ?? "",
-      },
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.message);
-    return {
-      props: { profile: data.profile ?? null },
-    };
-  } catch (error) {
-    console.error("unable to fetch profile", error);
-    return {
-      props: { profile: null, message: "Unable to fetch profile" },
-    };
-  }
-};
-
-const EditProfilePage: Page<EditProfilePageProps> = (props) => {
-  const { profile } = props;
+const EditProfilePage: Page = () => {
+  const { profile, setProfile } = useProfiles();
 
   const form = useForm<ProfileEditBody>({
     initialValues: {
@@ -64,10 +30,14 @@ const EditProfilePage: Page<EditProfilePageProps> = (props) => {
       return;
     }
     API.put("/profile", JSON.stringify(values))
-      .then((res) => {
+      .then(({ data }) => {
+        const profileRes: NullableProfile = data?.profile;
+        if (profileRes != null) {
+          setProfile(profileRes);
+        }
         notifications.show({
           title: "Success!",
-          message: res.data.message,
+          message: data.message,
           autoClose: 3000,
         });
       })
