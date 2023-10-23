@@ -37,7 +37,7 @@ const useStyles = createStyles(({ spacing, colors, radius }) => ({
   },
 }));
 
-const PSNTrophies: FC = () => {
+const TrophiesStats: FC = () => {
   const { psn: profile } = useProfiles();
   const { classes } = useStyles();
 
@@ -112,4 +112,4 @@ const PSNTrophies: FC = () => {
   );
 };
 
-export default PSNTrophies;
+export default TrophiesStats;

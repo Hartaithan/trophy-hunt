@@ -1,5 +1,5 @@
-import PSNProfile from "@/components/PSNProfile";
-import PSNTrophies from "@/components/PSNTrophies";
+import ProfileBlock from "@/components/ProfileBlock";
+import TrophiesStats from "@/components/TrophiesStats";
 import { type Page } from "@/models/AppModel";
 import { Button, Flex, Stack, Title } from "@mantine/core";
 import Link from "next/link";
@@ -20,8 +20,8 @@ const ProfilePage: Page = () => {
         </Button>
       </Flex>
       <Stack>
-        <PSNProfile />
-        <PSNTrophies />
+        <ProfileBlock />
+        <TrophiesStats />
       </Stack>
     </Flex>
   );
