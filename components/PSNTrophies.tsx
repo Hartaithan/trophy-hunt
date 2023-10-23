@@ -88,26 +88,26 @@ const PSNTrophies: FC<PSNTrophiesProps> = (props) => {
       </Flex>
       <Flex className={classes.content}>
         <Flex className={classes.blockRow}>
-          <TrophyIcon type="platinum" />
-          <Text fz="xl" fw={700} c={trophyColors.platinum}>
+          <TrophyIcon width={36} height={36} type="platinum" />
+          <Text fz={28} fw={700} ml={4} c={trophyColors.platinum}>
             {profile.trophySummary.earnedTrophies.platinum}
           </Text>
         </Flex>
         <Flex className={classes.blockRow}>
-          <TrophyIcon type="gold" />
-          <Text fz="xl" fw={700} c={trophyColors.gold}>
+          <TrophyIcon width={36} height={36} type="gold" />
+          <Text fz={28} fw={700} ml={4} c={trophyColors.gold}>
             {profile.trophySummary.earnedTrophies.gold}
           </Text>
         </Flex>
         <Flex className={classes.blockRow}>
-          <TrophyIcon type="silver" />
-          <Text fz="xl" fw={700} c={trophyColors.silver}>
+          <TrophyIcon width={36} height={36} type="silver" />
+          <Text fz={28} fw={700} ml={4} c={trophyColors.silver}>
             {profile.trophySummary.earnedTrophies.silver}
           </Text>
         </Flex>
         <Flex className={classes.blockRow}>
-          <TrophyIcon type="bronze" />
-          <Text fz="xl" fw={700} c={trophyColors.bronze}>
+          <TrophyIcon width={36} height={36} type="bronze" />
+          <Text fz={28} fw={700} ml={4} c={trophyColors.bronze}>
             {profile.trophySummary.earnedTrophies.bronze}
           </Text>
         </Flex>
