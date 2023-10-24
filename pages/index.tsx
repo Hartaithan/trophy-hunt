@@ -12,7 +12,7 @@ const Home: Page = () => {
   };
 
   return (
-    <Flex justify="center" align="center" direction="column" gap={12} py={24}>
+    <Flex justify="center" align="center" direction="column" py={24} gap={12}>
       <Title>Hello world!</Title>
       <Button onClick={handleUpdate}>update</Button>
       <Group align="flex-start">
