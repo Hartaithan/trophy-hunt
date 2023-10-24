@@ -1,25 +1,4 @@
-const nextConfig = {
-  reactStrictMode: true,
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**.playstation.net",
-      },
-      {
-        protocol: "http",
-        hostname: "**.playstation.net",
-      },
-      {
-        protocol: "https",
-        hostname: "**.playstation.com",
-      },
-      {
-        protocol: "http",
-        hostname: "**.playstation.com",
-      },
-    ],
-  },
-};
+/** @type {import('next').NextConfig} */
+const nextConfig = {}
 
-module.exports = nextConfig;
+module.exports = nextConfig
