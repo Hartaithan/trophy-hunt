@@ -18,6 +18,8 @@
     "@mantine/modals": "^7.1.5",
     "@mantine/notifications": "^7.1.5",
     "@mantine/tiptap": "^7.1.5",
+    "@supabase/auth-helpers-nextjs": "^0.8.1",
+    "@supabase/supabase-js": "^2.38.3",
     "@tabler/icons-react": "^2.39.0",
     "@tiptap/extension-link": "^2.1.12",
     "@tiptap/react": "^2.1.12",
