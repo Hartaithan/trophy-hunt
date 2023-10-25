@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FC, PropsWithChildren } from "react";
+import { type FC, type PropsWithChildren } from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
