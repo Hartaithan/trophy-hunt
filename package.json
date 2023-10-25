@@ -12,6 +12,16 @@
     "format": "npx prettier . --write"
   },
   "dependencies": {
+    "@mantine/core": "^7.1.5",
+    "@mantine/form": "^7.1.5",
+    "@mantine/hooks": "^7.1.5",
+    "@mantine/modals": "^7.1.5",
+    "@mantine/notifications": "^7.1.5",
+    "@mantine/tiptap": "^7.1.5",
+    "@tabler/icons-react": "^2.39.0",
+    "@tiptap/extension-link": "^2.1.12",
+    "@tiptap/react": "^2.1.12",
+    "@tiptap/starter-kit": "^2.1.12",
     "next": "13.5.6",
     "react": "^18",
     "react-dom": "^18"
@@ -31,6 +41,9 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "postcss": "^8.4.31",
+    "postcss-preset-mantine": "^1.9.0",
+    "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   }

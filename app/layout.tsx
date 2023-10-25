@@ -1,7 +1,10 @@
+import "./globals.css";
+import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { type FC, type PropsWithChildren } from "react";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import { theme } from "@/styles/theme";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -13,7 +16,16 @@ export const metadata: Metadata = {
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <ColorSchemeScript defaultColorScheme="dark" />
+      </head>
+      <body>
+        <MantineProvider
+          theme={{ ...theme, fontFamily: inter.style.fontFamily }}
+          defaultColorScheme="dark">
+          {children}
+        </MantineProvider>
+      </body>
     </html>
   );
 };

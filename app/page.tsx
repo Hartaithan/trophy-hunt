@@ -1,9 +1,11 @@
+import { Button, Title } from "@mantine/core";
 import { type NextPage } from "next";
 
 const Home: NextPage = () => {
   return (
     <main>
-      <h1>Hello World!</h1>
+      <Title>Hello World!</Title>
+      <Button>Click</Button>
     </main>
   );
 };
