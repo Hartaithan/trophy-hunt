@@ -20,12 +20,6 @@ body {
   overflow: auto;
 }
 
-#__next {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 main {
   height: 100%;
   display: flex;

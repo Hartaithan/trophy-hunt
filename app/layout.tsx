@@ -28,7 +28,9 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
           theme={{ ...theme, fontFamily: inter.style.fontFamily }}
           defaultColorScheme="dark">
           <Notifications />
-          <ModalsProvider>{children}</ModalsProvider>
+          <ModalsProvider>
+            <main>{children}</main>
+          </ModalsProvider>
         </MantineProvider>
       </body>
     </html>
