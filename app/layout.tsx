@@ -1,9 +1,13 @@
 import "./globals.css";
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+import "@mantine/tiptap/styles.css";
 import type { Metadata } from "next";
 import { type FC, type PropsWithChildren } from "react";
 import { Inter } from "next/font/google";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
+import { Notifications } from "@mantine/notifications";
 import { theme } from "@/styles/theme";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
@@ -23,7 +27,8 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <MantineProvider
           theme={{ ...theme, fontFamily: inter.style.fontFamily }}
           defaultColorScheme="dark">
-          {children}
+          <Notifications />
+          <ModalsProvider>{children}</ModalsProvider>
         </MantineProvider>
       </body>
     </html>
