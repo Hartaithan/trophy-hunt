@@ -26,6 +26,7 @@
     "@tiptap/starter-kit": "^2.1.12",
     "axios": "^1.5.1",
     "next": "14.0.0",
+    "psn-api": "^2.10.0",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -49,5 +50,12 @@
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/psn-api.esm.js",
+      "types": "./dist/index.d.ts"
+    }
   }
 }
