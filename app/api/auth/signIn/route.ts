@@ -25,7 +25,7 @@ export const POST = async (req: Request): Promise<Response> => {
   const cookieStore = cookies();
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
-  const results = validatePayload(body);
+  const results = validatePayload(body, ["email", "password", "npsso"]);
   if (results !== null) {
     console.error("invalid payload", results.errors);
     return Response.json(results, { status: 400 });
