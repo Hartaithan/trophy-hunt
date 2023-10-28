@@ -1,4 +1,4 @@
-import SignInForm from "@/forms/signIn/form";
+import SignInForm from "@/forms/signIn";
 import { Anchor, Text, Title } from "@mantine/core";
 import { type NextPage } from "next";
 import Link from "next/link";
@@ -13,11 +13,7 @@ const SignInPage: NextPage = () => {
       <SignInForm />
       <Text ta="center" mt="xl" fw={500} size="sm">
         Don&apos;t have an account?&nbsp;
-        <Anchor
-          component={Link}
-          prefetch={false}
-          href="/auth/signUp"
-          td="underline">
+        <Anchor component={Link} prefetch={false} href="/signUp" td="underline">
           Sign Up!
         </Anchor>
       </Text>
