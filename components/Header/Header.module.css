@@ -1,0 +1,41 @@
+.root {
+  width: 100%;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.links {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mantine-spacing-xs);
+}
+
+.link {
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+  padding: 2px 8px;
+}
+
+.activeLink {
+  border-radius: var(--mantine-radius-sm);
+}
+
+.disabledLink {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.profile {
+  min-width: 100;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
