@@ -6,6 +6,7 @@ import {
   useCallback,
   useEffect,
   type ReactNode,
+  Fragment,
 } from "react";
 import {
   DEFAULT_THEME as theme,
@@ -146,89 +147,91 @@ const SignUpForm: FC = () => {
   }
 
   return (
-    <Box
-      component="form"
-      w="100%"
-      maw={400}
-      onSubmit={form.onSubmit(handleSubmit)}>
+    <Fragment>
       <Title order={2} ta="center" mb="md">
         Let&apos;s get started!
       </Title>
-      <Stack>
-        <TextInput
-          required
-          type="email"
-          label="Email"
-          placeholder="Enter your email"
-          {...form.getInputProps("email")}
-        />
-        <Input.Wrapper id="username">
-          <Flex justify="space-between" align="flex-end">
-            <Input.Label required>Username</Input.Label>
-            {form.values.username.length > 0 && !isChecking && (
-              <Input.Label size="xs" c={isUnique ? "green.8" : "red.8"}>
-                {isUnique ? "Username is unique" : "Username already taken"}
-              </Input.Label>
-            )}
-            {form.values.username.length > 0 && isChecking && (
-              <Input.Label size="xs" c={isUnique ? "green.8" : "red.8"}>
-                Checking...
-              </Input.Label>
-            )}
-          </Flex>
-          <Input
-            id="username"
+      <Box
+        component="form"
+        w="100%"
+        maw={400}
+        onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          <TextInput
             required
-            autoComplete="off"
-            placeholder="Enter your username"
-            rightSection={statusIcons[status]}
-            {...form.getInputProps("username")}
-            onChange={(e) => {
-              const value = e.target.value;
-              setStatus(value.length > 0 ? "checking" : "idle");
-              form.setFieldValue("username", e.target.value);
+            type="email"
+            label="Email"
+            placeholder="Enter your email"
+            {...form.getInputProps("email")}
+          />
+          <Input.Wrapper id="username">
+            <Flex justify="space-between" align="flex-end">
+              <Input.Label required>Username</Input.Label>
+              {form.values.username.length > 0 && !isChecking && (
+                <Input.Label size="xs" c={isUnique ? "green.8" : "red.8"}>
+                  {isUnique ? "Username is unique" : "Username already taken"}
+                </Input.Label>
+              )}
+              {form.values.username.length > 0 && isChecking && (
+                <Input.Label size="xs" c={isUnique ? "green.8" : "red.8"}>
+                  Checking...
+                </Input.Label>
+              )}
+            </Flex>
+            <Input
+              id="username"
+              required
+              autoComplete="off"
+              placeholder="Enter your username"
+              rightSection={statusIcons[status]}
+              {...form.getInputProps("username")}
+              onChange={(e) => {
+                const value = e.target.value;
+                setStatus(value.length > 0 ? "checking" : "idle");
+                form.setFieldValue("username", e.target.value);
+              }}
+            />
+          </Input.Wrapper>
+          <PasswordInput
+            required
+            type="password"
+            label="Password"
+            placeholder="Enter your password"
+            {...form.getInputProps("password")}
+          />
+          <TextInput
+            required
+            type="text"
+            label="NPSSO"
+            placeholder="Enter your NPSSO"
+            {...form.getInputProps("npsso")}
+          />
+          <Select
+            required
+            label="Language"
+            data={locales}
+            value={form.values.language}
+            onChange={(value) => {
+              form.setFieldValue("language", value ?? "en-US");
             }}
           />
-        </Input.Wrapper>
-        <PasswordInput
-          required
-          type="password"
-          label="Password"
-          placeholder="Enter your password"
-          {...form.getInputProps("password")}
-        />
-        <TextInput
-          required
-          type="text"
-          label="NPSSO"
-          placeholder="Enter your NPSSO"
-          {...form.getInputProps("npsso")}
-        />
-        <Select
-          required
-          label="Language"
-          data={locales}
-          value={form.values.language}
-          onChange={(value) => {
-            form.setFieldValue("language", value ?? "en-US");
-          }}
-        />
-        <Select
-          required
-          data={profileTypeOptions}
-          label="Profile type"
-          placeholder="Pick profile type"
-          {...form.getInputProps("type")}
-        />
-      </Stack>
-      <Button
-        type="submit"
-        mt="xl"
-        disabled={!form.isValid() || isChecking || !isUnique}
-        fullWidth>
-        Sign up!
-      </Button>
-      <Text ta="center" mt="md" size="sm" fw={500}>
+          <Select
+            required
+            data={profileTypeOptions}
+            label="Profile type"
+            placeholder="Pick profile type"
+            {...form.getInputProps("type")}
+          />
+        </Stack>
+        <Button
+          type="submit"
+          mt="xl"
+          disabled={!form.isValid() || isChecking || !isUnique}
+          fullWidth>
+          Sign up!
+        </Button>
+      </Box>
+      <Text ta="center" mt="xl" size="sm" fw={500}>
         Already have account?&nbsp;
         <Anchor
           component={Link}
@@ -239,7 +242,7 @@ const SignUpForm: FC = () => {
           Sign In!
         </Anchor>
       </Text>
-    </Box>
+    </Fragment>
   );
 };
 
