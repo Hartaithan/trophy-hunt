@@ -5,7 +5,7 @@ import "@mantine/tiptap/styles.css";
 import type { Metadata } from "next";
 import { type FC, type PropsWithChildren } from "react";
 import { Inter } from "next/font/google";
-import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import { MantineProvider, ColorSchemeScript, Container } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { theme } from "@/styles/theme";
@@ -30,10 +30,10 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
           defaultColorScheme="dark">
           <Notifications />
           <ModalsProvider>
-            <main>
-              <Header />
+            <Header />
+            <Container h="100%" w="100%">
               {children}
-            </main>
+            </Container>
           </ModalsProvider>
         </MantineProvider>
       </body>

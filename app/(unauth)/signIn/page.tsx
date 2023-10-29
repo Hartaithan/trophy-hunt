@@ -1,12 +1,11 @@
 import SignInForm from "@/forms/signIn";
-import { Anchor, Text, Title } from "@mantine/core";
+import { Anchor, Flex, Text, Title } from "@mantine/core";
 import { type NextPage } from "next";
 import Link from "next/link";
-import { Fragment } from "react";
 
 const SignInPage: NextPage = () => {
   return (
-    <Fragment>
+    <Flex h="100%" direction="column" justify="center" align="center">
       <Title order={2} ta="center" mb="md">
         Welcome back!
       </Title>
@@ -17,7 +16,7 @@ const SignInPage: NextPage = () => {
           Sign Up!
         </Anchor>
       </Text>
-    </Fragment>
+    </Flex>
   );
 };
 
