@@ -1,4 +1,4 @@
-import "./globals.css";
+import "../globals.css";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/tiptap/styles.css";
@@ -13,7 +13,7 @@ import { theme } from "@/styles/theme";
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
-  title: "Trophy Hunt",
+  title: "Welcome to Trophy Hunt",
   description: "Trophy Hunt App",
 };
 

@@ -46,7 +46,8 @@ const links: HeaderLink[] = [
 const Header: FC = () => {
   const pathname = usePathname();
   const { refresh } = useRouter();
-  const isAuth = false;
+  // TODO: add profile layout
+  const isAuth = true;
   const psn: any = {};
 
   const handleSignOut = (): void => {
@@ -93,7 +94,11 @@ const Header: FC = () => {
                 <Image
                   width={30}
                   height={30}
-                  src={psn?.avatarUrls[0].avatarUrl ?? ""}
+                  src={
+                    psn?.avatarUrls?.length > 0
+                      ? psn.avatarUrls[0].avatarUrl
+                      : ""
+                  }
                   alt="avatar"
                 />
               </UnstyledButton>
@@ -108,9 +113,7 @@ const Header: FC = () => {
                 Profile
               </Menu.Item>
               <Menu.Item
-                onClick={() => {
-                  handleSignOut();
-                }}
+                onClick={handleSignOut}
                 rightSection={<IconDoorExit size="1rem" />}>
                 Sign out
               </Menu.Item>
