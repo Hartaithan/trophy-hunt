@@ -6,13 +6,13 @@ import {
 import ProfileProvider from "@/providers/ProfileProvider";
 import { type FC, type PropsWithChildren } from "react";
 
-interface ProvidersProps extends PropsWithChildren {
+interface AuthProvidersProps extends PropsWithChildren {
   initialUser?: NullableUser;
   initialProfile?: NullableProfile;
   initialPSNProfile?: NullablePSNProfile;
 }
 
-const Providers: FC<ProvidersProps> = (props) => {
+const AuthProviders: FC<AuthProvidersProps> = (props) => {
   const {
     initialUser = null,
     initialProfile = null,
@@ -29,4 +29,4 @@ const Providers: FC<ProvidersProps> = (props) => {
   );
 };
 
-export default Providers;
+export default AuthProviders;

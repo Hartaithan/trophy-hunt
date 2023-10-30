@@ -4,13 +4,8 @@ import "@mantine/notifications/styles.css";
 import "@mantine/tiptap/styles.css";
 import type { Metadata } from "next";
 import { type FC, type PropsWithChildren } from "react";
-import { Inter } from "next/font/google";
-import { MantineProvider, ColorSchemeScript, Container } from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
-import { Notifications } from "@mantine/notifications";
-import { theme } from "@/styles/theme";
-
-const inter = Inter({ subsets: ["latin", "cyrillic"] });
+import { ColorSchemeScript, Container } from "@mantine/core";
+import AppProviders from "@/providers/AppProviders";
 
 export const metadata: Metadata = {
   title: "Welcome to Trophy Hunt",
@@ -24,16 +19,11 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
-        <MantineProvider
-          theme={{ ...theme, fontFamily: inter.style.fontFamily }}
-          defaultColorScheme="dark">
-          <Notifications />
-          <ModalsProvider>
-            <Container h="100%" w="100%">
-              {children}
-            </Container>
-          </ModalsProvider>
-        </MantineProvider>
+        <AppProviders>
+          <Container h="100%" w="100%">
+            {children}
+          </Container>
+        </AppProviders>
       </body>
     </html>
   );
