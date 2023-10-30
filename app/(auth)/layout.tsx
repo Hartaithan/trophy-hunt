@@ -10,6 +10,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { theme } from "@/styles/theme";
 import Header from "@/components/Header/Header";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -30,10 +31,12 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
           defaultColorScheme="dark">
           <Notifications />
           <ModalsProvider>
-            <Header />
-            <Container h="100%" w="100%">
-              {children}
-            </Container>
+            <Providers>
+              <Header />
+              <Container h="100%" w="100%">
+                {children}
+              </Container>
+            </Providers>
           </ModalsProvider>
         </MantineProvider>
       </body>

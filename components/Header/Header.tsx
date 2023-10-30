@@ -19,6 +19,7 @@ import API from "@/utils/api";
 import { usePathname, useRouter } from "next/navigation";
 import classes from "./Header.module.css";
 import clsx from "clsx";
+import { useProfiles } from "@/providers/ProfileProvider";
 
 const HEADER_HEIGHT = 48;
 
@@ -46,9 +47,7 @@ const links: HeaderLink[] = [
 const Header: FC = () => {
   const pathname = usePathname();
   const { refresh } = useRouter();
-  // TODO: add profile layout
-  const isAuth = true;
-  const psn: any = {};
+  const { isAuth, psn } = useProfiles();
 
   const handleSignOut = (): void => {
     API.get("/auth/signOut")
@@ -95,7 +94,7 @@ const Header: FC = () => {
                   width={30}
                   height={30}
                   src={
-                    psn?.avatarUrls?.length > 0
+                    psn != null && psn?.avatarUrls?.length > 0
                       ? psn.avatarUrls[0].avatarUrl
                       : ""
                   }
