@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "Trophy Hunt App",
 };
 
-const RootLayout: FC<PropsWithChildren> = ({ children }) => {
+const UnAuthLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en">
       <head>
@@ -29,4 +29,4 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-export default RootLayout;
+export default UnAuthLayout;
