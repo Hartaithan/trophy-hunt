@@ -7,8 +7,8 @@ export const GET = async (): Promise<Response> => {
   const cookieStore = cookies();
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
-  const access_token = cookies().get("psn-access-token");
-  const refresh_token = cookies().get("psn-refresh-token");
+  const access_token = cookies().get("psn-access-token")?.value;
+  const refresh_token = cookies().get("psn-refresh-token")?.value;
 
   if (access_token !== undefined) {
     console.error("user already has psn-access-token", access_token);
