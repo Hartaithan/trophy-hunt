@@ -20,5 +20,6 @@
     "no-console": ["error", { "allow": ["info", "error"] }],
     "prettier/prettier": ["error"],
     "@typescript-eslint/naming-convention": "off"
-  }
+  },
+  "ignorePatterns": ["next.config.js"]
 }
