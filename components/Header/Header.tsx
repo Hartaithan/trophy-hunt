@@ -5,6 +5,7 @@ import { type FC } from "react";
 import {
   Anchor,
   Badge,
+  Button,
   Container,
   Flex,
   Menu,
@@ -53,6 +54,7 @@ const Header: FC<HeaderProps> = (props) => {
   const { refresh } = useRouter();
 
   const handleSignOut = (): void => {
+    if (profile == null) return;
     API.get("/auth/signOut")
       .then(() => {
         refresh();
@@ -86,40 +88,52 @@ const Header: FC<HeaderProps> = (props) => {
             );
           })}
         </Flex>
-        <Menu width={150} position="bottom-end">
-          <Menu.Target>
-            <UnstyledButton className={classes.profile}>
-              <Badge mr="sm" radius="sm">
-                {profile?.onlineId ?? "[Not Found]"}
-              </Badge>
-              <Image
-                width={30}
-                height={30}
-                src={
-                  profile != null && profile?.avatarUrls?.length > 0
-                    ? profile.avatarUrls[0].avatarUrl
-                    : ""
-                }
-                alt="avatar"
-              />
-            </UnstyledButton>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item
-              component={Link}
-              prefetch={false}
-              href="/profile"
-              rightSection={<IconUser size="1rem" />}
-              lh="initial">
-              Profile
-            </Menu.Item>
-            <Menu.Item
-              onClick={handleSignOut}
-              rightSection={<IconDoorExit size="1rem" />}>
-              Sign out
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
+        {profile != null ? (
+          <Menu width={150} position="bottom-end">
+            <Menu.Target>
+              <UnstyledButton className={classes.profile}>
+                <Badge mr="sm" radius="sm">
+                  {profile?.onlineId ?? "[Not Found]"}
+                </Badge>
+                <Image
+                  width={30}
+                  height={30}
+                  src={
+                    profile?.avatarUrls?.length > 0
+                      ? profile.avatarUrls[0].avatarUrl
+                      : ""
+                  }
+                  alt="avatar"
+                />
+              </UnstyledButton>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                component={Link}
+                prefetch={false}
+                href="/profile"
+                rightSection={<IconUser size="1rem" />}
+                lh="initial">
+                Profile
+              </Menu.Item>
+              <Menu.Item
+                onClick={handleSignOut}
+                rightSection={<IconDoorExit size="1rem" />}>
+                Sign out
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        ) : (
+          <Button
+            component={Link}
+            prefetch={false}
+            href="/signIn"
+            size="compact-xs"
+            leftSection={<IconUser size="0.75rem" />}
+            variant="light">
+            Sign in
+          </Button>
+        )}
       </Container>
     </Flex>
   );

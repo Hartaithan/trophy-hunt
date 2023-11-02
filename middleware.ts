@@ -25,13 +25,14 @@ export const middleware: NextMiddleware = async (req) => {
     data: { session },
   } = await supabase.auth.getSession();
 
+  let refreshed_auth: NullableAuthResponse = null;
   let access_token = req.cookies.get("psn-access-token")?.value;
   let refresh_token = req.cookies.get("psn-refresh-token")?.value;
 
-  const isAuthPage = ["/signIn", "/signUp"].includes(req.nextUrl.pathname);
-
-  let refreshed_auth: NullableAuthResponse = null;
   const redirectUrl = req.nextUrl.clone();
+  const pathname = req.nextUrl.pathname;
+
+  const isAuthPage = ["/signIn", "/signUp"].includes(pathname);
 
   if (access_token === undefined && refresh_token !== undefined) {
     refreshed_auth = await refreshTokens(refresh_token);
@@ -46,6 +47,8 @@ export const middleware: NextMiddleware = async (req) => {
     access_token !== undefined &&
     refresh_token !== undefined &&
     session != null;
+
+  if (pathname === "/") return res;
 
   if (!isAuth && !isAuthPage) {
     const allCookies = cookies().getAll();
