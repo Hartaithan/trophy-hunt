@@ -18,6 +18,15 @@ const refreshTokens = async (token: string): Promise<NullableAuthResponse> => {
   return authorization;
 };
 
+const resetCookies = (res: NextResponse): NextResponse => {
+  const allCookies = cookies().getAll();
+  for (let i = 0; i < allCookies.length; i++) {
+    const cookie = allCookies[i];
+    res.cookies.delete(cookie.name);
+  }
+  return res;
+};
+
 export const middleware: NextMiddleware = async (req) => {
   const res = NextResponse.next();
   const supabase = createMiddlewareClient({ req, res });
@@ -33,6 +42,7 @@ export const middleware: NextMiddleware = async (req) => {
   const pathname = req.nextUrl.pathname;
 
   const isAuthPage = ["/signIn", "/signUp"].includes(pathname);
+  const isHomePage = pathname === "/";
 
   if (access_token === undefined && refresh_token !== undefined) {
     refreshed_auth = await refreshTokens(refresh_token);
@@ -48,17 +58,14 @@ export const middleware: NextMiddleware = async (req) => {
     refresh_token !== undefined &&
     session != null;
 
-  if (pathname === "/") return res;
+  if (!isAuth && isHomePage) {
+    return resetCookies(res);
+  }
 
   if (!isAuth && !isAuthPage) {
-    const allCookies = cookies().getAll();
     redirectUrl.pathname = "/signIn";
     const redirectRes = NextResponse.redirect(redirectUrl);
-    for (let i = 0; i < allCookies.length; i++) {
-      const cookie = allCookies[i];
-      redirectRes.cookies.delete(cookie.name);
-    }
-    return redirectRes;
+    return resetCookies(redirectRes);
   }
 
   if (isAuth && isAuthPage) {
