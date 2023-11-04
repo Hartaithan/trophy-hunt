@@ -1,3 +1,4 @@
+import { type PayloadObject } from "@/utils/payload";
 import { type Dispatch, type SetStateAction } from "react";
 
 export interface Note {
@@ -11,7 +12,7 @@ export interface Note {
   content: string;
 }
 
-export interface AddNotePayload {
+export interface AddNotePayload extends PayloadObject {
   game_id: number;
   trophy_id: number;
   content: string;

@@ -1,5 +1,5 @@
-type PayloadItem = [string, unknown];
-type PayloadObject = Record<string, unknown>;
+export type PayloadItem = [string, unknown];
+export type PayloadObject = Record<string, unknown>;
 
 interface ValidationResult {
   message: string;

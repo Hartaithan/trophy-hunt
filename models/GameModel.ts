@@ -1,3 +1,4 @@
+import { type PayloadObject } from "@/utils/payload";
 import { type BOARD_COLUMNS } from "./BoardModel";
 import { type Platform } from "./PlatformModel";
 import { type ProgressItem } from "./ProgressModel";
@@ -22,7 +23,7 @@ export type NewGamePayload = Omit<
   "id" | "created_at" | "updated_at" | "progress" | "position"
 >;
 
-export interface AddGamePayload {
+export interface AddGamePayload extends PayloadObject {
   game_id: string;
   status: BOARD_COLUMNS;
 }
@@ -38,6 +39,6 @@ export interface ReorderItem {
   status: BOARD_COLUMNS;
 }
 
-export interface ReorderPayload {
+export interface ReorderPayload extends PayloadObject {
   items: ReorderItem[];
 }
