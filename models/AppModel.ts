@@ -44,3 +44,7 @@ export interface CustomPosition {
   right?: string | number;
   transform: CSSProperties["transform"];
 }
+
+export interface RouteParams<T> {
+  params: T;
+}
