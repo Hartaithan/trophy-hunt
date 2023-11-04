@@ -38,9 +38,9 @@ const getGamesByUsername = async (req: Request): Promise<Response> => {
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
   if (
-    username === undefined ||
+    username == null ||
     Array.isArray(username) ||
-    username?.trim().length === 0
+    username.trim().length === 0
   ) {
     console.error("invalid [username] query", searchParams);
     return Response.json(
@@ -54,7 +54,7 @@ const getGamesByUsername = async (req: Request): Promise<Response> => {
     .select("id, type")
     .eq("username", username)
     .single<Profile>();
-  if (profileError !== null) {
+  if (profileError != null) {
     console.error(
       "there is no user with this username.",
       username,
