@@ -144,6 +144,28 @@ export const PUT = async (
   });
 };
 
-export const DELETE = async (): Promise<Response> => {
-  return Response.json("Hello World!");
+export const DELETE = async (
+  _req: Request,
+  { params }: RouteParams<Params>,
+): Promise<Response> => {
+  const { id } = params;
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+
+  if (id === undefined || Array.isArray(id)) {
+    console.error("invalid [id] query", id);
+    return Response.json({ message: "Invalid [id] query" }, { status: 400 });
+  }
+
+  const { error } = await supabase.from("games").delete().eq("id", id);
+
+  if (error !== null) {
+    console.error("unable to delete game by id", id, error);
+    return Response.json(
+      { message: "Unable to delete game by id", id },
+      { status: 400 },
+    );
+  }
+
+  return Response.json({ message: "Game successfully deleted!", id });
 };
