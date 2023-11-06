@@ -1,0 +1,11 @@
+.container {
+  background: var(--mantine-color-primary-7);
+  border-radius: var(--mantine-radius-lg);
+  padding: var(--mantine-spacing-xl);
+  align-items: center;
+}
+
+.avatar {
+  margin-right: var(--mantine-spacing-md);
+  border-radius: 50%;
+}

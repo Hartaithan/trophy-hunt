@@ -1,0 +1,7 @@
+.platform {
+  background: var(--mantine-color-yellow-7);
+}
+
+.platform > span {
+  color: var(--mantine-color-yellow-0);
+}

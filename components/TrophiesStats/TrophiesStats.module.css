@@ -1,0 +1,35 @@
+.container {
+  width: 100%;
+  gap: var(--mantine-spacing-md);
+}
+
+.content {
+  flex: 1;
+  background: var(--mantine-color-primary-7);
+  border-radius: var(--mantine-radius-lg);
+  padding: var(--mantine-spacing-xl);
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.block {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4;
+}
+
+.blockRow {
+  justify-content: center;
+  align-items: center;
+  gap: 4;
+}
+
+.progress {
+  flex-direction: column;
+  gap: 4;
+}
+
+.progressHeader {
+  justify-content: space-between;
+}
