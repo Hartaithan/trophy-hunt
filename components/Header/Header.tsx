@@ -104,6 +104,7 @@ const Header: FC<HeaderProps> = (props) => {
                       : ""
                   }
                   alt="avatar"
+                  unoptimized
                 />
               </UnstyledButton>
             </Menu.Target>

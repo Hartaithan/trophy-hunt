@@ -9,23 +9,11 @@ import Header from "@/components/Header/Header";
 import AppProviders from "@/providers/AppProviders";
 import { type NullablePSNProfile } from "@/models/AuthModel";
 import { API_URL } from "@/utils/api";
-import { cookies, headers } from "next/headers";
+import { getRefreshedCookies } from "@/utils/cookies";
 
 export const metadata: Metadata = {
   title: "Trophy Hunt",
   description: "Trophy Hunt App",
-};
-
-const getRefreshedCookies = (): string => {
-  let refreshed: string = cookies().toString() ?? "";
-  if (refreshed.includes("psn-access-token")) {
-    return refreshed;
-  }
-  const responseCookies = headers().get("set-cookie");
-  if (responseCookies !== undefined) {
-    refreshed = `${refreshed}; ${responseCookies}`;
-  }
-  return refreshed;
 };
 
 const getProfile = async (): Promise<NullablePSNProfile> => {
