@@ -20,9 +20,7 @@ const UnAuthLayout: FC<PropsWithChildren> = ({ children }) => {
       </head>
       <body>
         <AppProviders>
-          <Container h="100%" w="100%">
-            {children}
-          </Container>
+          <Container id="main">{children}</Container>
         </AppProviders>
       </body>
     </html>

@@ -45,9 +45,7 @@ const AuthLayout: FC<PropsWithChildren> = async ({ children }) => {
       <body>
         <AppProviders>
           <Header profile={profile} />
-          <Container h="100%" w="100%">
-            {children}
-          </Container>
+          <Container id="main">{children}</Container>
         </AppProviders>
       </body>
     </html>

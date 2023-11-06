@@ -4,10 +4,14 @@
   box-sizing: border-box;
 }
 
-html {
-  height: 100%;
+html,
+body {
   display: flex;
   flex-direction: column;
+}
+
+html {
+  height: 100%;
 }
 
 body {
@@ -20,10 +24,8 @@ body {
   overflow: auto;
 }
 
-main {
+#main {
+  flex-grow: 1;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
 }

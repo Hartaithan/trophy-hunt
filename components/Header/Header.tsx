@@ -65,7 +65,7 @@ const Header: FC<HeaderProps> = (props) => {
   };
 
   return (
-    <Flex className={classes.root} h={HEADER_HEIGHT}>
+    <Flex className={classes.root} mih={HEADER_HEIGHT}>
       <Container className={classes.container}>
         <Title order={4}>Trophy Hunt</Title>
         <Flex className={classes.links}>
