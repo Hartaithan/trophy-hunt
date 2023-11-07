@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  color: var(--mantine-color-secondary-8);
 }
 
 html,
@@ -19,6 +20,10 @@ body {
   scrollbar-gutter: stable;
 }
 
+html > body {
+  background-color: var(--mantine-color-primary-8);
+}
+
 html,
 body {
   overflow: auto;
@@ -28,4 +33,18 @@ body {
   flex-grow: 1;
   height: 100%;
   width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  background: var(--mantine-color-primary-8);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: var(--mantine-color-primary-5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mantine-color-primary-4);
 }

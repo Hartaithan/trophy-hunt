@@ -1,5 +1,6 @@
 .root {
   width: 100%;
+  border-bottom: 1px solid var(--mantine-color-primary-6);
 }
 
 .container {

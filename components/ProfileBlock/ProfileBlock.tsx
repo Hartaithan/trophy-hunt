@@ -67,7 +67,8 @@ const ProfileBlock: FC<ProfileBlockProps> = (props) => {
         <Box ml={64}>
           <Text>Language</Text>
           <Text fz="xl" fw={700}>
-            {locales.find((i) => i.value === profile.language)?.label}
+            {locales.find((i) => i.value === profile.language)?.label ??
+              "[Not Found]"}
           </Text>
         </Box>
       )}
