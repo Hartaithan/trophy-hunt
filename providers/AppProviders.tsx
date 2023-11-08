@@ -1,4 +1,5 @@
-import { extendedColors } from "@/styles/colors";
+"use client";
+
 import { theme } from "@/styles/theme";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
@@ -14,7 +15,6 @@ const AppProviders: FC<PropsWithChildren> = ({ children }) => {
       theme={{
         ...theme,
         fontFamily: inter.style.fontFamily,
-        colors: extendedColors,
       }}
       defaultColorScheme="dark">
       <Notifications />
