@@ -6,6 +6,9 @@ import type { Metadata } from "next";
 import { type FC, type PropsWithChildren } from "react";
 import { ColorSchemeScript, Container } from "@mantine/core";
 import AppProviders from "@/providers/AppProviders";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
   title: "Welcome to Trophy Hunt",
@@ -19,7 +22,7 @@ const UnAuthLayout: FC<PropsWithChildren> = ({ children }) => {
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
-        <AppProviders>
+        <AppProviders fontFamily={inter.style.fontFamily}>
           <Container id="main">{children}</Container>
         </AppProviders>
       </body>

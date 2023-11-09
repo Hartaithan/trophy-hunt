@@ -10,6 +10,9 @@ import AppProviders from "@/providers/AppProviders";
 import { type NullablePSNProfile } from "@/models/AuthModel";
 import { API_URL } from "@/utils/api";
 import { getRefreshedCookies } from "@/utils/cookies";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
   title: "Trophy Hunt",
@@ -43,7 +46,7 @@ const AuthLayout: FC<PropsWithChildren> = async ({ children }) => {
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
-        <AppProviders>
+        <AppProviders fontFamily={inter.style.fontFamily}>
           <Header profile={profile} />
           <Container id="main">{children}</Container>
         </AppProviders>

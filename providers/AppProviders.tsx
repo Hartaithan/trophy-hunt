@@ -4,17 +4,19 @@ import { theme } from "@/styles/theme";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
-import { Inter } from "next/font/google";
 import { type FC, type PropsWithChildren } from "react";
 
-const inter = Inter({ subsets: ["latin", "cyrillic"] });
+interface Props extends PropsWithChildren {
+  fontFamily: string;
+}
 
-const AppProviders: FC<PropsWithChildren> = ({ children }) => {
+const AppProviders: FC<Props> = (props) => {
+  const { children, fontFamily } = props;
   return (
     <MantineProvider
       theme={{
         ...theme,
-        fontFamily: inter.style.fontFamily,
+        fontFamily,
       }}
       defaultColorScheme="dark">
       <Notifications />
