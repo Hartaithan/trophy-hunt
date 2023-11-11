@@ -12,11 +12,11 @@ import { type Game } from "@/models/GameModel";
 import ProgressStats from "../ProgressStats/ProgressStats";
 import ColumnBadge from "../ColumnBadge/ColumnBadge";
 import PlatformBadge from "../PlatformBadge/PlatformBadge";
-import { useRouter } from "next/router";
 import BoardCardMenu from "../BoardCardMenu/BoardCardMenu";
 import Image from "next/image";
 import clsx from "clsx";
 import classes from "./BoardCard.module.css";
+import { useRouter } from "next/navigation";
 
 interface BoardCardProps {
   item: Game;
@@ -61,9 +61,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
     e.stopPropagation();
     if (!interactive) return;
     const route = `/game/${id}`;
-    push(route).catch(() => {
-      console.error("unable to route to " + route);
-    });
+    push(route);
   };
 
   return (

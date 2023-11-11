@@ -1,7 +1,9 @@
+import BoardContainer from "@/components/BoardContainer/BoardContainer";
 import { type Game } from "@/models/GameModel";
+import BoardProvider from "@/providers/BoardProvider";
 import { API_URL } from "@/utils/api";
+import { initializeBoard } from "@/utils/board";
 import { getRefreshedCookies } from "@/utils/cookies";
-import { Flex, Title } from "@mantine/core";
 import { type NextPage } from "next";
 
 const getBoard = async (): Promise<Game[]> => {
@@ -23,23 +25,12 @@ const getBoard = async (): Promise<Game[]> => {
 
 const BoardPage: NextPage = async () => {
   const board = await getBoard();
+  const initializedBoard = initializeBoard(board);
+
   return (
-    <Flex h="100%" direction="column" justify="center" align="center">
-      <Title>BoardPage</Title>
-      {board.length > 0 ? (
-        <pre
-          style={{
-            maxWidth: 600,
-            maxHeight: 400,
-            overflow: "auto",
-            fontSize: 8,
-          }}>
-          {JSON.stringify(board, null, 2)}
-        </pre>
-      ) : (
-        <pre>empty</pre>
-      )}
-    </Flex>
+    <BoardProvider initializedBoard={initializedBoard}>
+      <BoardContainer />
+    </BoardProvider>
   );
 };
 
