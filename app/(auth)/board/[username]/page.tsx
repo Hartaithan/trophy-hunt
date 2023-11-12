@@ -1,9 +1,10 @@
+import BoardPreview from "@/components/BoardPreview/BoardPreview";
 import { type Params } from "@/models/AppModel";
 import { type Game } from "@/models/GameModel";
 import { API_URL } from "@/utils/api";
 import { initializeBoard } from "@/utils/board";
 import { getRefreshedCookies } from "@/utils/cookies";
-import { Flex } from "@mantine/core";
+import { Flex, Title } from "@mantine/core";
 import { type NextPage } from "next";
 
 interface BoardParams {
@@ -28,18 +29,17 @@ const getUsernameBoard = async (username: string): Promise<Game[] | null> => {
 };
 
 const BoardPage: NextPage<Params<BoardParams>> = async ({
-  params: { username },
+  params: { username = "[Not Found]" },
 }) => {
   const board = await getUsernameBoard(username);
   const initializedBoard = initializeBoard(board);
 
   return (
-    <Flex h="100%" direction="column" justify="center" align="center">
-      <pre style={{ maxWidth: 400, overflow: "auto", fontSize: 8 }}>
-        {board == null
-          ? "unable to fetch board"
-          : JSON.stringify(initializedBoard, null, 2)}
-      </pre>
+    <Flex direction="column" h="100%" pt="md" pb="xl">
+      <Title order={3} mb="sm" tt="capitalize">
+        {username}&apos;s board
+      </Title>
+      <BoardPreview isReady={board != null} board={initializedBoard} />
     </Flex>
   );
 };
