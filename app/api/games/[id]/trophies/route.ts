@@ -17,13 +17,13 @@ import {
   getUserTrophyGroupEarningsForTitle,
 } from "psn-api";
 
-interface Params {
+interface TrophyParams {
   id: string;
 }
 
 export const GET = async (
   req: Request,
-  { params }: Params<Params>,
+  { params }: Params<TrophyParams>,
 ): Promise<Response> => {
   const { id } = params;
   const { searchParams } = new URL(req.url);

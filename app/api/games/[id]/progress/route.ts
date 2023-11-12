@@ -10,7 +10,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
-interface Params {
+interface GameParams {
   id: string;
 }
 
@@ -40,7 +40,7 @@ const updateProgress = async (
 
 export const POST = async (
   req: Request,
-  { params }: Params<Params>,
+  { params }: Params<GameParams>,
 ): Promise<Response> => {
   const { id } = params;
 

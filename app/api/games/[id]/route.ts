@@ -7,13 +7,13 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
-interface Params {
+interface GameParams {
   id: string;
 }
 
 export const GET = async (
   _req: Request,
-  { params }: Params<Params>,
+  { params }: Params<GameParams>,
 ): Promise<Response> => {
   const { id } = params;
   const cookieStore = cookies();
@@ -93,7 +93,7 @@ export const GET = async (
 
 export const PUT = async (
   req: Request,
-  { params }: Params<Params>,
+  { params }: Params<GameParams>,
 ): Promise<Response> => {
   const { id } = params;
 
@@ -146,7 +146,7 @@ export const PUT = async (
 
 export const DELETE = async (
   _req: Request,
-  { params }: Params<Params>,
+  { params }: Params<GameParams>,
 ): Promise<Response> => {
   const { id } = params;
   const cookieStore = cookies();

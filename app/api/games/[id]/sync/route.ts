@@ -14,13 +14,13 @@ import {
   getUserTrophiesEarnedForTitle,
 } from "psn-api";
 
-interface Params {
+interface GameParams {
   id: string;
 }
 
 export const GET = async (
   _req: Request,
-  { params }: Params<Params>,
+  { params }: Params<GameParams>,
 ): Promise<Response> => {
   const { id } = params;
 
