@@ -1,4 +1,4 @@
-import { type RouteParams } from "@/models/AppModel";
+import { type Params } from "@/models/AppModel";
 import {
   type ProgressItem,
   type ProgressPayload,
@@ -40,7 +40,7 @@ const updateProgress = async (
 
 export const POST = async (
   req: Request,
-  { params }: RouteParams<Params>,
+  { params }: Params<Params>,
 ): Promise<Response> => {
   const { id } = params;
 

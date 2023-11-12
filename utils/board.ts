@@ -1,13 +1,14 @@
 import { BOARD_COLUMNS, type BoardColumns } from "@/models/BoardModel";
 import { type Game } from "@/models/GameModel";
 
-export const initializeBoard = (items: Game[]): BoardColumns => {
+export const initializeBoard = (items: Game[] | null): BoardColumns => {
   const columns: BoardColumns = {
     [BOARD_COLUMNS.Backlog]: [],
     [BOARD_COLUMNS.InProgress]: [],
     [BOARD_COLUMNS.Platinum]: [],
     [BOARD_COLUMNS.Complete]: [],
   };
+  if (items == null) return columns;
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const { status } = item;

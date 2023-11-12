@@ -1,4 +1,4 @@
-import { type RouteParams } from "@/models/AppModel";
+import { type Params } from "@/models/AppModel";
 import {
   type TitleEarnedGroups,
   type TitleEarnedTrophies,
@@ -23,7 +23,7 @@ interface Params {
 
 export const GET = async (
   req: Request,
-  { params }: RouteParams<Params>,
+  { params }: Params<Params>,
 ): Promise<Response> => {
   const { id } = params;
   const { searchParams } = new URL(req.url);

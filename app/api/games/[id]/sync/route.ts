@@ -1,4 +1,4 @@
-import { type RouteParams } from "@/models/AppModel";
+import { type Params } from "@/models/AppModel";
 import { type ProgressItem } from "@/models/ProgressModel";
 import {
   type TitleEarnedTrophies,
@@ -20,7 +20,7 @@ interface Params {
 
 export const GET = async (
   _req: Request,
-  { params }: RouteParams<Params>,
+  { params }: Params<Params>,
 ): Promise<Response> => {
   const { id } = params;
 

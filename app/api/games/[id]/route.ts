@@ -1,4 +1,4 @@
-import { type RouteParams } from "@/models/AppModel";
+import { type Params } from "@/models/AppModel";
 import { type Game } from "@/models/GameModel";
 import { validatePayload } from "@/utils/payload";
 import {
@@ -13,7 +13,7 @@ interface Params {
 
 export const GET = async (
   _req: Request,
-  { params }: RouteParams<Params>,
+  { params }: Params<Params>,
 ): Promise<Response> => {
   const { id } = params;
   const cookieStore = cookies();
@@ -93,7 +93,7 @@ export const GET = async (
 
 export const PUT = async (
   req: Request,
-  { params }: RouteParams<Params>,
+  { params }: Params<Params>,
 ): Promise<Response> => {
   const { id } = params;
 
@@ -146,7 +146,7 @@ export const PUT = async (
 
 export const DELETE = async (
   _req: Request,
-  { params }: RouteParams<Params>,
+  { params }: Params<Params>,
 ): Promise<Response> => {
   const { id } = params;
   const cookieStore = cookies();

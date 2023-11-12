@@ -1,4 +1,4 @@
-import { type RouteParams } from "@/models/AppModel";
+import { type Params } from "@/models/AppModel";
 import { type Note } from "@/models/NoteModel";
 import { validatePayload } from "@/utils/payload";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
@@ -10,7 +10,7 @@ interface Params {
 
 export const GET = async (
   _req: Request,
-  { params }: RouteParams<Params>,
+  { params }: Params<Params>,
 ): Promise<Response> => {
   const { id } = params;
   if (id == null || Array.isArray(id)) {
@@ -40,7 +40,7 @@ export const GET = async (
 
 export const PUT = async (
   req: Request,
-  { params }: RouteParams<Params>,
+  { params }: Params<Params>,
 ): Promise<Response> => {
   const { id } = params;
   if (id == null || Array.isArray(id)) {
@@ -89,7 +89,7 @@ export const PUT = async (
 
 export const DELETE = async (
   _req: Request,
-  { params }: RouteParams<Params>,
+  { params }: Params<Params>,
 ): Promise<Response> => {
   const { id } = params;
   if (id == null || Array.isArray(id)) {
