@@ -11,6 +11,7 @@ import {
   Notification,
 } from "@mantine/core";
 import { extendedColors } from "./colors";
+import { type CustomPosition } from "@/models/AppModel";
 
 const ContainerDefaultProps: Partial<ContainerProps> = {
   size: "xl",
@@ -44,3 +45,9 @@ export const theme = createTheme({
     }),
   },
 });
+
+export const centeredDialog: CustomPosition = {
+  top: 20,
+  left: "50%",
+  transform: "translateX(-50%)",
+};
