@@ -1,0 +1,14 @@
+.container {
+  width: 100%;
+}
+
+.content {
+  flex-direction: column;
+  flex: 1;
+}
+
+.icon {
+  width: auto;
+  object-fit: contain;
+  border-radius: var(--mantine-radius-md);
+}

@@ -1,9 +1,15 @@
+import GameInfo from "@/components/GameInfo/GameInfo";
+import TrophyGroups from "@/components/TrophyGroups/TrophyGroups";
+import TrophyPanel from "@/components/TrophyPanel/TrophyPanel";
 import { type Params } from "@/models/AppModel";
 import { type Game } from "@/models/GameModel";
 import { type FormattedResponse } from "@/models/TrophyModel";
+import CongratulationProvider from "@/providers/CongratulationProvider";
+import GameProvider from "@/providers/GameProvider";
 import { API_URL } from "@/utils/api";
 import { getRefreshedCookies } from "@/utils/cookies";
-import { Flex } from "@mantine/core";
+import { Stack, Text, Flex, Title } from "@mantine/core";
+import { IconMoodSadDizzy } from "@tabler/icons-react";
 import { type NextPage } from "next";
 
 interface GameParams {
@@ -50,22 +56,29 @@ const getGame = async (id: string): Promise<GameResponse | null> => {
 
 const GamePage: NextPage<Params<GameParams>> = async ({ params: { id } }) => {
   const response = await getGame(id);
+
+  if (response == null)
+    return (
+      <Flex justify="center" align="center" direction="column">
+        <IconMoodSadDizzy size={120} />
+        <Title order={3}>Game not exist!</Title>
+        <Text c="dimmed">Or you don&apos;t have access to this page</Text>
+      </Flex>
+    );
+
   return (
-    <Flex h="100%" p="xl" direction="column" justify="center" align="center">
-      {response != null ? (
-        <pre
-          style={{
-            maxWidth: 600,
-            maxHeight: 600,
-            overflow: "auto",
-            fontSize: 8,
-          }}>
-          {JSON.stringify(response, null, 2)}
-        </pre>
-      ) : (
-        <pre>unable to fetch game</pre>
-      )}
-    </Flex>
+    <CongratulationProvider>
+      <GameProvider
+        id={id}
+        initialGame={response.game}
+        initialTrophies={response.trophies}>
+        <Stack gap="xl" py="xl">
+          <GameInfo />
+          <TrophyPanel />
+          <TrophyGroups />
+        </Stack>
+      </GameProvider>
+    </CongratulationProvider>
   );
 };
 

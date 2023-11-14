@@ -1,3 +1,5 @@
+"use client";
+
 import Congratulation from "@/components/Congratulation/Congratulation";
 import { Transition } from "@mantine/core";
 import {
