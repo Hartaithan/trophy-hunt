@@ -1,0 +1,15 @@
+.collapsible {
+  position: relative;
+  top: var(--mantine-spacing-xl);
+}
+
+.empty {
+  height: 130px;
+  width: 100%;
+  background: var(--mantine-color-primary-7);
+  border-radius: var(--mantine-radius-lg);
+  padding: var(--mantine-spacing-sm);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
