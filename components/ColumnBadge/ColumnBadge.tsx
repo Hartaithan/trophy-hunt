@@ -1,8 +1,9 @@
 import { memo, type FC } from "react";
-import { Badge, DEFAULT_THEME } from "@mantine/core";
+import { Badge } from "@mantine/core";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
 import { columnColors, columnsLabels } from "@/constants/board";
 import classes from "./ColumnBadge.module.css";
+import { mantineTheme } from "@/styles/theme";
 
 interface ColumnBadgeProps {
   status: BOARD_COLUMNS | null;
@@ -10,7 +11,7 @@ interface ColumnBadgeProps {
 
 const ColumnBadge: FC<ColumnBadgeProps> = (props) => {
   const { status } = props;
-  const colors = DEFAULT_THEME.colors;
+  const colors = mantineTheme.colors;
   const { color, shade } = columnColors[status ?? "backlog"];
 
   return (

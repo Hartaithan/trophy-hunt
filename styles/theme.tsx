@@ -9,6 +9,8 @@ import {
   type ModalProps,
   type NotificationProps,
   Notification,
+  mergeMantineTheme,
+  DEFAULT_THEME,
 } from "@mantine/core";
 import { extendedColors } from "./colors";
 import { type CustomPosition } from "@/models/AppModel";
@@ -45,6 +47,8 @@ export const theme = createTheme({
     }),
   },
 });
+
+export const mantineTheme = mergeMantineTheme(DEFAULT_THEME, theme);
 
 export const centeredDialog: CustomPosition = {
   top: 20,

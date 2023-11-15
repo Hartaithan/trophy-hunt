@@ -9,7 +9,6 @@ import {
   Fragment,
 } from "react";
 import {
-  DEFAULT_THEME as theme,
   Loader,
   Flex,
   Title,
@@ -33,6 +32,7 @@ import { notifications } from "@mantine/notifications";
 import Link from "next/link";
 import { profileTypeOptions } from "@/constants/options";
 import { locales } from "@/constants/locales";
+import { mantineTheme } from "@/styles/theme";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -41,8 +41,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const statusIcons: Record<Status, ReactNode> = {
   idle: undefined,
   checking: <Loader size="xs" />,
-  unique: <IconUserCheck size={20} color={theme.colors.green[8]} />,
-  notUnique: <IconUserX size={20} color={theme.colors.red[8]} />,
+  unique: <IconUserCheck size={20} color={mantineTheme.colors.green[8]} />,
+  notUnique: <IconUserX size={20} color={mantineTheme.colors.red[8]} />,
 };
 
 const SignUpForm: FC = () => {
