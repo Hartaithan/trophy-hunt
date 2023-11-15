@@ -11,9 +11,19 @@ import {
   Notification,
   mergeMantineTheme,
   DEFAULT_THEME,
+  Badge,
+  Menu,
+  SegmentedControl,
 } from "@mantine/core";
+import { RichTextEditor } from "@mantine/tiptap";
 import { extendedColors } from "./colors";
 import { type CustomPosition } from "@/models/AppModel";
+import BadgeClasses from "./Badge.module.css";
+import ModalClasses from "./Modal.module.css";
+import NotificationClasses from "./Notification.module.css";
+import MenuClasses from "./Menu.module.css";
+import SegmentedControlClasses from "./SegmentedControl.module.css";
+import RichTextEditorClasses from "./RichTextEditor.module.css";
 
 const ContainerDefaultProps: Partial<ContainerProps> = {
   size: "xl",
@@ -33,17 +43,31 @@ export const theme = createTheme({
   colors: extendedColors,
   primaryColor: "accent",
   components: {
+    Badge: Badge.extend({
+      classNames: BadgeClasses,
+    }),
     Container: Container.extend({
       defaultProps: ContainerDefaultProps,
     }),
     Modal: Modal.extend({
       defaultProps: ModalDefaultProps,
+      classNames: ModalClasses,
     }),
     ModalRoot: ModalRoot.extend({
       defaultProps: ModalDefaultProps,
     }),
     Notification: Notification.extend({
       defaultProps: NotificationDefaultProps,
+      classNames: NotificationClasses,
+    }),
+    Menu: Menu.extend({
+      classNames: MenuClasses,
+    }),
+    SegmentedControl: SegmentedControl.extend({
+      classNames: SegmentedControlClasses,
+    }),
+    RichTextEditor: RichTextEditor.extend({
+      classNames: RichTextEditorClasses,
     }),
   },
 });
