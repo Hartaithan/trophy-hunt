@@ -18,18 +18,25 @@
   gap: var(--mantine-spacing-xs);
 }
 
-.link {
+a.link {
   font-size: var(--mantine-font-size-sm);
   font-weight: 500;
   text-decoration: none;
   padding: 2px 8px;
+  color: var(--mantine-color-secondary-8);
 }
 
-.activeLink {
+a.link:hover {
+  color: var(--mantine-color-accent-3);
+}
+
+a.activeLink {
+  text-decoration: underline;
+  color: var(--mantine-color-accent-4);
   border-radius: var(--mantine-radius-sm);
 }
 
-.disabledLink {
+a.disabledLink {
   pointer-events: none;
   opacity: 0.5;
 }
