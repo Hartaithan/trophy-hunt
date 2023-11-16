@@ -1,5 +1,6 @@
 "use client";
 
+import { youtubeLinkRegex } from "@/constants/regex";
 import { type ModalProps } from "@/models/ModalModel";
 import { centeredDialog } from "@/styles/theme";
 import {
@@ -14,9 +15,6 @@ import { type TransformedValues, matches, useForm } from "@mantine/form";
 import { useRichTextEditorContext } from "@mantine/tiptap";
 import { type FC, memo } from "react";
 
-const isYoutubeLink =
-  /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w-_]+)/gim;
-
 const AddYoutubeLinkDialog: FC<ModalProps> = (props) => {
   const { opened, setOpened } = props;
   const { editor } = useRichTextEditorContext();
@@ -24,7 +22,7 @@ const AddYoutubeLinkDialog: FC<ModalProps> = (props) => {
   const form = useForm({
     initialValues: { url: "" },
     validate: {
-      url: matches(isYoutubeLink, "Enter a valid youtube url"),
+      url: matches(youtubeLinkRegex, "Enter a valid youtube url"),
     },
   });
 

@@ -33,6 +33,7 @@ import Link from "next/link";
 import { profileTypeOptions } from "@/constants/options";
 import { locales } from "@/constants/locales";
 import { mantineTheme } from "@/styles/theme";
+import { usernameRegex } from "@/constants/regex";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -64,7 +65,7 @@ const SignUpForm: FC = () => {
     validate: {
       email: isEmail("Invalid email"),
       username: (value) =>
-        /^[\w-_]*$/.test(value)
+        usernameRegex.test(value)
           ? null
           : "Username can only include letters, numbers, dashes and underscores",
       password: hasLength(

@@ -1,5 +1,6 @@
 "use client";
 
+import { imageUrlRegex } from "@/constants/regex";
 import { type ModalProps } from "@/models/ModalModel";
 import { centeredDialog } from "@/styles/theme";
 import {
@@ -21,10 +22,7 @@ const AddImageDialog: FC<ModalProps> = (props) => {
   const form = useForm({
     initialValues: { image_url: "" },
     validate: {
-      image_url: matches(
-        /^(http(s?):)([/|.|\w|\s|-])*\.(?:png|gif|webp|jpeg|jpg)$/,
-        "Enter a valid image url",
-      ),
+      image_url: matches(imageUrlRegex, "Enter a valid image url"),
     },
   });
 
