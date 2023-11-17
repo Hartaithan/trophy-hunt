@@ -35,7 +35,6 @@ import TaskItem from "@tiptap/extension-task-item";
 import Image from "@tiptap/extension-image";
 import { useGame } from "@/providers/GameProvider";
 import PlatformBadge from "@/components/PlatformBadge/PlatformBadge";
-// import editorStyles from "@/styles/editor";
 import {
   ImageControl,
   LiftListItemControl,
@@ -358,10 +357,6 @@ const NoteModal: FC<NoteModalProps> = (props) => {
           </Group>
         </Modal.Body>
       </Modal.Content>
-      {/* TODO: apply editor styles with modules  */}
-      {/* <style jsx global>
-        {editorStyles}
-      </style> */}
     </Modal.Root>
   );
 };
