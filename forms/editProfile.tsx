@@ -1,6 +1,6 @@
 "use client";
 
-import { locales } from "@/constants/locales";
+import LanguageSelect from "@/components/LanguageSelect/LanguageSelect";
 import { profileTypeOptions } from "@/constants/options";
 import { type NullableProfile, type ProfileEditBody } from "@/models/AuthModel";
 import API from "@/utils/api";
@@ -85,9 +85,7 @@ const EditProfileForm: FC<Props> = (props) => {
           </Input.Wrapper>
         </Grid.Col>
         <Grid.Col span={6}>
-          <Select
-            label="Language"
-            data={locales}
+          <LanguageSelect
             value={form.values.language}
             onChange={(value) => {
               form.setFieldValue("language", value ?? "en-US");

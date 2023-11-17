@@ -31,9 +31,9 @@ import API from "@/utils/api";
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
 import { profileTypeOptions } from "@/constants/options";
-import { locales } from "@/constants/locales";
 import { mantineTheme } from "@/styles/theme";
 import { usernameRegex } from "@/constants/regex";
+import LanguageSelect from "@/components/LanguageSelect/LanguageSelect";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -207,10 +207,8 @@ const SignUpForm: FC = () => {
             placeholder="Enter your NPSSO"
             {...form.getInputProps("npsso")}
           />
-          <Select
+          <LanguageSelect
             required
-            label="Language"
-            data={locales}
             value={form.values.language}
             onChange={(value) => {
               form.setFieldValue("language", value ?? "en-US");
