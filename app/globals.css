@@ -35,6 +35,16 @@ body {
   width: 100%;
 }
 
+#reward {
+  z-index: 99999;
+  position: fixed;
+  pointer-events: none;
+  width: 5px;
+  height: 5px;
+  top: 90%;
+  left: 50%;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   background: var(--mantine-color-primary-8);
