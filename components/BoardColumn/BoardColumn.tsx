@@ -52,10 +52,12 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
         <Flex
           className={classes.header}
           style={{ borderBottom: `3px ${colors[color][shade]} solid` }}>
-          <Text className={classes.label} fw={500}>
+          <Flex align="center">
             <Box className={classes.labelDot} bg={colors[color][shade]} />
-            {columnsLabels[column]}
-          </Text>
+            <Text className={classes.label} fw={500}>
+              {columnsLabels[column]}
+            </Text>
+          </Flex>
           <Text className={classes.count} size="xs" fw={600} ta="center">
             {items.length}
           </Text>
