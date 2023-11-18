@@ -2,15 +2,7 @@
 
 import { youtubeLinkRegex } from "@/constants/regex";
 import { type ModalProps } from "@/models/ModalModel";
-import { centeredDialog } from "@/styles/theme";
-import {
-  Button,
-  Text,
-  TextInput,
-  Dialog,
-  Group,
-  type DialogProps,
-} from "@mantine/core";
+import { Button, Text, TextInput, Dialog, Group } from "@mantine/core";
 import { type TransformedValues, matches, useForm } from "@mantine/form";
 import { useRichTextEditorContext } from "@mantine/tiptap";
 import { type FC, memo } from "react";
@@ -49,7 +41,7 @@ const AddYoutubeLinkDialog: FC<ModalProps> = (props) => {
     <Dialog
       opened={opened}
       withCloseButton
-      position={centeredDialog as DialogProps["position"]}
+      portalProps={{ id: "centered" }}
       onClose={handleClose}
       size="lg"
       radius="md"

@@ -17,7 +17,6 @@ import {
 } from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
 import { extendedColors } from "./colors";
-import { type CustomPosition } from "@/models/AppModel";
 import BadgeClasses from "./Badge.module.css";
 import ModalClasses from "./Modal.module.css";
 import NotificationClasses from "./Notification.module.css";
@@ -73,9 +72,3 @@ export const theme = createTheme({
 });
 
 export const mantineTheme = mergeMantineTheme(DEFAULT_THEME, theme);
-
-export const centeredDialog: CustomPosition = {
-  top: 20,
-  left: "50%",
-  transform: "translateX(-50%)",
-};
