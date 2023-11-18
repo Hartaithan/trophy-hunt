@@ -62,9 +62,6 @@ export const POST = async (
     return Response.json(results, { status: 400 });
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   if (id === undefined || Array.isArray(id)) {
     console.error("invalid [id] query", id);
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
@@ -76,6 +73,7 @@ export const POST = async (
     return Response.json({ message: "Invalid payload" }, { status: 400 });
   }
 
+  const supabase = createRouteHandlerClient({ cookies });
   const { data, error } = await supabase
     .from("games")
     .select("progress")

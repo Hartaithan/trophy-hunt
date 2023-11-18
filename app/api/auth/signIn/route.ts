@@ -22,9 +22,6 @@ export const POST = async (req: Request): Promise<Response> => {
   }
   const { email, password, npsso } = body;
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   const results = validatePayload(body, ["email", "password", "npsso"]);
   if (results !== null) {
     console.error("invalid payload", results.errors);
@@ -57,6 +54,7 @@ export const POST = async (req: Request): Promise<Response> => {
   const { accessToken, expiresIn, refreshToken, refreshTokenExpiresIn } =
     authorization;
 
+  const supabase = createRouteHandlerClient({ cookies });
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error != null) {
     console.error("sign in with password error", error);

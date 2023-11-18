@@ -16,8 +16,6 @@ export const GET = async (
   { params }: Params<GameParams>,
 ): Promise<Response> => {
   const { id } = params;
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
   if (id == null || Array.isArray(id)) {
     console.error("invalid [id] query", id);
@@ -26,6 +24,7 @@ export const GET = async (
 
   let user: User | null = null;
   let game: Game | null = null;
+  const supabase = createRouteHandlerClient({ cookies });
   const [userRes, gameRes] = await Promise.allSettled([
     await supabase.auth.getUser(),
     await supabase.from("games").select("*").eq("id", id).single<Game>(),
@@ -109,9 +108,6 @@ export const PUT = async (
     );
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   if (id === undefined || Array.isArray(id)) {
     console.error("invalid [id] query", id);
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
@@ -123,6 +119,7 @@ export const PUT = async (
     return Response.json(results, { status: 400 });
   }
 
+  const supabase = createRouteHandlerClient({ cookies });
   const { data, error } = await supabase
     .from("games")
     .update(body)
@@ -149,14 +146,13 @@ export const DELETE = async (
   { params }: Params<GameParams>,
 ): Promise<Response> => {
   const { id } = params;
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
   if (id === undefined || Array.isArray(id)) {
     console.error("invalid [id] query", id);
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
   }
 
+  const supabase = createRouteHandlerClient({ cookies });
   const { error } = await supabase.from("games").delete().eq("id", id);
 
   if (error !== null) {

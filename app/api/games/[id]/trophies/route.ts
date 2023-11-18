@@ -38,14 +38,12 @@ export const GET = async (
     );
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   if (id === undefined || Array.isArray(id)) {
     console.error("invalid [id] query", id);
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
   }
 
+  const supabase = createRouteHandlerClient({ cookies });
   const {
     data: { user },
     error: userError,

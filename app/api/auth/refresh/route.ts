@@ -4,9 +4,6 @@ import { cookies } from "next/headers";
 import { exchangeRefreshTokenForAuthTokens } from "psn-api";
 
 export const GET = async (): Promise<Response> => {
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   const access_token = cookies().get("psn-access-token")?.value;
   const refresh_token = cookies().get("psn-refresh-token")?.value;
 
@@ -26,6 +23,7 @@ export const GET = async (): Promise<Response> => {
     );
   }
 
+  const supabase = createRouteHandlerClient({ cookies });
   const {
     data: { user },
     error: userError,

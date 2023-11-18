@@ -4,8 +4,7 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 export const GET = async (): Promise<Response> => {
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+  const supabase = createRouteHandlerClient({ cookies });
 
   const {
     data: { user },
@@ -42,15 +41,13 @@ export const PUT = async (req: Request): Promise<Response> => {
     );
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   const results = validatePayload(body);
   if (results !== null) {
     console.error("invalid payload", results.errors);
     return Response.json(results, { status: 400 });
   }
 
+  const supabase = createRouteHandlerClient({ cookies });
   const {
     data: { user },
     error: userError,

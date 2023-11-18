@@ -27,9 +27,7 @@ export const GET = async (req: Request): Promise<Response> => {
     );
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
+  const supabase = createRouteHandlerClient({ cookies });
   const { data, error } = await supabase
     .from("notes")
     .select("*")
@@ -69,8 +67,7 @@ export const POST = async (req: Request): Promise<Response> => {
   }
   const { game_id, trophy_id, content = null } = body;
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+  const supabase = createRouteHandlerClient({ cookies });
 
   const matcher = { game_id, trophy_id };
   let user: User | null = null;

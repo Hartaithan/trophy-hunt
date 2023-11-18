@@ -100,9 +100,6 @@ export const POST = async (req: Request): Promise<Response> => {
     );
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   if (typeof game_id !== "string") {
     console.error("invalid game_id type", game_id);
     return Response.json({ message: "Invalid game_id type" }, { status: 400 });
@@ -123,6 +120,7 @@ export const POST = async (req: Request): Promise<Response> => {
     );
   }
 
+  const supabase = createRouteHandlerClient({ cookies });
   const {
     data: { user },
     error: userError,

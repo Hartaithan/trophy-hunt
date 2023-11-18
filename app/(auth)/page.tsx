@@ -4,8 +4,7 @@ import { type NextPage } from "next";
 import { cookies } from "next/headers";
 
 const Home: NextPage = async () => {
-  const cookieStore = cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  const supabase = createServerComponentClient({ cookies });
   const { data } = await supabase.auth.getSession();
 
   return (

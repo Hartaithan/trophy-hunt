@@ -3,8 +3,7 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 const getUserGames = async (): Promise<Response> => {
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+  const supabase = createRouteHandlerClient({ cookies });
 
   const {
     data: { user },
@@ -34,9 +33,6 @@ const getGamesByUsername = async (req: Request): Promise<Response> => {
   const { searchParams } = new URL(req.url);
   const username = searchParams.get("username");
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   if (
     username == null ||
     Array.isArray(username) ||
@@ -49,6 +45,7 @@ const getGamesByUsername = async (req: Request): Promise<Response> => {
     );
   }
 
+  const supabase = createRouteHandlerClient({ cookies });
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
     .select("id, type")

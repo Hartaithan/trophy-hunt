@@ -18,9 +18,7 @@ export const GET = async (
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
+  const supabase = createRouteHandlerClient({ cookies });
   const { data, error } = await supabase
     .from("notes")
     .select("*")
@@ -66,9 +64,7 @@ export const PUT = async (
     return Response.json(results, { status: 400 });
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
+  const supabase = createRouteHandlerClient({ cookies });
   const { data, error } = await supabase
     .from("notes")
     .update(body)
@@ -97,9 +93,7 @@ export const DELETE = async (
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
+  const supabase = createRouteHandlerClient({ cookies });
   const { error } = await supabase.from("notes").delete().eq("id", id);
 
   if (error !== null) {

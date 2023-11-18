@@ -15,15 +15,13 @@ export const POST = async (req: Request): Promise<Response> => {
     );
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   const { items } = body;
   if (items == null || items.length === 0) {
     console.error("invalid payload", items);
     return Response.json({ message: "Invalid payload" }, { status: 400 });
   }
 
+  const supabase = createRouteHandlerClient({ cookies });
   const { error } = await supabase.rpc("reorder", { payload: items });
   if (error !== null) {
     console.error("unable to reorder games", error);

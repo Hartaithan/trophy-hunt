@@ -25,9 +25,6 @@ export const POST = async (req: Request): Promise<Response> => {
   }
   const { email, password, npsso, language, username, type } = body;
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-
   const results = validatePayload(body, [
     "email",
     "password",
@@ -75,6 +72,7 @@ export const POST = async (req: Request): Promise<Response> => {
 
   const { profile } = await getProfileFromUserName(authorization, "me");
 
+  const supabase = createRouteHandlerClient({ cookies });
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
