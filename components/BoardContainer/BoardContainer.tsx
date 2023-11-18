@@ -98,6 +98,7 @@ const BoardContainer: FC = () => {
       .then((res) => {
         notifications.update({
           id: "reorder",
+          loading: false,
           title: "Success!",
           message: res.data.message,
           icon: <IconCheck size="1rem" />,
@@ -108,6 +109,7 @@ const BoardContainer: FC = () => {
         setColumns(previousRef.current);
         notifications.update({
           id: "reorder",
+          loading: false,
           color: "red",
           title: "Something went wrong!",
           message:

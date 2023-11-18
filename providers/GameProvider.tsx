@@ -213,6 +213,7 @@ const GameProvider: FC<GameProviderProps> = (props) => {
         setProgress(data.progress ?? null);
         notifications.update({
           id: "sync",
+          loading: false,
           title: "Success!",
           message: data.message,
           icon: <IconCheck size="1rem" />,
@@ -223,6 +224,7 @@ const GameProvider: FC<GameProviderProps> = (props) => {
         console.error("unable to refetch trophies", error);
         notifications.update({
           id: "sync",
+          loading: false,
           color: "red",
           title: "Something went wrong!",
           autoClose: false,
@@ -316,6 +318,7 @@ const GameProvider: FC<GameProviderProps> = (props) => {
       .then((res) => {
         notifications.update({
           id: "sync",
+          loading: false,
           title: "Success!",
           message: res.data.message,
           icon: <IconCheck size="1rem" />,
@@ -327,6 +330,7 @@ const GameProvider: FC<GameProviderProps> = (props) => {
         notifications.update({
           id: "sync",
           color: "red",
+          loading: false,
           title: "Something went wrong!",
           message: error.response.data.message ?? syncErrorMessage,
           icon: <IconAlertOctagon size="1rem" />,
@@ -362,6 +366,7 @@ const GameProvider: FC<GameProviderProps> = (props) => {
           }
           notifications.update({
             id: "update",
+            loading: false,
             title: "Success!",
             message: res.data.message,
             icon: <IconCheck size="1rem" />,
@@ -373,6 +378,7 @@ const GameProvider: FC<GameProviderProps> = (props) => {
           notifications.update({
             id: "update",
             color: "red",
+            loading: false,
             title: "Something went wrong!",
             message:
               "For some reason the update is not complete, please try again later.",

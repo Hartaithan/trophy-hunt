@@ -111,6 +111,7 @@ const AddGameModal: FC<AddGameModalProps> = (props) => {
         .then((res) => {
           notifications.update({
             id: "reorder",
+            loading: false,
             title: "Success!",
             message: res.data.message,
             icon: <IconCheck size="1rem" />,
@@ -120,6 +121,7 @@ const AddGameModal: FC<AddGameModalProps> = (props) => {
         .catch((error) => {
           notifications.update({
             id: "reorder",
+            loading: false,
             color: "red",
             title: "Something went wrong!",
             message:
