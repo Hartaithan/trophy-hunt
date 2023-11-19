@@ -55,3 +55,8 @@ export interface SessionResponse {
   session: NullableSession;
   profile: NullableProfile;
 }
+
+export interface UpdatePasswordBody {
+  current_password: string;
+  new_password: string;
+}
