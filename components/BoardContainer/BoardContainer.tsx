@@ -115,6 +115,7 @@ const BoardContainer: FC = () => {
           message:
             "For some reason the synchronization did not complete, please try again.",
           icon: <IconAlertOctagon size="1rem" />,
+          withCloseButton: true,
         });
         console.error("reorder columns error", error);
       });

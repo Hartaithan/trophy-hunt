@@ -230,6 +230,7 @@ const GameProvider: FC<GameProviderProps> = (props) => {
           autoClose: false,
           message: error.response.data.message ?? syncErrorMessage,
           icon: <IconAlertOctagon size="1rem" />,
+          withCloseButton: true,
         });
       })
       .finally(() => {
@@ -334,6 +335,7 @@ const GameProvider: FC<GameProviderProps> = (props) => {
           title: "Something went wrong!",
           message: error.response.data.message ?? syncErrorMessage,
           icon: <IconAlertOctagon size="1rem" />,
+          withCloseButton: true,
         });
       })
       .finally(() => {
@@ -383,6 +385,7 @@ const GameProvider: FC<GameProviderProps> = (props) => {
             message:
               "For some reason the update is not complete, please try again later.",
             icon: <IconAlertOctagon size="1rem" />,
+            withCloseButton: true,
           });
         })
         .finally(() => {
