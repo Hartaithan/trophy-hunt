@@ -1,4 +1,5 @@
 import ProfileBlock from "@/components/ProfileBlock/ProfileBlock";
+import ShareBoard from "@/components/ShareBoard/ShareBoard";
 import TrophiesStats from "@/components/TrophiesStats/TrophiesStats";
 import {
   type NullableProfile,
@@ -58,11 +59,12 @@ const ProfilePage: NextPage = async () => {
           prefetch={false}
           href="/profile/edit"
           type="submit"
-          w={150}>
+          radius="md">
           Edit Profile
         </Button>
       </Flex>
       <Stack>
+        <ShareBoard profile={profile} />
         <ProfileBlock psn={psn} profile={profile} />
         <TrophiesStats psn={psn} />
       </Stack>

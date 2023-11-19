@@ -1,14 +1,20 @@
 .container {
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
   background: var(--mantine-color-primary-7);
   border-radius: var(--mantine-radius-lg);
   padding-top: var(--mantine-spacing-lg);
   padding-bottom: var(--mantine-spacing-lg);
   padding-left: var(--mantine-spacing-xl);
   padding-right: var(--mantine-spacing-xl);
-  align-items: center;
 }
 
-.avatar {
-  margin-right: var(--mantine-spacing-md);
-  border-radius: 50%;
+.input {
+  padding: 4px var(--mantine-spacing-md);
+  height: auto;
+}
+
+.section {
+  pointer-events: all;
+  margin-right: var(--mantine-spacing-xs);
 }
