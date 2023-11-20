@@ -7,7 +7,7 @@ import {
 } from "@/models/AuthModel";
 import { API_URL } from "@/utils/api";
 import { getRefreshedCookies } from "@/utils/cookies";
-import { Button, Flex, Stack, Title } from "@mantine/core";
+import { Button, Flex, Group, Stack, Title } from "@mantine/core";
 import { type NextPage } from "next";
 import Link from "next/link";
 
@@ -54,14 +54,22 @@ const ProfilePage: NextPage = async () => {
     <Flex direction="column" py="xl">
       <Flex mb="md" justify="space-between">
         <Title order={3}>Profile</Title>
-        <Button
-          component={Link}
-          prefetch={false}
-          href="/profile/edit"
-          type="submit"
-          radius="md">
-          Edit Profile
-        </Button>
+        <Group>
+          <Button
+            component={Link}
+            prefetch={false}
+            href="/profile/edit/password"
+            radius="md">
+            Update Password
+          </Button>
+          <Button
+            component={Link}
+            prefetch={false}
+            href="/profile/edit"
+            radius="md">
+            Edit Profile
+          </Button>
+        </Group>
       </Flex>
       <Stack>
         <ShareBoard profile={profile} />
