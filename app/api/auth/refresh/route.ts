@@ -1,5 +1,5 @@
 import { type NullableAuthResponse } from "@/models/AuthModel";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { exchangeRefreshTokenForAuthTokens } from "psn-api";
 
@@ -23,7 +23,7 @@ export const GET = async (): Promise<Response> => {
     );
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const {
     data: { user },
     error: userError,

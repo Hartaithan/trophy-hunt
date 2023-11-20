@@ -1,5 +1,5 @@
 import { type ReorderPayload } from "@/models/GameModel";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
 export const POST = async (req: Request): Promise<Response> => {
@@ -21,7 +21,7 @@ export const POST = async (req: Request): Promise<Response> => {
     return Response.json({ message: "Invalid payload" }, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { error } = await supabase.rpc("reorder", { payload: items });
   if (error !== null) {
     console.error("unable to reorder games", error);

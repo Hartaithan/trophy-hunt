@@ -1,10 +1,8 @@
 import { type Params } from "@/models/AppModel";
 import { type Game } from "@/models/GameModel";
+import { createClient } from "@/utils/supabase/server";
 import { validatePayload } from "@/utils/payload";
-import {
-  type User,
-  createRouteHandlerClient,
-} from "@supabase/auth-helpers-nextjs";
+import { type User } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 interface GameParams {
@@ -24,7 +22,7 @@ export const GET = async (
 
   let user: User | null = null;
   let game: Game | null = null;
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const [userRes, gameRes] = await Promise.allSettled([
     await supabase.auth.getUser(),
     await supabase.from("games").select("*").eq("id", id).single<Game>(),
@@ -119,7 +117,7 @@ export const PUT = async (
     return Response.json(results, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { data, error } = await supabase
     .from("games")
     .update(body)
@@ -152,7 +150,7 @@ export const DELETE = async (
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { error } = await supabase.from("games").delete().eq("id", id);
 
   if (error !== null) {

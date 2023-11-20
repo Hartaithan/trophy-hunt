@@ -1,6 +1,6 @@
 import { type SignUpBody } from "@/models/AuthModel";
+import { createClient } from "@/utils/supabase/server";
 import { validatePayload } from "@/utils/payload";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import {
   type AuthTokensResponse,
@@ -54,7 +54,7 @@ export const POST = async (req: Request): Promise<Response> => {
   const { accessToken, expiresIn, refreshToken, refreshTokenExpiresIn } =
     authorization;
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error != null) {
     console.error("sign in with password error", error);

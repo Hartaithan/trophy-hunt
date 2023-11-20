@@ -1,8 +1,8 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse, type NextMiddleware } from "next/server";
 import { type NullableAuthResponse } from "./models/AuthModel";
 import { exchangeRefreshTokenForAuthTokens } from "psn-api";
 import { cookies } from "next/headers";
+import { createClient } from "./utils/supabase/middleware";
 
 export const config = {
   matcher: "/((?!api|static|.*\\..*|_next|favicon.ico).*)",
@@ -28,8 +28,7 @@ const resetCookies = (res: NextResponse): NextResponse => {
 };
 
 export const middleware: NextMiddleware = async (req) => {
-  const res = NextResponse.next();
-  const supabase = createMiddlewareClient({ req, res });
+  const { supabase, res } = createClient(req);
   const {
     data: { session },
   } = await supabase.auth.getSession();

@@ -1,6 +1,6 @@
 import { type SignUpBody } from "@/models/AuthModel";
+import { createClient } from "@/utils/supabase/server";
 import { validatePayload } from "@/utils/payload";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import {
   type AuthTokensResponse,
@@ -72,7 +72,7 @@ export const POST = async (req: Request): Promise<Response> => {
 
   const { profile } = await getProfileFromUserName(authorization, "me");
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { data, error } = await supabase.auth.signUp({
     email,
     password,

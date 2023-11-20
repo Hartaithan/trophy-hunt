@@ -1,10 +1,10 @@
+import { createClient } from "@/utils/supabase/server";
 import { Flex, Title } from "@mantine/core";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { type NextPage } from "next";
 import { cookies } from "next/headers";
 
 const Home: NextPage = async () => {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createClient(cookies());
   const { data } = await supabase.auth.getSession();
 
   return (

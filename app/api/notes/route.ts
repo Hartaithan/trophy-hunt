@@ -1,9 +1,7 @@
+import { type NullableUser } from "@/models/AuthModel";
 import { type NewNotePayload, type AddNotePayload } from "@/models/NoteModel";
+import { createClient } from "@/utils/supabase/server";
 import { validatePayload } from "@/utils/payload";
-import {
-  type User,
-  createRouteHandlerClient,
-} from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 export const GET = async (req: Request): Promise<Response> => {
@@ -27,7 +25,7 @@ export const GET = async (req: Request): Promise<Response> => {
     );
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { data, error } = await supabase
     .from("notes")
     .select("*")
@@ -67,10 +65,10 @@ export const POST = async (req: Request): Promise<Response> => {
   }
   const { game_id, trophy_id, content = null } = body;
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
 
   const matcher = { game_id, trophy_id };
-  let user: User | null = null;
+  let user: NullableUser = null;
 
   try {
     const [userRes, gameRes, noteRes] = await Promise.allSettled([

@@ -6,8 +6,8 @@ import {
   type TitleTrophies,
   type TitleTrophiesOptions,
 } from "@/models/TrophyModel";
+import { createClient } from "@/utils/supabase/server";
 import { formatEarnedResponse, mergeGroups, mergeTrophies } from "@/utils/psn";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import {
   type AuthorizationPayload,
@@ -43,7 +43,7 @@ export const GET = async (
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const {
     data: { user },
     error: userError,

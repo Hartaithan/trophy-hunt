@@ -23,7 +23,6 @@ import {
   Anchor,
 } from "@mantine/core";
 import { IconUserCheck, IconUserX } from "@tabler/icons-react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { type SignUpBody, type User } from "@/models/AuthModel";
 import { hasLength, isEmail, isNotEmpty, useForm } from "@mantine/form";
 import { useDebouncedValue } from "@mantine/hooks";
@@ -34,6 +33,7 @@ import { profileTypeOptions } from "@/constants/options";
 import { mantineTheme } from "@/styles/theme";
 import { usernameRegex } from "@/constants/regex";
 import LanguageSelect from "@/components/LanguageSelect/LanguageSelect";
+import { createClient } from "@/utils/supabase/browser";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -47,7 +47,7 @@ const statusIcons: Record<Status, ReactNode> = {
 };
 
 const SignUpForm: FC = () => {
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<Status>("idle");
   const isChecking = status === "checking";

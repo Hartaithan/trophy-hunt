@@ -3,11 +3,9 @@ import {
   type ProgressItem,
   type ProgressPayload,
 } from "@/models/ProgressModel";
+import { createClient } from "@/utils/supabase/server";
 import { validatePayload } from "@/utils/payload";
-import {
-  type SupabaseClient,
-  createRouteHandlerClient,
-} from "@supabase/auth-helpers-nextjs";
+import { type SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 interface GameParams {
@@ -73,7 +71,7 @@ export const POST = async (
     return Response.json({ message: "Invalid payload" }, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { data, error } = await supabase
     .from("games")
     .select("progress")

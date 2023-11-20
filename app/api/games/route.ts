@@ -1,9 +1,9 @@
 import { type Profile } from "@/models/AuthModel";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
 const getUserGames = async (): Promise<Response> => {
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
 
   const {
     data: { user },
@@ -45,7 +45,7 @@ const getGamesByUsername = async (req: Request): Promise<Response> => {
     );
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
     .select("id, type")

@@ -1,7 +1,7 @@
 import { type Params } from "@/models/AppModel";
 import { type Note } from "@/models/NoteModel";
+import { createClient } from "@/utils/supabase/server";
 import { validatePayload } from "@/utils/payload";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 interface NoteParams {
@@ -18,7 +18,7 @@ export const GET = async (
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { data, error } = await supabase
     .from("notes")
     .select("*")
@@ -64,7 +64,7 @@ export const PUT = async (
     return Response.json(results, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { data, error } = await supabase
     .from("notes")
     .update(body)
@@ -93,7 +93,7 @@ export const DELETE = async (
     return Response.json({ message: "Invalid [id] query" }, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const { error } = await supabase.from("notes").delete().eq("id", id);
 
   if (error !== null) {

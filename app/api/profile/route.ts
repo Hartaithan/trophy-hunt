@@ -1,10 +1,10 @@
 import { type Profile } from "@/models/AuthModel";
+import { createClient } from "@/utils/supabase/server";
 import { validatePayload } from "@/utils/payload";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 export const GET = async (): Promise<Response> => {
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
 
   const {
     data: { user },
@@ -47,7 +47,7 @@ export const PUT = async (req: Request): Promise<Response> => {
     return Response.json(results, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const {
     data: { user },
     error: userError,

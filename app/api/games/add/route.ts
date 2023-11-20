@@ -3,9 +3,9 @@ import {
   type TitleGroups,
   type TitleTrophiesOptions,
 } from "@/models/TrophyModel";
+import { createClient } from "@/utils/supabase/server";
 import { search as headers } from "@/utils/headers";
 import { validatePayload } from "@/utils/payload";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { type AuthorizationPayload, getTitleTrophyGroups } from "psn-api";
 
@@ -120,7 +120,7 @@ export const POST = async (req: Request): Promise<Response> => {
     );
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createClient(cookies());
   const {
     data: { user },
     error: userError,
