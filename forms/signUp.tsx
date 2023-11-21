@@ -26,7 +26,7 @@ import { IconUserCheck, IconUserX } from "@tabler/icons-react";
 import { type SignUpBody, type User } from "@/models/AuthModel";
 import { hasLength, isEmail, isNotEmpty, useForm } from "@mantine/form";
 import { useDebouncedValue } from "@mantine/hooks";
-import API from "@/utils/api";
+import API, { API_URL } from "@/utils/api";
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
 import { profileTypeOptions } from "@/constants/options";
@@ -36,8 +36,6 @@ import LanguageSelect from "@/components/LanguageSelect/LanguageSelect";
 import { createClient } from "@/utils/supabase/browser";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const statusIcons: Record<Status, ReactNode> = {
   idle: undefined,

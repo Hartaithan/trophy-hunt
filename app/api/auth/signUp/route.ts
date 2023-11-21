@@ -8,8 +8,7 @@ import {
   exchangeCodeForAccessToken,
   getProfileFromUserName,
 } from "psn-api";
-
-const REDIRECT_URL = process.env.NEXT_PUBLIC_REDIRECT_URL;
+import { REDIRECT_URL } from "@/utils/api";
 
 export const POST = async (req: Request): Promise<Response> => {
   let body: SignUpBody | null = null;

@@ -8,8 +8,7 @@ import { search as headers } from "@/utils/headers";
 import { validatePayload } from "@/utils/payload";
 import { cookies } from "next/headers";
 import { type AuthorizationPayload, getTitleTrophyGroups } from "psn-api";
-
-const SEARCH_URL = process.env.NEXT_PUBLIC_SEARCH_URL;
+import { SEARCH_URL } from "@/utils/api";
 
 interface SplittedId {
   id: string | null;
