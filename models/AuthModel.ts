@@ -29,6 +29,10 @@ export interface SignUpBody extends Record<string, string> {
   type: ProfileType;
 }
 
+export interface ForgotBody extends Record<string, string> {
+  email: string;
+}
+
 interface UserData {
   language: string;
   username: string;
