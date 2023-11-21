@@ -40,7 +40,7 @@ export const middleware: NextMiddleware = async (req) => {
   const redirectUrl = req.nextUrl.clone();
   const pathname = req.nextUrl.pathname;
 
-  const isAuthPage = ["/signIn", "/signUp"].includes(pathname);
+  const isAuthPage = ["/signIn", "/signUp", "/setPassword"].includes(pathname);
   const isHomePage = pathname === "/";
 
   if (access_token === undefined && refresh_token !== undefined) {

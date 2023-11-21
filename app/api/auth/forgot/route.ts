@@ -29,7 +29,7 @@ export const POST = async (req: Request): Promise<Response> => {
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(
       email,
       {
-        redirectTo: REDIRECT_URL + "?next=/update-password",
+        redirectTo: REDIRECT_URL + "?next=/setPassword",
       },
     );
     if (resetError !== null) {

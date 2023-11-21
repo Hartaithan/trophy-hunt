@@ -1,16 +1,16 @@
-import UpdatePasswordForm from "@/forms/updatePassword";
+import ChangePasswordForm from "@/forms/changePassword";
 import { Flex, Title } from "@mantine/core";
 import { type NextPage } from "next";
 
-const UpdatePasswordPage: NextPage = () => {
+const ChangePasswordPage: NextPage = () => {
   return (
     <Flex direction="column" py="xl">
       <Title order={3} mb="md">
-        Update Password
+        Change Password
       </Title>
-      <UpdatePasswordForm />
+      <ChangePasswordForm />
     </Flex>
   );
 };
 
-export default UpdatePasswordPage;
+export default ChangePasswordPage;
