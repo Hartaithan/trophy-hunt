@@ -64,3 +64,7 @@ export interface UpdatePasswordBody {
   current_password: string;
   new_password: string;
 }
+
+export interface SetPasswordBody {
+  password: string;
+}
