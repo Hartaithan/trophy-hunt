@@ -1,9 +1,19 @@
 "use client";
 
 import API, { API_URL } from "@/utils/api";
-import { Box, Button, PasswordInput, Stack, TextInput } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  Button,
+  Group,
+  InputLabel,
+  PasswordInput,
+  Stack,
+  TextInput,
+} from "@mantine/core";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type FC } from "react";
 
@@ -59,12 +69,21 @@ const SignInForm: FC = () => {
           placeholder="Your Email"
           {...form.getInputProps("email")}
         />
-        <PasswordInput
-          required
-          label="Password"
-          placeholder="Your password"
-          {...form.getInputProps("password")}
-        />
+        <Box>
+          <Group justify="space-between">
+            <InputLabel required size="sm" fw={500}>
+              Password
+            </InputLabel>
+            <Anchor href="/forgot" component={Link} mb={5} fw={500} fz="xs">
+              Forgot your password?
+            </Anchor>
+          </Group>
+          <PasswordInput
+            required
+            placeholder="Your password"
+            {...form.getInputProps("password")}
+          />
+        </Box>
         <TextInput
           required
           label="NPSSO"

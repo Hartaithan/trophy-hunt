@@ -2,12 +2,15 @@
 
 import { type ForgotBody } from "@/models/AuthModel";
 import API from "@/utils/api";
-import { Box, Button, TextInput } from "@mantine/core";
+import { Anchor, Box, Button, Center, Group, TextInput } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import { IconArrowLeft } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { type FC } from "react";
 
 const ForgotForm: FC = () => {
+  const router = useRouter();
   const form = useForm<ForgotBody>({
     initialValues: {
       email: "",
@@ -51,9 +54,22 @@ const ForgotForm: FC = () => {
         placeholder="Enter your email"
         {...form.getInputProps("email")}
       />
-      <Button type="submit" mt="xl" disabled={!form.isValid()} fullWidth>
-        Submit
-      </Button>
+      <Group justify="space-between" mt="lg">
+        <Anchor
+          c="dimmed"
+          onClick={() => {
+            router.back();
+          }}
+          size="sm">
+          <Center inline>
+            <IconArrowLeft width={12} height={12} stroke={1.5} />
+            <Box ml={5}>Back</Box>
+          </Center>
+        </Anchor>
+        <Button type="submit" disabled={!form.isValid()}>
+          Submit
+        </Button>
+      </Group>
     </Box>
   );
 };
