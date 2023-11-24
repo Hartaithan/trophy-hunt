@@ -6,12 +6,14 @@ import { Box, Button, PasswordInput, Stack } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { type FC } from "react";
+import { useRouter } from "next/navigation";
 
 interface SetForm extends SetPasswordBody {
   confirm_password: string;
 }
 
 const SetPasswordForm: FC = () => {
+  const { push } = useRouter();
   const form = useForm<SetForm>({
     initialValues: {
       password: "",
@@ -39,6 +41,7 @@ const SetPasswordForm: FC = () => {
           message: data.message,
           autoClose: 3000,
         });
+        push("/signIn");
       })
       .catch((error) => {
         notifications.show({

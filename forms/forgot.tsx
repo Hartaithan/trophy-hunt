@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { useState, type FC, Fragment } from "react";
 
 const ForgotForm: FC = () => {
-  const router = useRouter();
+  const { back } = useRouter();
   const [sended, setSended] = useState(false);
   const form = useForm<ForgotBody>({
     initialValues: {
@@ -69,7 +69,7 @@ const ForgotForm: FC = () => {
         <Anchor
           c="dimmed"
           onClick={() => {
-            router.back();
+            back();
           }}
           size="sm">
           <Center inline>
@@ -83,9 +83,13 @@ const ForgotForm: FC = () => {
 
   return (
     <Fragment>
-      <Title order={2} ta="center" mb="md">
+      <Title order={2} ta="center" mb="xs">
         Reset your password
       </Title>
+      <Text ta="center" c="dimmed" size="sm" w="100%" maw={400} mb="md">
+        Enter the email and we’ll send an email with instructions to reset your
+        password.
+      </Text>
       <Box
         component="form"
         w="100%"
@@ -102,7 +106,7 @@ const ForgotForm: FC = () => {
           <Anchor
             c="dimmed"
             onClick={() => {
-              router.back();
+              back();
             }}
             size="sm">
             <Center inline>
