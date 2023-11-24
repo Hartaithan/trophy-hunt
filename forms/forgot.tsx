@@ -2,15 +2,26 @@
 
 import { type ForgotBody } from "@/models/AuthModel";
 import API from "@/utils/api";
-import { Anchor, Box, Button, Center, Group, TextInput } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Group,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { IconArrowLeft } from "@tabler/icons-react";
+import { IconArrowLeft, IconMailCheck } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { type FC } from "react";
+import { useState, type FC, Fragment } from "react";
 
 const ForgotForm: FC = () => {
   const router = useRouter();
+  const [sended, setSended] = useState(false);
   const form = useForm<ForgotBody>({
     initialValues: {
       email: "",
@@ -29,6 +40,7 @@ const ForgotForm: FC = () => {
           message: data.message,
           autoClose: 3000,
         });
+        setSended(true);
       })
       .catch((error) => {
         notifications.show({
@@ -41,20 +53,19 @@ const ForgotForm: FC = () => {
       });
   };
 
-  return (
-    <Box
-      component="form"
-      w="100%"
-      maw={400}
-      onSubmit={form.onSubmit(handleSubmit)}>
-      <TextInput
-        required
-        type="email"
-        label="Email"
-        placeholder="Enter your email"
-        {...form.getInputProps("email")}
-      />
-      <Group justify="space-between" mt="lg">
+  if (sended) {
+    return (
+      <Flex direction="column" justify="center" align="center" ta="center">
+        <IconMailCheck size={64} />
+        <Title order={2} ta="center" mt="md" mb="sm">
+          Check your email
+        </Title>
+        <Text ta="center" w="100%" maw={400} mb="lg">
+          {form.values.email.trim().length > 0
+            ? `We send password reset link to ${form.values.email}. `
+            : "We send password reset link to your email. "}
+          Please follow the instructions.
+        </Text>
         <Anchor
           c="dimmed"
           onClick={() => {
@@ -66,11 +77,45 @@ const ForgotForm: FC = () => {
             <Box ml={5}>Back</Box>
           </Center>
         </Anchor>
-        <Button type="submit" disabled={!form.isValid()}>
-          Submit
-        </Button>
-      </Group>
-    </Box>
+      </Flex>
+    );
+  }
+
+  return (
+    <Fragment>
+      <Title order={2} ta="center" mb="md">
+        Reset your password
+      </Title>
+      <Box
+        component="form"
+        w="100%"
+        maw={400}
+        onSubmit={form.onSubmit(handleSubmit)}>
+        <TextInput
+          required
+          type="email"
+          label="Email"
+          placeholder="Enter your email"
+          {...form.getInputProps("email")}
+        />
+        <Group justify="space-between" mt="lg">
+          <Anchor
+            c="dimmed"
+            onClick={() => {
+              router.back();
+            }}
+            size="sm">
+            <Center inline>
+              <IconArrowLeft width={12} height={12} stroke={1.5} />
+              <Box ml={5}>Back</Box>
+            </Center>
+          </Anchor>
+          <Button type="submit" disabled={!form.isValid()}>
+            Submit
+          </Button>
+        </Group>
+      </Box>
+    </Fragment>
   );
 };
 
