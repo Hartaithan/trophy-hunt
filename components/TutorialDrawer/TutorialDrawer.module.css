@@ -1,0 +1,19 @@
+.title {
+  font-weight: 500;
+}
+
+.body {
+  height: 100%;
+  margin-top: var(--mantine-spacing-md);
+}
+
+.steps {
+  margin-top: var(--mantine-spacing-xl);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.steps > p {
+  margin-bottom: var(--mantine-spacing-xl);
+}
