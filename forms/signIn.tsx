@@ -1,5 +1,7 @@
 "use client";
 
+import TutorialDrawer from "@/components/TutorialDrawer/TutorialDrawer";
+import TutorialTrigger from "@/components/TutorialTrigger/TutorialTrigger";
 import API, { API_URL } from "@/utils/api";
 import {
   Anchor,
@@ -12,6 +14,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { hasLength, isEmail, useForm } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,6 +22,7 @@ import { type FC } from "react";
 
 const SignInForm: FC = () => {
   const { refresh } = useRouter();
+  const [opened, { open, close }] = useDisclosure();
 
   const form = useForm({
     initialValues: {
@@ -84,16 +88,19 @@ const SignInForm: FC = () => {
             {...form.getInputProps("password")}
           />
         </Box>
-        <TextInput
-          required
-          label="NPSSO"
-          placeholder="Your NPSSO"
-          {...form.getInputProps("npsso")}
-        />
+        <Box>
+          <TutorialTrigger open={open} />
+          <TextInput
+            required
+            placeholder="Your NPSSO"
+            {...form.getInputProps("npsso")}
+          />
+        </Box>
       </Stack>
       <Button type="submit" mt="xl" fullWidth disabled={!form.isValid()}>
         Sign in!
       </Button>
+      <TutorialDrawer opened={opened} onClose={close} />
     </Box>
   );
 };

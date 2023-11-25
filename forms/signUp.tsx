@@ -25,7 +25,7 @@ import {
 import { IconUserCheck, IconUserX } from "@tabler/icons-react";
 import { type SignUpBody, type User } from "@/models/AuthModel";
 import { hasLength, isEmail, isNotEmpty, useForm } from "@mantine/form";
-import { useDebouncedValue } from "@mantine/hooks";
+import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
 import API, { API_URL } from "@/utils/api";
 import { notifications } from "@mantine/notifications";
 import Link from "next/link";
@@ -34,6 +34,8 @@ import { mantineTheme } from "@/styles/theme";
 import { usernameRegex } from "@/constants/regex";
 import LanguageSelect from "@/components/LanguageSelect/LanguageSelect";
 import { createClient } from "@/utils/supabase/browser";
+import TutorialTrigger from "@/components/TutorialTrigger/TutorialTrigger";
+import TutorialDrawer from "@/components/TutorialDrawer/TutorialDrawer";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -46,6 +48,7 @@ const statusIcons: Record<Status, ReactNode> = {
 
 const SignUpForm: FC = () => {
   const supabase = createClient();
+  const [opened, { open, close }] = useDisclosure();
   const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<Status>("idle");
   const isChecking = status === "checking";
@@ -198,13 +201,14 @@ const SignUpForm: FC = () => {
             placeholder="Enter your password"
             {...form.getInputProps("password")}
           />
-          <TextInput
-            required
-            type="text"
-            label="NPSSO"
-            placeholder="Enter your NPSSO"
-            {...form.getInputProps("npsso")}
-          />
+          <Box>
+            <TutorialTrigger open={open} />
+            <TextInput
+              type="text"
+              placeholder="Enter your NPSSO"
+              {...form.getInputProps("npsso")}
+            />
+          </Box>
           <LanguageSelect
             required
             value={form.values.language}
@@ -239,6 +243,7 @@ const SignUpForm: FC = () => {
           Sign In!
         </Anchor>
       </Text>
+      <TutorialDrawer opened={opened} onClose={close} />
     </Fragment>
   );
 };
