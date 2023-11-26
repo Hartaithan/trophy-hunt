@@ -1,33 +1,8 @@
-import "../globals.css";
-import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
-import "@mantine/tiptap/styles.css";
-import type { Metadata } from "next";
+import { Container } from "@mantine/core";
 import { type FC, type PropsWithChildren } from "react";
-import { ColorSchemeScript, Container } from "@mantine/core";
-import AppProviders from "@/providers/AppProviders";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin", "cyrillic"] });
-
-export const metadata: Metadata = {
-  title: "Welcome to Trophy Hunt",
-  description: "Trophy Hunt App",
-};
 
 const UnAuthLayout: FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <html lang="en">
-      <head>
-        <ColorSchemeScript defaultColorScheme="dark" />
-      </head>
-      <body>
-        <AppProviders fontFamily={inter.style.fontFamily}>
-          <Container id="main">{children}</Container>
-        </AppProviders>
-      </body>
-    </html>
-  );
+  return <Container id="main">{children}</Container>;
 };
 
 export default UnAuthLayout;
