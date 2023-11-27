@@ -1,9 +1,14 @@
+import SuccessNotification from "@/components/SuccessNotification/SuccessNotification";
 import { type Page } from "@/models/AppModel";
 import { createClient } from "@/utils/supabase/server";
 import { Flex, Title } from "@mantine/core";
 import { cookies } from "next/headers";
 
-const Home: Page = async () => {
+interface Params {
+  success: string | undefined;
+}
+
+const Home: Page<unknown, Params> = async ({ searchParams: { success } }) => {
   const supabase = createClient(cookies());
   const { data } = await supabase.auth.getSession();
 
@@ -17,6 +22,7 @@ const Home: Page = async () => {
       ) : (
         <pre>please, sign in</pre>
       )}
+      <SuccessNotification success={success} />
     </Flex>
   );
 };
