@@ -1,9 +1,9 @@
 import SignInForm from "@/forms/signIn";
+import { type Page } from "@/models/AppModel";
 import { Anchor, Flex, Text, Title } from "@mantine/core";
-import { type NextPage } from "next";
 import Link from "next/link";
 
-const SignInPage: NextPage = () => {
+const SignInPage: Page = () => {
   return (
     <Flex h="100%" direction="column" justify="center" align="center">
       <Title order={2} ta="center" mb="md">

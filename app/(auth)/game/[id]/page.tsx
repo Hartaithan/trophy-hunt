@@ -1,7 +1,7 @@
 import GameInfo from "@/components/GameInfo/GameInfo";
 import TrophyGroups from "@/components/TrophyGroups/TrophyGroups";
 import TrophyPanel from "@/components/TrophyPanel/TrophyPanel";
-import { type Params } from "@/models/AppModel";
+import { type Page } from "@/models/AppModel";
 import { type Game } from "@/models/GameModel";
 import { type FormattedResponse } from "@/models/TrophyModel";
 import CongratulationProvider from "@/providers/CongratulationProvider";
@@ -10,7 +10,6 @@ import { API_URL } from "@/utils/api";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { Stack, Text, Flex, Title } from "@mantine/core";
 import { IconMoodSadDizzy } from "@tabler/icons-react";
-import { type NextPage } from "next";
 
 interface GameParams {
   id: string;
@@ -54,7 +53,7 @@ const getGame = async (id: string): Promise<GameResponse | null> => {
   }
 };
 
-const GamePage: NextPage<Params<GameParams>> = async ({ params: { id } }) => {
+const GamePage: Page<GameParams> = async ({ params: { id } }) => {
   const response = await getGame(id);
 
   if (response == null)

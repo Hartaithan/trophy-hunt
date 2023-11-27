@@ -1,10 +1,10 @@
 import BoardContainer from "@/components/BoardContainer/BoardContainer";
+import { type Page } from "@/models/AppModel";
 import { type Game } from "@/models/GameModel";
 import BoardProvider from "@/providers/BoardProvider";
 import { API_URL } from "@/utils/api";
 import { initializeBoard } from "@/utils/board";
 import { getRefreshedCookies } from "@/utils/cookies";
-import { type NextPage } from "next";
 
 const getBoard = async (): Promise<Game[]> => {
   try {
@@ -23,7 +23,7 @@ const getBoard = async (): Promise<Game[]> => {
   }
 };
 
-const BoardPage: NextPage = async () => {
+const BoardPage: Page = async () => {
   const board = await getBoard();
   const initializedBoard = initializeBoard(board);
 

@@ -1,11 +1,10 @@
 import BoardPreview from "@/components/BoardPreview/BoardPreview";
-import { type Params } from "@/models/AppModel";
+import { type Page } from "@/models/AppModel";
 import { type Game } from "@/models/GameModel";
 import { API_URL } from "@/utils/api";
 import { initializeBoard } from "@/utils/board";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { Flex, Title } from "@mantine/core";
-import { type NextPage } from "next";
 
 interface BoardParams {
   username: string;
@@ -28,7 +27,7 @@ const getUsernameBoard = async (username: string): Promise<Game[] | null> => {
   }
 };
 
-const BoardPage: NextPage<Params<BoardParams>> = async ({
+const BoardPage: Page<BoardParams> = async ({
   params: { username = "[Not Found]" },
 }) => {
   const board = await getUsernameBoard(username);

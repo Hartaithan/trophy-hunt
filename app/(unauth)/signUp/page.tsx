@@ -1,8 +1,8 @@
 import SignUpForm from "@/forms/signUp";
+import { type Page } from "@/models/AppModel";
 import { Flex } from "@mantine/core";
-import { type NextPage } from "next";
 
-const SignUpPage: NextPage = () => {
+const SignUpPage: Page = () => {
   return (
     <Flex h="100%" direction="column" justify="center" align="center">
       <SignUpForm />

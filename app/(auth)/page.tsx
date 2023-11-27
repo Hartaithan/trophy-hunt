@@ -1,9 +1,9 @@
+import { type Page } from "@/models/AppModel";
 import { createClient } from "@/utils/supabase/server";
 import { Flex, Title } from "@mantine/core";
-import { type NextPage } from "next";
 import { cookies } from "next/headers";
 
-const Home: NextPage = async () => {
+const Home: Page = async () => {
   const supabase = createClient(cookies());
   const { data } = await supabase.auth.getSession();
 

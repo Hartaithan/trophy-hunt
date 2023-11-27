@@ -1,6 +1,7 @@
 import ProfileBlock from "@/components/ProfileBlock/ProfileBlock";
 import ShareBoard from "@/components/ShareBoard/ShareBoard";
 import TrophiesStats from "@/components/TrophiesStats/TrophiesStats";
+import { type Page } from "@/models/AppModel";
 import {
   type NullableProfile,
   type NullablePSNProfile,
@@ -8,7 +9,6 @@ import {
 import { API_URL } from "@/utils/api";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { Button, Flex, Group, Stack, Title } from "@mantine/core";
-import { type NextPage } from "next";
 import Link from "next/link";
 
 interface Response {
@@ -47,7 +47,7 @@ const getProfiles = async (): Promise<Response> => {
   }
 };
 
-const ProfilePage: NextPage = async () => {
+const ProfilePage: Page = async () => {
   const { psn, profile } = await getProfiles();
 
   return (
