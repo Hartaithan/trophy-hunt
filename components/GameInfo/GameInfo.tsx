@@ -4,7 +4,7 @@ import { Flex, Group, Title } from "@mantine/core";
 import { type FC } from "react";
 import { useGame } from "@/providers/GameProvider";
 import { type TrophyCountItem } from "@/models/TrophyModel";
-import Image from "next/image";
+import Image from "../Image/Image";
 import classes from "./GameInfo.module.css";
 import ColumnBadge from "../ColumnBadge/ColumnBadge";
 import PlatformBadge from "../PlatformBadge/PlatformBadge";
@@ -31,7 +31,6 @@ const GameInfo: FC = () => {
         priority
         src={image_url}
         alt={title ?? "game image"}
-        unoptimized
       />
       <Flex className={classes.content}>
         <Title order={4}>{title}</Title>

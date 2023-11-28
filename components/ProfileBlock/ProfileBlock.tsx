@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@mantine/core";
 import { type FC } from "react";
 import classes from "./ProfileBlock.module.css";
-import Image from "next/image";
+import Image from "../Image/Image";
 import {
   type NullableProfile,
   type NullablePSNProfile,
@@ -30,7 +30,6 @@ const ProfileBlock: FC<ProfileBlockProps> = (props) => {
         width={100}
         src={psn?.avatarUrls[0].avatarUrl ?? ""}
         alt="avatar"
-        unoptimized
       />
       <Flex direction="column">
         <Flex align="center">

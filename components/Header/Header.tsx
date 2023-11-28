@@ -12,7 +12,7 @@ import {
   Title,
   UnstyledButton,
 } from "@mantine/core";
-import Image from "next/image";
+import Image from "../Image/Image";
 import Link from "../Link/Link";
 import { IconDoorExit, IconUser } from "@tabler/icons-react";
 import API from "@/utils/api";
@@ -103,7 +103,6 @@ const Header: FC<HeaderProps> = (props) => {
                       : ""
                   }
                   alt="avatar"
-                  unoptimized
                 />
               </UnstyledButton>
             </Menu.Target>

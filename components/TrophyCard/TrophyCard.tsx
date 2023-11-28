@@ -18,7 +18,7 @@ import {
 import dayjs from "dayjs";
 import { memo, type FC } from "react";
 import { IconCheck, IconNotes } from "@tabler/icons-react";
-import Image from "next/image";
+import Image from "../Image/Image";
 import classes from "./TrophyCard.module.css";
 import clsx from "clsx";
 import TrophyBadge from "../TrophyBadge/TrophyBadge";

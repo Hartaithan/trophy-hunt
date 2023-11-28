@@ -13,7 +13,7 @@ import ProgressStats from "../ProgressStats/ProgressStats";
 import ColumnBadge from "../ColumnBadge/ColumnBadge";
 import PlatformBadge from "../PlatformBadge/PlatformBadge";
 import BoardCardMenu from "../BoardCardMenu/BoardCardMenu";
-import Image from "next/image";
+import Image from "../Image/Image";
 import clsx from "clsx";
 import classes from "./BoardCard.module.css";
 import { useRouter } from "next/navigation";
@@ -95,7 +95,6 @@ const BoardCard: FC<BoardCardProps> = (props) => {
           priority
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           alt="image card"
-          unoptimized
         />
         {platform === "ps5" && <MemoizedOverlay />}
         <Image
@@ -105,7 +104,6 @@ const BoardCard: FC<BoardCardProps> = (props) => {
           priority
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           alt="image card"
-          unoptimized
         />
       </Box>
       <Text mt={6} fw={500} lineClamp={2}>

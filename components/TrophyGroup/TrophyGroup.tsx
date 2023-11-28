@@ -6,7 +6,7 @@ import { useMemo, type FC, type ChangeEventHandler } from "react";
 import TrophyCounts from "@/components/TrophyCounts/TrophyCounts";
 import { useGame } from "@/providers/GameProvider";
 import classes from "./TrophyGroup.module.css";
-import Image from "next/image";
+import Image from "../Image/Image";
 
 interface TrophyGroupProps {
   group: Group;
@@ -68,7 +68,6 @@ const TrophyGroup: FC<TrophyGroupProps> = (props) => {
         className={classes.icon}
         src={icon_url}
         alt={name ?? "group icon url"}
-        unoptimized
       />
       <Flex className={classes.info}>
         <Flex align="center" mb="xs">

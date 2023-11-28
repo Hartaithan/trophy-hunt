@@ -3,7 +3,7 @@
 import { type Trophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
 import { Checkbox, Flex } from "@mantine/core";
-import Image from "next/image";
+import Image from "../Image/Image";
 import { memo, type FC, type ChangeEventHandler } from "react";
 import classes from "./TrophyBadge.module.css";
 
@@ -29,7 +29,6 @@ const TrophyBadge: FC<TrophyBadgeProps> = (props) => {
         height={30}
         alt="trophy type icon"
         src={`/trophy/${type}.png`}
-        unoptimized
       />
       <Checkbox checked={checked} onChange={handleChange} size="md" />
     </Flex>
