@@ -1,7 +1,7 @@
 import SignInForm from "@/forms/signIn";
 import { type Page } from "@/models/AppModel";
 import { Anchor, Flex, Text, Title } from "@mantine/core";
-import Link from "next/link";
+import Link from "@/components/Link/Link";
 
 const SignInPage: Page = () => {
   return (
@@ -12,7 +12,7 @@ const SignInPage: Page = () => {
       <SignInForm />
       <Text ta="center" mt="xl" fw={500} size="sm">
         Don&apos;t have an account?&nbsp;
-        <Anchor component={Link} prefetch={false} href="/signUp" td="underline">
+        <Anchor component={Link} href="/signUp" td="underline">
           Sign Up!
         </Anchor>
       </Text>

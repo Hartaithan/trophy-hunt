@@ -13,7 +13,7 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "../Link/Link";
 import { IconDoorExit, IconUser } from "@tabler/icons-react";
 import API from "@/utils/api";
 import { usePathname, useRouter } from "next/navigation";
@@ -75,7 +75,6 @@ const Header: FC<HeaderProps> = (props) => {
               <Anchor
                 size="sm"
                 component={Link}
-                prefetch={false}
                 key={link.id}
                 href={link.href}
                 className={clsx(
@@ -111,7 +110,6 @@ const Header: FC<HeaderProps> = (props) => {
             <Menu.Dropdown>
               <Menu.Item
                 component={Link}
-                prefetch={false}
                 href="/profile"
                 rightSection={<IconUser size="1rem" />}
                 lh="initial">
@@ -127,7 +125,6 @@ const Header: FC<HeaderProps> = (props) => {
         ) : (
           <Button
             component={Link}
-            prefetch={false}
             href="/signIn"
             size="compact-xs"
             leftSection={<IconUser size="0.75rem" />}

@@ -16,7 +16,7 @@ import {
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import Link from "next/link";
+import Link from "@/components/Link/Link";
 import { useRouter } from "next/navigation";
 import { type FC } from "react";
 

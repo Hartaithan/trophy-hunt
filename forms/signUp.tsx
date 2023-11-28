@@ -28,7 +28,7 @@ import { hasLength, isEmail, isNotEmpty, useForm } from "@mantine/form";
 import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
 import API, { API_URL } from "@/utils/api";
 import { notifications } from "@mantine/notifications";
-import Link from "next/link";
+import Link from "@/components/Link/Link";
 import { profileTypeOptions } from "@/constants/options";
 import { mantineTheme } from "@/styles/theme";
 import { usernameRegex } from "@/constants/regex";
@@ -234,12 +234,7 @@ const SignUpForm: FC = () => {
       </Box>
       <Text ta="center" mt="xl" size="sm" fw={500}>
         Already have account?&nbsp;
-        <Anchor
-          component={Link}
-          prefetch={false}
-          href="/signIn"
-          c="accented.9"
-          td="underline">
+        <Anchor component={Link} href="/signIn" c="accented.9" td="underline">
           Sign In!
         </Anchor>
       </Text>

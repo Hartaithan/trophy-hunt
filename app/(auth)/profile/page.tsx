@@ -9,7 +9,7 @@ import {
 import { API_URL } from "@/utils/api";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { Button, Flex, Group, Stack, Title } from "@mantine/core";
-import Link from "next/link";
+import Link from "@/components/Link/Link";
 
 interface Response {
   psn: NullablePSNProfile;
@@ -55,18 +55,10 @@ const ProfilePage: Page = async () => {
       <Flex mb="md" justify="space-between">
         <Title order={3}>Profile</Title>
         <Group>
-          <Button
-            component={Link}
-            prefetch={false}
-            href="/profile/edit/password"
-            radius="md">
+          <Button component={Link} href="/profile/edit/password" radius="md">
             Update Password
           </Button>
-          <Button
-            component={Link}
-            prefetch={false}
-            href="/profile/edit"
-            radius="md">
+          <Button component={Link} href="/profile/edit" radius="md">
             Edit Profile
           </Button>
         </Group>
