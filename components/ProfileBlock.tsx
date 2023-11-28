@@ -1,6 +1,6 @@
 import { Flex, createStyles, Text, Box } from "@mantine/core";
 import { type FC } from "react";
-import ImageWithFallback from "./Image";
+import ImageWithFallback from "./ImageWithCallback";
 import { getName, getPresence } from "@/helpers/profile";
 import PlusBadge from "./PlusBadge";
 import { useProfiles } from "@/providers/ProfileProvider";

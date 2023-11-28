@@ -16,8 +16,8 @@ import {
 import dayjs from "dayjs";
 import { memo, type FC } from "react";
 import { IconCheck, IconNotes } from "@tabler/icons-react";
-import Image from "next/image";
 import TrophyBadge from "./TrophyBadge";
+import Image from "./Image";
 
 const IMAGE_SIZE = 70;
 

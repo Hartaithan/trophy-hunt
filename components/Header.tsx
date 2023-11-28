@@ -14,11 +14,11 @@ import {
   type MenuProps,
   Anchor,
 } from "@mantine/core";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { type FC } from "react";
 import { IconDoorExit, IconUser } from "@tabler/icons-react";
+import Link from "./Link";
+import Image from "./Image";
 
 const HEADER_HEIGHT = 48;
 
@@ -117,7 +117,6 @@ const Header: FC = () => {
               <Anchor
                 size="sm"
                 component={Link}
-                prefetch={false}
                 key={link.id}
                 href={link.href}
                 className={cx(
@@ -149,7 +148,6 @@ const Header: FC = () => {
             <Menu.Dropdown>
               <Menu.Item
                 component={Link}
-                prefetch={false}
                 href="/profile"
                 icon={<IconUser size="1rem" />}
                 lh="initial"
@@ -168,7 +166,6 @@ const Header: FC = () => {
         {!isAuth && (
           <Button
             component={Link}
-            prefetch={false}
             href="/signIn"
             size="xs"
             leftIcon={<IconUser size="0.75rem" />}

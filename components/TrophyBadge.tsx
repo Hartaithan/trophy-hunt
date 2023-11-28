@@ -1,8 +1,8 @@
 import { type Trophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
 import { Checkbox, Flex, createStyles } from "@mantine/core";
-import Image from "next/image";
 import { memo, type FC, type ChangeEventHandler } from "react";
+import Image from "./Image";
 
 interface TrophyBadgeProps {
   trophy: Trophy;

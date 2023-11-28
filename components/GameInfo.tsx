@@ -1,5 +1,5 @@
 import { Flex, Group, Title, createStyles } from "@mantine/core";
-import Image from "./Image";
+import Image from "./ImageWithCallback";
 import { type FC } from "react";
 import ProgressStats from "./ProgressStats";
 import PlatformBadge from "./PlatformBadge";

@@ -24,8 +24,8 @@ import { IconUserCheck, IconUserX } from "@tabler/icons-react";
 import API from "@/helpers/api";
 import { notifications } from "@mantine/notifications";
 import LanguageSelect from "@/components/LanguageSelect";
-import Link from "next/link";
 import { profileTypeOptions } from "@/constants/options";
+import Link from "@/components/Link";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -227,7 +227,6 @@ const SignUpPage: Page = () => {
             Already have account?&nbsp;
             <Anchor
               component={Link}
-              prefetch={false}
               href="/signIn"
               span
               color="accented.9"

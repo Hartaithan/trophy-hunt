@@ -1,40 +1,9 @@
-/* eslint-disable import/no-named-default */
-import {
-  default as NextImage,
-  type ImageProps as NextImageProps,
-} from "next/image";
-import {
-  type FC,
-  type ReactEventHandler,
-  useState,
-  type CSSProperties,
-} from "react";
+import { type ImageProps } from "next/image";
+import { type FC } from "react";
 
-interface ImageProps extends NextImageProps {
-  rounded?: CSSProperties["borderRadius"];
-}
-
-const ImageWithFallback: FC<ImageProps> = (props) => {
-  const { onError, alt, rounded, ...rest } = props;
-
-  const [error, setError] = useState<boolean>(false);
-
-  const handleError: ReactEventHandler<HTMLImageElement> = (e) => {
-    setError(true);
-    if (onError != null) {
-      onError(e);
-    }
-  };
-
-  return (
-    <NextImage
-      onError={handleError}
-      unoptimized={error}
-      alt={alt}
-      {...rest}
-      style={{ ...rest.style, borderRadius: rounded }}
-    />
-  );
+const Image: FC<ImageProps> = (props) => {
+  const { unoptimized = true, alt = "image", ...rest } = props;
+  return <Image unoptimized={unoptimized} alt={alt} {...rest} />;
 };
 
-export default ImageWithFallback;
+export default Image;

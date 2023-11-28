@@ -4,7 +4,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { Box, Flex, Text, createStyles } from "@mantine/core";
-import Image from "./Image";
+import Image from "./ImageWithCallback";
 import { memo, type FC, type MouseEventHandler } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { type Game } from "@/models/GameModel";

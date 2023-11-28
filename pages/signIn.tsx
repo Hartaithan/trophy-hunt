@@ -1,3 +1,4 @@
+import Link from "@/components/Link";
 import API from "@/helpers/api";
 import { type Page } from "@/models/AppModel";
 import {
@@ -13,7 +14,6 @@ import {
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -96,7 +96,6 @@ const SignInPage: Page = () => {
         Don&apos;t have an account?&nbsp;
         <Anchor
           component={Link}
-          prefetch={false}
           href="/signUp"
           span
           color="accented.9"

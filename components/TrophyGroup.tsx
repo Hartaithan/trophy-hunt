@@ -7,7 +7,7 @@ import {
   Checkbox,
   Title,
 } from "@mantine/core";
-import Image from "./Image";
+import Image from "./ImageWithCallback";
 import { useMemo, type FC, type ChangeEventHandler } from "react";
 import TrophyCounts from "./TrophyCounts";
 import { useGame } from "@/providers/GameProvider";

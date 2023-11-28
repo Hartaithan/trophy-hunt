@@ -7,7 +7,7 @@ import { useBoard } from "@/providers/BoardProvider";
 import API from "@/helpers/api";
 import { type BoardColumns } from "@/models/BoardModel";
 import { notifications } from "@mantine/notifications";
-import Link from "next/link";
+import Link from "./Link";
 
 interface BoardCardMenuProps {
   item: Game;
@@ -86,7 +86,6 @@ const BoardCardMenu: FC<BoardCardMenuProps> = (props) => {
         <Menu.Item
           icon={<IconArrowUpRight size="1rem" />}
           component={Link}
-          prefetch={false}
           href={`/game/${id}`}
         >
           Open
