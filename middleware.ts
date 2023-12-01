@@ -39,9 +39,7 @@ export const middleware: NextMiddleware = async (req) => {
   let access_token = req.cookies.get("psn-access-token")?.value;
   let refresh_token = req.cookies.get("psn-refresh-token")?.value;
 
-  const redirectUrl = req.nextUrl.clone();
   const pathname = req.nextUrl.pathname;
-
   const isAuthPage = authRoutes.includes(pathname);
   const isHomePage = pathname === "/";
 
@@ -64,14 +62,12 @@ export const middleware: NextMiddleware = async (req) => {
   }
 
   if (!isAuth && !isAuthPage) {
-    redirectUrl.pathname = "/signIn";
-    const redirectRes = NextResponse.redirect(redirectUrl);
+    const redirectRes = NextResponse.redirect(new URL("/signIn", req.url));
     return resetCookies(redirectRes);
   }
 
   if (isAuth && isAuthPage) {
-    redirectUrl.pathname = "/";
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   if (refreshed_auth != null) {
