@@ -4,7 +4,12 @@ import { exchangeRefreshTokenForAuthTokens } from "psn-api";
 import { cookies } from "next/headers";
 import { createClient } from "./utils/supabase/middleware";
 
-const authRoutes = ["/signIn", "/signUp", "/setPassword", "/forgot"];
+const publicPages = new Map<string, boolean>([
+  ["/signIn", true],
+  ["/signUp", true],
+  ["/setPassword", true],
+  ["/forgot", true],
+]);
 
 export const config = {
   matcher: "/((?!api|static|.*\\..*|_next|favicon.ico).*)",
@@ -40,7 +45,7 @@ export const middleware: NextMiddleware = async (req) => {
   let refresh_token = req.cookies.get("psn-refresh-token")?.value;
 
   const pathname = req.nextUrl.pathname;
-  const isAuthPage = authRoutes.includes(pathname);
+  const isPublicPage = publicPages.has(pathname);
   const isHomePage = pathname === "/";
 
   if (access_token === undefined && refresh_token !== undefined) {
@@ -61,12 +66,12 @@ export const middleware: NextMiddleware = async (req) => {
     return resetCookies(res);
   }
 
-  if (!isAuth && !isAuthPage) {
+  if (!isAuth && !isPublicPage) {
     const redirectRes = NextResponse.redirect(new URL("/signIn", req.url));
     return resetCookies(redirectRes);
   }
 
-  if (isAuth && isAuthPage) {
+  if (isAuth && isPublicPage) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
