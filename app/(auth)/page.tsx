@@ -1,7 +1,9 @@
+import HomeSection from "@/components/HomeSection/HomeSection";
+import Landing from "@/components/Landing/Landing";
 import SuccessNotification from "@/components/SuccessNotification/SuccessNotification";
 import { type Page } from "@/models/AppModel";
 import { createClient } from "@/utils/supabase/server";
-import { Flex, Title } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { cookies } from "next/headers";
 
 interface Params {
@@ -14,13 +16,10 @@ const Home: Page<unknown, Params> = async ({ searchParams: { success } }) => {
 
   return (
     <Flex h="100%" direction="column" justify="center" align="center">
-      <Title mb="xs">Hello World!</Title>
       {data.session != null ? (
-        <pre style={{ maxWidth: 400, overflow: "auto", fontSize: 8 }}>
-          {JSON.stringify(data, null, 2)}
-        </pre>
+        <HomeSection session={data.session} />
       ) : (
-        <pre>please, sign in</pre>
+        <Landing />
       )}
       <SuccessNotification success={success} />
     </Flex>
