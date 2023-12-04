@@ -1,8 +1,9 @@
+import Link from "@/components/Link/Link";
 import EditProfileForm from "@/forms/editProfile";
 import { type NullableProfile } from "@/models/AuthModel";
 import { API_URL } from "@/utils/api";
 import { getRefreshedCookies } from "@/utils/cookies";
-import { Flex, Title } from "@mantine/core";
+import { Button, Flex, Group, Title } from "@mantine/core";
 import { type FC } from "react";
 
 const getProfile = async (): Promise<NullableProfile> => {
@@ -27,9 +28,12 @@ const EditProfilePage: FC = async () => {
   const profile = await getProfile();
   return (
     <Flex direction="column" py="xl">
-      <Title order={3} mb="md">
-        Edit Profile
-      </Title>
+      <Group justify="space-between" mb="md">
+        <Title order={3}>Edit Profile</Title>
+        <Button component={Link} href="/profile/edit/password">
+          Update Password
+        </Button>
+      </Group>
       <EditProfileForm profile={profile} />
     </Flex>
   );

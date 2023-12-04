@@ -55,9 +55,6 @@ const ProfilePage: Page = async () => {
       <Flex mb="md" justify="space-between">
         <Title order={3}>Profile</Title>
         <Group>
-          <Button component={Link} href="/profile/edit/password" radius="md">
-            Update Password
-          </Button>
           <Button component={Link} href="/profile/edit" radius="md">
             Edit Profile
           </Button>
