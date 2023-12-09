@@ -1,14 +1,8 @@
 import { type FC } from "react";
+import LandingSlogan from "../LandingSlogan/LandingSlogan";
 
 const Landing: FC = () => {
-  return (
-    <pre>
-      there should be landing page
-      <br />
-      <br />
-      please, sign in
-    </pre>
-  );
+  return <LandingSlogan />;
 };
 
 export default Landing;
