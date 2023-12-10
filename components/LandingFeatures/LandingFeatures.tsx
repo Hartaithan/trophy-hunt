@@ -1,7 +1,5 @@
-"use client";
-
 import { slogan } from "@/constants/landing";
-import { Text, Flex, Grid, Skeleton } from "@mantine/core";
+import { Text, Flex, Grid, GridCol, Skeleton } from "@mantine/core";
 import { type FC } from "react";
 
 const HEIGHT = 300;
@@ -9,10 +7,10 @@ const HEIGHT = 300;
 const LandingFeatures: FC = () => {
   return (
     <Grid w="100%" gutter="xl" mt="xl">
-      <Grid.Col span={6}>
+      <GridCol span={6}>
         <Skeleton height={HEIGHT} radius="md" animate={false} />
-      </Grid.Col>
-      <Grid.Col span={6}>
+      </GridCol>
+      <GridCol span={6}>
         <Flex h="100%" direction="column" justify="center">
           <Text
             size="34px"
@@ -30,8 +28,8 @@ const LandingFeatures: FC = () => {
             Eius, provident.
           </Text>
         </Flex>
-      </Grid.Col>
-      <Grid.Col span={6}>
+      </GridCol>
+      <GridCol span={6}>
         <Flex h="100%" direction="column" justify="center">
           <Text
             size="34px"
@@ -50,14 +48,14 @@ const LandingFeatures: FC = () => {
             Eius, provident.
           </Text>
         </Flex>
-      </Grid.Col>
-      <Grid.Col span={6}>
+      </GridCol>
+      <GridCol span={6}>
         <Skeleton height={HEIGHT} radius="md" animate={false} />
-      </Grid.Col>
-      <Grid.Col span={6}>
+      </GridCol>
+      <GridCol span={6}>
         <Skeleton height={HEIGHT} radius="md" animate={false} />
-      </Grid.Col>
-      <Grid.Col span={6}>
+      </GridCol>
+      <GridCol span={6}>
         <Flex h="100%" direction="column" justify="center">
           <Text
             size="34px"
@@ -75,7 +73,7 @@ const LandingFeatures: FC = () => {
             Eius, provident.
           </Text>
         </Flex>
-      </Grid.Col>
+      </GridCol>
     </Grid>
   );
 };
