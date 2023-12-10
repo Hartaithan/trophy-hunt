@@ -15,7 +15,7 @@ const Home: Page<unknown, Params> = async ({ searchParams: { success } }) => {
   const { data } = await supabase.auth.getSession();
 
   return (
-    <Flex h="100%" direction="column" justify="center" align="center">
+    <Flex h="100%" direction="column">
       {data.session != null ? (
         <HomeSection session={data.session} />
       ) : (
