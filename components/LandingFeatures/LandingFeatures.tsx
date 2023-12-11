@@ -22,10 +22,9 @@ const LandingFeatures: FC = () => {
             Backlog planning
           </Text>
           <Text>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-            quidem, eius enim deserunt tempore mollitia tenetur reprehenderit
-            error veniam. Illo omnis nulla alias ullam non dolor facilis at?
-            Eius, provident.
+            Plan your backlog easily! There&apos;s a handy search to find the
+            exact game you&apos;re looking for. Games can be added to the list,
+            prioritized, and marked as in progress when playing.
           </Text>
         </Flex>
       </GridCol>
@@ -42,10 +41,10 @@ const LandingFeatures: FC = () => {
             Tracking trophies
           </Text>
           <Text ta="end">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-            quidem, eius enim deserunt tempore mollitia tenetur reprehenderit
-            error veniam. Illo omnis nulla alias ullam non dolor facilis at?
-            Eius, provident.
+            Track your progress on getting platinum! You can see how many
+            trophies you&apos;ve already earned in each game, what level of
+            completion you&apos;re currently at, and how much more you have left
+            to get platinum!
           </Text>
         </Flex>
       </GridCol>
@@ -67,10 +66,10 @@ const LandingFeatures: FC = () => {
             Complete platinums
           </Text>
           <Text>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-            quidem, eius enim deserunt tempore mollitia tenetur reprehenderit
-            error veniam. Illo omnis nulla alias ullam non dolor facilis at?
-            Eius, provident.
+            You can enjoy the thrill of hunting and the satisfaction of
+            collecting platinums with a handy trophy tracking tool. You can also
+            share your platinums with friends and followers on social networks
+            and show off your passion.
           </Text>
         </Flex>
       </GridCol>
