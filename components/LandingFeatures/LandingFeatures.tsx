@@ -22,9 +22,10 @@ const LandingFeatures: FC = () => {
             Backlog planning
           </Text>
           <Text>
-            Plan your backlog easily! There&apos;s a handy search to find the
-            exact game you&apos;re looking for. Games can be added to the list,
-            prioritized, and marked as in progress when playing.
+            Plan your backlog with ease! You can use a handy search to find the
+            exact game you want. You can also add games to your list, arrange
+            them by priority, and mark them as in progress when you start
+            playing.
           </Text>
         </Flex>
       </GridCol>
@@ -41,10 +42,9 @@ const LandingFeatures: FC = () => {
             Tracking trophies
           </Text>
           <Text ta="end">
-            Track your progress on getting platinum! You can see how many
-            trophies you&apos;ve already earned in each game, what level of
-            completion you&apos;re currently at, and how much more you have left
-            to get platinum!
+            Keep track of your progress towards platinum! You can see how many
+            trophies you have earned in each game, what percentage of completion
+            you have achieved, and how much more you need to do to get platinum!
           </Text>
         </Flex>
       </GridCol>
@@ -66,10 +66,10 @@ const LandingFeatures: FC = () => {
             Complete platinums
           </Text>
           <Text>
-            You can enjoy the thrill of hunting and the satisfaction of
-            collecting platinums with a handy trophy tracking tool. You can also
-            share your platinums with friends and followers on social networks
-            and show off your passion.
+            Experience the thrill of hunting and the satisfaction of collecting
+            platinums with a handy trophy tracking tool. You can also share your
+            platinums with your friends and followers on social media and show
+            off your skills.
           </Text>
         </Flex>
       </GridCol>

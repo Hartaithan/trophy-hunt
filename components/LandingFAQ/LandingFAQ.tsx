@@ -18,8 +18,8 @@ const LandingFAQ: FC = () => {
         <AccordionItem value="first-question">
           <AccordionControl>Is it free?</AccordionControl>
           <AccordionPanel>
-            Yes, it&apos;s completely free. What&apos;s more, we don&apos;t have
-            a single ad. Use our service without limitations!
+            Yes, it is completely free. Moreover, we do not have any ads. Use
+            our service without any limitations!
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem value="second-question">
@@ -27,18 +27,18 @@ const LandingFAQ: FC = () => {
             How does the authorization process work?
           </AccordionControl>
           <AccordionPanel>
-            Our service has synchronization with PSN API, so we ask you to enter
+            Our service synchronizes with PSN API, so we ask you to enter your
             NPSSO authorization token to be able to work with it. In addition,
-            we also authorize users in our service, in order to store data about
-            your progress.
+            we also authorize users in our service, so that we can store data
+            about your progress.
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem value="third-question">
           <AccordionControl>What is NPSSO?</AccordionControl>
           <AccordionPanel>
-            NPSOO is an authorization token that is needed to work with PSN API.
-            Without it, it would not be possible to synchronize your progress
-            and trophies.
+            NPSSO is an authorization token that is required to work with PSN
+            API. Without it, it would not be possible to synchronize your
+            progress and trophies.
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
