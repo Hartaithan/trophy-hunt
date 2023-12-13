@@ -14,12 +14,18 @@
   width: 280px;
   position: relative;
   flex-direction: column;
+}
+
+.sliderTitle {
   align-items: flex-end;
+}
+
+.sliderTarget {
+  align-items: flex-start;
 }
 
 .slider > p {
   font-weight: 600;
-  text-align: end;
   display: inline-block;
   position: absolute;
   animation-timing-function: ease;
@@ -28,16 +34,28 @@
   opacity: 0;
 }
 
-.slider p:nth-child(1) {
+.sliderTitle p:nth-child(1) {
   animation: rollDown 10s forwards infinite;
 }
 
-.slider p:nth-child(2) {
+.sliderTitle p:nth-child(2) {
   animation: rollDown2 10s forwards infinite;
 }
 
-.slider p:nth-child(3) {
+.sliderTitle p:nth-child(3) {
   animation: rollDown3 10s forwards infinite;
+}
+
+.sliderTarget p:nth-child(1) {
+  animation: rollUp 10s forwards infinite;
+}
+
+.sliderTarget p:nth-child(2) {
+  animation: rollUp2 10s forwards infinite;
+}
+
+.sliderTarget p:nth-child(3) {
+  animation: rollUp3 10s forwards infinite;
 }
 
 @keyframes rollDown {
@@ -93,6 +111,63 @@
   }
   99% {
     transform: rotateX(90deg) translateY(100px);
+    opacity: 0;
+  }
+}
+
+@keyframes rollUp {
+  0% {
+    transform: rotateX(90deg) translateY(100px);
+    opacity: 0;
+  }
+  11% {
+    transform: rotateX(0deg) translateY(-50%);
+    opacity: 1;
+  }
+  22% {
+    transform: rotateX(0deg) translateY(-50%);
+    opacity: 1;
+  }
+  33% {
+    transform: rotateX(-90deg) translateY(-100px);
+    opacity: 0;
+  }
+}
+
+@keyframes rollUp2 {
+  33% {
+    transform: rotateX(90deg) translateY(100px);
+    opacity: 0;
+  }
+  44% {
+    transform: rotateX(0deg) translateY(-50%);
+    opacity: 1;
+  }
+  55% {
+    transform: rotateX(0deg) translateY(-50%);
+    opacity: 1;
+  }
+  66% {
+    transform: rotateX(-90deg) translateY(-100px);
+    opacity: 0;
+  }
+}
+
+@keyframes rollUp3 {
+  66% {
+    transform: rotateX(90deg) translateY(100px);
+    opacity: 0;
+  }
+  77% {
+    transform: rotateX(0deg) translateY(-50%);
+    opacity: 1;
+  }
+  88% {
+    transform: rotateX(0deg) translateY(-50%);
+    opacity: 1;
+  }
+  99% {
+    transform: rotateX(-90deg) translateY(-100px);
     opacity: 0;
   }
 }
