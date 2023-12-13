@@ -28,7 +28,7 @@
   font-weight: 600;
   display: inline-block;
   position: absolute;
-  animation-timing-function: ease;
+  animation-timing-function: ease-in-out;
   transform: rotateX(0deg) translateY(-50%);
   transform-origin: 0 0;
   opacity: 0;
@@ -60,7 +60,7 @@
 
 @keyframes rollDown {
   0% {
-    transform: rotateX(-90deg) translateY(-100px);
+    transform: rotateX(-90deg) translateY(-150%);
     opacity: 0;
   }
   11% {
@@ -72,14 +72,14 @@
     opacity: 1;
   }
   33% {
-    transform: rotateX(90deg) translateY(100px);
+    transform: rotateX(90deg) translateY(50%);
     opacity: 0;
   }
 }
 
 @keyframes rollDown2 {
   33% {
-    transform: rotateX(-90deg) translateY(-100px);
+    transform: rotateX(-90deg) translateY(-150%);
     opacity: 0;
   }
   44% {
@@ -91,14 +91,14 @@
     opacity: 1;
   }
   66% {
-    transform: rotateX(90deg) translateY(100px);
+    transform: rotateX(90deg) translateY(50%);
     opacity: 0;
   }
 }
 
 @keyframes rollDown3 {
   66% {
-    transform: rotateX(-90deg) translateY(-100px);
+    transform: rotateX(-90deg) translateY(-150%);
     opacity: 0;
   }
   77% {
@@ -110,14 +110,14 @@
     opacity: 1;
   }
   99% {
-    transform: rotateX(90deg) translateY(100px);
+    transform: rotateX(90deg) translateY(50%);
     opacity: 0;
   }
 }
 
 @keyframes rollUp {
   0% {
-    transform: rotateX(90deg) translateY(100px);
+    transform: rotateX(90deg) translateY(50%);
     opacity: 0;
   }
   11% {
@@ -129,14 +129,14 @@
     opacity: 1;
   }
   33% {
-    transform: rotateX(-90deg) translateY(-100px);
+    transform: rotateX(-90deg) translateY(-150%);
     opacity: 0;
   }
 }
 
 @keyframes rollUp2 {
   33% {
-    transform: rotateX(90deg) translateY(100px);
+    transform: rotateX(90deg) translateY(50%);
     opacity: 0;
   }
   44% {
@@ -148,14 +148,14 @@
     opacity: 1;
   }
   66% {
-    transform: rotateX(-90deg) translateY(-100px);
+    transform: rotateX(-90deg) translateY(-150%);
     opacity: 0;
   }
 }
 
 @keyframes rollUp3 {
   66% {
-    transform: rotateX(90deg) translateY(100px);
+    transform: rotateX(90deg) translateY(50%);
     opacity: 0;
   }
   77% {
@@ -167,7 +167,7 @@
     opacity: 1;
   }
   99% {
-    transform: rotateX(-90deg) translateY(-100px);
+    transform: rotateX(-90deg) translateY(-150%);
     opacity: 0;
   }
 }
