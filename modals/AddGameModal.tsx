@@ -17,6 +17,8 @@ import {
   useMantineTheme,
   Select,
   LoadingOverlay,
+  Input,
+  Anchor,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -222,6 +224,12 @@ const AddGameModal: FC<AddGameModalProps> = (props) => {
             rightSection={isLoading ? <Loader size="xs" /> : null}
             nothingFoundMessage={showNoResults ? undefined : "No results"}
           />
+          <Input.Description mt="xs">
+            Search is powered by&nbsp;
+            <Anchor size="xs" href="https://www.stratege.ru/" target="_blank">
+              stratege.ru
+            </Anchor>
+          </Input.Description>
           <Button
             mt={spacing.md}
             fullWidth
