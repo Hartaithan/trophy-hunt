@@ -1,23 +1,12 @@
 "use client";
 
-import {
-  rarityLabels,
-  trophyColors,
-  trophyColorsAccented,
-} from "@/constants/trophy";
+import { rarityLabels, trophyColors } from "@/constants/trophy";
 import { type Trophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
-import {
-  Badge,
-  Flex,
-  Text,
-  Title,
-  UnstyledButton,
-  useMantineTheme,
-} from "@mantine/core";
+import { Badge, Flex, Text, Title, useMantineTheme } from "@mantine/core";
 import dayjs from "dayjs";
 import { memo, type FC } from "react";
-import { IconCheck, IconNotes } from "@tabler/icons-react";
+import { IconCheck } from "@tabler/icons-react";
 import Image from "../Image/Image";
 import classes from "./TrophyCard.module.css";
 import clsx from "clsx";
@@ -31,9 +20,8 @@ interface TrophyCardProps {
 
 const TrophyCard: FC<TrophyCardProps> = (props) => {
   const { trophy } = props;
-  const { game, progress, filters, noteModal } = useGame();
+  const { progress, filters } = useGame();
   const { colors } = useMantineTheme();
-  const { open } = noteModal;
 
   const {
     id,
@@ -54,10 +42,6 @@ const TrophyCard: FC<TrophyCardProps> = (props) => {
     progress_value != null &&
     progress_target != null &&
     progress_percentage != null;
-
-  const handleOpenModal = (): void => {
-    open({ trophy_id: trophy.id, game_id: game?.id });
-  };
 
   if (filters.earned === "earned" && !checked) return null;
   if (filters.earned === "unearned" && checked) return null;
@@ -116,12 +100,6 @@ const TrophyCard: FC<TrophyCardProps> = (props) => {
             <Text ta="center">{rarityLabels[rare]}</Text>
           </Flex>
         )}
-        <UnstyledButton
-          className={classes.note}
-          style={{ backgroundColor: trophyColorsAccented[type] + "E3" }}
-          onClick={handleOpenModal}>
-          <IconNotes size={32} color={trophyColors[type]} />
-        </UnstyledButton>
       </Flex>
     </Flex>
   );
