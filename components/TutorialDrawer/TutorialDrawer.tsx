@@ -62,7 +62,7 @@ const TutorialDrawer: FC<Props> = (props) => {
         </Text>
       </Stack>
       <Flex className={classes.steps}>
-        <Text id="heading" size="lg" fw={500} ta="center">
+        <Text size="lg" fw={500}>
           So, how do you get the NPSSO?
         </Text>
         <Stepper active={-1} orientation="vertical">
@@ -100,13 +100,18 @@ const TutorialDrawer: FC<Props> = (props) => {
           />
         </Stepper>
       </Flex>
+      <Text size="lg" fw={500} mb="xs">
+        Known Issues
+      </Text>
       <Alert
         variant="light"
-        color="red"
+        color="orange"
         title="Invalid Grant Error"
         icon={
           <IconAlertOctagon
-            color={theme.colors?.red != null ? theme.colors.red[0] : undefined}
+            color={
+              theme.colors?.orange != null ? theme.colors.orange[0] : undefined
+            }
           />
         }>
         If you&apos;re seeing an &apos;invalid_grant&apos; error, you failed to
