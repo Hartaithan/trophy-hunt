@@ -40,12 +40,6 @@ const links: HeaderLink[] = [
     href: "/board",
     disabled: false,
   },
-  {
-    id: 3,
-    label: "About",
-    href: "/about",
-    disabled: true,
-  },
 ];
 
 const Header: FC<HeaderProps> = (props) => {
