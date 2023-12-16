@@ -13,7 +13,7 @@ const LandingFeatures: FC = () => {
           <Image
             fill
             style={{ objectFit: "contain" }}
-            src="/landing/illustration-1.webp"
+            src="/landing/backlog.webp"
             alt="first landing illustration"
           />
         </Flex>
@@ -61,7 +61,7 @@ const LandingFeatures: FC = () => {
           <Image
             fill
             style={{ objectFit: "contain" }}
-            src="/landing/illustration-2.webp"
+            src="/landing/trophies.webp"
             alt="first landing illustration"
           />
         </Flex>
@@ -71,7 +71,7 @@ const LandingFeatures: FC = () => {
           <Image
             fill
             style={{ objectFit: "contain" }}
-            src="/landing/illustration-3.webp"
+            src="/landing/complete.webp"
             alt="first landing illustration"
           />
         </Flex>
