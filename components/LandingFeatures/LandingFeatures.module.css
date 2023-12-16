@@ -1,0 +1,19 @@
+.wrapper {
+  position: relative;
+}
+
+.illustration {
+  object-fit: contain;
+}
+
+.content {
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heading {
+  line-height: 110%;
+  font-weight: bold;
+  font-size: 34px;
+}

@@ -2,6 +2,7 @@ import { slogan } from "@/constants/landing";
 import { Text, Flex, Grid, GridCol } from "@mantine/core";
 import { type FC } from "react";
 import Image from "../Image/Image";
+import classes from "./LandingFeatures.module.css";
 
 const HEIGHT = 300;
 
@@ -9,21 +10,19 @@ const LandingFeatures: FC = () => {
   return (
     <Grid w="100%" gutter="xl" mt="xl">
       <GridCol span={6}>
-        <Flex h={HEIGHT} pos="relative">
+        <Flex h={HEIGHT} className={classes.wrapper}>
           <Image
             fill
-            style={{ objectFit: "contain" }}
+            className={classes.illustration}
             src="/landing/backlog.webp"
-            alt="first landing illustration"
+            alt="backlog landing illustration"
           />
         </Flex>
       </GridCol>
       <GridCol span={6}>
-        <Flex h="100%" direction="column" justify="center">
+        <Flex className={classes.content}>
           <Text
-            size="34px"
-            lh="110%"
-            fw="bold"
+            className={classes.heading}
             mb="xs"
             variant="gradient"
             gradient={slogan[0].gradient}>
@@ -38,13 +37,11 @@ const LandingFeatures: FC = () => {
         </Flex>
       </GridCol>
       <GridCol span={6}>
-        <Flex h="100%" direction="column" justify="center">
+        <Flex className={classes.content}>
           <Text
-            size="34px"
-            lh="110%"
-            fw="bold"
-            mb="xs"
+            className={classes.heading}
             ta="end"
+            mb="xs"
             variant="gradient"
             gradient={slogan[1].gradient}>
             Tracking trophies
@@ -57,31 +54,29 @@ const LandingFeatures: FC = () => {
         </Flex>
       </GridCol>
       <GridCol span={6}>
-        <Flex h={HEIGHT} pos="relative">
+        <Flex h={HEIGHT} className={classes.wrapper}>
           <Image
             fill
-            style={{ objectFit: "contain" }}
+            className={classes.illustration}
             src="/landing/trophies.webp"
-            alt="first landing illustration"
+            alt="trophies landing illustration"
           />
         </Flex>
       </GridCol>
       <GridCol span={6}>
-        <Flex h={HEIGHT} pos="relative">
+        <Flex h={HEIGHT} className={classes.wrapper}>
           <Image
             fill
-            style={{ objectFit: "contain" }}
+            className={classes.illustration}
             src="/landing/complete.webp"
-            alt="first landing illustration"
+            alt="complete landing illustration"
           />
         </Flex>
       </GridCol>
       <GridCol span={6}>
-        <Flex h="100%" direction="column" justify="center">
+        <Flex className={classes.content}>
           <Text
-            size="34px"
-            lh="110%"
-            fw="bold"
+            className={classes.heading}
             mb="xs"
             variant="gradient"
             gradient={slogan[2].gradient}>
