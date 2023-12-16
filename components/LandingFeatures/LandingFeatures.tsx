@@ -1,6 +1,7 @@
 import { slogan } from "@/constants/landing";
-import { Text, Flex, Grid, GridCol, Skeleton } from "@mantine/core";
+import { Text, Flex, Grid, GridCol } from "@mantine/core";
 import { type FC } from "react";
+import Image from "../Image/Image";
 
 const HEIGHT = 300;
 
@@ -8,7 +9,14 @@ const LandingFeatures: FC = () => {
   return (
     <Grid w="100%" gutter="xl" mt="xl">
       <GridCol span={6}>
-        <Skeleton height={HEIGHT} radius="md" animate={false} />
+        <Flex h={HEIGHT} pos="relative">
+          <Image
+            fill
+            style={{ objectFit: "contain" }}
+            src="/landing/illustration-1.webp"
+            alt="first landing illustration"
+          />
+        </Flex>
       </GridCol>
       <GridCol span={6}>
         <Flex h="100%" direction="column" justify="center">
@@ -49,10 +57,24 @@ const LandingFeatures: FC = () => {
         </Flex>
       </GridCol>
       <GridCol span={6}>
-        <Skeleton height={HEIGHT} radius="md" animate={false} />
+        <Flex h={HEIGHT} pos="relative">
+          <Image
+            fill
+            style={{ objectFit: "contain" }}
+            src="/landing/illustration-2.webp"
+            alt="first landing illustration"
+          />
+        </Flex>
       </GridCol>
       <GridCol span={6}>
-        <Skeleton height={HEIGHT} radius="md" animate={false} />
+        <Flex h={HEIGHT} pos="relative">
+          <Image
+            fill
+            style={{ objectFit: "contain" }}
+            src="/landing/illustration-3.webp"
+            alt="first landing illustration"
+          />
+        </Flex>
       </GridCol>
       <GridCol span={6}>
         <Flex h="100%" direction="column" justify="center">
