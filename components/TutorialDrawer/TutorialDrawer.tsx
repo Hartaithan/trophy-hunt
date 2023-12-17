@@ -100,13 +100,14 @@ const TutorialDrawer: FC<Props> = (props) => {
           />
         </Stepper>
       </Flex>
-      <Text size="lg" fw={500} mb="xs">
+      <Text size="lg" fw={500} mb="md">
         Known Issues
       </Text>
       <Alert
         variant="light"
         color="orange"
         title="Invalid Grant Error"
+        radius="md"
         icon={
           <IconAlertOctagon
             color={
@@ -114,8 +115,15 @@ const TutorialDrawer: FC<Props> = (props) => {
             }
           />
         }>
-        If you&apos;re seeing an &apos;invalid_grant&apos; error, you failed to
-        log in. Try clearing your cookies and try again
+        If you get an &apos;invalid_grant&apos; error when you go to the&nbsp;
+        <Anchor
+          href="https://ca.account.sony.com/api/v1/ssocookie"
+          target="_blank"
+          size="sm">
+          /ssocookie
+        </Anchor>
+        &nbsp;page, it means your login failed. You can try to clear your
+        cookies and log in again.
       </Alert>
     </Drawer>
   );
