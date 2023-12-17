@@ -36,6 +36,7 @@ import LanguageSelect from "@/components/LanguageSelect/LanguageSelect";
 import { createClient } from "@/utils/supabase/browser";
 import TutorialTrigger from "@/components/TutorialTrigger/TutorialTrigger";
 import TutorialDrawer from "@/components/TutorialDrawer/TutorialDrawer";
+import AuthTip from "@/components/AuthTip/AuthTip";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -153,6 +154,7 @@ const SignUpForm: FC = () => {
       <Title order={2} ta="center" mb="md">
         Let&apos;s get started!
       </Title>
+      <AuthTip />
       <Box
         component="form"
         w="100%"

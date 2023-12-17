@@ -19,6 +19,7 @@ import { notifications } from "@mantine/notifications";
 import Link from "@/components/Link/Link";
 import { useRouter } from "next/navigation";
 import { type FC } from "react";
+import AuthTip from "@/components/AuthTip/AuthTip";
 
 const SignInForm: FC = () => {
   const { refresh } = useRouter();
@@ -66,6 +67,7 @@ const SignInForm: FC = () => {
       w="100%"
       maw={400}
       onSubmit={form.onSubmit(handleSubmit)}>
+      <AuthTip />
       <Stack gap="md">
         <TextInput
           required

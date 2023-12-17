@@ -1,0 +1,10 @@
+.container {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.trigger {
+  border-radius: var(--mantine-radius-lg);
+  font-size: var(--mantine-font-size-sm);
+}
