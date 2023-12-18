@@ -1,7 +1,7 @@
 "use client";
 
 import { type HeaderLink } from "@/models/LinkModel";
-import { useMemo, type FC } from "react";
+import { useMemo, type FC, useCallback, Fragment } from "react";
 import {
   Anchor,
   Badge,
@@ -9,6 +9,7 @@ import {
   Burger,
   Button,
   Container,
+  Divider,
   Flex,
   Menu,
   Paper,
@@ -53,7 +54,7 @@ const Header: FC<HeaderProps> = (props) => {
   const { refresh } = useRouter();
   const [opened, { toggle }] = useDisclosure(false);
 
-  const handleSignOut = (): void => {
+  const handleSignOut = useCallback((): void => {
     if (profile == null) return;
     API.get("/auth/signOut")
       .then(() => {
@@ -62,7 +63,7 @@ const Header: FC<HeaderProps> = (props) => {
       .catch((error) => {
         console.error("unable to sign out", error);
       });
-  };
+  }, [profile, refresh]);
 
   const links = useMemo(
     () =>
@@ -139,13 +140,32 @@ const Header: FC<HeaderProps> = (props) => {
             </Button>
           )}
         </Box>
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          hiddenFrom="xs"
-          ml="auto"
-          size="sm"
-        />
+        <Flex ml="auto">
+          {profile != null && (
+            <Flex align="center" hiddenFrom="xs">
+              <Badge mr="sm" radius="sm">
+                {profile?.onlineId ?? "[Not Found]"}
+              </Badge>
+              <Image
+                width={30}
+                height={30}
+                src={
+                  profile?.avatarUrls?.length > 0
+                    ? profile.avatarUrls[0].avatarUrl
+                    : ""
+                }
+                alt="avatar"
+              />
+            </Flex>
+          )}
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            hiddenFrom="xs"
+            ml="xs"
+            size="sm"
+          />
+        </Flex>
         <Transition transition="slide-down" duration={200} mounted={opened}>
           {(styles) => (
             <Paper
@@ -157,6 +177,31 @@ const Header: FC<HeaderProps> = (props) => {
                 top: HEADER_HEIGHT + 12,
               }}>
               {links}
+              <Divider my={6} />
+              {profile != null ? (
+                <Fragment>
+                  <Anchor
+                    className={classes.link}
+                    component={Link}
+                    href="/profile"
+                    lh="initial">
+                    Profile
+                  </Anchor>
+                  <Anchor
+                    className={classes.link}
+                    component="button"
+                    onClick={handleSignOut}>
+                    Sign out
+                  </Anchor>
+                </Fragment>
+              ) : (
+                <Anchor
+                  className={classes.link}
+                  component={Link}
+                  href="/profile">
+                  Sign in
+                </Anchor>
+              )}
             </Paper>
           )}
         </Transition>

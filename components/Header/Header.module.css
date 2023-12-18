@@ -18,7 +18,8 @@
   gap: var(--mantine-spacing-xs);
 }
 
-a.link {
+a.link,
+button.link {
   font-size: var(--mantine-font-size-sm);
   font-weight: 500;
   text-decoration: none;
@@ -26,7 +27,12 @@ a.link {
   color: var(--mantine-color-secondary-8);
 }
 
-a.link:hover {
+button.link {
+  text-align: start;
+}
+
+a.link:hover,
+button.link:hover {
   color: var(--mantine-color-accent-3);
 }
 
@@ -55,12 +61,12 @@ a.disabledLink {
   background: var(--mantine-color-primary-7);
   transform: translateX(-50%);
   border-radius: var(--mantine-radius-sm);
-  z-index: 0;
+  z-index: 9999;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: var(--mantine-spacing-xs);
-  padding: var(--mantine-spacing-xs);
+  padding: var(--mantine-spacing-md) var(--mantine-spacing-xs);
 }
 
 .dropdown:not([data-with-border]) {
