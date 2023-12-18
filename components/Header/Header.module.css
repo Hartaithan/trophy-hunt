@@ -47,3 +47,22 @@ a.disabledLink {
   align-items: center;
   justify-content: flex-end;
 }
+
+.dropdown {
+  position: absolute;
+  left: 50%;
+  width: 94%;
+  background: var(--mantine-color-primary-7);
+  transform: translateX(-50%);
+  border-radius: var(--mantine-radius-sm);
+  z-index: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
+  padding: var(--mantine-spacing-xs);
+}
+
+.dropdown:not([data-with-border]) {
+  transform: translateX(-50%);
+}
