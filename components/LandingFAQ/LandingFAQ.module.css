@@ -1,0 +1,26 @@
+.title {
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: 28px;
+  }
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: 20px;
+  }
+}
+
+.control {
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: var(--mantine-font-size-sm);
+  }
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: var(--mantine-font-size-xs);
+  }
+}
+
+.panel {
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: var(--mantine-font-size-sm);
+  }
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: var(--mantine-font-size-xs);
+  }
+}

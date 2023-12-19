@@ -16,4 +16,23 @@
   line-height: 110%;
   font-weight: bold;
   font-size: 34px;
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: 28px;
+  }
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: 24px;
+  }
+}
+
+.description {
+  @media (max-width: $mantine-breakpoint-md) {
+    padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+    margin-bottom: var(--mantine-spacing-xl);
+  }
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: var(--mantine-font-size-sm);
+  }
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: var(--mantine-font-size-xs);
+  }
 }

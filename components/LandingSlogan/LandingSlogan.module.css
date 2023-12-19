@@ -4,10 +4,40 @@
   justify-content: center;
   align-items: center;
   gap: 12px;
+  @media (max-width: $mantine-breakpoint-sm) {
+    height: 150px;
+  }
+  @media (max-width: $mantine-breakpoint-xs) {
+    height: 100px;
+  }
+  @media (max-width: 380px) {
+    height: 80px;
+  }
+  @media (max-width: 330px) {
+    height: 60px;
+  }
+  @media (max-width: 300px) {
+    height: 50px;
+  }
 }
 
 .container * {
   font-size: 48px;
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: 42px;
+  }
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: 28px;
+  }
+  @media (max-width: 380px) {
+    font-size: 24px;
+  }
+  @media (max-width: 330px) {
+    font-size: 22px;
+  }
+  @media (max-width: 300px) {
+    font-size: 18px;
+  }
 }
 
 .slider {

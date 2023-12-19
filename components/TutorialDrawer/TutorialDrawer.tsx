@@ -20,9 +20,7 @@ import {
 } from "@tabler/icons-react";
 import { theme } from "@/styles/theme";
 
-type Props = DrawerProps;
-
-const TutorialDrawer: FC<Props> = (props) => {
+const TutorialDrawer: FC<DrawerProps> = (props) => {
   const { ...rest } = props;
   return (
     <Drawer
