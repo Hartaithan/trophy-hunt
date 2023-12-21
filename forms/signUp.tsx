@@ -37,6 +37,7 @@ import { createClient } from "@/utils/supabase/browser";
 import TutorialTrigger from "@/components/TutorialTrigger/TutorialTrigger";
 import TutorialDrawer from "@/components/TutorialDrawer/TutorialDrawer";
 import AuthTip from "@/components/AuthTip/AuthTip";
+import classes from "../styles/Form.module.css";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -141,7 +142,7 @@ const SignUpForm: FC = () => {
             Trophy Hunt
           </Text>
         </Text>
-        <Text ta="center" w="100%" maw={400} mt="xs">
+        <Text ta="center" w="100%" maw={{ base: "95%", sm: 400 }} mt="xs">
           We created an account for you. Please confirm your e-mail address and
           use our service to the maximum
         </Text>
@@ -151,14 +152,14 @@ const SignUpForm: FC = () => {
 
   return (
     <Fragment>
-      <Title order={2} ta="center" mb="md">
+      <Title className={classes.heading} order={2} ta="center" mb="md">
         Let&apos;s get started!
       </Title>
       <AuthTip />
       <Box
         component="form"
         w="100%"
-        maw={400}
+        maw={{ base: "95%", sm: 400 }}
         onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput

@@ -58,7 +58,7 @@ const SetPasswordForm: FC = () => {
     <Box
       component="form"
       w="100%"
-      maw={400}
+      maw={{ base: "95%", sm: 400 }}
       onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
         <PasswordInput

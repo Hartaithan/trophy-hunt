@@ -2,11 +2,12 @@ import SignInForm from "@/forms/signIn";
 import { type Page } from "@/models/AppModel";
 import { Anchor, Flex, Text, Title } from "@mantine/core";
 import Link from "@/components/Link/Link";
+import classes from "../../../styles/Form.module.css";
 
 const SignInPage: Page = () => {
   return (
     <Flex h="100%" direction="column" justify="center" align="center">
-      <Title order={2} ta="center" mb="md">
+      <Title className={classes.heading} order={2} ta="center" mb="md">
         Welcome back!
       </Title>
       <SignInForm />

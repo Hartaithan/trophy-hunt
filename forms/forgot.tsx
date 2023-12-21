@@ -18,6 +18,7 @@ import { notifications } from "@mantine/notifications";
 import { IconArrowLeft, IconMailCheck } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState, type FC, Fragment } from "react";
+import classes from "../styles/Form.module.css";
 
 const ForgotForm: FC = () => {
   const { back } = useRouter();
@@ -57,10 +58,15 @@ const ForgotForm: FC = () => {
     return (
       <Flex direction="column" justify="center" align="center" ta="center">
         <IconMailCheck size={64} />
-        <Title order={2} ta="center" mt="md" mb="sm">
+        <Title
+          className={classes.heading}
+          order={2}
+          ta="center"
+          mt="md"
+          mb="sm">
           Check your email
         </Title>
-        <Text ta="center" w="100%" maw={400} mb="lg">
+        <Text ta="center" w="100%" maw={{ base: "95%", sm: 400 }} mb="lg">
           {form.values.email.trim().length > 0
             ? `We send password reset link to ${form.values.email}. `
             : "We send password reset link to your email. "}
@@ -83,17 +89,23 @@ const ForgotForm: FC = () => {
 
   return (
     <Fragment>
-      <Title order={2} ta="center" mb="xs">
+      <Title className={classes.heading} order={2} ta="center" mb="xs">
         Reset your password
       </Title>
-      <Text ta="center" c="dimmed" size="sm" w="100%" maw={400} mb="md">
+      <Text
+        ta="center"
+        c="dimmed"
+        size="sm"
+        w="100%"
+        maw={{ base: "95%", sm: 400 }}
+        mb="md">
         Enter the email and we’ll send an email with instructions to reset your
         password.
       </Text>
       <Box
         component="form"
         w="100%"
-        maw={400}
+        maw={{ base: "95%", sm: 400 }}
         onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
           required
