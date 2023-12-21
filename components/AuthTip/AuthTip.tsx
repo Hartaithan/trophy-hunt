@@ -1,7 +1,6 @@
 "use client";
 
 import { memo, type FC } from "react";
-import classes from "./AuthTip.module.css";
 import {
   Flex,
   Popover,
@@ -11,11 +10,16 @@ import {
   Anchor,
 } from "@mantine/core";
 import { IconExclamationMark } from "@tabler/icons-react";
+import classes from "./AuthTip.module.css";
 
 const AuthTip: FC<FlexProps> = (props) => {
   return (
     <Flex className={classes.container} {...props}>
-      <Popover width={400} position="top" shadow="md">
+      <Popover
+        classNames={{ dropdown: classes.dropdown }}
+        width={400}
+        position="top"
+        shadow="md">
         <Popover.Target>
           <Button
             size="xs"
