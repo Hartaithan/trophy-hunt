@@ -8,6 +8,7 @@ import {
   Text,
   Button,
   Anchor,
+  type PopoverWidth,
 } from "@mantine/core";
 import { IconExclamationMark } from "@tabler/icons-react";
 import classes from "./AuthTip.module.css";
@@ -17,7 +18,7 @@ const AuthTip: FC<FlexProps> = (props) => {
     <Flex className={classes.container} {...props}>
       <Popover
         classNames={{ dropdown: classes.dropdown }}
-        width={400}
+        width={null as unknown as PopoverWidth}
         position="top"
         shadow="md">
         <Popover.Target>

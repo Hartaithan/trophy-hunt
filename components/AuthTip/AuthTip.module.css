@@ -12,6 +12,6 @@
 .dropdown {
   width: 400px;
   @media (max-width: 450px) {
-    width: 90% !important;
+    width: 90%;
   }
 }
