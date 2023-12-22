@@ -3,7 +3,7 @@
 }
 
 .body {
-  height: 100%;
+  min-height: 100%;
   margin-top: var(--mantine-spacing-md);
 }
 
@@ -16,4 +16,16 @@
 
 .steps > p {
   margin-bottom: var(--mantine-spacing-xl);
+}
+
+.alertRoot {
+  @media (max-width: $mantine-breakpoint-sm) {
+    padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  }
+}
+
+.alertIcon {
+  @media (max-width: $mantine-breakpoint-sm) {
+    display: none;
+  }
 }

@@ -106,6 +106,10 @@ const TutorialDrawer: FC<DrawerProps> = (props) => {
         color="orange"
         title="Invalid Grant Error"
         radius="md"
+        classNames={{
+          root: classes.alertRoot,
+          icon: classes.alertIcon,
+        }}
         icon={
           <IconAlertOctagon
             color={
