@@ -243,7 +243,7 @@ const BoardContainer: FC = () => {
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       collisionDetection={closestCorners}>
-      <Flex className={classes.container} gap="xl" py="xl">
+      <Flex className={classes.container}>
         {Object.keys(columns).map((col) => {
           const key = col as BOARD_COLUMNS;
           const items = columns[key];

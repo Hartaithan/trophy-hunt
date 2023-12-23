@@ -70,10 +70,7 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
             </UnstyledButton>
           )}
         </Flex>
-        <Flex
-          className={classes.listWrapper}
-          direction="column"
-          ref={setNodeRef}>
+        <Flex className={classes.listWrapper} ref={setNodeRef}>
           <Transition
             mounted={items.length === 0}
             transition="fade"
