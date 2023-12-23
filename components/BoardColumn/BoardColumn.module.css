@@ -57,7 +57,7 @@
   @media (max-width: $mantine-breakpoint-sm) {
     overflow: auto;
     flex-direction: row;
-
+    min-height: 250px;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
