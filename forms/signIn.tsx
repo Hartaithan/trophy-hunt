@@ -22,7 +22,7 @@ import { type FC } from "react";
 import AuthTip from "@/components/AuthTip/AuthTip";
 
 const SignInForm: FC = () => {
-  const { push } = useRouter();
+  const { refresh } = useRouter();
   const [opened, { open, close }] = useDisclosure();
 
   const form = useForm({
@@ -48,7 +48,7 @@ const SignInForm: FC = () => {
     }
     API.post("/auth/signIn", JSON.stringify(values))
       .then(() => {
-        push("/");
+        refresh();
       })
       .catch((error) => {
         notifications.show({
