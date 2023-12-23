@@ -51,9 +51,22 @@
 }
 
 .listWrapper {
-  position: relative;
   flex: 1;
+  position: relative;
   flex-direction: column;
+  @media (max-width: $mantine-breakpoint-sm) {
+    overflow: auto;
+    flex-direction: row;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
+.listWrapper::-webkit-scrollbar {
+  @media (max-width: $mantine-breakpoint-sm) {
+    height: 0px;
+  }
 }
 
 .listWrapper > div {

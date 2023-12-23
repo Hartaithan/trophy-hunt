@@ -15,6 +15,7 @@ import { useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
+  horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import BoardCard from "../BoardCard/BoardCard";
 import { type Game } from "@/models/GameModel";
@@ -23,6 +24,7 @@ import { columnColors, columnsLabels } from "@/constants/board";
 import { useBoard } from "@/providers/BoardProvider";
 import { Virtuoso } from "react-virtuoso";
 import classes from "./BoardColumn.module.css";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface BoardColumnProps {
   column: BOARD_COLUMNS;
@@ -35,6 +37,11 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
   const { setNodeRef } = useDroppable({ id: column, disabled: !interactive });
   const { addGameModal } = useBoard();
   const { colors } = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: 48em)`);
+  const strategy =
+    isMobile === true
+      ? horizontalListSortingStrategy
+      : verticalListSortingStrategy;
 
   const { color, shade } = columnColors[column];
 
@@ -44,10 +51,7 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
   };
 
   return (
-    <SortableContext
-      id={column}
-      items={items}
-      strategy={verticalListSortingStrategy}>
+    <SortableContext id={column} items={items} strategy={strategy}>
       <Flex className={classes.column} direction="column">
         <Flex
           className={classes.header}
@@ -97,11 +101,8 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
               </Flex>
             )}
           </Transition>
-          <Virtuoso
-            data={items}
-            className={classes.list}
-            totalCount={items.length}
-            itemContent={(index, item) => {
+          {isMobile === true ? (
+            items.map((item, index) => {
               const isLast = index + 1 === items.length;
               return (
                 <BoardCard
@@ -111,8 +112,25 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
                   interactive={interactive}
                 />
               );
-            }}
-          />
+            })
+          ) : (
+            <Virtuoso
+              data={items}
+              className={classes.list}
+              totalCount={items.length}
+              itemContent={(index, item) => {
+                const isLast = index + 1 === items.length;
+                return (
+                  <BoardCard
+                    key={item.id}
+                    item={item}
+                    divider={!isLast}
+                    interactive={interactive}
+                  />
+                );
+              }}
+            />
+          )}
         </Flex>
       </Flex>
     </SortableContext>

@@ -17,6 +17,7 @@ import Image from "../Image/Image";
 import clsx from "clsx";
 import classes from "./BoardCard.module.css";
 import { useRouter } from "next/navigation";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface BoardCardProps {
   item: Game;
@@ -56,6 +57,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
     transition,
     isDragging,
   } = useSortable({ id, animateLayoutChanges, disabled: !interactive });
+  const isMobile = useMediaQuery(`(max-width: 48em)`);
 
   const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
@@ -80,7 +82,8 @@ const BoardCard: FC<BoardCardProps> = (props) => {
         zIndex: isDragging ? 99999 : undefined,
         visibility: isDragging && !overlay ? "hidden" : "unset",
         cursor: interactive ? "pointer" : "default",
-        marginBottom: divider ? spacing.sm : 0,
+        marginBottom: isMobile === true ? 0 : divider ? spacing.sm : 0,
+        marginRight: isMobile === false ? 0 : divider ? spacing.sm : 0,
       }}>
       <Flex className={classes.header}>
         <ColumnBadge status={status} />
@@ -106,7 +109,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
           alt="image card"
         />
       </Box>
-      <Text mt={6} fw={500} lineClamp={2}>
+      <Text className={classes.title} lineClamp={2}>
         {title}
       </Text>
       <ProgressStats progress={progress} />

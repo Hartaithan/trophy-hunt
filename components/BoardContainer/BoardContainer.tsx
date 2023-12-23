@@ -26,6 +26,7 @@ import BoardColumn from "../BoardColumn/BoardColumn";
 import BoardCard from "../BoardCard/BoardCard";
 import { arrayMove } from "@dnd-kit/sortable";
 import { moveBetweenContainers } from "@/utils/dnd";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface Move {
   start: string | null;
@@ -38,7 +39,7 @@ const measuring = {
   },
 };
 
-const activationConstraint: PointerActivationConstraint = { distance: 15 };
+const constraint: PointerActivationConstraint = { distance: 15 };
 
 const BoardContainer: FC = () => {
   const { columns, setColumns, active, setActive } = useBoard();
@@ -49,9 +50,16 @@ const BoardContainer: FC = () => {
   const lastActiveIndex = useRef<number>(0);
   const lastOverContainer = useRef<BOARD_COLUMNS | null>(null);
   const lastOverIndex = useRef<number>(0);
+  const isMobile = useMediaQuery(`(max-width: 48em)`);
+  const delay = isMobile === true ? 500 : 0;
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint }),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        ...constraint,
+        delay,
+      },
+    }),
   );
 
   const handleMoveEnd = (): void => {
