@@ -15,6 +15,7 @@ import {
   type DragStartEvent,
   DragOverlay,
   PointerSensor,
+  TouchSensor,
 } from "@dnd-kit/core";
 import { useBoard } from "@/providers/BoardProvider";
 import { type ReorderItem, type ReorderPayload } from "@/models/GameModel";
@@ -39,7 +40,7 @@ const measuring = {
   },
 };
 
-const constraint: PointerActivationConstraint = { distance: 15 };
+const constraint: PointerActivationConstraint = { distance: 15, tolerance: 5 };
 
 const BoardContainer: FC = () => {
   const { columns, setColumns, active, setActive } = useBoard();
@@ -52,9 +53,10 @@ const BoardContainer: FC = () => {
   const lastOverIndex = useRef<number>(0);
   const isMobile = useMediaQuery(`(max-width: 48em)`);
   const delay = isMobile === true ? 500 : 0;
+  const sensor = isMobile === true ? TouchSensor : PointerSensor;
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(sensor, {
       activationConstraint: {
         ...constraint,
         delay,
