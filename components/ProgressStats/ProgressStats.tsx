@@ -4,11 +4,18 @@ import { columnColors, columnsLabels } from "@/constants/board";
 import { calculateProgress } from "@/utils/progress";
 import { type Game } from "@/models/GameModel";
 import { type ProgressStats as ProgressStatsType } from "@/models/ProgressModel";
-import { Text, Group, Progress, useMantineTheme, Box } from "@mantine/core";
+import {
+  Text,
+  Group,
+  Progress,
+  useMantineTheme,
+  Box,
+  type BoxProps,
+} from "@mantine/core";
 import { useMemo, type FC, memo } from "react";
 
 interface ProgressStatsProps {
-  width?: string | number;
+  width?: BoxProps["w"];
   progress: Game["progress"];
 }
 

@@ -33,14 +33,16 @@ const GameInfo: FC = () => {
         alt={title ?? "game image"}
       />
       <Flex className={classes.content}>
-        <Title order={4}>{title}</Title>
+        <Title order={4} className={classes.title}>
+          {title}
+        </Title>
         <Group mt={4}>
           <ColumnBadge status={status} />
           <PlatformBadge platform={platform} />
           <TrophyCounts counts={countsArray} count={count} size="small" />
         </Group>
       </Flex>
-      <ProgressStats width={300} progress={progress} />
+      <ProgressStats width={{ base: "100%", md: 300 }} progress={progress} />
     </Group>
   );
 };

@@ -1,5 +1,18 @@
 .container {
   width: 100%;
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.icon {
+  width: auto;
+  object-fit: contain;
+  border-radius: var(--mantine-radius-md);
+  @media (max-width: $mantine-breakpoint-xs) {
+    align-self: center;
+  }
 }
 
 .content {
@@ -7,8 +20,8 @@
   flex: 1;
 }
 
-.icon {
-  width: auto;
-  object-fit: contain;
-  border-radius: var(--mantine-radius-md);
+.title {
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: var(--mantine-font-size-md);
+  }
 }

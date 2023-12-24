@@ -9,6 +9,7 @@
 
 .filters {
   @media (max-width: 980px) {
+    width: 100%;
     gap: var(--mantine-spacing-sm);
     justify-content: flex-end;
   }
