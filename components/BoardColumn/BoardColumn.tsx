@@ -37,7 +37,7 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
   const { setNodeRef } = useDroppable({ id: column, disabled: !interactive });
   const { addGameModal } = useBoard();
   const { colors } = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: 48em)`);
+  const isMobile = useMediaQuery(`(max-width: 62em)`);
   const strategy =
     isMobile === true
       ? horizontalListSortingStrategy

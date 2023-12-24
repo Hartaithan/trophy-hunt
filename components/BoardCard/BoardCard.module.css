@@ -3,7 +3,7 @@
   padding: var(--mantine-spacing-xs);
   background: var(--mantine-color-primary-6);
   border-radius: var(--mantine-radius-md);
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: $mantine-breakpoint-md) {
     min-width: 200px;
   }
 }
@@ -32,7 +32,7 @@
 .title {
   margin-top: 6px;
   font-weight: 500;
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: $mantine-breakpoint-md) {
     font-size: var(--mantine-font-size-sm);
   }
 }

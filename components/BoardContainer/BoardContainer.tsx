@@ -51,7 +51,7 @@ const BoardContainer: FC = () => {
   const lastActiveIndex = useRef<number>(0);
   const lastOverContainer = useRef<BOARD_COLUMNS | null>(null);
   const lastOverIndex = useRef<number>(0);
-  const isMobile = useMediaQuery(`(max-width: 48em)`);
+  const isMobile = useMediaQuery(`(max-width: 62em)`);
   const delay = isMobile === true ? 500 : 0;
   const sensor = isMobile === true ? TouchSensor : PointerSensor;
 

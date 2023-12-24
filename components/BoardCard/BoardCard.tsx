@@ -57,7 +57,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
     transition,
     isDragging,
   } = useSortable({ id, animateLayoutChanges, disabled: !interactive });
-  const isMobile = useMediaQuery(`(max-width: 48em)`);
+  const isMobile = useMediaQuery(`(max-width: 62em)`);
 
   const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
