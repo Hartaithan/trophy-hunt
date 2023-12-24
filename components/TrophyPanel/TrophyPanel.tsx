@@ -65,41 +65,44 @@ const TrophyPanel: FC = () => {
 
   return (
     <Group className={classes.container}>
-      <SegmentedControl
-        color="accent"
-        radius="lg"
-        data={earnedOptions}
-        defaultValue="all"
-        value={filters.earned}
-        onChange={handleEarnedChange}
-      />
-      <SegmentedControl
-        color="accent"
-        radius="lg"
-        data={typesOptions}
-        defaultValue="all"
-        value={filters.type}
-        onChange={handleTypeChange}
-      />
-      <Button
-        ml="auto"
-        radius="lg"
-        leftSection={<IconListCheck size={20} />}
-        onClick={handleCheckAll}>
-        {isAllChecked ? "Uncheck" : "Check"} all
-      </Button>
-      <Button
-        radius="lg"
-        leftSection={<IconSearch size={20} />}
-        onClick={handleGoogleSearch}>
-        Find in Google
-      </Button>
-      <Button
-        radius="lg"
-        leftSection={<IconCloudDownload size={20} />}
-        onClick={syncProgress}>
-        Sync
-      </Button>
+      <Group className={classes.filters}>
+        <SegmentedControl
+          color="accent"
+          radius="lg"
+          data={earnedOptions}
+          defaultValue="all"
+          value={filters.earned}
+          onChange={handleEarnedChange}
+        />
+        <SegmentedControl
+          color="accent"
+          radius="lg"
+          data={typesOptions}
+          defaultValue="all"
+          value={filters.type}
+          onChange={handleTypeChange}
+        />
+      </Group>
+      <Group className={classes.options}>
+        <Button
+          radius="lg"
+          leftSection={<IconListCheck size={20} />}
+          onClick={handleCheckAll}>
+          {isAllChecked ? "Uncheck" : "Check"} all
+        </Button>
+        <Button
+          radius="lg"
+          leftSection={<IconSearch size={20} />}
+          onClick={handleGoogleSearch}>
+          Find in Google
+        </Button>
+        <Button
+          radius="lg"
+          leftSection={<IconCloudDownload size={20} />}
+          onClick={syncProgress}>
+          Sync
+        </Button>
+      </Group>
     </Group>
   );
 };

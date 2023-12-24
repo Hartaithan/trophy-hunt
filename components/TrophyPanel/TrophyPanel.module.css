@@ -1,4 +1,39 @@
 .container {
   width: 100%;
   gap: var(--mantine-spacing-lg);
+  @media (max-width: 980px) {
+    gap: var(--mantine-spacing-sm);
+    justify-content: flex-end;
+  }
+}
+
+.filters {
+  @media (max-width: 980px) {
+    gap: var(--mantine-spacing-sm);
+    justify-content: flex-end;
+  }
+}
+
+.filters > div {
+  @media (max-width: $mantine-breakpoint-xs) {
+    width: 100%;
+    padding: 0;
+  }
+}
+
+.options {
+  margin-left: auto;
+  @media (max-width: 980px) {
+    margin-left: unset;
+  }
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex: 3;
+  }
+}
+
+.options > button {
+  @media (max-width: $mantine-breakpoint-xs) {
+    width: auto;
+    flex: 1;
+  }
 }

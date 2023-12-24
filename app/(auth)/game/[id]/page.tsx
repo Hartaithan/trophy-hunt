@@ -71,7 +71,7 @@ const GamePage: Page<GameParams> = async ({ params: { id } }) => {
         id={id}
         initialGame={response.game}
         initialTrophies={response.trophies}>
-        <Stack gap="xl" py="xl">
+        <Stack gap="xl" py={{ base: "lg", md: "xl" }}>
           <GameInfo />
           <TrophyPanel />
           <TrophyGroups />

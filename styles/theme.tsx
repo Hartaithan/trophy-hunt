@@ -26,7 +26,7 @@ import RichTextEditorClasses from "./RichTextEditor.module.css";
 
 const ContainerDefaultProps: Partial<ContainerProps> = {
   size: "xl",
-  px: { base: "xs", xl: 0 },
+  px: { base: "md", xl: 0 },
 };
 
 const ModalDefaultProps: Partial<ModalProps> = {
