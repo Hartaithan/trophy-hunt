@@ -8,6 +8,10 @@
   padding: var(--mantine-spacing-sm);
   z-index: 10;
   align-items: center;
+  @media (max-width: $mantine-breakpoint-sm) {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 }
 
 .icon {
@@ -21,4 +25,32 @@
   margin-left: var(--mantine-spacing-md);
   flex-direction: column;
   justify-content: center;
+  @media (max-width: $mantine-breakpoint-sm) {
+    order: 2;
+    margin-left: 0;
+    margin-top: var(--mantine-spacing-sm);
+    min-width: 100%;
+  }
+}
+
+.heading {
+  margin-bottom: var(--mantine-spacing-xs);
+  align-items: center;
+  @media (max-width: $mantine-breakpoint-md) {
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
+
+.heading > div {
+  margin-left: var(--mantine-spacing-sm);
+  @media (max-width: $mantine-breakpoint-md) {
+    margin-left: 0;
+    margin-top: 6px;
+  }
+}
+
+.count {
+  align-items: center;
 }

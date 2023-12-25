@@ -70,13 +70,13 @@ const TrophyGroup: FC<TrophyGroupProps> = (props) => {
         alt={name ?? "group icon url"}
       />
       <Flex className={classes.info}>
-        <Flex align="center" mb="xs">
+        <Flex className={classes.heading}>
           <Text fw="bold">{name}</Text>
-          <Badge ml="sm">{id === "default" ? "Base Game" : "DLC"}</Badge>
+          <Badge>{id === "default" ? "Base Game" : "DLC"}</Badge>
         </Flex>
         <TrophyCounts counts={countsArray} count={count} />
       </Flex>
-      <Flex align="center">
+      <Flex className={classes.count}>
         <Title
           order={4}
           mr="md"
