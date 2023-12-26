@@ -7,10 +7,25 @@
   padding-bottom: var(--mantine-spacing-lg);
   padding-left: var(--mantine-spacing-xl);
   padding-right: var(--mantine-spacing-xl);
+  @media (max-width: $mantine-breakpoint-md) {
+    padding-top: var(--mantine-spacing-md);
+    padding-bottom: var(--mantine-spacing-md);
+    padding-left: var(--mantine-spacing-lg);
+    padding-right: var(--mantine-spacing-lg);
+  }
+}
+
+.title {
+  font-size: var(--mantine-font-size-xl);
+  font-weight: 700;
+  @media (max-width: $mantine-breakpoint-md) {
+    font-size: var(--mantine-font-size-lg);
+  }
 }
 
 .input {
   padding: 4px var(--mantine-spacing-md);
+  padding-right: 52px;
   height: auto;
 }
 

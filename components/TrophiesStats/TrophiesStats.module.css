@@ -1,6 +1,9 @@
 .container {
   width: 100%;
   gap: var(--mantine-spacing-md);
+  @media (max-width: $mantine-breakpoint-md) {
+    flex-direction: column;
+  }
 }
 
 .content {
@@ -13,6 +16,16 @@
   padding-right: var(--mantine-spacing-xl);
   align-items: center;
   justify-content: space-evenly;
+  @media (max-width: $mantine-breakpoint-md) {
+    flex-wrap: wrap;
+    padding-top: var(--mantine-spacing-md);
+    padding-bottom: var(--mantine-spacing-md);
+    padding-left: var(--mantine-spacing-lg);
+    padding-right: var(--mantine-spacing-lg);
+  }
+  @media (max-width: $mantine-breakpoint-sm) {
+    gap: var(--mantine-spacing-md);
+  }
 }
 
 .block {

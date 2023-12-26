@@ -29,7 +29,7 @@ const ShareBoard: FC<Props> = (props) => {
 
   return (
     <Flex className={classes.container}>
-      <Text fz="xl" fw={700}>
+      <Text className={classes.title}>
         Your board is public! You can share it with your friends!
       </Text>
       <Input
