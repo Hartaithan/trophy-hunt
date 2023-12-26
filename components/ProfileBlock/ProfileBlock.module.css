@@ -6,9 +6,45 @@
   padding-left: var(--mantine-spacing-xl);
   padding-right: var(--mantine-spacing-xl);
   align-items: center;
+  @media (max-width: $mantine-breakpoint-md) {
+    padding-top: var(--mantine-spacing-md);
+    padding-bottom: var(--mantine-spacing-md);
+    padding-left: var(--mantine-spacing-lg);
+    padding-right: var(--mantine-spacing-lg);
+    flex-direction: column;
+  }
 }
 
 .avatar {
   margin-right: var(--mantine-spacing-md);
   border-radius: 50%;
+}
+
+.psn {
+  flex-direction: column;
+}
+
+.profile {
+  margin-left: auto;
+  flex-wrap: wrap;
+  @media (max-width: $mantine-breakpoint-md) {
+    margin-top: var(--mantine-spacing-md);
+    margin-left: 0px;
+  }
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 100%;
+    justify-content: space-between;
+    gap: var(--mantine-spacing-sm);
+  }
+}
+
+.profileValue {
+  font-size: var(--mantine-font-size-xl);
+  font-weight: 700;
+  @media (max-width: $mantine-breakpoint-md) {
+    font-size: var(--mantine-font-size-lg);
+  }
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: var(--mantine-font-size-md);
+  }
 }

@@ -31,7 +31,7 @@ const ProfileBlock: FC<ProfileBlockProps> = (props) => {
         src={psn?.avatarUrls[0].avatarUrl ?? ""}
         alt="avatar"
       />
-      <Flex direction="column">
+      <Flex className={classes.psn}>
         <Flex align="center">
           <Text fz="xl" fw={700}>
             {name}
@@ -46,31 +46,31 @@ const ProfileBlock: FC<ProfileBlockProps> = (props) => {
           <Text mt="sm">{psn.aboutMe}</Text>
         )}
       </Flex>
-      {profile?.username != null && (
-        <Box ml="auto">
-          <Text>Username</Text>
-          <Text fz="xl" fw={700}>
-            {profile.username}
-          </Text>
-        </Box>
-      )}
-      {profile?.type != null && (
-        <Box ml={64}>
-          <Text>Profile Type</Text>
-          <Text fz="xl" fw={700}>
-            {capitalize(profile.type)}
-          </Text>
-        </Box>
-      )}
-      {profile?.language != null && (
-        <Box ml={64}>
-          <Text>Language</Text>
-          <Text fz="xl" fw={700}>
-            {locales.find((i) => i.value === profile.language)?.label ??
-              "[Not Found]"}
-          </Text>
-        </Box>
-      )}
+      <Flex className={classes.profile}>
+        {profile?.username != null && (
+          <Box>
+            <Text>Username</Text>
+            <Text className={classes.profileValue}>{profile.username}</Text>
+          </Box>
+        )}
+        {profile?.type != null && (
+          <Box ml={{ base: 0, sm: 64 }}>
+            <Text>Profile Type</Text>
+            <Text className={classes.profileValue}>
+              {capitalize(profile.type)}
+            </Text>
+          </Box>
+        )}
+        {profile?.language != null && (
+          <Box ml={{ base: 0, sm: 64 }}>
+            <Text>Language</Text>
+            <Text className={classes.profileValue}>
+              {locales.find((i) => i.value === profile.language)?.label ??
+                "[Not Found]"}
+            </Text>
+          </Box>
+        )}
+      </Flex>
     </Flex>
   );
 };

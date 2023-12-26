@@ -51,7 +51,7 @@ const ProfilePage: Page = async () => {
   const { psn, profile } = await getProfiles();
 
   return (
-    <Flex direction="column" py="xl">
+    <Flex direction="column" py={{ base: "lg", md: "xl" }}>
       <Flex mb="md" justify="space-between">
         <Title order={3}>Profile</Title>
         <Group>
