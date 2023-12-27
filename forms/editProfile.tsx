@@ -50,7 +50,7 @@ const EditProfileForm: FC<Props> = (props) => {
   return (
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Grid>
-        <Grid.Col span={6}>
+        <Grid.Col span={{ base: 12, md: 6 }}>
           <Input.Wrapper id="username" withAsterisk>
             <Flex justify="space-between" align="flex-end">
               <Input.Label>Username</Input.Label>
@@ -65,7 +65,7 @@ const EditProfileForm: FC<Props> = (props) => {
             />
           </Input.Wrapper>
         </Grid.Col>
-        <Grid.Col span={6}>
+        <Grid.Col span={{ base: 12, md: 6 }}>
           <Input.Wrapper id="created" withAsterisk>
             <Flex justify="space-between" align="flex-end">
               <Input.Label>Profile creation date</Input.Label>
@@ -84,7 +84,7 @@ const EditProfileForm: FC<Props> = (props) => {
             />
           </Input.Wrapper>
         </Grid.Col>
-        <Grid.Col span={6}>
+        <Grid.Col span={{ base: 12, md: 6 }}>
           <LanguageSelect
             value={form.values.language}
             onChange={(value) => {
@@ -92,7 +92,7 @@ const EditProfileForm: FC<Props> = (props) => {
             }}
           />
         </Grid.Col>
-        <Grid.Col span={6}>
+        <Grid.Col span={{ base: 12, md: 6 }}>
           <Select
             data={profileTypeOptions}
             label="Profile type"

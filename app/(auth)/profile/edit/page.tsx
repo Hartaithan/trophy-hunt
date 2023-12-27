@@ -27,7 +27,7 @@ const getProfile = async (): Promise<NullableProfile> => {
 const EditProfilePage: FC = async () => {
   const profile = await getProfile();
   return (
-    <Flex direction="column" py="xl">
+    <Flex direction="column" py={{ base: "lg", md: "xl" }}>
       <Group justify="space-between" mb="md">
         <Title order={3}>Edit Profile</Title>
         <Button component={Link} href="/profile/edit/password">
