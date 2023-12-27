@@ -5,6 +5,7 @@ import { API_URL } from "@/utils/api";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { Button, Flex, Group, Title } from "@mantine/core";
 import { type FC } from "react";
+import classes from "../../../../styles/Form.module.css";
 
 const getProfile = async (): Promise<NullableProfile> => {
   try {
@@ -29,8 +30,13 @@ const EditProfilePage: FC = async () => {
   return (
     <Flex direction="column" py={{ base: "lg", md: "xl" }}>
       <Group justify="space-between" mb="md">
-        <Title order={3}>Edit Profile</Title>
-        <Button component={Link} href="/profile/edit/password">
+        <Title className={classes.heading} order={3}>
+          Edit Profile
+        </Title>
+        <Button
+          className={classes.button}
+          component={Link}
+          href="/profile/edit/password">
           Update Password
         </Button>
       </Group>

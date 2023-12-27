@@ -60,21 +60,21 @@ const UpdatePasswordForm: FC = () => {
   return (
     <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
       <Grid>
-        <Grid.Col span={4}>
+        <Grid.Col span={{ base: 12, md: 4 }}>
           <PasswordInput
             label="Current Password"
             placeholder="Current Password"
             {...form.getInputProps("current_password")}
           />
         </Grid.Col>
-        <Grid.Col span={4}>
+        <Grid.Col span={{ base: 12, md: 4 }}>
           <PasswordInput
             label="New password"
             placeholder="New password"
             {...form.getInputProps("new_password")}
           />
         </Grid.Col>
-        <Grid.Col span={4}>
+        <Grid.Col span={{ base: 12, md: 4 }}>
           <PasswordInput
             label="Confirm Password"
             placeholder="Confirm Password"
