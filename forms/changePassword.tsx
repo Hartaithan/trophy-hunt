@@ -45,6 +45,7 @@ const UpdatePasswordForm: FC = () => {
           message: data.message,
           autoClose: 3000,
         });
+        form.resetDirty();
       })
       .catch((error) => {
         notifications.show({

@@ -35,6 +35,7 @@ const EditProfileForm: FC<Props> = (props) => {
           message: data.message,
           autoClose: 3000,
         });
+        form.resetDirty();
       })
       .catch((error) => {
         notifications.show({
