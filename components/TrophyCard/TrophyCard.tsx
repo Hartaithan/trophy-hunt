@@ -55,17 +55,21 @@ const TrophyCard: FC<TrophyCardProps> = (props) => {
         style={{
           background: `linear-gradient(110deg, transparent 0%, transparent 70%, ${trophyColors[type]}4D 80%, ${trophyColors[type]}99 95%, ${trophyColors[type]} 100%), ${colors.primary[7]}`,
         }}>
-        <Image
-          width={IMAGE_SIZE}
-          height={IMAGE_SIZE}
-          className={classes.icon}
-          alt={name ?? "trophy icon url"}
-          src={icon_url ?? ""}
-        />
+        <Flex className={classes.iconWrapper}>
+          <Image
+            width={IMAGE_SIZE}
+            height={IMAGE_SIZE}
+            className={classes.icon}
+            alt={name ?? "trophy icon url"}
+            src={icon_url ?? ""}
+          />
+        </Flex>
         <Flex className={classes.info}>
           {name != null && (
             <Flex mb="xs" align="center">
-              <Text fw="bold" td={checked ? "line-through" : "unset"}>
+              <Text
+                className={classes.name}
+                td={checked ? "line-through" : "unset"}>
                 {name}
               </Text>
               {checked && earnedDateTime != null && (
@@ -81,25 +85,31 @@ const TrophyCard: FC<TrophyCardProps> = (props) => {
             </Flex>
           )}
           {detail != null && (
-            <Text td={checked ? "line-through" : "unset"}>{detail}</Text>
+            <Text
+              className={classes.detail}
+              td={checked ? "line-through" : "unset"}>
+              {detail}
+            </Text>
           )}
         </Flex>
-        {hasProgress && (
-          <Flex className={classes.rate}>
-            <Title ta="center" order={3}>
-              {progress_value} / {progress_target}
-            </Title>
-            <Text ta="center">Progress: {progress_percentage}%</Text>
-          </Flex>
-        )}
-        {rare !== undefined && (
-          <Flex className={classes.rate}>
-            <Title ta="center" order={3}>
-              {earnedRate}%
-            </Title>
-            <Text ta="center">{rarityLabels[rare]}</Text>
-          </Flex>
-        )}
+        <Flex className={classes.rateWrapper}>
+          {hasProgress && (
+            <Flex className={classes.rate}>
+              <Title ta="center" order={3}>
+                {progress_value} / {progress_target}
+              </Title>
+              <Text ta="center">Progress: {progress_percentage}%</Text>
+            </Flex>
+          )}
+          {rare !== undefined && (
+            <Flex className={classes.rate}>
+              <Title className={classes.ratePercent} ta="center" order={3}>
+                {earnedRate}%
+              </Title>
+              <Text ta="center">{rarityLabels[rare]}</Text>
+            </Flex>
+          )}
+        </Flex>
       </Flex>
     </Flex>
   );
