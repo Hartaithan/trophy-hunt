@@ -4,6 +4,7 @@
   background: var(--mantine-color-primary-6);
   border-radius: var(--mantine-radius-md);
   @media (max-width: $mantine-breakpoint-md) {
+    width: 200px;
     min-width: 200px;
   }
 }

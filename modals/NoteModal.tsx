@@ -263,6 +263,7 @@ const NoteModal: FC<NoteModalProps> = (props) => {
     getNote();
   }, [getNote, opened, reset]);
 
+  // TODO: rich text editor responsive layout
   return (
     <Modal.Root
       opened={opened}
