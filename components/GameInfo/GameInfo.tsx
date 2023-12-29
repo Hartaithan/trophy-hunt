@@ -25,8 +25,8 @@ const GameInfo: FC = () => {
   return (
     <Group className={classes.container}>
       <Image
-        width={250}
-        height={100}
+        width="0"
+        height="0"
         className={classes.icon}
         priority
         src={image_url}

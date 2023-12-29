@@ -8,7 +8,13 @@ interface Props {
 const HomeSection: FC<Props> = (props) => {
   const { session } = props;
   return (
-    <pre style={{ maxWidth: 400, overflow: "auto", fontSize: 8 }}>
+    <pre
+      style={{
+        maxWidth: 400,
+        overflow: "auto",
+        fontSize: 8,
+        whiteSpace: "pre-wrap",
+      }}>
       there should be profile stats, last 5 games and etc
       <br />
       <br />

@@ -7,6 +7,8 @@
 }
 
 .icon {
+  height: 100px;
+  min-height: 100px;
   width: auto;
   object-fit: contain;
   border-radius: var(--mantine-radius-md);

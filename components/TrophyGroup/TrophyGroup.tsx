@@ -63,8 +63,8 @@ const TrophyGroup: FC<TrophyGroupProps> = (props) => {
   return (
     <Flex className={classes.container}>
       <Image
-        width={150}
-        height={80}
+        width="0"
+        height="0"
         className={classes.icon}
         src={icon_url}
         alt={name ?? "group icon url"}
