@@ -1,7 +1,7 @@
 "use client";
 
 import { rarityLabels, trophyColors } from "@/constants/trophy";
-import { type Trophy } from "@/models/TrophyModel";
+import { type TrophyType, type Trophy } from "@/models/TrophyModel";
 import { useGame } from "@/providers/GameProvider";
 import { Badge, Flex, Text, Title, useMantineTheme } from "@mantine/core";
 import dayjs from "dayjs";
@@ -11,6 +11,8 @@ import Image from "../Image/Image";
 import classes from "./TrophyCard.module.css";
 import clsx from "clsx";
 import TrophyBadge from "../TrophyBadge/TrophyBadge";
+import { useMediaQuery } from "@mantine/hooks";
+import { type Device } from "@/models/AppModel";
 
 const IMAGE_SIZE = 70;
 
@@ -18,10 +20,19 @@ interface TrophyCardProps {
   trophy: Trophy;
 }
 
+const gradients: Record<Device, (type: TrophyType, color: string) => string> = {
+  desktop: (type, color) =>
+    `linear-gradient(110deg, transparent 0%, transparent 70%, ${trophyColors[type]}4D 80%, ${trophyColors[type]}99 95%, ${trophyColors[type]} 100%), ${color}`,
+  mobile: (type, color) =>
+    `linear-gradient(110deg, transparent 0%, transparent 40%, ${trophyColors[type]}4D 75%, ${trophyColors[type]}99 95%, ${trophyColors[type]} 100%), ${color}`,
+};
+
 const TrophyCard: FC<TrophyCardProps> = (props) => {
   const { trophy } = props;
   const { progress, filters } = useGame();
   const { colors } = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: 62em)`);
+  const device: Device = isMobile === true ? "mobile" : "desktop";
 
   const {
     id,
@@ -52,9 +63,7 @@ const TrophyCard: FC<TrophyCardProps> = (props) => {
       <TrophyBadge {...props} checked={checked} />
       <Flex
         className={classes.content}
-        style={{
-          background: `linear-gradient(110deg, transparent 0%, transparent 70%, ${trophyColors[type]}4D 80%, ${trophyColors[type]}99 95%, ${trophyColors[type]} 100%), ${colors.primary[7]}`,
-        }}>
+        style={{ background: gradients[device](type, colors.primary[7]) }}>
         <Flex className={classes.iconWrapper}>
           <Image
             width={IMAGE_SIZE}

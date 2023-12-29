@@ -28,8 +28,7 @@ import BoardCard from "../BoardCard/BoardCard";
 import { arrayMove } from "@dnd-kit/sortable";
 import { moveBetweenContainers } from "@/utils/dnd";
 import { useMediaQuery } from "@mantine/hooks";
-
-type Device = "desktop" | "mobile";
+import { type Device } from "@/models/AppModel";
 
 interface Move {
   start: string | null;

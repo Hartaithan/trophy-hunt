@@ -13,3 +13,5 @@ export interface Page<P = DefaultParams, S = DefaultParams> {
   (props: PageProps<P, S>): Promise<JSX.Element> | JSX.Element;
   defaultProps?: Partial<P> | undefined;
 }
+
+export type Device = "desktop" | "mobile";
