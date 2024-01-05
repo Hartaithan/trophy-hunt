@@ -19,9 +19,11 @@ export const initializeBoard = (items: Game[] | null): BoardColumns => {
   const entries = Object.entries(columns);
   for (let i = 0; i < entries.length; i++) {
     const [key, items] = entries[i];
-    columns[key] = [...items].sort(
-      (a, b) => a.position?.value - b.position?.value,
-    );
+    columns[key] = [...items].sort((a, b) => {
+      const c = a.position != null ? a.position.value : 0;
+      const d = b.position != null ? b.position.value : 0;
+      return c - d;
+    });
   }
   return columns;
 };

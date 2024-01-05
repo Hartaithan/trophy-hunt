@@ -16,7 +16,7 @@ export interface Game {
   user_id: string;
   username: string;
   code: string;
-  position: Position;
+  position: Position | null;
 }
 
 export type NewGamePayload = Omit<
