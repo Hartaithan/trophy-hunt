@@ -182,7 +182,7 @@ export const POST = async (req: Request): Promise<Response> => {
   const { data: newGame, error: newGameError } = await supabase
     .from("games")
     .insert([payload])
-    .select("*")
+    .select("*, position(*)")
     .single();
   if (newGameError !== null) {
     console.error("unable to create new game", newGameError);

@@ -16,7 +16,7 @@ const getUserGames = async (): Promise<Response> => {
 
   const { data: games, error: gamesError } = await supabase
     .from("games")
-    .select("*")
+    .select("*, position(*)")
     .eq("user_id", user.id);
   if (gamesError !== null || user === null) {
     console.error("unable to get user's games", gamesError);
@@ -72,7 +72,7 @@ const getGamesByUsername = async (req: Request): Promise<Response> => {
 
   const { data: games, error: gamesError } = await supabase
     .from("games")
-    .select("*")
+    .select("*, position(*)")
     .eq("username", username);
   if (gamesError !== null) {
     console.error("unable to get user's games", gamesError);

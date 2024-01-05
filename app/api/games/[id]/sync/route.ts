@@ -41,7 +41,7 @@ export const GET = async (
   const supabase = createClient(cookies());
   const { data: game, error: gameError } = await supabase
     .from("games")
-    .select("*")
+    .select("*, position(*)")
     .eq("id", id)
     .single();
   if (gameError !== null) {

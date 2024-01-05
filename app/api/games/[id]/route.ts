@@ -25,7 +25,11 @@ export const GET = async (
   const supabase = createClient(cookies());
   const [userRes, gameRes] = await Promise.allSettled([
     await supabase.auth.getUser(),
-    await supabase.from("games").select("*").eq("id", id).single<Game>(),
+    await supabase
+      .from("games")
+      .select("*, position(*)")
+      .eq("id", id)
+      .single<Game>(),
   ]);
 
   if (userRes.status === "rejected") {
@@ -122,7 +126,7 @@ export const PUT = async (
     .from("games")
     .update(body)
     .eq("id", id)
-    .select("*")
+    .select("*, position(*)")
     .single();
 
   if (error !== null) {

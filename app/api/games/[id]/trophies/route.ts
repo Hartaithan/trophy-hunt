@@ -55,7 +55,7 @@ export const GET = async (
 
   const [profile, game] = await Promise.all([
     supabase.from("profiles").select("language").eq("id", user.id).single(),
-    supabase.from("games").select("*").eq("id", id).single(),
+    supabase.from("games").select("*, position(*)").eq("id", id).single(),
   ]);
   if (profile.error !== null || profile === null) {
     console.error("unable to get profile", profile.error);

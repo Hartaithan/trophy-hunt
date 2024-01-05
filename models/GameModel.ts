@@ -2,6 +2,7 @@ import { type PayloadObject } from "@/utils/payload";
 import { type BOARD_COLUMNS } from "./BoardModel";
 import { type Platform } from "./PlatformModel";
 import { type ProgressItem } from "./ProgressModel";
+import { type Position } from "./PositionModel";
 
 export interface Game {
   id: number;
@@ -15,7 +16,7 @@ export interface Game {
   user_id: string;
   username: string;
   code: string;
-  position: number;
+  position: Position;
 }
 
 export type NewGamePayload = Omit<
