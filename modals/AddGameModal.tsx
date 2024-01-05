@@ -96,7 +96,7 @@ const AddGameModal: FC<AddGameModalProps> = (props) => {
       const newItems = [game, ...items[status]];
       const reorderItems: ReorderItem[] = newItems.map((i, index) => ({
         id: i.id,
-        position: index,
+        value: index,
         status: i.status,
       }));
       const payload = { items: reorderItems };

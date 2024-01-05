@@ -36,7 +36,7 @@ export interface AddGameState {
 
 export interface ReorderItem {
   id: number;
-  position: number;
+  value: number;
   status: BOARD_COLUMNS;
 }
 
