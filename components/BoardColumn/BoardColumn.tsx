@@ -10,7 +10,7 @@ import {
   useMantineTheme,
   Box,
 } from "@mantine/core";
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -23,9 +23,9 @@ import { IconArticleOff, IconPlaylistAdd } from "@tabler/icons-react";
 import { columnColors, columnsLabels } from "@/constants/board";
 import { useBoard } from "@/providers/BoardProvider";
 import { Virtuoso as VerticalList } from "react-virtuoso";
-import HorizontalList, { ScrollDirection } from "react-retiny-virtual-list";
 import classes from "./BoardColumn.module.css";
 import { useMediaQuery } from "@mantine/hooks";
+import HorizontalList from "../HorizontalList/HorizontalList";
 
 interface BoardColumnProps {
   column: BOARD_COLUMNS;
@@ -43,8 +43,6 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
     isMobile === true
       ? horizontalListSortingStrategy
       : verticalListSortingStrategy;
-  const [visibleStartIndex, setVisibleStartIndex] = useState(0);
-
   const { color, shade } = columnColors[column];
 
   const handleAddGame = (): void => {
@@ -109,11 +107,9 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
               height={250}
               itemCount={items.length}
               itemSize={200}
-              scrollDirection={ScrollDirection.HORIZONTAL}
-              renderItem={({ index, style }) => {
+              renderItem={({ index, style, left }) => {
                 const item = items[index];
                 const isLast = index + 1 === items.length;
-                const left = style.left + (index - visibleStartIndex) * 10;
                 return (
                   <BoardCard
                     key={item.id}
@@ -124,9 +120,6 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
                     offset={left}
                   />
                 );
-              }}
-              onItemsRendered={({ startIndex }) => {
-                setVisibleStartIndex(startIndex);
               }}
             />
           ) : (
