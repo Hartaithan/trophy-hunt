@@ -61,9 +61,9 @@ const BoardContainer: FC = () => {
   const lastActiveIndex = useRef<number>(0);
   const lastOverContainer = useRef<BOARD_COLUMNS | null>(null);
   const lastOverIndex = useRef<number>(0);
-  const isMobile = useMediaQuery(`(max-width: 62em)`);
-  const device: Device = isMobile === true ? "mobile" : "desktop";
-  const sensor = isMobile === true ? TouchSensor : PointerSensor;
+  const isMobile = useMediaQuery(`(max-width: 62em)`) ?? false;
+  const device: Device = isMobile ? "mobile" : "desktop";
+  const sensor = isMobile ? TouchSensor : PointerSensor;
 
   const sensors = useSensors(
     useSensor(sensor, {

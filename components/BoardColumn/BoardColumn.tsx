@@ -38,11 +38,10 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
   const { setNodeRef } = useDroppable({ id: column, disabled: !interactive });
   const { addGameModal } = useBoard();
   const { colors } = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: 62em)`);
-  const strategy =
-    isMobile === true
-      ? horizontalListSortingStrategy
-      : verticalListSortingStrategy;
+  const isMobile = useMediaQuery(`(max-width: 62em)`) ?? false;
+  const strategy = isMobile
+    ? horizontalListSortingStrategy
+    : verticalListSortingStrategy;
   const { color, shade } = columnColors[column];
 
   const handleAddGame = (): void => {
@@ -101,7 +100,7 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
               </Flex>
             )}
           </Transition>
-          {isMobile === true ? (
+          {isMobile ? (
             <HorizontalList
               width="100%"
               height={250}

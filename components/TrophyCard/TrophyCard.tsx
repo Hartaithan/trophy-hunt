@@ -31,8 +31,8 @@ const TrophyCard: FC<TrophyCardProps> = (props) => {
   const { trophy } = props;
   const { progress, filters } = useGame();
   const { colors } = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: 62em)`);
-  const device: Device = isMobile === true ? "mobile" : "desktop";
+  const isMobile = useMediaQuery(`(max-width: 62em)`) ?? false;
+  const device: Device = isMobile ? "mobile" : "desktop";
 
   const {
     id,

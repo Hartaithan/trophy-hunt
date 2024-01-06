@@ -71,7 +71,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
     transition,
     isDragging,
   } = useSortable({ id, animateLayoutChanges, disabled: !interactive });
-  const isMobile = useMediaQuery(`(max-width: 62em)`);
+  const isMobile = useMediaQuery(`(max-width: 62em)`) ?? false;
 
   const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
@@ -96,7 +96,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
         zIndex: isDragging ? 99999 : undefined,
         visibility: isDragging && !overlay ? "hidden" : "unset",
         cursor: interactive ? "pointer" : "default",
-        marginBottom: isMobile === true ? 0 : divider ? spacing.sm : 0,
+        marginBottom: isMobile ? 0 : divider ? spacing.sm : 0,
         ...style,
         left: offset,
       }}>
@@ -124,7 +124,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
           alt="image card"
         />
       </Box>
-      <Text className={classes.title} lineClamp={isMobile === true ? 1 : 2}>
+      <Text className={classes.title} lineClamp={isMobile ? 1 : 2}>
         {title}
       </Text>
       <ProgressStats progress={progress} />
