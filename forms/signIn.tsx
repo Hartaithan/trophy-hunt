@@ -48,6 +48,7 @@ const SignInForm: FC = () => {
     }
     API.post("/auth/signIn", JSON.stringify(values))
       .then(() => {
+        window.location.replace(window.location.pathname);
         refresh();
       })
       .catch((error) => {
