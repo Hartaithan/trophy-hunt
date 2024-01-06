@@ -6,7 +6,12 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { Box, Flex, Overlay, Text, useMantineTheme } from "@mantine/core";
-import { memo, type FC, type MouseEventHandler } from "react";
+import {
+  memo,
+  type FC,
+  type MouseEventHandler,
+  type CSSProperties,
+} from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { type Game } from "@/models/GameModel";
 import ProgressStats from "../ProgressStats/ProgressStats";
@@ -24,6 +29,8 @@ interface BoardCardProps {
   interactive?: boolean;
   divider?: boolean;
   overlay?: boolean;
+  style?: CSSProperties;
+  offset?: number;
 }
 
 const CardOverlay: FC = () => {
@@ -44,7 +51,14 @@ const animateLayoutChanges: AnimateLayoutChanges = (args) => {
 };
 
 const BoardCard: FC<BoardCardProps> = (props) => {
-  const { item, interactive = true, overlay = false, divider = false } = props;
+  const {
+    item,
+    interactive = true,
+    overlay = false,
+    divider = false,
+    style,
+    offset,
+  } = props;
   const { id, title, image_url, status, platform, progress } = item;
 
   const { push } = useRouter();
@@ -83,7 +97,8 @@ const BoardCard: FC<BoardCardProps> = (props) => {
         visibility: isDragging && !overlay ? "hidden" : "unset",
         cursor: interactive ? "pointer" : "default",
         marginBottom: isMobile === true ? 0 : divider ? spacing.sm : 0,
-        marginRight: isMobile === false ? 0 : divider ? spacing.sm : 0,
+        ...style,
+        left: offset,
       }}>
       <Flex className={classes.header}>
         <ColumnBadge status={status} />
@@ -109,7 +124,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
           alt="image card"
         />
       </Box>
-      <Text className={classes.title} lineClamp={2}>
+      <Text className={classes.title} lineClamp={isMobile === true ? 1 : 2}>
         {title}
       </Text>
       <ProgressStats progress={progress} />

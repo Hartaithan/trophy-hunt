@@ -41,6 +41,7 @@
     "psn-api": "^2.10.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-retiny-virtual-list": "^2.3.0",
     "react-rewards": "^2.0.4",
     "react-virtuoso": "^4.6.2"
   },

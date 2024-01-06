@@ -10,7 +10,7 @@ import {
   useMantineTheme,
   Box,
 } from "@mantine/core";
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -22,7 +22,8 @@ import { type Game } from "@/models/GameModel";
 import { IconArticleOff, IconPlaylistAdd } from "@tabler/icons-react";
 import { columnColors, columnsLabels } from "@/constants/board";
 import { useBoard } from "@/providers/BoardProvider";
-import { Virtuoso } from "react-virtuoso";
+import { Virtuoso as VerticalList } from "react-virtuoso";
+import HorizontalList, { ScrollDirection } from "react-retiny-virtual-list";
 import classes from "./BoardColumn.module.css";
 import { useMediaQuery } from "@mantine/hooks";
 
@@ -42,6 +43,7 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
     isMobile === true
       ? horizontalListSortingStrategy
       : verticalListSortingStrategy;
+  const [visibleStartIndex, setVisibleStartIndex] = useState(0);
 
   const { color, shade } = columnColors[column];
 
@@ -102,19 +104,33 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
             )}
           </Transition>
           {isMobile === true ? (
-            items.map((item, index) => {
-              const isLast = index + 1 === items.length;
-              return (
-                <BoardCard
-                  key={item.id}
-                  item={item}
-                  divider={!isLast}
-                  interactive={interactive}
-                />
-              );
-            })
+            <HorizontalList
+              width="100%"
+              height={250}
+              itemCount={items.length}
+              itemSize={200}
+              scrollDirection={ScrollDirection.HORIZONTAL}
+              renderItem={({ index, style }) => {
+                const item = items[index];
+                const isLast = index + 1 === items.length;
+                const left = style.left + (index - visibleStartIndex) * 10;
+                return (
+                  <BoardCard
+                    key={item.id}
+                    item={item}
+                    divider={!isLast}
+                    interactive={interactive}
+                    style={style}
+                    offset={left}
+                  />
+                );
+              }}
+              onItemsRendered={({ startIndex }) => {
+                setVisibleStartIndex(startIndex);
+              }}
+            />
           ) : (
-            <Virtuoso
+            <VerticalList
               data={items}
               className={classes.list}
               totalCount={items.length}

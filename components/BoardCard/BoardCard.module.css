@@ -1,15 +1,18 @@
 .container {
   width: 100%;
+  height: auto;
   padding: var(--mantine-spacing-xs);
   background: var(--mantine-color-primary-6);
   border-radius: var(--mantine-radius-md);
   @media (max-width: $mantine-breakpoint-md) {
+    height: 250px;
     width: 200px;
     min-width: 200px;
   }
 }
 
 .imageWrapper {
+  pointer-events: none;
   position: relative;
   width: 100%;
   aspect-ratio: 320 / 176;
