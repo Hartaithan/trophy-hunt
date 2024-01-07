@@ -74,25 +74,25 @@ const TrophyCard: FC<TrophyCardProps> = (props) => {
           />
         </Flex>
         <Flex className={classes.info}>
-          {name != null && (
-            <Flex mb="xs" align="center">
+          <Flex className={classes.nameWrapper}>
+            {name != null && (
               <Text
                 className={classes.name}
                 td={checked ? "line-through" : "unset"}>
                 {name}
               </Text>
-              {checked && earnedDateTime != null && (
-                <Badge
-                  ml="xs"
-                  leftSection={<IconCheck size="0.75rem" />}
-                  style={{
-                    textDecoration: checked ? "line-through" : "none",
-                  }}>
-                  {dayjs(earnedDateTime).format("DD.MM.YYYY HH:mm")}
-                </Badge>
-              )}
-            </Flex>
-          )}
+            )}
+            {checked && earnedDateTime != null && (
+              <Badge
+                className={classes.earned}
+                leftSection={<IconCheck size="0.75rem" />}
+                style={{
+                  textDecoration: checked ? "line-through" : "none",
+                }}>
+                {dayjs(earnedDateTime).format("DD.MM.YYYY HH:mm")}
+              </Badge>
+            )}
+          </Flex>
           {detail != null && (
             <Text
               className={classes.detail}

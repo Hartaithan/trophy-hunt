@@ -36,7 +36,7 @@ const GameInfo: FC = () => {
         <Title order={4} className={classes.title}>
           {title}
         </Title>
-        <Group mt={4}>
+        <Group className={classes.row}>
           <ColumnBadge status={status} />
           <PlatformBadge platform={platform} />
           <TrophyCounts counts={countsArray} count={count} size="small" />

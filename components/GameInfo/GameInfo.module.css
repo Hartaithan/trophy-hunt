@@ -22,6 +22,14 @@
   flex: 1;
 }
 
+.row {
+  margin-top: 4px;
+  @media (max-width: $mantine-breakpoint-xs) {
+    gap: var(--mantine-spacing-xs);
+    margin-top: var(--mantine-spacing-xs);
+  }
+}
+
 .title {
   @media (max-width: $mantine-breakpoint-xs) {
     font-size: var(--mantine-font-size-md);

@@ -7,6 +7,7 @@ import TrophyCounts from "@/components/TrophyCounts/TrophyCounts";
 import { useGame } from "@/providers/GameProvider";
 import classes from "./TrophyGroup.module.css";
 import Image from "../Image/Image";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface TrophyGroupProps {
   group: Group;
@@ -31,6 +32,7 @@ const emptyProgress: Checked = {
 const TrophyGroup: FC<TrophyGroupProps> = (props) => {
   const { group } = props;
   const { progress, checkGroup } = useGame();
+  const isMobile = useMediaQuery(`(max-width: 62em)`) ?? false;
 
   const { id, icon_url, name, count, counts } = group;
 
@@ -74,7 +76,11 @@ const TrophyGroup: FC<TrophyGroupProps> = (props) => {
           <Text fw="bold">{name}</Text>
           <Badge>{id === "default" ? "Base Game" : "DLC"}</Badge>
         </Flex>
-        <TrophyCounts counts={countsArray} count={count} />
+        <TrophyCounts
+          counts={countsArray}
+          count={count}
+          size={isMobile ? "small" : "normal"}
+        />
       </Flex>
       <Flex className={classes.count}>
         <Title

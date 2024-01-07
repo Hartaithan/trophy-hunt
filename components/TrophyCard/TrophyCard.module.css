@@ -43,7 +43,7 @@
   @media (max-width: $mantine-breakpoint-sm) {
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: var(--mantine-spacing-md);
+    padding: var(--mantine-spacing-sm);
   }
 }
 
@@ -51,6 +51,7 @@
   flex: 1;
   flex-direction: column;
   order: 2;
+  gap: 6px;
   @media (max-width: $mantine-breakpoint-sm) {
     order: 3;
   }
@@ -63,6 +64,7 @@
   @media (max-width: $mantine-breakpoint-sm) {
     order: 2;
     width: 75%;
+    gap: var(--mantine-spacing-xs);
   }
 }
 
@@ -72,6 +74,18 @@
   @media (max-width: $mantine-breakpoint-sm) {
     margin-right: 0;
     align-items: flex-end;
+  }
+}
+
+.rate > h3 {
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: var(--mantine-font-size-md);
+  }
+}
+
+.rate > p {
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: var(--mantine-font-size-sm);
   }
 }
 
@@ -91,12 +105,24 @@
   margin-right: var(--mantine-spacing-sm);
 }
 
+.nameWrapper {
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--mantine-spacing-xs);
+  @media (max-width: $mantine-breakpoint-sm) {
+    gap: 6px;
+  }
+}
+
 .name {
   font-weight: bold;
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: var(--mantine-font-size-sm);
+  }
 }
 
 .detail {
   @media (max-width: $mantine-breakpoint-sm) {
-    font-size: var(--mantine-font-size-sm);
+    font-size: var(--mantine-font-size-xs);
   }
 }
