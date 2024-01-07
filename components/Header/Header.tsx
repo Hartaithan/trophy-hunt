@@ -13,7 +13,6 @@ import {
   Flex,
   Menu,
   Paper,
-  Title,
   Transition,
   UnstyledButton,
 } from "@mantine/core";
@@ -90,7 +89,9 @@ const Header: FC<HeaderProps> = (props) => {
   return (
     <Flex className={classes.root} mih={HEADER_HEIGHT}>
       <Container className={classes.container}>
-        <Title order={4}>Trophy Hunt</Title>
+        <Anchor className={classes.title} component={Link} href="/">
+          Trophy Hunt
+        </Anchor>
         <Flex className={classes.links} visibleFrom="xs">
           {links}
         </Flex>

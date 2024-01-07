@@ -10,6 +10,14 @@
   align-items: center;
 }
 
+.title {
+  font-size: var(--mantine-h4-font-size);
+  font-weight: var(--mantine-h4-font-weight);
+  line-height: var(--mantine-h4-line-height);
+  text-decoration: unset;
+  color: unset;
+}
+
 .links {
   flex: 1;
   display: flex;
