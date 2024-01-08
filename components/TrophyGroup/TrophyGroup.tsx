@@ -84,8 +84,7 @@ const TrophyGroup: FC<TrophyGroupProps> = (props) => {
       </Flex>
       <Flex className={classes.count}>
         <Title
-          order={4}
-          mr="md"
+          className={classes.countTitle}
           td={checked.isAll ? "line-through" : "unset"}
           c={checked.isAll ? "dimmed" : undefined}>
           {checked.label}

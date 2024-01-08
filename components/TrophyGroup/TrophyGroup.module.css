@@ -20,6 +20,10 @@
   width: auto;
   object-fit: contain;
   border-radius: var(--mantine-radius-md);
+  @media (max-width: $mantine-breakpoint-sm) {
+    height: 60px;
+    min-height: 60px;
+  }
 }
 
 .info {
@@ -30,7 +34,7 @@
   @media (max-width: $mantine-breakpoint-sm) {
     order: 2;
     margin-left: 0;
-    margin-top: var(--mantine-spacing-sm);
+    margin-top: var(--mantine-spacing-xs);
     min-width: 100%;
   }
 }
@@ -55,4 +59,14 @@
 
 .count {
   align-items: center;
+}
+
+.countTitle {
+  font-weight: var(--mantine-h4-font-weight);
+  line-height: var(--mantine-h4-line-height);
+  font-size: var(--mantine-h4-font-size);
+  margin-right: var(--mantine-spacing-md);
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: var(--mantine-font-size-md);
+  }
 }
