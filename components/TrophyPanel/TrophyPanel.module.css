@@ -19,6 +19,13 @@
   @media (max-width: $mantine-breakpoint-xs) {
     width: 100%;
     padding: 0;
+    height: 30px;
+  }
+}
+
+.filters > div > div > label {
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: var(--mantine-font-size-xs);
   }
 }
 
@@ -36,5 +43,8 @@
   @media (max-width: $mantine-breakpoint-xs) {
     width: auto;
     flex: 1;
+    min-width: 170px;
+    height: 30px;
+    font-size: var(--mantine-font-size-xs);
   }
 }
