@@ -51,10 +51,11 @@ const Header: FC<HeaderProps> = (props) => {
   const { profile = null } = props;
   const pathname = usePathname();
   const { refresh } = useRouter();
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle, close }] = useDisclosure(false);
 
   const handleSignOut = useCallback((): void => {
     if (profile == null) return;
+    close();
     API.get("/auth/signOut")
       .then(() => {
         refresh();
@@ -62,7 +63,7 @@ const Header: FC<HeaderProps> = (props) => {
       .catch((error) => {
         console.error("unable to sign out", error);
       });
-  }, [profile, refresh]);
+  }, [profile, refresh, close]);
 
   const links = useMemo(
     () =>
@@ -78,12 +79,13 @@ const Header: FC<HeaderProps> = (props) => {
               classes.link,
               link.disabled && classes.disabledLink,
               isActive && classes.activeLink,
-            )}>
+            )}
+            onClick={close}>
             {link.label}
           </Anchor>
         );
       }),
-    [pathname],
+    [pathname, close],
   );
 
   return (
@@ -184,6 +186,7 @@ const Header: FC<HeaderProps> = (props) => {
                   <Anchor
                     className={classes.link}
                     component={Link}
+                    onClick={close}
                     href="/profile"
                     lh="initial">
                     Profile
