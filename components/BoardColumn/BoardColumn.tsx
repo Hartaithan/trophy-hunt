@@ -61,9 +61,7 @@ const BoardColumn: FC<BoardColumnProps> = (props) => {
               {columnsLabels[column]}
             </Text>
           </Flex>
-          <Text className={classes.count} size="xs" fw={600} ta="center">
-            {items.length}
-          </Text>
+          <Text className={classes.count}>{items.length}</Text>
           {interactive && (
             <UnstyledButton
               className={classes.add}
