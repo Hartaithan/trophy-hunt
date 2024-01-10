@@ -17,8 +17,11 @@ const LandingFAQ: FC = () => {
       <Title className={classes.title} ta="center" my="xl">
         Frequently Asked Questions
       </Title>
-      <Box w={{ xs: "95%", sm: "90%", md: "70%" }}>
-        <Accordion variant="separated">
+      <Box className={classes.wrapper}>
+        <Accordion
+          variant="separated"
+          radius="md"
+          classNames={{ item: classes.accordionItem }}>
           <AccordionItem value="pricing">
             <AccordionControl className={classes.control}>
               Does it cost anything?
