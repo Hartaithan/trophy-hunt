@@ -26,7 +26,9 @@
   }
 }
 
-.panel {
+.content,
+.content > * {
+  font-size: var(--mantine-font-size-md);
   @media (max-width: $mantine-breakpoint-sm) {
     font-size: var(--mantine-font-size-sm);
   }
@@ -35,6 +37,6 @@
   }
 }
 
-.accordionItem {
+.item {
   background-color: var(--mantine-color-primary-7);
 }
