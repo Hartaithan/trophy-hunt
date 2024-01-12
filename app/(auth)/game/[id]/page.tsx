@@ -6,7 +6,7 @@ import { type Game } from "@/models/GameModel";
 import { type FormattedResponse } from "@/models/TrophyModel";
 import CongratulationProvider from "@/providers/CongratulationProvider";
 import GameProvider from "@/providers/GameProvider";
-import { API_URL } from "@/utils/api";
+import { API_URL } from "@/constants/api";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { Stack, Text, Flex, Title } from "@mantine/core";
 import { IconMoodSadDizzy } from "@tabler/icons-react";

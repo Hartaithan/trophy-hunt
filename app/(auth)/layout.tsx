@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Fragment, type FC, type PropsWithChildren } from "react";
 import Header from "@/components/Header/Header";
 import { type NullablePSNProfile } from "@/models/AuthModel";
-import { API_URL } from "@/utils/api";
+import { API_URL } from "@/constants/api";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { Container } from "@mantine/core";
 

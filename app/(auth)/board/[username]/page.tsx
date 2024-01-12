@@ -1,7 +1,7 @@
 import BoardPreview from "@/components/BoardPreview/BoardPreview";
 import { type Page } from "@/models/AppModel";
 import { type Game } from "@/models/GameModel";
-import { API_URL } from "@/utils/api";
+import { API_URL } from "@/constants/api";
 import { initializeBoard } from "@/utils/board";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { Flex, Title } from "@mantine/core";

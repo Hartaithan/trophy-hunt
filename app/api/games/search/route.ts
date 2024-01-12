@@ -3,7 +3,7 @@ import {
   type SearchItem,
   type SearchResult,
 } from "@/models/SearchModel";
-import { SEARCH_URL } from "@/utils/api";
+import { SEARCH_URL } from "@/constants/api";
 import { search as headers } from "@/utils/headers";
 
 const allowedPlatforms: string[] = ["PS5", "PS4", "PS3", "Vita"];

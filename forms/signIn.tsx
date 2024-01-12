@@ -2,7 +2,8 @@
 
 import TutorialDrawer from "@/components/TutorialDrawer/TutorialDrawer";
 import TutorialTrigger from "@/components/TutorialTrigger/TutorialTrigger";
-import API, { API_URL } from "@/utils/api";
+import API from "@/utils/api";
+import { API_URL } from "@/constants/api";
 import {
   Anchor,
   Box,

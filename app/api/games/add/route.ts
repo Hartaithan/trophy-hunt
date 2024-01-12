@@ -8,7 +8,7 @@ import { search as headers } from "@/utils/headers";
 import { validatePayload } from "@/utils/payload";
 import { cookies } from "next/headers";
 import { type AuthorizationPayload, getTitleTrophyGroups } from "psn-api";
-import { SEARCH_URL } from "@/utils/api";
+import { SEARCH_URL } from "@/constants/api";
 
 interface SplittedId {
   id: string | null;

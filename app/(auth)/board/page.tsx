@@ -2,7 +2,7 @@ import BoardContainer from "@/components/BoardContainer/BoardContainer";
 import { type Page } from "@/models/AppModel";
 import { type Game } from "@/models/GameModel";
 import BoardProvider from "@/providers/BoardProvider";
-import { API_URL } from "@/utils/api";
+import { API_URL } from "@/constants/api";
 import { initializeBoard } from "@/utils/board";
 import { getRefreshedCookies } from "@/utils/cookies";
 

@@ -1,5 +1,5 @@
 import { type ForgotBody } from "@/models/AuthModel";
-import { REDIRECT_URL } from "@/utils/api";
+import { REDIRECT_URL } from "@/constants/api";
 import { validatePayload } from "@/utils/payload";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";

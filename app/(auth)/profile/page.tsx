@@ -6,7 +6,7 @@ import {
   type NullableProfile,
   type NullablePSNProfile,
 } from "@/models/AuthModel";
-import { API_URL } from "@/utils/api";
+import { API_URL } from "@/constants/api";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { Button, Flex, Group, Stack, Title } from "@mantine/core";
 import Link from "@/components/Link/Link";
