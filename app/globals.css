@@ -55,7 +55,8 @@ div[data-portal="true"]#centered > .mantine-Affix-root {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  height: 8px;
+  width: 8px;
   background: var(--mantine-color-primary-8);
 }
 
