@@ -13,11 +13,12 @@ import { type FC } from "react";
 import { trophyColors } from "@/constants/trophy";
 import { IconListDetails } from "@tabler/icons-react";
 import TrophyIcon from "../TrophyIcon/TrophyIcon";
+import { type Size } from "@/models/SizeModel";
 
 interface TrophyCountsProps {
   counts: TrophyCountItem[];
   count?: number | null;
-  size?: "normal" | "small";
+  size?: Size;
   mt?: MantineSpacing;
 }
 

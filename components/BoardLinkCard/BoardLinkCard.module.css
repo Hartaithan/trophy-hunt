@@ -6,11 +6,6 @@
   border-radius: var(--mantine-radius-md);
   text-decoration: none;
   color: unset;
-  @media (max-width: $mantine-breakpoint-md) {
-    height: 250px;
-    width: 200px;
-    min-width: 200px;
-  }
 }
 
 .imageWrapper {
@@ -38,9 +33,7 @@
   margin-top: 6px;
   margin-bottom: auto;
   font-weight: 500;
-  @media (max-width: $mantine-breakpoint-md) {
-    font-size: var(--mantine-font-size-sm);
-  }
+  font-size: var(--mantine-font-size-xs);
 }
 
 .header {

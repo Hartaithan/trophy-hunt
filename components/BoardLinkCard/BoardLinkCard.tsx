@@ -52,9 +52,9 @@ const BoardLinkCard: FC<BoardLinkCardProps> = (props) => {
         />
       </Box>
       <Text className={classes.title} lineClamp={2}>
-        {title + " " + title}
+        {title}
       </Text>
-      <ProgressStats progress={progress} />
+      <ProgressStats progress={progress} size="small" />
     </Flex>
   );
 };

@@ -13,30 +13,35 @@ import {
   type BoxProps,
 } from "@mantine/core";
 import { useMemo, type FC, memo } from "react";
+import { type Size } from "@/models/SizeModel";
 
 interface ProgressStatsProps {
   width?: BoxProps["w"];
+  size?: Size;
   progress: Game["progress"];
 }
 
 const { platinum, complete } = columnColors;
 
 const ProgressStats: FC<ProgressStatsProps> = (props) => {
-  const { width = "100%", progress } = props;
+  const { width = "100%", size = "normal", progress } = props;
   const { colors } = useMantineTheme();
 
   const platinumColor = colors[platinum.color][platinum.shade];
   const completeColor = colors[complete.color][complete.shade];
 
-  const stats: ProgressStatsType = useMemo(() => {
-    return calculateProgress(progress);
-  }, [progress]);
+  const stats: ProgressStatsType = useMemo(
+    () => calculateProgress(progress),
+    [progress],
+  );
 
   return (
     <Box w={width}>
       <Group justify="space-between" mt="xs">
-        <Text size="xs">{columnsLabels.platinum} Progress</Text>
-        <Text size="xs" fw={500}>
+        <Text size={size === "normal" ? "xs" : "10px"}>
+          {columnsLabels.platinum} Progress
+        </Text>
+        <Text size={size === "normal" ? "xs" : "10px"} fw={500}>
           {stats.baseProgress}%
         </Text>
       </Group>
@@ -48,8 +53,10 @@ const ProgressStats: FC<ProgressStatsProps> = (props) => {
         mt={5}
       />
       <Group justify="space-between" mt="xs">
-        <Text size="xs">{columnsLabels.complete} Progress</Text>
-        <Text size="xs" fw={500}>
+        <Text size={size === "normal" ? "xs" : "10px"}>
+          {columnsLabels.complete} Progress
+        </Text>
+        <Text size={size === "normal" ? "xs" : "10px"} fw={500}>
           {stats.totalProgress}%
         </Text>
       </Group>
