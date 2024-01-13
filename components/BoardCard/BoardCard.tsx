@@ -5,7 +5,13 @@ import {
   defaultAnimateLayoutChanges,
   useSortable,
 } from "@dnd-kit/sortable";
-import { Box, Flex, Overlay, Text, useMantineTheme } from "@mantine/core";
+import {
+  Box,
+  Flex,
+  type FlexProps,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
 import {
   memo,
   type FC,
@@ -23,26 +29,17 @@ import clsx from "clsx";
 import classes from "./BoardCard.module.css";
 import { useRouter } from "next/navigation";
 import { useMediaQuery } from "@mantine/hooks";
+import BoardCardOverlay from "../BoardCardOverlay/BoardCardOverlay";
 
-interface BoardCardProps {
+interface BoardCardProps extends FlexProps {
   item: Game;
+  className?: string;
   interactive?: boolean;
   divider?: boolean;
   overlay?: boolean;
   style?: CSSProperties;
   offset?: number;
 }
-
-const CardOverlay: FC = () => {
-  return (
-    <Overlay
-      zIndex={2}
-      gradient="linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))"
-    />
-  );
-};
-
-const MemoizedOverlay = memo(CardOverlay);
 
 const animateLayoutChanges: AnimateLayoutChanges = (args) => {
   const { isSorting, wasDragging } = args;
@@ -53,11 +50,13 @@ const animateLayoutChanges: AnimateLayoutChanges = (args) => {
 const BoardCard: FC<BoardCardProps> = (props) => {
   const {
     item,
+    className = "",
     interactive = true,
     overlay = false,
     divider = false,
     style,
     offset,
+    ...rest
   } = props;
   const { id, title, image_url, status, platform, progress } = item;
 
@@ -87,7 +86,11 @@ const BoardCard: FC<BoardCardProps> = (props) => {
       {...listeners}
       aria-describedby=""
       suppressHydrationWarning
-      className={clsx([classes.container, isDragging && classes.draggable])}
+      className={clsx([
+        className,
+        classes.container,
+        isDragging && classes.draggable,
+      ])}
       direction="column"
       onClick={handleClick}
       style={{
@@ -99,7 +102,8 @@ const BoardCard: FC<BoardCardProps> = (props) => {
         marginBottom: isMobile ? 0 : divider ? spacing.sm : 0,
         ...style,
         left: offset,
-      }}>
+      }}
+      {...rest}>
       <Flex className={classes.header}>
         <ColumnBadge status={status} />
         <PlatformBadge platform={platform} />
@@ -114,7 +118,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           alt="image card"
         />
-        {platform === "ps5" && <MemoizedOverlay />}
+        {platform === "ps5" && <BoardCardOverlay />}
         <Image
           className={classes.background}
           src={image_url}

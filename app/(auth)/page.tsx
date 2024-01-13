@@ -37,7 +37,7 @@ const Home: Page<unknown, Params> = async ({ searchParams: { success } }) => {
   const data = await fetchHomeData();
 
   return (
-    <Flex direction="column" py="xl">
+    <Flex direction="column" h="100%" py="xl">
       {data.session != null ? (
         <HomeSection games={data.games} session={data.session} />
       ) : (
