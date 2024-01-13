@@ -1,8 +1,11 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
-export const GET = async (): Promise<Response> => {
+export const GET = async (req: Request): Promise<Response> => {
   const supabase = createClient(cookies());
+  const { searchParams } = new URL(req.url);
+  const query = searchParams.get("limit");
+  const limit = query != null ? Number(query) : 5;
 
   const {
     data: { user },
@@ -18,7 +21,8 @@ export const GET = async (): Promise<Response> => {
     .select("*, position(*)")
     .eq("user_id", user.id)
     .not("updated_at", "is", null)
-    .order("updated_at", { ascending: false });
+    .order("updated_at", { ascending: false })
+    .limit(limit);
   if (gamesError !== null || user === null) {
     console.error("unable to get user's games", gamesError);
     return Response.json(
