@@ -131,7 +131,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
       <Text className={classes.title} lineClamp={isMobile ? 1 : 2}>
         {title}
       </Text>
-      <ProgressStats progress={progress} />
+      <ProgressStats className={classes.disabled} progress={progress} />
     </Flex>
   );
 };

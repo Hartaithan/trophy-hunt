@@ -42,7 +42,7 @@ const GameInfo: FC = () => {
           <TrophyCounts counts={countsArray} count={count} size="small" />
         </Group>
       </Flex>
-      <ProgressStats width={{ base: "100%", md: 300 }} progress={progress} />
+      <ProgressStats w={{ base: "100%", md: 300 }} progress={progress} />
     </Group>
   );
 };

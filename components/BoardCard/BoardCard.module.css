@@ -11,8 +11,19 @@
   }
 }
 
-.imageWrapper {
+.disabled {
   pointer-events: none;
+  user-select: none;
+}
+
+.imageWrapper,
+.image,
+.title {
+  pointer-events: none;
+  user-select: none;
+}
+
+.imageWrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 320 / 176;

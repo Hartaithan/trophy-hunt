@@ -15,8 +15,7 @@ import {
 import { useMemo, type FC, memo } from "react";
 import { type Size } from "@/models/SizeModel";
 
-interface ProgressStatsProps {
-  width?: BoxProps["w"];
+interface ProgressStatsProps extends BoxProps {
   size?: Size;
   progress: Game["progress"];
 }
@@ -24,7 +23,7 @@ interface ProgressStatsProps {
 const { platinum, complete } = columnColors;
 
 const ProgressStats: FC<ProgressStatsProps> = (props) => {
-  const { width = "100%", size = "normal", progress } = props;
+  const { w = "100%", size = "normal", progress, ...rest } = props;
   const { colors } = useMantineTheme();
 
   const platinumColor = colors[platinum.color][platinum.shade];
@@ -36,7 +35,7 @@ const ProgressStats: FC<ProgressStatsProps> = (props) => {
   );
 
   return (
-    <Box w={width}>
+    <Box w={w} {...rest}>
       <Group justify="space-between" mt="xs">
         <Text size={size === "normal" ? "xs" : "10px"}>
           {columnsLabels.platinum} Progress
