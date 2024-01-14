@@ -15,3 +15,10 @@ export enum BOARD_COLUMNS {
 }
 
 export type BoardColumns = Record<BOARD_COLUMNS | string, Game[]>;
+
+export type BoardCounts = Record<BOARD_COLUMNS | string, number>;
+
+export interface BoardStats {
+  counts: BoardCounts;
+  backlogPercent: number;
+}
