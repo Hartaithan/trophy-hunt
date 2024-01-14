@@ -48,7 +48,7 @@ const constraints: Record<Device, PointerActivationConstraint> = {
   mobile: {
     distance: 15,
     tolerance: 5,
-    delay: 500,
+    delay: 200,
   },
 };
 
