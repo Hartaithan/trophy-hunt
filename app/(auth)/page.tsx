@@ -3,6 +3,7 @@ import Landing from "@/components/Landing/Landing";
 import SuccessNotification from "@/components/SuccessNotification/SuccessNotification";
 import { API_URL } from "@/constants/api";
 import { type Page } from "@/models/AppModel";
+import { type BoardStats } from "@/models/BoardModel";
 import { type Game } from "@/models/GameModel";
 import { getRefreshedCookies } from "@/utils/cookies";
 import { createClient } from "@/utils/supabase/server";
@@ -16,6 +17,7 @@ interface Params {
 
 interface Response {
   games: Game[];
+  stats: BoardStats | null;
   session: Session | null;
 }
 
@@ -25,12 +27,24 @@ const fetchHomeData = async (): Promise<Response> => {
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  if (session === null) return { games: [], session };
-  const response = await fetch(`${API_URL}/games/recent`, {
-    headers: { Cookie: refreshedCookies },
-  });
-  const { games = [] } = await response.json();
-  return { games, session };
+  let games: Game[] = [];
+  let stats: BoardStats | null = null;
+  if (session === null) return { games, stats, session };
+  const [recentRes, statsRes] = await Promise.allSettled([
+    fetch(`${API_URL}/games/recent`, {
+      headers: { Cookie: refreshedCookies },
+    }).then(async (res) => await res.json()),
+    fetch(`${API_URL}/games/stats`, {
+      headers: { Cookie: refreshedCookies },
+    }).then(async (res) => await res.json()),
+  ]);
+  if (recentRes.status === "fulfilled") {
+    games = recentRes.value?.games ?? [];
+  }
+  if (statsRes.status === "fulfilled") {
+    stats = statsRes.value ?? null;
+  }
+  return { games, stats, session };
 };
 
 const Home: Page<unknown, Params> = async ({ searchParams: { success } }) => {
@@ -39,7 +53,11 @@ const Home: Page<unknown, Params> = async ({ searchParams: { success } }) => {
   return (
     <Flex direction="column" h="100%" py="xl">
       {data.session != null ? (
-        <HomeSection games={data.games} session={data.session} />
+        <HomeSection
+          games={data.games}
+          stats={data.stats}
+          session={data.session}
+        />
       ) : (
         <Landing />
       )}
