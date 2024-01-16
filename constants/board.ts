@@ -31,6 +31,13 @@ export const columnsLabels: Record<BOARD_COLUMNS, string> = {
   [BOARD_COLUMNS.Complete]: "100%",
 };
 
+export const columnsFullLabels: Record<BOARD_COLUMNS, string> = {
+  [BOARD_COLUMNS.Backlog]: "Backlog",
+  [BOARD_COLUMNS.InProgress]: "In Progress",
+  [BOARD_COLUMNS.Platinum]: "Platinum",
+  [BOARD_COLUMNS.Complete]: "Complete",
+};
+
 export const platformColors: Record<Platform, PlatformColor> = {
   ps3: {
     bg: "gray",

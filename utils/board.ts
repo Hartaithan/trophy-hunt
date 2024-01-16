@@ -1,10 +1,13 @@
+import { columnColors, columnsFullLabels } from "@/constants/board";
 import {
   BOARD_COLUMNS,
   type BoardStats,
   type BoardColumns,
   type BoardCounts,
+  type BoardSections,
 } from "@/models/BoardModel";
 import { type Game } from "@/models/GameModel";
+import { DEFAULT_THEME } from "@mantine/core";
 
 export const initializeBoard = (
   items: Game[] | null,
@@ -48,6 +51,7 @@ export const initializeBoardStats = (
   };
   if (items == null) return null;
   let complete = 0;
+  const sections: BoardSections = [];
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const { status } = item;
@@ -58,13 +62,24 @@ export const initializeBoardStats = (
     if (column === undefined) continue;
     columns[status].push(item);
   }
-  const counts = Object.entries(columns).reduce<BoardCounts>(
-    (acc, [key, value]) => {
-      acc[key] = value.length;
-      return acc;
-    },
-    {},
-  );
+
+  const counts: BoardCounts = {};
+  const entries = Object.entries(columns);
+  for (let n = 0; n < entries.length; n++) {
+    const [key, value] = entries[n] as [BOARD_COLUMNS, Game[]];
+    counts[key] = value.length;
+    const { color, shade } = columnColors[key];
+    const columnPercent = (value.length * 100) / items.length;
+    sections.push({
+      value: parseFloat(columnPercent.toFixed(1)),
+      color: DEFAULT_THEME.colors[color][shade],
+      tooltip: `${columnsFullLabels[key]} - ${columnPercent}%`,
+    });
+  }
   const backlogPercent = (complete * 100) / items.length;
-  return { counts, backlogPercent: parseFloat(backlogPercent.toFixed(1)) };
+  return {
+    counts,
+    backlogPercent: parseFloat(backlogPercent.toFixed(1)),
+    sections,
+  };
 };

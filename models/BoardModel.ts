@@ -1,4 +1,4 @@
-import { type MantineColor } from "@mantine/core";
+import { type RingProgressProps, type MantineColor } from "@mantine/core";
 import { type Game } from "./GameModel";
 import { type Range } from "./UtilsModel";
 
@@ -18,7 +18,10 @@ export type BoardColumns = Record<BOARD_COLUMNS | string, Game[]>;
 
 export type BoardCounts = Record<BOARD_COLUMNS | string, number>;
 
+export type BoardSections = RingProgressProps["sections"];
+
 export interface BoardStats {
   counts: BoardCounts;
+  sections: BoardSections;
   backlogPercent: number;
 }
