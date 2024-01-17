@@ -1,10 +1,11 @@
 import { type Game } from "@/models/GameModel";
-import { Flex, Group, Text, Title } from "@mantine/core";
+import { Flex, Group, Title } from "@mantine/core";
 import { type Session } from "@supabase/supabase-js";
 import { Fragment, type FC } from "react";
 import BoardLinkCard from "../BoardLinkCard/BoardLinkCard";
 import classes from "./HomeSection.module.css";
 import { type BoardStats } from "@/models/BoardModel";
+import BoardStatsSection from "../BoardStatsSection/BoardStatsSection";
 
 interface Props {
   games: Game[];
@@ -30,9 +31,7 @@ const HomeSection: FC<Props> = (props) => {
           </Group>
         </Fragment>
       )}
-      <Text component="pre" size="xs" mt="md">
-        {JSON.stringify(stats, null, 2)}
-      </Text>
+      <BoardStatsSection stats={stats} />
     </Flex>
   );
 };

@@ -1,0 +1,40 @@
+.container {
+  margin-top: var(--mantine-spacing-xl);
+  justify-content: center;
+  padding: 0px var(--mantine-spacing-xl);
+}
+
+.ringLabel {
+  font-weight: 700;
+  text-align: center;
+  font-size: var(--mantine-font-size-xl);
+}
+
+.counts {
+  flex-grow: 1;
+}
+
+.counts > div {
+  height: 100%;
+}
+
+.count {
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.countLabel {
+  text-align: center;
+  font-size: var(--mantine-h4-font-size);
+  line-height: var(--mantine-h4-line-height);
+}
+
+.countValue {
+  font-weight: 700;
+  text-align: center;
+  font-size: var(--mantine-h1-font-size);
+  font-weight: var(--mantine-h1-font-weight);
+  line-height: var(--mantine-h1-line-height);
+}
