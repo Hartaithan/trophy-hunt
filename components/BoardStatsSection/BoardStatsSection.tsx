@@ -26,7 +26,7 @@ const BoardStatsSection: FC<Props> = (props) => {
       />
       <Grid className={classes.counts}>
         {Object.entries(stats.counts).map(([key, value]) => (
-          <Grid.Col key={key} span={3}>
+          <Grid.Col key={key} span={{ base: 6, md: 3 }}>
             <Flex className={classes.count}>
               <Text className={classes.countLabel}>
                 {columnsFullLabels[key as BOARD_COLUMNS]}
