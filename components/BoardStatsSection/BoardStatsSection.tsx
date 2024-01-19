@@ -23,10 +23,15 @@ const BoardStatsSection: FC<Props> = (props) => {
       <Flex className={classes.content}>
         <RingProgress
           size={isMobile ? 200 : 250}
-          thickness={isMobile ? 15 : 25}
+          thickness={isMobile ? 18 : 25}
           sections={stats.sections}
           label={
-            <Text className={classes.ringLabel}>{stats.backlogPercent}%</Text>
+            <Flex direction="column">
+              <Text className={classes.label}>{stats.backlogPercent}%</Text>
+              <Text className={classes.description}>
+                {`Backlog\ncompletion`}
+              </Text>
+            </Flex>
           }
         />
         <Grid className={classes.counts}>

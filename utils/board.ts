@@ -73,7 +73,7 @@ export const initializeBoardStats = (
     sections.push({
       value: parseFloat(columnPercent.toFixed(1)),
       color: DEFAULT_THEME.colors[color][shade],
-      tooltip: `${columnsFullLabels[key]} - ${columnPercent}%`,
+      tooltip: `${columnsFullLabels[key]} - ${value.length} games - ${columnPercent}%`,
     });
   }
   const backlogPercent = (complete * 100) / items.length;

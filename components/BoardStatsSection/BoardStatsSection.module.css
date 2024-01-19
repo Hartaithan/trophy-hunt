@@ -20,12 +20,24 @@
   margin-bottom: var(--mantine-spacing-md);
 }
 
-.ringLabel {
+.label {
   font-weight: 700;
   text-align: center;
   font-size: var(--mantine-h1-font-size);
+  line-height: 120%;
   @media (max-width: $mantine-breakpoint-md) {
+    line-height: 140%;
     font-size: var(--mantine-h2-font-size);
+  }
+}
+
+.description {
+  white-space: pre;
+  text-align: center;
+  font-weight: 600;
+  font-size: var(--mantine-font-size-sm);
+  @media (max-width: $mantine-breakpoint-md) {
+    font-size: var(--mantine-font-size-xs);
   }
 }
 
