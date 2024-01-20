@@ -24,8 +24,14 @@ export type NewGamePayload = Omit<
   "id" | "created_at" | "updated_at" | "progress" | "position"
 >;
 
-export interface AddGamePayload extends PayloadObject {
+export interface AddGameSearchPayload extends PayloadObject {
   game_id: string;
+  status: BOARD_COLUMNS;
+}
+
+export interface AddGameCodePayload extends PayloadObject {
+  code: string;
+  isFifth: boolean;
   status: BOARD_COLUMNS;
 }
 

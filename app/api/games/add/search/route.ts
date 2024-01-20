@@ -1,4 +1,7 @@
-import { type AddGamePayload, type NewGamePayload } from "@/models/GameModel";
+import {
+  type AddGameSearchPayload,
+  type NewGamePayload,
+} from "@/models/GameModel";
 import {
   type TitleGroups,
   type TitleTrophiesOptions,
@@ -77,9 +80,9 @@ const getCode = (value: string | null): string | null => {
 };
 
 export const POST = async (req: Request): Promise<Response> => {
-  let body: AddGamePayload | null = null;
+  let body: AddGameSearchPayload | null = null;
   try {
-    const request: AddGamePayload = await req.json();
+    const request: AddGameSearchPayload = await req.json();
     body = request;
   } catch (error) {
     console.error("request body not found", error);

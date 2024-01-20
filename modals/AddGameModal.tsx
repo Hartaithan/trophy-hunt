@@ -4,7 +4,7 @@ import ColumnBadge from "@/components/ColumnBadge/ColumnBadge";
 import { type BOARD_COLUMNS } from "@/models/BoardModel";
 import {
   type Game,
-  type AddGamePayload,
+  type AddGameSearchPayload,
   type ReorderItem,
   type AddGameState,
 } from "@/models/GameModel";
@@ -141,7 +141,7 @@ const AddGameModal: FC<AddGameModalProps> = (props) => {
   };
 
   const handleSubmit = (): void => {
-    const payload: Partial<AddGamePayload> = {
+    const payload: Partial<AddGameSearchPayload> = {
       game_id: value ?? undefined,
       status: status ?? undefined,
     };
