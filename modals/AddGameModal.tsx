@@ -146,7 +146,7 @@ const AddGameModal: FC<AddGameModalProps> = (props) => {
       status: status ?? undefined,
     };
     setSubmit(true);
-    API.post("/games/add", JSON.stringify(payload))
+    API.post("/games/add/search", JSON.stringify(payload))
       .then((res) => {
         const game: Game = res.data.game;
         addNewGame(game);
