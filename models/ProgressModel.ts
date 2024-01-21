@@ -1,5 +1,3 @@
-import { type PayloadObject } from "@/utils/payload";
-
 export interface ProgressItem {
   id: number;
   earned: boolean;
@@ -7,7 +5,7 @@ export interface ProgressItem {
   dlc: boolean;
 }
 
-export interface ProgressPayload extends PayloadObject {
+export interface ProgressPayload {
   payload: ProgressItem[];
 }
 

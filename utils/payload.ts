@@ -1,5 +1,4 @@
 export type PayloadItem = [string, unknown];
-export type PayloadObject = Record<string, unknown>;
 
 interface ValidationResult {
   message: string;
@@ -52,11 +51,11 @@ const checkEmptyFields = (
 };
 
 export const validatePayload = (
-  payload: PayloadObject,
+  payload: unknown,
   required: string[] | null = null,
   ignore: string[] = [],
 ): ValidationResult | null => {
-  const items = Object.entries(payload);
+  const items = Object.entries(payload as Record<string, unknown>);
   if (required != null) {
     const { hasAllFields, errors } = checkRequiredFields(items, required);
     if (!hasAllFields) {
