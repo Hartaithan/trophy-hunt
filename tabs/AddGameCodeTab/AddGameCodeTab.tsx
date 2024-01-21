@@ -1,9 +1,17 @@
 "use client";
 
 import { BOARD_COLUMNS } from "@/models/BoardModel";
-import { type AddGameCodePayload, type AddGameState } from "@/models/GameModel";
+import {
+  type Game,
+  type AddGameCodePayload,
+  type AddGameState,
+} from "@/models/GameModel";
+import { useBoard } from "@/providers/BoardProvider";
+import { addNewGame } from "@/utils/add";
+import API from "@/utils/api";
 import { Button, Checkbox, TextInput, useMantineTheme } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 import { IconSquarePlus } from "@tabler/icons-react";
 import {
   type Dispatch,
@@ -23,6 +31,7 @@ const AddGameCodeTab: FC<Props> = (props) => {
   const { state, onClose, setSubmit } = props;
   const { opened, status } = state;
   const { spacing } = useMantineTheme();
+  const { setColumns } = useBoard();
 
   const form = useForm<AddGameCodePayload>({
     initialValues: {
@@ -41,8 +50,30 @@ const AddGameCodeTab: FC<Props> = (props) => {
   }, [setSubmit]);
 
   const handleSubmit = (values: typeof form.values): void => {
-    console.info("submit", values);
-    onClose();
+    setSubmit(true);
+    API.post("/games/add/code", JSON.stringify(values))
+      .then((res) => {
+        const game: Game = res.data.game;
+        addNewGame(game, setColumns);
+        notifications.show({
+          title: "Success!",
+          message: res.data.message,
+          autoClose: 3000,
+        });
+        onClose();
+      })
+      .catch((error) => {
+        notifications.show({
+          title: "Something went wrong!",
+          color: "red",
+          message: error.response.data.message,
+          autoClose: false,
+        });
+        console.error("add game error", error);
+      })
+      .finally(() => {
+        setSubmit(false);
+      });
   };
 
   useEffect(() => {
