@@ -6,7 +6,12 @@ import classes from "../../../styles/Form.module.css";
 
 const SignInPage: Page = () => {
   return (
-    <Flex h="100%" direction="column" justify="center" align="center">
+    <Flex
+      h="100%"
+      direction="column"
+      justify="center"
+      align="center"
+      py={{ base: "md", md: "xl" }}>
       <Title className={classes.heading} order={2} ta="center" mb="md">
         Welcome back!
       </Title>

@@ -4,7 +4,12 @@ import { Flex } from "@mantine/core";
 
 const SignUpPage: Page = () => {
   return (
-    <Flex h="100%" direction="column" justify="center" align="center">
+    <Flex
+      h="100%"
+      direction="column"
+      justify="center"
+      align="center"
+      py={{ base: "md", md: "xl" }}>
       <SignUpForm />
     </Flex>
   );

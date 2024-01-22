@@ -58,7 +58,11 @@ const GamePage: Page<GameParams> = async ({ params: { id } }) => {
 
   if (response == null)
     return (
-      <Flex justify="center" align="center" direction="column">
+      <Flex
+        justify="center"
+        align="center"
+        direction="column"
+        py={{ base: "md", md: "xl" }}>
         <IconMoodSadDizzy size={120} />
         <Title order={3}>Game not exist!</Title>
         <Text c="dimmed">Or you don&apos;t have access to this page</Text>
@@ -71,7 +75,7 @@ const GamePage: Page<GameParams> = async ({ params: { id } }) => {
         id={id}
         initialGame={response.game}
         initialTrophies={response.trophies}>
-        <Stack gap="xl" py={{ base: "lg", md: "xl" }}>
+        <Stack gap="xl" py={{ base: "md", md: "xl" }}>
           <GameInfo />
           <TrophyPanel />
           <TrophyGroups />

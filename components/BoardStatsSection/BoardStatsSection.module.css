@@ -8,6 +8,7 @@
   padding: 0px var(--mantine-spacing-xl);
   gap: var(--mantine-spacing-xl);
   @media (max-width: $mantine-breakpoint-sm) {
+    margin-bottom: var(--mantine-spacing-xl);
     flex-direction: column;
     align-items: center;
   }

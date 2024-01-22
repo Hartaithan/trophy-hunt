@@ -12,7 +12,7 @@
   }
   @media (max-width: $mantine-breakpoint-md) {
     flex-direction: column;
-    padding-top: var(--mantine-spacing-sm);
-    padding-bottom: var(--mantine-spacing-sm);
+    padding-top: var(--mantine-spacing-md);
+    padding-bottom: var(--mantine-spacing-md);
   }
 }
