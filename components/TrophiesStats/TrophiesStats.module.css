@@ -49,3 +49,33 @@
 .progressHeader {
   justify-content: space-between;
 }
+
+.label {
+  font-weight: 500;
+}
+
+.value {
+  font-weight: 700;
+  font-size: var(--mantine-font-size-xl);
+}
+
+.progressValue {
+  font-weight: 700;
+}
+
+.trophyValue {
+  font-size: var(--mantine-h2-font-size);
+  font-weight: var(--mantine-h2-font-weight);
+  line-height: var(--mantine-h2-line-height);
+  padding-left: var(--mantine-spacing-xs);
+  @media (max-width: $mantine-breakpoint-md) {
+    font-size: var(--mantine-h3-font-size);
+    font-weight: var(--mantine-h3-font-weight);
+    line-height: var(--mantine-h3-line-height);
+  }
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: var(--mantine-h4-font-size);
+    font-weight: var(--mantine-h4-font-weight);
+    line-height: var(--mantine-h4-line-height);
+  }
+}
