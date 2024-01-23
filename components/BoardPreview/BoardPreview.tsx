@@ -34,8 +34,10 @@ const BoardPreview: FC<Props> = (props) => {
       ) : (
         <Flex className={classes.private}>
           <IconMoodSadDizzy size={120} />
-          <Title order={3}>Board not exist!</Title>
-          <Text c="dimmed">
+          <Title mt="xs" order={3}>
+            Board not exist!
+          </Title>
+          <Text mt="xs" c="dimmed">
             Or the user is restricted from accessing their board.
           </Text>
         </Flex>

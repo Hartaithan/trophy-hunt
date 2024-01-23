@@ -34,7 +34,7 @@ const BoardPage: Page<BoardParams> = async ({
   const initializedBoard = initializeBoard(board);
 
   return (
-    <Flex direction="column" h="100%" pt="md" pb="xl">
+    <Flex direction="column" h="100%" pt="md" pb={{ base: "md", md: "xl" }}>
       <Title order={3} mb="sm" tt="capitalize">
         {username}&apos;s board
       </Title>

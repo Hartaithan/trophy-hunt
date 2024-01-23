@@ -1,5 +1,16 @@
 .container {
   flex: 1;
+  height: 100%;
+  gap: var(--mantine-spacing-xl);
+  @media (max-width: $mantine-breakpoint-xl) {
+    gap: var(--mantine-spacing-md);
+  }
+  @media (max-width: $mantine-breakpoint-lg) {
+    gap: var(--mantine-spacing-sm);
+  }
+  @media (max-width: $mantine-breakpoint-md) {
+    flex-direction: column;
+  }
 }
 
 .private {
@@ -7,4 +18,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.private > p {
+  text-align: center;
 }
