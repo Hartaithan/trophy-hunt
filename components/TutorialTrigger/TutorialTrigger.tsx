@@ -12,7 +12,7 @@ const TutorialTrigger: FC<Props> = (props) => {
       <InputLabel required size="sm" fw={500}>
         NPSSO
       </InputLabel>
-      <Anchor component="button" onClick={open} mb={5} fw={500} fz="xs">
+      <Anchor component="button" onClick={open} fw={500} fz="xs">
         What the fuck is NPSSO?
       </Anchor>
     </Group>

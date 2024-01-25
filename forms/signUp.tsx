@@ -39,6 +39,7 @@ import TutorialTrigger from "@/components/TutorialTrigger/TutorialTrigger";
 import TutorialDrawer from "@/components/TutorialDrawer/TutorialDrawer";
 import AuthTip from "@/components/AuthTip/AuthTip";
 import classes from "../styles/Form.module.css";
+import ProfileTypePopover from "@/components/ProfileTypePopover/ProfileTypePopover";
 
 type Status = "idle" | "checking" | "notUnique" | "unique";
 
@@ -220,13 +221,15 @@ const SignUpForm: FC = () => {
               form.setFieldValue("language", value ?? "en-US");
             }}
           />
-          <Select
-            required
-            data={profileTypeOptions}
-            label="Profile type"
-            placeholder="Pick profile type"
-            {...form.getInputProps("type")}
-          />
+          <Box>
+            <ProfileTypePopover />
+            <Select
+              required
+              data={profileTypeOptions}
+              placeholder="Pick profile type"
+              {...form.getInputProps("type")}
+            />
+          </Box>
         </Stack>
         <Button
           type="submit"
