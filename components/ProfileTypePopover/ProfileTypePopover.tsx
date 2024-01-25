@@ -9,7 +9,7 @@ const ProfileTypePopover: FC = () => {
       </InputLabel>
       <Popover width={300} position="top-end" withArrow shadow="md">
         <Popover.Target>
-          <Anchor component="button" fw={500} fz="xs">
+          <Anchor component="button" type="button" fw={500} fz="xs">
             What&apos;s that?
           </Anchor>
         </Popover.Target>

@@ -194,6 +194,7 @@ const Header: FC<HeaderProps> = (props) => {
                   <Anchor
                     className={classes.link}
                     component="button"
+                    type="button"
                     onClick={handleSignOut}>
                     Sign out
                   </Anchor>
