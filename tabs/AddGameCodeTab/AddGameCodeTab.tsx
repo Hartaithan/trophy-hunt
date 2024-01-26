@@ -7,10 +7,10 @@ import {
   type AddGameState,
 } from "@/models/GameModel";
 import { useBoard } from "@/providers/BoardProvider";
-import { addNewGame } from "@/utils/add";
+import { addNewGame, validateGameCode } from "@/utils/add";
 import API from "@/utils/api";
 import { Button, Checkbox, TextInput, useMantineTheme } from "@mantine/core";
-import { hasLength, useForm } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { IconSquarePlus } from "@tabler/icons-react";
 import {
@@ -40,7 +40,7 @@ const AddGameCodeTab: FC<Props> = (props) => {
       isFifth: true,
     },
     validate: {
-      code: hasLength(12, "Code must be 12 characters long"),
+      code: validateGameCode,
     },
     validateInputOnChange: true,
   });

@@ -58,3 +58,9 @@ export const addNewGame = (
     };
   });
 };
+
+export const validateGameCode = (value: string): string | null => {
+  if (!/^NPWR/.test(value)) return "The code must begin with NPWR";
+  if (value.length !== 12) return "Code must be 12 characters long";
+  return null;
+};
