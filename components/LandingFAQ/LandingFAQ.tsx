@@ -31,10 +31,10 @@ const LandingFAQ: FC = () => {
               How does the authorization process work?
             </AccordionControl>
             <AccordionPanel>
-              Our service synchronizes with PSN API, so we ask you to enter your
-              NPSSO authorization token to be able to work with it. In addition,
-              we also authorize users in our service, so that we can store data
-              about your progress.
+              Our service is communicating with the PSN API, for which we ask
+              you to enter the NPSSO authorization token. Access to your PSN
+              account is used to get profile data, progress and trophy
+              statistics.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem value="npsso">
@@ -43,6 +43,29 @@ const LandingFAQ: FC = () => {
               NPSSO is an authorization token required to work with the PSN API.
               Without it, it is impossible to get trophy data and synchronize
               your progress.
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem value="security">
+            <AccordionControl>
+              I&apos;m still afraid my data will be stolen. How can you convince
+              me it&apos;s safe?
+            </AccordionControl>
+            <AccordionPanel>
+              I mean, I don&apos;t think I have the power to convince anyone
+              that the app is safe. But if you have concerns, you can always
+              make a fake PSN account, try the service and if everything is
+              fine, sign up again with your main account.
+              <br />
+              <br />
+              And also, to protect your account from unauthorized access, we
+              recommend that you enable&nbsp;
+              <Anchor
+                href="https://www.playstation.com/en-us/playstation-network/two-step-verification/"
+                target="_blank">
+                2FA
+              </Anchor>
+              &nbsp;on your PSN account. This will provide you with an
+              additional layer of security.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem value="profile-type">
