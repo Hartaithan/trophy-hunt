@@ -14,17 +14,21 @@ export type TitleTrophiesOptions = Pick<
   "headerOverrides" | "limit" | "npServiceName" | "offset"
 >;
 
-export interface Error {
+export interface ErrorResponse {
   error: Error;
 }
 
-export type TitleTrophies = TitleTrophiesResponse | Error;
+export type TitleTrophies = TitleTrophiesResponse | ErrorResponse;
 
-export type TitleGroups = TitleTrophyGroupsResponse | Error;
+export type TitleGroups = TitleTrophyGroupsResponse | ErrorResponse;
 
-export type TitleEarnedGroups = UserTrophyGroupEarningsForTitleResponse | Error;
+export type TitleEarnedGroups =
+  | UserTrophyGroupEarningsForTitleResponse
+  | ErrorResponse;
 
-export type TitleEarnedTrophies = UserTrophiesEarnedForTitleResponse | Error;
+export type TitleEarnedTrophies =
+  | UserTrophiesEarnedForTitleResponse
+  | ErrorResponse;
 
 export type TrophyRare = 0 | 1 | 2 | 3;
 

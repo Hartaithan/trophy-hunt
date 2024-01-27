@@ -162,11 +162,13 @@ export const POST = async (req: Request): Promise<Response> => {
     listOptions = { ...listOptions, npServiceName: "trophy" };
   }
 
-  let titleGroups: TitleGroups | null = null;
-  try {
-    titleGroups = await getTitleTrophyGroups(authorization, code, listOptions);
-  } catch (error) {
-    console.error("unable to get trophy group", error);
+  const titleGroups = (await getTitleTrophyGroups(
+    authorization,
+    code,
+    listOptions,
+  )) as TitleGroups;
+  if ("error" in titleGroups) {
+    console.error("unable to get trophy group", titleGroups.error);
     return Response.json(
       { message: "Unable to get trophy groups" },
       { status: 400 },
