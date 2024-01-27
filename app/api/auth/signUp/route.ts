@@ -1,4 +1,4 @@
-import { type SignUpBody } from "@/models/AuthModel";
+import { type PSNProfileResponse, type SignUpBody } from "@/models/AuthModel";
 import { createClient } from "@/utils/supabase/server";
 import { validatePayload } from "@/utils/payload";
 import { cookies } from "next/headers";
@@ -39,6 +39,7 @@ export const POST = async (req: Request): Promise<Response> => {
 
   let accessCode: string | null = null;
   let authorization: AuthTokensResponse | null = null;
+  let profile: PSNProfileResponse | null = null;
 
   try {
     accessCode = await exchangeNpssoForCode(npsso);
@@ -69,7 +70,13 @@ export const POST = async (req: Request): Promise<Response> => {
     maxAge: refreshTokenExpiresIn,
   });
 
-  const { profile } = await getProfileFromUserName(authorization, "me");
+  try {
+    const profileRes = await getProfileFromUserName(authorization, "me");
+    profile = profileRes.profile;
+  } catch (error) {
+    console.error("get profile error", error);
+    return Response.json({ message: "Unable to get profile" }, { status: 400 });
+  }
 
   const supabase = createClient(cookies());
   const { data, error } = await supabase.auth.signUp({

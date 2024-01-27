@@ -4,8 +4,8 @@ import {
   type ProfileFromUserNameResponse,
 } from "psn-api";
 
-type PSNProfileResponse = ProfileFromUserNameResponse["profile"];
-type PersonalDetail = PSNProfileResponse["personalDetail"];
+export type PSNProfileResponse = ProfileFromUserNameResponse["profile"];
+export type PersonalDetail = PSNProfileResponse["personalDetail"];
 
 export interface PSNProfile extends Omit<PSNProfileResponse, "personalDetail"> {
   personalDetail: PersonalDetail & { middleName: string | undefined };
