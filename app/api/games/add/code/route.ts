@@ -82,11 +82,12 @@ export const POST = async (req: Request): Promise<Response> => {
     listOptions,
   )) as TitleGroups;
   if ("error" in titleGroups) {
+    let message = "Unable to get trophy groups";
     console.error("unable to get trophy group", titleGroups.error);
-    return Response.json(
-      { message: "Unable to get trophy groups" },
-      { status: 400 },
-    );
+    if (titleGroups.error.code === 2240525) {
+      message = "Resource not found, please make sure the platform is correct";
+    }
+    return Response.json({ message }, { status: 400 });
   }
 
   const payload: NewGamePayload = {

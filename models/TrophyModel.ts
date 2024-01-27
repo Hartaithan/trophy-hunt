@@ -14,6 +14,12 @@ export type TitleTrophiesOptions = Pick<
   "headerOverrides" | "limit" | "npServiceName" | "offset"
 >;
 
+export interface Error {
+  referenceId: string;
+  code: number;
+  message: string;
+}
+
 export interface ErrorResponse {
   error: Error;
 }
