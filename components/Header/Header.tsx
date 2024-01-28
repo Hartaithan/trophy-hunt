@@ -25,6 +25,7 @@ import classes from "./Header.module.css";
 import clsx from "clsx";
 import { type NullablePSNProfile } from "@/models/AuthModel";
 import { useDisclosure } from "@mantine/hooks";
+import { getProfileAvatar } from "@/utils/psn";
 
 interface HeaderProps {
   profile?: NullablePSNProfile;
@@ -108,11 +109,7 @@ const Header: FC<HeaderProps> = (props) => {
                   <Image
                     width={30}
                     height={30}
-                    src={
-                      profile?.avatarUrls?.length > 0
-                        ? profile.avatarUrls[0].avatarUrl
-                        : ""
-                    }
+                    src={getProfileAvatar(profile)}
                     alt="avatar"
                   />
                 </UnstyledButton>
@@ -152,11 +149,7 @@ const Header: FC<HeaderProps> = (props) => {
               <Image
                 width={30}
                 height={30}
-                src={
-                  profile?.avatarUrls?.length > 0
-                    ? profile.avatarUrls[0].avatarUrl
-                    : ""
-                }
+                src={getProfileAvatar(profile)}
                 alt="avatar"
               />
             </Flex>

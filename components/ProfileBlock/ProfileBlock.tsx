@@ -10,6 +10,7 @@ import { getName, getPresence } from "@/utils/profile";
 import { capitalize } from "@/utils/string";
 import { locales } from "@/constants/locales";
 import PlusBadge from "../PlusBadge/PlusBadge";
+import { getProfileAvatar } from "@/utils/psn";
 
 interface ProfileBlockProps {
   psn: NullablePSNProfile;
@@ -28,7 +29,7 @@ const ProfileBlock: FC<ProfileBlockProps> = (props) => {
         className={classes.avatar}
         height={100}
         width={100}
-        src={psn?.avatarUrls[0].avatarUrl ?? ""}
+        src={getProfileAvatar(psn)}
         alt="avatar"
       />
       <Flex className={classes.psn}>

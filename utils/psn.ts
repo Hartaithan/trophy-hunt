@@ -1,3 +1,4 @@
+import { type PSNProfile } from "@/models/AuthModel";
 import {
   type GroupedTrophies,
   type FormattedResponse,
@@ -198,4 +199,11 @@ export const formatEarnedResponse = (
     response = { ...response, trophies: formattedTrophies };
   }
   return response;
+};
+
+export const getProfileAvatar = (profile: PSNProfile | null = null): string => {
+  if (profile == null) return "";
+  if (profile.avatarUrls.length === 0) return "";
+  const converted = profile.avatarUrls[0].avatarUrl.replace("http:", "https:");
+  return converted;
 };
