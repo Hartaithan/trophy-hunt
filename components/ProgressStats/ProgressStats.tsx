@@ -45,6 +45,7 @@ const ProgressStats: FC<ProgressStatsProps> = (props) => {
         </Text>
       </Group>
       <Progress
+        aria-labelledby="platinum progress"
         value={stats.baseProgress}
         color={platinumColor}
         radius="xs"
@@ -60,6 +61,7 @@ const ProgressStats: FC<ProgressStatsProps> = (props) => {
         </Text>
       </Group>
       <Progress
+        aria-labelledby="complete progress"
         value={stats.totalProgress}
         color={completeColor}
         radius="xs"

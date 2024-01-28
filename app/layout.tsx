@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "Welcome to Trophy Hunt",
   description: "Trophy Hunt App",
   applicationName: "Trophy Hunt",
+  themeColor: "#ffffff",
 };
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {

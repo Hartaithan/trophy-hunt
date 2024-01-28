@@ -56,6 +56,7 @@ const TrophiesStats: FC<TrophiesStatsProps> = (props) => {
           <Flex h={31} justify="center" align="center">
             <Progress
               w={200}
+              aria-labelledby="trophy progress"
               value={psn.trophySummary.progress}
               size="xl"
               radius="xl"

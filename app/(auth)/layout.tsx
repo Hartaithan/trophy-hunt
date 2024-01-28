@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Trophy Hunt",
   description: "Trophy Hunt App",
   applicationName: "Trophy Hunt",
+  themeColor: "#ffffff",
 };
 
 const getProfile = async (): Promise<NullablePSNProfile> => {
