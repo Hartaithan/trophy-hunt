@@ -9,6 +9,7 @@ import { Container } from "@mantine/core";
 export const metadata: Metadata = {
   title: "Trophy Hunt",
   description: "Trophy Hunt App",
+  applicationName: "Trophy Hunt",
 };
 
 const getProfile = async (): Promise<NullablePSNProfile> => {

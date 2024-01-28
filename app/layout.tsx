@@ -13,6 +13,7 @@ const inter = Inter({ subsets: ["latin", "cyrillic"] });
 export const metadata: Metadata = {
   title: "Welcome to Trophy Hunt",
   description: "Trophy Hunt App",
+  applicationName: "Trophy Hunt",
 };
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {
