@@ -69,9 +69,11 @@ export const initializeBoardStats = (
     const [key, value] = entries[n] as [BOARD_COLUMNS, Game[]];
     counts[key] = value.length;
     const { color, shade } = columnColors[key];
-    const columnPercent = (value.length * 100) / items.length;
+    const columnPercent = parseFloat(
+      ((value.length * 100) / items.length).toFixed(1),
+    );
     sections.push({
-      value: parseFloat(columnPercent.toFixed(1)),
+      value: columnPercent,
       color: DEFAULT_THEME.colors[color][shade],
       tooltip: `${columnsFullLabels[key]} - ${value.length} games - ${columnPercent}%`,
     });
