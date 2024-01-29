@@ -8,6 +8,7 @@ import {
 } from "@/models/BoardModel";
 import { type Game } from "@/models/GameModel";
 import { DEFAULT_THEME } from "@mantine/core";
+import { gameNouns, getNoun } from "./noun";
 
 export const initializeBoard = (
   items: Game[] | null,
@@ -75,7 +76,10 @@ export const initializeBoardStats = (
     sections.push({
       value: columnPercent,
       color: DEFAULT_THEME.colors[color][shade],
-      tooltip: `${columnsFullLabels[key]} - ${value.length} games - ${columnPercent}%`,
+      tooltip: `${columnsFullLabels[key]} - ${getNoun(
+        value.length,
+        gameNouns,
+      )} - ${columnPercent}%`,
     });
   }
   const backlogPercent = (complete * 100) / items.length;
