@@ -38,13 +38,13 @@ export const GET = async (req: Request): Promise<Response> => {
   const games: SearchItem[] = results?.games ?? [];
   const formattedGames: SearchResult[] = [];
   for (let i = 0; i < games.length; i++) {
-    const { id, title, platform_title, count_tlist } = games[i];
+    const { id, title, platform_title, count_tlist, hash } = games[i];
     if (allowedPlatforms.includes(platform_title) && count_tlist > 0) {
       formattedGames.push({
         id: formattedGames.length + 1,
         name: title,
         platform: platform_title,
-        url: `${platform_title.toLowerCase()}/${id}`,
+        value: `${platform_title.toLowerCase()}/${id}/${hash}`,
       });
     }
   }

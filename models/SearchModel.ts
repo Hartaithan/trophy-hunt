@@ -10,13 +10,14 @@ export interface SearchItem {
   count_tlist: number;
   count_article: number;
   release_date: string;
+  hash: string;
 }
 
 export interface SearchResult {
   id: number;
   name: string;
   platform: string;
-  url: string;
+  value: string;
 }
 
 export interface SearchResponse {

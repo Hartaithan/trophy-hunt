@@ -56,7 +56,7 @@ const AddGameSearchTab: FC<Props> = (props) => {
 
   const data = results.map((item) => ({
     label: `${item.name} [${item.platform}]`,
-    value: item.url,
+    value: item.value,
   }));
   const showNoResults = search.trim().length === 0 || isLoading;
 
@@ -76,7 +76,7 @@ const AddGameSearchTab: FC<Props> = (props) => {
 
   const handleSubmit = (): void => {
     const payload: Partial<AddGameSearchPayload> = {
-      game_id: value ?? undefined,
+      result: value ?? undefined,
       status: status ?? undefined,
     };
     setSubmit(true);
