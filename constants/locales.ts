@@ -23,3 +23,19 @@ export const locales: Locale[] = [
   { id: 20, value: "uk-UA", icon_url: "/locales/uk.png", label: "Ukrainian" },
   { id: 21, value: "zh-Hans", icon_url: "/locales/zh.png", label: "Chinese" },
 ];
+
+export const regionLabels: Record<string, string> = {
+  "Весь мир": "Global",
+  Список: "Default",
+  "Список 1": "Default [1]",
+  "Список 2": "Default [2]",
+  "Список 3": "Default [3]",
+  "Список 4": "Default [4]",
+  "Список 5": "Default [5]",
+  Европа: "Europe",
+  Япония: "Japan",
+  Америка: "USA",
+  китай: "China",
+  Азия: "Asia",
+  Корея: "Korea",
+};
