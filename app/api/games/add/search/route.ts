@@ -12,24 +12,7 @@ import { validatePayload } from "@/utils/payload";
 import { cookies } from "next/headers";
 import { type AuthorizationPayload, getTitleTrophyGroups } from "psn-api";
 import { SEARCH_URL } from "@/constants/api";
-
-interface SplittedId {
-  id: string | null;
-  platform: string | null;
-}
-
-const splitId = (game: string): SplittedId => {
-  let platform: SplittedId = { id: null, platform: null };
-  const splitted = game.split("/");
-  if (typeof game !== "string" || !game.includes("/")) {
-    console.error("invalid game_id", game);
-    return platform;
-  }
-  if (splitted.length > 0 && splitted.every((i) => i.length > 0)) {
-    platform = { platform: splitted[0], id: splitted[1] };
-  }
-  return platform;
-};
+import { splitSearchResult } from "@/utils/search";
 
 const getGame = async (id: string): Promise<string | null> => {
   let game: { id: string } | null = null;
@@ -91,7 +74,7 @@ export const POST = async (req: Request): Promise<Response> => {
       { status: 400 },
     );
   }
-  const { game_id, status } = body;
+  const { result, status } = body;
 
   const access_token = cookies().get("psn-access-token")?.value;
   if (typeof access_token !== "string") {
@@ -102,9 +85,9 @@ export const POST = async (req: Request): Promise<Response> => {
     );
   }
 
-  if (typeof game_id !== "string") {
-    console.error("invalid game_id type", game_id);
-    return Response.json({ message: "Invalid game_id type" }, { status: 400 });
+  if (typeof result !== "string") {
+    console.error("invalid result type", result);
+    return Response.json({ message: "Invalid result type" }, { status: 400 });
   }
 
   const results = validatePayload(body);
@@ -113,9 +96,9 @@ export const POST = async (req: Request): Promise<Response> => {
     return Response.json(results, { status: 400 });
   }
 
-  const { id, platform } = splitId(game_id);
+  const { id, platform } = splitSearchResult(result);
   if (id === null || platform === null) {
-    console.error("unable to get id or platform", game_id);
+    console.error("unable to get id or platform", result);
     return Response.json(
       { message: "Unable to get id or platform" },
       { status: 400 },

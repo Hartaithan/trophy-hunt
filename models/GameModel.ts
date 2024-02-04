@@ -24,7 +24,7 @@ export type NewGamePayload = Omit<
 >;
 
 export interface AddGameSearchPayload {
-  game_id: string;
+  result: string;
   status: BOARD_COLUMNS;
 }
 
@@ -47,4 +47,10 @@ export interface ReorderItem {
 
 export interface ReorderPayload {
   items: ReorderItem[];
+}
+
+export interface SplitSearchResult {
+  id: string | null;
+  platform: string | null;
+  hash: string | null;
 }
