@@ -24,8 +24,10 @@ export type NewGamePayload = Omit<
 >;
 
 export interface AddGameSearchPayload {
-  result: string;
-  status: BOARD_COLUMNS;
+  id: string | null;
+  platform: string | null;
+  status: BOARD_COLUMNS | null;
+  raw?: string | null;
 }
 
 export interface AddGameCodePayload {

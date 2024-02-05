@@ -12,7 +12,6 @@ import { validatePayload } from "@/utils/payload";
 import { cookies } from "next/headers";
 import { type AuthorizationPayload, getTitleTrophyGroups } from "psn-api";
 import { SEARCH_URL } from "@/constants/api";
-import { splitSearchResult } from "@/utils/search";
 
 const getGame = async (id: string): Promise<string | null> => {
   let game: { id: string } | null = null;
@@ -74,7 +73,7 @@ export const POST = async (req: Request): Promise<Response> => {
       { status: 400 },
     );
   }
-  const { result, status } = body;
+  const { id, platform, status } = body;
 
   const access_token = cookies().get("psn-access-token")?.value;
   if (typeof access_token !== "string") {
@@ -85,24 +84,25 @@ export const POST = async (req: Request): Promise<Response> => {
     );
   }
 
-  if (typeof result !== "string") {
-    console.error("invalid result type", result);
-    return Response.json({ message: "Invalid result type" }, { status: 400 });
+  if (typeof id !== "string") {
+    console.error("invalid id type", id);
+    return Response.json({ message: "Invalid id type" }, { status: 400 });
+  }
+
+  if (typeof platform !== "string") {
+    console.error("invalid platform type", platform);
+    return Response.json({ message: "Invalid platform type" }, { status: 400 });
+  }
+
+  if (typeof status !== "string") {
+    console.error("invalid status type", status);
+    return Response.json({ message: "Invalid status type" }, { status: 400 });
   }
 
   const results = validatePayload(body);
   if (results !== null) {
     console.error("invalid payload", results.errors);
     return Response.json(results, { status: 400 });
-  }
-
-  const { id, platform } = splitSearchResult(result);
-  if (id === null || platform === null) {
-    console.error("unable to get id or platform", result);
-    return Response.json(
-      { message: "Unable to get id or platform" },
-      { status: 400 },
-    );
   }
 
   const supabase = createClient(cookies());
