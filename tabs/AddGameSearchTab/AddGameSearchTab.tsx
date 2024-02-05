@@ -45,6 +45,12 @@ const isValidSearch = (value: string): boolean => {
   return !isEmpty && !hasTags;
 };
 
+const defaultPayload: AddGameSearchPayload = {
+  id: null,
+  status: null,
+  platform: null,
+};
+
 const AddGameSearchTab: FC<Props> = (props) => {
   const { state, onClose, setSubmit } = props;
   const { opened, status } = state;
@@ -52,7 +58,11 @@ const AddGameSearchTab: FC<Props> = (props) => {
   const { setColumns } = useBoard();
 
   const [search, setSearch] = useState<string>("");
-  const [value, setValue] = useState<string | null>(null);
+  const [payload, setPayload] = useState<AddGameSearchPayload>({
+    id: null,
+    status: null,
+    platform: null,
+  });
   const [isLoading, setLoading] = useState<boolean>(false);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [regions, setRegions] = useState<RegionsResult[]>([]);
@@ -61,7 +71,7 @@ const AddGameSearchTab: FC<Props> = (props) => {
   const handleReset = useCallback((): void => {
     setSearch("");
     setSubmit(false);
-    setValue(null);
+    setPayload(defaultPayload);
     setLoading(false);
     setResults([]);
   }, [setSubmit]);
@@ -73,9 +83,9 @@ const AddGameSearchTab: FC<Props> = (props) => {
   }, []);
 
   const handleChange = useCallback((value: string | null) => {
-    setValue(value);
-    if (value == null) return;
-    const { hash } = splitSearchResult(value);
+    const { platform, hash } = splitSearchResult(value);
+    setPayload((prev) => ({ ...prev, platform, result: value }));
+    if (hash == null) return;
     API.get(`/games/regions?hash=${hash}`)
       .then(({ data }) => {
         const regionsRes = data?.results ?? [];
@@ -92,13 +102,18 @@ const AddGameSearchTab: FC<Props> = (props) => {
       });
   }, []);
 
+  const handleRegionChange = useCallback((value: string | null) => {
+    setPayload((prev) => ({ ...prev, id: value }));
+  }, []);
+
   const handleSubmit = useCallback((): void => {
-    const payload: Partial<AddGameSearchPayload> = {
-      result: value ?? undefined,
+    const searchPayload: Partial<AddGameSearchPayload> = {
+      id: payload.id ?? undefined,
+      platform: payload.platform ?? undefined,
       status: status ?? undefined,
     };
     setSubmit(true);
-    API.post("/games/add/search", JSON.stringify(payload))
+    API.post("/games/add/search", JSON.stringify(searchPayload))
       .then((res) => {
         const game: Game = res.data.game;
         addNewGame(game, setColumns);
@@ -121,7 +136,7 @@ const AddGameSearchTab: FC<Props> = (props) => {
       .finally(() => {
         setSubmit(false);
       });
-  }, [onClose, setColumns, setSubmit, status, value]);
+  }, [onClose, setColumns, setSubmit, status, payload]);
 
   // TODO: format before setting this in state
   const formattedResults = useMemo(() => {
@@ -169,7 +184,7 @@ const AddGameSearchTab: FC<Props> = (props) => {
     <Fragment>
       <Select
         searchable
-        value={value}
+        value={payload.result}
         onChange={handleChange}
         data={formattedResults}
         placeholder="Search"
@@ -182,7 +197,13 @@ const AddGameSearchTab: FC<Props> = (props) => {
       />
       {/* TODO: add loader */}
       {/* TODO: add change handlers */}
-      <Select mt="xs" placeholder="Region" data={formattedRegions} />
+      <Select
+        mt="xs"
+        placeholder="Region"
+        value={payload.id}
+        onChange={handleRegionChange}
+        data={formattedRegions}
+      />
       <Input.Description mt="xs">
         Search powered by&nbsp;
         <Anchor size="xs" href="https://www.stratege.ru" target="_blank">
@@ -192,7 +213,10 @@ const AddGameSearchTab: FC<Props> = (props) => {
       <Button
         mt={spacing.md}
         fullWidth
-        disabled={value === null || status === null}
+        // TODO: improve validation
+        disabled={
+          payload.id === null || payload.platform === null || status === null
+        }
         onClick={handleSubmit}
         leftSection={<IconSquarePlus size={20} />}>
         Add

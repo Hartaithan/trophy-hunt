@@ -27,7 +27,7 @@ export interface AddGameSearchPayload {
   id: string | null;
   platform: string | null;
   status: BOARD_COLUMNS | null;
-  raw?: string | null;
+  result?: string | null;
 }
 
 export interface AddGameCodePayload {

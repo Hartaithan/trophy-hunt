@@ -14,7 +14,6 @@ import { type AuthorizationPayload, getTitleTrophyGroups } from "psn-api";
 import { SEARCH_URL } from "@/constants/api";
 
 const getGame = async (id: string): Promise<string | null> => {
-  let game: { id: string } | null = null;
   let content: string | null = null;
 
   if (SEARCH_URL === undefined) {
@@ -23,19 +22,7 @@ const getGame = async (id: string): Promise<string | null> => {
   }
 
   try {
-    const fetchUrl = `${SEARCH_URL}/trophies_list/games/${id}`;
-    const response = await fetch(fetchUrl, { headers });
-    const data = await response.json();
-    if (!response.ok) throw new Error("Unable to find game content");
-    game = data;
-  } catch (error) {
-    console.error("get game content error", error);
-  }
-
-  if (game == null) return content;
-
-  try {
-    const fetchUrl = `${SEARCH_URL}/trophies/trophies_list/${game.id}`;
+    const fetchUrl = `${SEARCH_URL}/trophies/trophies_list/${id}`;
     const response = await fetch(fetchUrl, { headers });
     const data = await response.json();
     if (!response.ok) throw new Error("Unable to find game trophy list");
