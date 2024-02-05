@@ -5,10 +5,12 @@ import {
   type AddGameSearchPayload,
   type Game,
 } from "@/models/GameModel";
+import { type RegionsResult } from "@/models/RegionModel";
 import { type SearchResult } from "@/models/SearchModel";
 import { useBoard } from "@/providers/BoardProvider";
 import { addNewGame } from "@/utils/add";
 import API from "@/utils/api";
+import { splitSearchResult } from "@/utils/search";
 import {
   Anchor,
   Button,
@@ -28,6 +30,7 @@ import {
   type Dispatch,
   type SetStateAction,
   useCallback,
+  useMemo,
 } from "react";
 
 interface Props {
@@ -52,13 +55,8 @@ const AddGameSearchTab: FC<Props> = (props) => {
   const [value, setValue] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [regions, setRegions] = useState<RegionsResult[]>([]);
   const [debouncedSearch] = useDebouncedValue(search, 500);
-
-  const data = results.map((item) => ({
-    label: `${item.name} [${item.platform}]`,
-    value: item.value,
-  }));
-  const showNoResults = search.trim().length === 0 || isLoading;
 
   const handleReset = useCallback((): void => {
     setSearch("");
@@ -68,13 +66,33 @@ const AddGameSearchTab: FC<Props> = (props) => {
     setResults([]);
   }, [setSubmit]);
 
-  const handleSearch = (value: string): void => {
+  const handleSearch = useCallback((value: string): void => {
     setSearch(value);
     const isValid = isValidSearch(value);
     setLoading(isValid);
-  };
+  }, []);
 
-  const handleSubmit = (): void => {
+  const handleChange = useCallback((value: string | null) => {
+    setValue(value);
+    if (value == null) return;
+    const { hash } = splitSearchResult(value);
+    API.get(`/games/regions?hash=${hash}`)
+      .then(({ data }) => {
+        const regionsRes = data?.results ?? [];
+        setRegions(regionsRes);
+      })
+      .catch((error) => {
+        notifications.show({
+          title: "Something went wrong!",
+          color: "red",
+          message: error.response.data.message,
+          autoClose: false,
+        });
+        console.error("unable to get game regions error", error);
+      });
+  }, []);
+
+  const handleSubmit = useCallback((): void => {
     const payload: Partial<AddGameSearchPayload> = {
       result: value ?? undefined,
       status: status ?? undefined,
@@ -103,7 +121,27 @@ const AddGameSearchTab: FC<Props> = (props) => {
       .finally(() => {
         setSubmit(false);
       });
-  };
+  }, [onClose, setColumns, setSubmit, status, value]);
+
+  // TODO: format before setting this in state
+  const formattedResults = useMemo(() => {
+    return results.map((item) => ({
+      label: `${item.name} [${item.platform}]`,
+      value: item.value,
+    }));
+  }, [results]);
+
+  // TODO: format before setting this in state
+  const formattedRegions = useMemo(() => {
+    return regions.map((item) => ({
+      label: `${item.title} [${item.platform}]`,
+      value: item.id.toString(),
+    }));
+  }, [regions]);
+
+  const showNoResults = useMemo(() => {
+    return search.trim().length === 0 || isLoading;
+  }, [isLoading, search]);
 
   useEffect(() => {
     const isValid = isValidSearch(debouncedSearch);
@@ -132,9 +170,9 @@ const AddGameSearchTab: FC<Props> = (props) => {
       <Select
         searchable
         value={value}
-        onChange={setValue}
-        data={data}
-        placeholder="Search..."
+        onChange={handleChange}
+        data={formattedResults}
+        placeholder="Search"
         maxDropdownHeight={300}
         searchValue={search}
         onSearchChange={handleSearch}
@@ -142,6 +180,9 @@ const AddGameSearchTab: FC<Props> = (props) => {
         rightSection={isLoading ? <Loader size="xs" /> : null}
         nothingFoundMessage={showNoResults ? undefined : "No results"}
       />
+      {/* TODO: add loader */}
+      {/* TODO: add change handlers */}
+      <Select mt="xs" placeholder="Region" data={formattedRegions} />
       <Input.Description mt="xs">
         Search powered by&nbsp;
         <Anchor size="xs" href="https://www.stratege.ru" target="_blank">
