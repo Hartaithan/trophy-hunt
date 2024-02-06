@@ -58,34 +58,38 @@ const AddGameSearchTab: FC<Props> = (props) => {
   const { setColumns } = useBoard();
 
   const [search, setSearch] = useState<string>("");
+  const [debouncedSearch] = useDebouncedValue(search, 500);
+  const [searchLoading, setSearchLoading] = useState<boolean>(false);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [regionsLoading, setRegionsLoading] = useState<boolean>(false);
+  const [regions, setRegions] = useState<RegionsResult[]>([]);
   const [payload, setPayload] = useState<AddGameSearchPayload>({
     id: null,
     status: null,
     platform: null,
   });
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [regions, setRegions] = useState<RegionsResult[]>([]);
-  const [debouncedSearch] = useDebouncedValue(search, 500);
 
   const handleReset = useCallback((): void => {
     setSearch("");
     setSubmit(false);
     setPayload(defaultPayload);
-    setLoading(false);
+    setSearchLoading(false);
+    setRegionsLoading(false);
     setResults([]);
+    setRegions([]);
   }, [setSubmit]);
 
   const handleSearch = useCallback((value: string): void => {
     setSearch(value);
     const isValid = isValidSearch(value);
-    setLoading(isValid);
+    setSearchLoading(isValid);
   }, []);
 
   const handleChange = useCallback((value: string | null) => {
     const { platform, hash } = splitSearchResult(value);
     setPayload((prev) => ({ ...prev, platform, result: value }));
     if (hash == null) return;
+    setRegionsLoading(true);
     API.get(`/games/regions?hash=${hash}`)
       .then(({ data }) => {
         const regionsRes = data?.results ?? [];
@@ -99,6 +103,9 @@ const AddGameSearchTab: FC<Props> = (props) => {
           autoClose: false,
         });
         console.error("unable to get game regions error", error);
+      })
+      .finally(() => {
+        setRegionsLoading(false);
       });
   }, []);
 
@@ -155,13 +162,13 @@ const AddGameSearchTab: FC<Props> = (props) => {
   }, [regions]);
 
   const showNoResults = useMemo(() => {
-    return search.trim().length === 0 || isLoading;
-  }, [isLoading, search]);
+    return search.trim().length === 0 || searchLoading;
+  }, [searchLoading, search]);
 
   useEffect(() => {
     const isValid = isValidSearch(debouncedSearch);
     if (!isValid) return;
-    setLoading(true);
+    setSearchLoading(true);
     API.get("/games/search?query=" + debouncedSearch)
       .then((res) => {
         const response = res.data?.results ?? [];
@@ -171,7 +178,7 @@ const AddGameSearchTab: FC<Props> = (props) => {
         console.error("search error", error);
       })
       .finally(() => {
-        setLoading(false);
+        setSearchLoading(false);
       });
   }, [debouncedSearch]);
 
@@ -192,17 +199,17 @@ const AddGameSearchTab: FC<Props> = (props) => {
         searchValue={search}
         onSearchChange={handleSearch}
         comboboxProps={{ withinPortal: true }}
-        rightSection={isLoading ? <Loader size="xs" /> : null}
+        rightSection={searchLoading ? <Loader size="xs" /> : null}
         nothingFoundMessage={showNoResults ? undefined : "No results"}
       />
-      {/* TODO: add loader */}
-      {/* TODO: add change handlers */}
       <Select
         mt="xs"
         placeholder="Region"
         value={payload.id}
         onChange={handleRegionChange}
         data={formattedRegions}
+        disabled={regionsLoading || payload.result == null}
+        rightSection={regionsLoading ? <Loader size="xs" /> : null}
       />
       <Input.Description mt="xs">
         Search powered by&nbsp;
