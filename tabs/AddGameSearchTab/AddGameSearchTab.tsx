@@ -18,6 +18,7 @@ import {
   Loader,
   Select,
   useMantineTheme,
+  type ComboboxItem,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -45,6 +46,20 @@ const isValidSearch = (value: string): boolean => {
   return !isEmpty && !hasTags;
 };
 
+const formatResults = (results: SearchResult[]): ComboboxItem[] => {
+  return results.map((item) => ({
+    label: `${item.name} [${item.platform}]`,
+    value: item.value,
+  }));
+};
+
+const formatRegions = (regions: RegionsResult[]): ComboboxItem[] => {
+  return regions.map((item) => ({
+    label: `${item.title} [${item.platform}]`,
+    value: item.id.toString(),
+  }));
+};
+
 const defaultPayload: AddGameSearchPayload = {
   id: null,
   status: null,
@@ -60,9 +75,9 @@ const AddGameSearchTab: FC<Props> = (props) => {
   const [search, setSearch] = useState<string>("");
   const [debouncedSearch] = useDebouncedValue(search, 500);
   const [searchLoading, setSearchLoading] = useState<boolean>(false);
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [results, setResults] = useState<ComboboxItem[]>([]);
   const [regionsLoading, setRegionsLoading] = useState<boolean>(false);
-  const [regions, setRegions] = useState<RegionsResult[]>([]);
+  const [regions, setRegions] = useState<ComboboxItem[]>([]);
   const [payload, setPayload] = useState<AddGameSearchPayload>({
     id: null,
     status: null,
@@ -87,13 +102,13 @@ const AddGameSearchTab: FC<Props> = (props) => {
 
   const handleChange = useCallback((value: string | null) => {
     const { platform, hash } = splitSearchResult(value);
-    setPayload((prev) => ({ ...prev, platform, result: value }));
+    setPayload((prev) => ({ ...prev, id: null, platform, result: value }));
     if (hash == null) return;
     setRegionsLoading(true);
     API.get(`/games/regions?hash=${hash}`)
       .then(({ data }) => {
-        const regionsRes = data?.results ?? [];
-        setRegions(regionsRes);
+        const formatted = formatRegions(data?.results ?? []);
+        setRegions(formatted);
       })
       .catch((error) => {
         notifications.show({
@@ -145,22 +160,6 @@ const AddGameSearchTab: FC<Props> = (props) => {
       });
   }, [onClose, setColumns, setSubmit, status, payload]);
 
-  // TODO: format before setting this in state
-  const formattedResults = useMemo(() => {
-    return results.map((item) => ({
-      label: `${item.name} [${item.platform}]`,
-      value: item.value,
-    }));
-  }, [results]);
-
-  // TODO: format before setting this in state
-  const formattedRegions = useMemo(() => {
-    return regions.map((item) => ({
-      label: `${item.title} [${item.platform}]`,
-      value: item.id.toString(),
-    }));
-  }, [regions]);
-
   const showNoResults = useMemo(() => {
     return search.trim().length === 0 || searchLoading;
   }, [searchLoading, search]);
@@ -171,8 +170,8 @@ const AddGameSearchTab: FC<Props> = (props) => {
     setSearchLoading(true);
     API.get("/games/search?query=" + debouncedSearch)
       .then((res) => {
-        const response = res.data?.results ?? [];
-        setResults(response);
+        const formatted = formatResults(res.data?.results ?? []);
+        setResults(formatted);
       })
       .catch((error) => {
         console.error("search error", error);
@@ -193,7 +192,7 @@ const AddGameSearchTab: FC<Props> = (props) => {
         searchable
         value={payload.result}
         onChange={handleChange}
-        data={formattedResults}
+        data={results}
         placeholder="Search"
         maxDropdownHeight={300}
         searchValue={search}
@@ -207,7 +206,7 @@ const AddGameSearchTab: FC<Props> = (props) => {
         placeholder="Region"
         value={payload.id}
         onChange={handleRegionChange}
-        data={formattedRegions}
+        data={regions}
         disabled={regionsLoading || payload.result == null}
         rightSection={regionsLoading ? <Loader size="xs" /> : null}
       />
@@ -220,7 +219,6 @@ const AddGameSearchTab: FC<Props> = (props) => {
       <Button
         mt={spacing.md}
         fullWidth
-        // TODO: improve validation
         disabled={
           payload.id === null || payload.platform === null || status === null
         }
