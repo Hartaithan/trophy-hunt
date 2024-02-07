@@ -1,7 +1,7 @@
 "use client";
 
 import { type CongratulationValue } from "@/providers/CongratulationProvider";
-import { type MantineGradient, Text } from "@mantine/core";
+import { type MantineGradient, Text, Flex } from "@mantine/core";
 import { type CSSProperties, type FC } from "react";
 import classes from "./Congratulation.module.css";
 
@@ -27,13 +27,15 @@ const Congratulation: FC<CongratulationProps> = (props) => {
 
   return (
     <div className={classes.container} style={styles}>
-      <Text
-        className={classes.title}
-        variant="gradient"
-        gradient={gradients[value]}>
-        Congratulation!
-      </Text>
-      <Text className={classes.message}>{messages[value]}</Text>
+      <Flex className={classes.content}>
+        <Text
+          className={classes.title}
+          variant="gradient"
+          gradient={gradients[value]}>
+          Congratulation!
+        </Text>
+        <Text className={classes.message}>{messages[value]}</Text>
+      </Flex>
     </div>
   );
 };

@@ -11,6 +11,18 @@
   align-items: center;
   background: linear-gradient(0deg, transparent 0%, #000000 100%);
   pointer-events: none;
+  @media (max-width: $mantine-breakpoint-md) {
+    height: 50vh;
+  }
+}
+
+.content {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: $mantine-breakpoint-md) {
+    margin-top: -300px;
+  }
 }
 
 .title {
