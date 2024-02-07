@@ -21,17 +21,22 @@ const useCompletion = (progress: ProgressItem[]): boolean => {
 
   const isAllChecked = useMemo(() => {
     let base_count = 0;
-    let all_count = 0;
+    let base_completed = 0;
+    let total_count = 0;
+    let total_completed = 0;
     for (let i = 0; i < progress.length; i++) {
-      const el = progress[i];
-      base_count = base_count + (!el.dlc ? 1 : 0);
-      all_count = all_count + (el.earned ? 1 : 0);
+      const item = progress[i];
+      if (!item.dlc) base_count = base_count + 1;
+      if (!item.dlc && item.earned) base_completed = base_completed + 1;
+      if (item.earned) total_completed = total_completed + 1;
+      total_count = total_count + 1;
     }
-    const countIsDecrement = all_count < allCount.current;
-    allCount.current = all_count;
+    const countIsDecrement = total_count < allCount.current;
+    allCount.current = total_count;
     let value: CongratulationValue | null = null;
-    const isPlatinum = base_count === all_count;
-    const isComplete = all_count === progress.length;
+    const isPlatinum =
+      total_completed <= base_completed && base_count === base_completed;
+    const isComplete = total_completed === progress.length;
     if (isPlatinum) value = "platinum";
     if (isComplete) value = "complete";
     if (countIsDecrement) return isComplete;

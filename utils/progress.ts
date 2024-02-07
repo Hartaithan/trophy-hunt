@@ -14,13 +14,13 @@ export const calculateProgress = (
   progress: Game["progress"],
 ): ProgressStats => {
   if (progress === null) return emptyProgress;
-  const array = [...progress];
+  const items = [...progress];
   let base = 0;
   let baseCompleted = 0;
   let total = 0;
   let totalCompleted = 0;
-  for (let i = 0; i < array.length; i++) {
-    const item = array[i];
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
     if (!item.dlc) {
       base = base + 1;
     }
