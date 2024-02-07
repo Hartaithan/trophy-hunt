@@ -24,6 +24,32 @@
   flex-direction: column;
 }
 
+.name {
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  @media (max-width: $mantine-breakpoint-md) {
+    justify-content: center;
+  }
+}
+
+.presence {
+  flex-wrap: wrap;
+  @media (max-width: $mantine-breakpoint-md) {
+    justify-content: center;
+  }
+  @media (max-width: $mantine-breakpoint-sm) {
+    gap: 0px;
+  }
+}
+
+.presence > p {
+  text-align: center;
+  @media (max-width: $mantine-breakpoint-sm) {
+    margin: 0px;
+  }
+}
+
 .profile {
   margin-left: auto;
   flex-wrap: wrap;

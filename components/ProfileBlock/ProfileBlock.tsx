@@ -33,14 +33,16 @@ const ProfileBlock: FC<ProfileBlockProps> = (props) => {
         alt="avatar"
       />
       <Flex className={classes.psn}>
-        <Flex align="center">
+        <Flex className={classes.name}>
           <Text fz="xl" fw={700}>
             {name}
           </Text>
           {psn?.plus === 1 && <PlusBadge ml="sm" />}
         </Flex>
-        <Flex gap="sm">
-          <Text fw={600}>{psn?.onlineId ?? "PSN ID Not Found"}</Text>
+        <Flex className={classes.presence}>
+          <Text fw={600} mr="sm">
+            {psn?.onlineId ?? "PSN ID Not Found"}
+          </Text>
           {presence != null && <Text c="dimmed">{presence}</Text>}
         </Flex>
         {psn?.aboutMe != null && psn.aboutMe.trim().length > 0 && (
