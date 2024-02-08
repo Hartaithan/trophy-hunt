@@ -38,6 +38,7 @@ const AuthLayout: FC<PropsWithChildren> = async ({ children }) => {
     <Fragment>
       <Header profile={profile} />
       <Container id="main">{children}</Container>
+      <div id="reward" />
     </Fragment>
   );
 };
