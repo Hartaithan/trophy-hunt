@@ -1,4 +1,5 @@
 import { type NullablePSNProfile, type Presence } from "@/models/AuthModel";
+import dayjs from "dayjs";
 
 export const getName = (profile: NullablePSNProfile | undefined): string => {
   if (profile == null) return "Name Not Found";
@@ -17,10 +18,10 @@ export const getName = (profile: NullablePSNProfile | undefined): string => {
 
 export const getLastOnlineDate = (presence: Presence): string | null => {
   if (presence.lastOnlineDate == null) return null;
-  const date = new Date(presence.lastOnlineDate);
-  const formattedDate = `${date.getDay()}.${date.getMonth()}.${date.getFullYear()}`;
-  const formattedTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-  return `Last online: ${formattedDate}, ${formattedTime}`;
+  const value = dayjs(presence.lastOnlineDate);
+  const date = value.format("DD.MM.YYYY");
+  const time = value.format("HH:mm:ss");
+  return `Last online: ${date}, ${time}`;
 };
 
 export const getPresence = (
