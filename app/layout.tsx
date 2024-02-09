@@ -2,7 +2,7 @@ import "./globals.css";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/tiptap/styles.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { type FC, type PropsWithChildren } from "react";
 import { ColorSchemeScript } from "@mantine/core";
 import AppProviders from "@/providers/AppProviders";
@@ -14,7 +14,11 @@ export const metadata: Metadata = {
   title: "Welcome to Trophy Hunt",
   description: "Trophy Hunt App",
   applicationName: "Trophy Hunt",
+};
+
+export const viewport: Viewport = {
   themeColor: "#121212",
+  colorScheme: "dark",
 };
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {

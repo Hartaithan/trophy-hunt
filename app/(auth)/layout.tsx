@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fragment, type FC, type PropsWithChildren } from "react";
 import Header from "@/components/Header/Header";
 import { type NullablePSNProfile } from "@/models/AuthModel";
@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   title: "Trophy Hunt",
   description: "Trophy Hunt App",
   applicationName: "Trophy Hunt",
+};
+
+export const viewport: Viewport = {
   themeColor: "#121212",
+  colorScheme: "dark",
 };
 
 const getProfile = async (): Promise<NullablePSNProfile> => {
