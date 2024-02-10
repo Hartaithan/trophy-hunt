@@ -17,26 +17,25 @@ const useCompletion = (progress: ProgressItem[]): boolean => {
   const { show } = useCongratulation();
 
   const isMounted = useRef<boolean>(false);
-  const allCount = useRef<number>(0);
+  const prevCount = useRef<number>(-1);
 
   const isAllChecked = useMemo(() => {
-    let base_count = 0;
-    let base_completed = 0;
-    let total_count = 0;
-    let total_completed = 0;
-    for (let i = 0; i < progress.length; i++) {
-      const item = progress[i];
-      if (!item.dlc) base_count = base_count + 1;
-      if (!item.dlc && item.earned) base_completed = base_completed + 1;
-      if (item.earned) total_completed = total_completed + 1;
-      total_count = total_count + 1;
+    let baseCount = 0;
+    let baseCompleted = 0;
+    let totalCount = 0;
+    let totalCompleted = 0;
+    for (const item of progress) {
+      if (!item.dlc) baseCount = baseCount + 1;
+      if (!item.dlc && item.earned) baseCompleted = baseCompleted + 1;
+      if (item.earned) totalCompleted = totalCompleted + 1;
+      totalCount = totalCount + 1;
     }
-    const countIsDecrement = total_count < allCount.current;
-    allCount.current = total_count;
+    const countIsDecrement = totalCompleted < prevCount.current;
+    prevCount.current = totalCompleted;
     let value: CongratulationValue | null = null;
     const isPlatinum =
-      total_completed <= base_completed && base_count === base_completed;
-    const isComplete = total_completed === progress.length;
+      baseCount === baseCompleted && baseCount === totalCompleted;
+    const isComplete = totalCompleted === progress.length;
     if (isPlatinum) value = "platinum";
     if (isComplete) value = "complete";
     if (countIsDecrement) return isComplete;
