@@ -7,6 +7,7 @@ import {
   type TrophyGroupEarnings,
   type UserThinTrophy,
   type RarestThinTrophy,
+  type UserTitlesResponse,
 } from "psn-api";
 
 export type TitleTrophiesOptions = Pick<
@@ -35,6 +36,8 @@ export type TitleEarnedGroups =
 export type TitleEarnedTrophies =
   | UserTrophiesEarnedForTitleResponse
   | ErrorResponse;
+
+export type UserTitles = UserTitlesResponse | ErrorResponse;
 
 export type TrophyRare = 0 | 1 | 2 | 3;
 
