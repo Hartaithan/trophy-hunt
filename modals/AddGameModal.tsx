@@ -6,6 +6,7 @@ import { Modal, LoadingOverlay, Tabs } from "@mantine/core";
 import { type FC, type Dispatch, type SetStateAction, useState } from "react";
 import AddGameSearchTab from "@/tabs/AddGameSearchTab/AddGameSearchTab";
 import AddGameCodeTab from "@/tabs/AddGameCodeTab/AddGameCodeTab";
+import AddGameLibraryTab from "@/tabs/AddGameLibraryTab/AddGameLibraryTab";
 
 interface Props {
   state: AddGameState;
@@ -48,6 +49,7 @@ const AddGameModal: FC<Props> = (props) => {
             <Tabs.List mb="md">
               <Tabs.Tab value="search">Search</Tabs.Tab>
               <Tabs.Tab value="code">Manual</Tabs.Tab>
+              <Tabs.Tab value="library">Library</Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="search">
               <AddGameSearchTab
@@ -58,6 +60,13 @@ const AddGameModal: FC<Props> = (props) => {
             </Tabs.Panel>
             <Tabs.Panel value="code">
               <AddGameCodeTab
+                state={state}
+                onClose={onClose}
+                setSubmit={setSubmit}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value="library">
+              <AddGameLibraryTab
                 state={state}
                 onClose={onClose}
                 setSubmit={setSubmit}
