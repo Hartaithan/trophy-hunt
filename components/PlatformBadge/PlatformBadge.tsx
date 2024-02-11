@@ -10,9 +10,13 @@ interface PlatformBadgeProps {
 
 const PlatformBadge: FC<PlatformBadgeProps> = (props) => {
   const { platform } = props;
+  const label =
+    platform !== null ? platformLabels[platform.toLowerCase()] : undefined;
   return (
     <Badge className={classes.platform} radius="sm">
-      {platform !== null ? platformLabels[platform].short : "Not Found"}
+      {label != null
+        ? label.short
+        : platform?.replaceAll(",", ", ") ?? "Not Found"}
     </Badge>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import LibraryItem from "@/components/LibaryItem/LibraryItem";
 import { type AddGameState } from "@/models/GameModel";
 import API from "@/utils/api";
 import { Button, Flex, Loader, Stack } from "@mantine/core";
@@ -29,7 +30,7 @@ const AddGameLibraryTab: FC<Props> = () => {
 
   const fetchTitles = useCallback(() => {
     setStatus("loading");
-    API.get("/games/library", { params: { limit: 10, offset: 0 } })
+    API.get("/games/library", { params: { limit: 5, offset: 0 } })
       .then(({ data }) => {
         const titlesRes = data?.trophyTitles ?? [];
         setTitles(titlesRes);
@@ -65,7 +66,7 @@ const AddGameLibraryTab: FC<Props> = () => {
       <Stack mt="md">
         {!isLoading &&
           titles?.map((title, index) => (
-            <p key={title.trophyTitleName + index}>{title.trophyTitleName}</p>
+            <LibraryItem key={title.trophyTitleName + index} item={title} />
           ))}
       </Stack>
     </Flex>

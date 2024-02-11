@@ -48,8 +48,8 @@ const AddGameModal: FC<Props> = (props) => {
           <Tabs defaultValue="search">
             <Tabs.List mb="md">
               <Tabs.Tab value="search">Search</Tabs.Tab>
-              <Tabs.Tab value="code">Manual</Tabs.Tab>
               <Tabs.Tab value="library">Library</Tabs.Tab>
+              <Tabs.Tab value="code">Manual</Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="search">
               <AddGameSearchTab
@@ -58,15 +58,15 @@ const AddGameModal: FC<Props> = (props) => {
                 setSubmit={setSubmit}
               />
             </Tabs.Panel>
-            <Tabs.Panel value="code">
-              <AddGameCodeTab
+            <Tabs.Panel value="library">
+              <AddGameLibraryTab
                 state={state}
                 onClose={onClose}
                 setSubmit={setSubmit}
               />
             </Tabs.Panel>
-            <Tabs.Panel value="library">
-              <AddGameLibraryTab
+            <Tabs.Panel value="code">
+              <AddGameCodeTab
                 state={state}
                 onClose={onClose}
                 setSubmit={setSubmit}
