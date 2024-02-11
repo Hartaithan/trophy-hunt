@@ -15,6 +15,11 @@ export type TitleTrophiesOptions = Pick<
   "headerOverrides" | "limit" | "npServiceName" | "offset"
 >;
 
+export type GetUserTitlesOptions = Pick<
+  AllCallOptions,
+  "headerOverrides" | "limit" | "offset"
+>;
+
 export interface Error {
   referenceId: string;
   code: number;

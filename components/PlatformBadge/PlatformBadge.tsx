@@ -11,7 +11,7 @@ interface PlatformBadgeProps {
 const PlatformBadge: FC<PlatformBadgeProps> = (props) => {
   const { platform } = props;
   const label =
-    platform !== null ? platformLabels[platform.toLowerCase()] : undefined;
+    platform != null ? platformLabels[platform.toLowerCase()] : undefined;
   return (
     <Badge className={classes.platform} radius="sm">
       {label != null
