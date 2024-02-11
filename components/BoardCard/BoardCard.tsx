@@ -5,13 +5,7 @@ import {
   defaultAnimateLayoutChanges,
   useSortable,
 } from "@dnd-kit/sortable";
-import {
-  Box,
-  Flex,
-  type FlexProps,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+import { Flex, type FlexProps, Text, useMantineTheme } from "@mantine/core";
 import {
   memo,
   type FC,
@@ -24,12 +18,11 @@ import ProgressStats from "../ProgressStats/ProgressStats";
 import ColumnBadge from "../ColumnBadge/ColumnBadge";
 import PlatformBadge from "../PlatformBadge/PlatformBadge";
 import BoardCardMenu from "../BoardCardMenu/BoardCardMenu";
-import Image from "../Image/Image";
 import clsx from "clsx";
 import classes from "./BoardCard.module.css";
 import { useRouter } from "next/navigation";
 import { useMediaQuery } from "@mantine/hooks";
-import BoardCardOverlay from "../BoardCardOverlay/BoardCardOverlay";
+import GameThumbnail from "../GameThumbnail/GameThumbnail";
 
 interface BoardCardProps extends FlexProps {
   item: Game;
@@ -109,25 +102,7 @@ const BoardCard: FC<BoardCardProps> = (props) => {
         <PlatformBadge platform={platform} />
         {interactive && <BoardCardMenu item={item} />}
       </Flex>
-      <Box className={classes.imageWrapper}>
-        <Image
-          className={classes.image}
-          src={image_url}
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          alt="image card"
-        />
-        {platform === "ps5" && <BoardCardOverlay />}
-        <Image
-          className={classes.background}
-          src={image_url}
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          alt="image card"
-        />
-      </Box>
+      <GameThumbnail url={image_url} overlay={platform === "ps5"} />
       <Text className={classes.title} lineClamp={isMobile ? 1 : 2}>
         {title}
       </Text>
