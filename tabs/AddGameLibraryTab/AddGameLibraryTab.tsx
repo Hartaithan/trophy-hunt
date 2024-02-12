@@ -6,7 +6,7 @@ import { type Game, type AddGameState } from "@/models/GameModel";
 import { useBoard } from "@/providers/BoardProvider";
 import { addNewGame } from "@/utils/add";
 import API from "@/utils/api";
-import { Button, Flex, Loader, Stack } from "@mantine/core";
+import { Button, Flex, Loader, LoadingOverlay, Stack } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconLibrary } from "@tabler/icons-react";
 import { type TrophyTitle } from "psn-api";
@@ -30,7 +30,7 @@ interface Pagination {
   totalItemCount: number | undefined;
 }
 
-type Status = "idle" | "loading" | "completed" | "fetching";
+type Status = "idle" | "loading" | "completed" | "fetching" | "adding";
 
 const limit = 5;
 
@@ -46,6 +46,7 @@ const AddGameLibraryTab: FC<Props> = (props) => {
   });
   const isLoading = status === "loading";
   const isFetching = status === "fetching";
+  const isAdding = status === "adding";
 
   const handleAdd = useCallback(
     (title: TrophyTitle) => {
@@ -54,6 +55,7 @@ const AddGameLibraryTab: FC<Props> = (props) => {
         status: state.status ?? BOARD_COLUMNS.Backlog,
         isFifth: title.trophyTitlePlatform === "PS5",
       };
+      setStatus("adding");
       API.post("/games/add/code", JSON.stringify(payload))
         .then((res) => {
           const game: Game = res.data.game;
@@ -72,6 +74,9 @@ const AddGameLibraryTab: FC<Props> = (props) => {
             autoClose: false,
           });
           console.error("add game error", error);
+        })
+        .finally(() => {
+          setStatus("completed");
         });
     },
     [setColumns, state.status],
@@ -136,6 +141,7 @@ const AddGameLibraryTab: FC<Props> = (props) => {
 
   return (
     <Flex direction="column">
+      <LoadingOverlay visible={isAdding} zIndex={1001} />
       {titles == null && (
         <Button
           fullWidth
