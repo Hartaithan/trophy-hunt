@@ -1,7 +1,10 @@
 "use client";
 
 import LibraryItem from "@/components/LibaryItem/LibraryItem";
-import { type AddGameState } from "@/models/GameModel";
+import { BOARD_COLUMNS } from "@/models/BoardModel";
+import { type Game, type AddGameState } from "@/models/GameModel";
+import { useBoard } from "@/providers/BoardProvider";
+import { addNewGame } from "@/utils/add";
 import API from "@/utils/api";
 import { Button, Flex, Loader, Stack } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
@@ -31,7 +34,9 @@ type Status = "idle" | "loading" | "completed" | "fetching";
 
 const limit = 5;
 
-const AddGameLibraryTab: FC<Props> = () => {
+const AddGameLibraryTab: FC<Props> = (props) => {
+  const { state } = props;
+  const { setColumns } = useBoard();
   const [status, setStatus] = useState<Status>("idle");
   const [titles, setTitles] = useState<TrophyTitle[] | null>(null);
   const [pagination, setPagination] = useState<Pagination>({
@@ -41,6 +46,36 @@ const AddGameLibraryTab: FC<Props> = () => {
   });
   const isLoading = status === "loading";
   const isFetching = status === "fetching";
+
+  const handleAdd = useCallback(
+    (title: TrophyTitle) => {
+      const payload = {
+        code: title.npCommunicationId,
+        status: state.status ?? BOARD_COLUMNS.Backlog,
+        isFifth: title.trophyTitlePlatform === "PS5",
+      };
+      API.post("/games/add/code", JSON.stringify(payload))
+        .then((res) => {
+          const game: Game = res.data.game;
+          addNewGame(game, setColumns);
+          notifications.show({
+            title: "Success!",
+            message: res.data.message,
+            autoClose: 3000,
+          });
+        })
+        .catch((error) => {
+          notifications.show({
+            title: "Something went wrong!",
+            color: "red",
+            message: error.response.data.message,
+            autoClose: false,
+          });
+          console.error("add game error", error);
+        });
+    },
+    [setColumns, state.status],
+  );
 
   const fetchTitles = useCallback(() => {
     setStatus("loading");
@@ -118,7 +153,13 @@ const AddGameLibraryTab: FC<Props> = () => {
       {!isLoading && titles != null && (
         <Stack>
           {titles?.map((title, index) => (
-            <LibraryItem key={title.trophyTitleName + index} item={title} />
+            <LibraryItem
+              key={title.trophyTitleName + index}
+              item={title}
+              handleAdd={() => {
+                handleAdd(title);
+              }}
+            />
           ))}
         </Stack>
       )}
