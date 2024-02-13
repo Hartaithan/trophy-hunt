@@ -6,7 +6,7 @@ import { type Game, type AddGameState } from "@/models/GameModel";
 import { useBoard } from "@/providers/BoardProvider";
 import { addNewGame } from "@/utils/add";
 import API from "@/utils/api";
-import { Button, Flex, Loader, LoadingOverlay, Stack } from "@mantine/core";
+import { Button, Flex, Loader, Stack } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconLibrary } from "@tabler/icons-react";
 import { type TrophyTitle } from "psn-api";
@@ -21,7 +21,7 @@ import {
 interface Props {
   state: AddGameState;
   onClose: () => void;
-  setSubmit: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 interface Pagination {
@@ -35,7 +35,7 @@ type Status = "idle" | "loading" | "completed" | "fetching" | "adding";
 const limit = 5;
 
 const AddGameLibraryTab: FC<Props> = (props) => {
-  const { state } = props;
+  const { state, setLoading } = props;
   const { setColumns } = useBoard();
   const [status, setStatus] = useState<Status>("idle");
   const [titles, setTitles] = useState<TrophyTitle[] | null>(null);
@@ -46,7 +46,6 @@ const AddGameLibraryTab: FC<Props> = (props) => {
   });
   const isLoading = status === "loading";
   const isFetching = status === "fetching";
-  const isAdding = status === "adding";
 
   const handleAdd = useCallback(
     (title: TrophyTitle) => {
@@ -56,6 +55,7 @@ const AddGameLibraryTab: FC<Props> = (props) => {
         isFifth: title.trophyTitlePlatform === "PS5",
       };
       setStatus("adding");
+      setLoading(true);
       API.post("/games/add/code", JSON.stringify(payload))
         .then((res) => {
           const game: Game = res.data.game;
@@ -77,13 +77,15 @@ const AddGameLibraryTab: FC<Props> = (props) => {
         })
         .finally(() => {
           setStatus("completed");
+          setLoading(false);
         });
     },
-    [setColumns, state.status],
+    [setColumns, setLoading, state.status],
   );
 
   const fetchTitles = useCallback(() => {
     setStatus("loading");
+    setLoading(true);
     API.get("/games/library", { params: { limit, offset: 0 } })
       .then(({ data }) => {
         const titlesRes = data?.trophyTitles ?? [];
@@ -105,8 +107,9 @@ const AddGameLibraryTab: FC<Props> = (props) => {
       })
       .finally(() => {
         setStatus("completed");
+        setLoading(false);
       });
-  }, []);
+  }, [setLoading]);
 
   const fetchMoreTitles = useCallback(() => {
     setStatus("fetching");
@@ -141,7 +144,6 @@ const AddGameLibraryTab: FC<Props> = (props) => {
 
   return (
     <Flex direction="column">
-      <LoadingOverlay visible={isAdding} zIndex={1001} />
       {titles == null && (
         <Button
           fullWidth
@@ -150,11 +152,6 @@ const AddGameLibraryTab: FC<Props> = (props) => {
           disabled={isLoading}>
           Browse library
         </Button>
-      )}
-      {isLoading && (
-        <Flex mt="md" w="100%" justify="center" align="center">
-          <Loader />
-        </Flex>
       )}
       {!isLoading && titles != null && (
         <Stack>

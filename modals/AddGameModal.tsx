@@ -17,7 +17,7 @@ interface Props {
 const AddGameModal: FC<Props> = (props) => {
   const { state, setState, initial } = props;
   const { opened, status } = state;
-  const [isSubmit, setSubmit] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const onClose = (): void => {
     setState((prev) => ({ ...prev, opened: false }));
@@ -35,7 +35,7 @@ const AddGameModal: FC<Props> = (props) => {
       centered>
       <Modal.Overlay />
       <Modal.Content>
-        <LoadingOverlay visible={isSubmit} zIndex={1001} />
+        <LoadingOverlay visible={isLoading} zIndex={1001} />
         <Modal.Header>
           <Modal.Title>
             Add the game to the&nbsp;
@@ -45,8 +45,9 @@ const AddGameModal: FC<Props> = (props) => {
           <Modal.CloseButton />
         </Modal.Header>
         <Modal.Body>
+          {/* TODO: keep tabs mounted */}
           <Tabs defaultValue="search">
-            <Tabs.List mb="md">
+            <Tabs.List grow mb="md">
               <Tabs.Tab value="search">Search</Tabs.Tab>
               <Tabs.Tab value="library">Library</Tabs.Tab>
               <Tabs.Tab value="code">Manual</Tabs.Tab>
@@ -55,21 +56,21 @@ const AddGameModal: FC<Props> = (props) => {
               <AddGameSearchTab
                 state={state}
                 onClose={onClose}
-                setSubmit={setSubmit}
+                setLoading={setLoading}
               />
             </Tabs.Panel>
             <Tabs.Panel value="library">
               <AddGameLibraryTab
                 state={state}
                 onClose={onClose}
-                setSubmit={setSubmit}
+                setLoading={setLoading}
               />
             </Tabs.Panel>
             <Tabs.Panel value="code">
               <AddGameCodeTab
                 state={state}
                 onClose={onClose}
-                setSubmit={setSubmit}
+                setLoading={setLoading}
               />
             </Tabs.Panel>
           </Tabs>

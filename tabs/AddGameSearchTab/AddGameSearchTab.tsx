@@ -37,7 +37,7 @@ import {
 interface Props {
   state: AddGameState;
   onClose: () => void;
-  setSubmit: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const isValidSearch = (value: string): boolean => {
@@ -67,7 +67,7 @@ const defaultPayload: AddGameSearchPayload = {
 };
 
 const AddGameSearchTab: FC<Props> = (props) => {
-  const { state, onClose, setSubmit } = props;
+  const { state, onClose, setLoading } = props;
   const { opened, status } = state;
   const { spacing } = useMantineTheme();
   const { setColumns } = useBoard();
@@ -86,13 +86,13 @@ const AddGameSearchTab: FC<Props> = (props) => {
 
   const handleReset = useCallback((): void => {
     setSearch("");
-    setSubmit(false);
+    setLoading(false);
     setPayload(defaultPayload);
     setSearchLoading(false);
     setRegionsLoading(false);
     setResults([]);
     setRegions([]);
-  }, [setSubmit]);
+  }, [setLoading]);
 
   const handleSearch = useCallback((value: string): void => {
     setSearch(value);
@@ -134,7 +134,7 @@ const AddGameSearchTab: FC<Props> = (props) => {
       platform: payload.platform ?? undefined,
       status: status ?? undefined,
     };
-    setSubmit(true);
+    setLoading(true);
     API.post("/games/add/search", JSON.stringify(searchPayload))
       .then((res) => {
         const game: Game = res.data.game;
@@ -156,9 +156,9 @@ const AddGameSearchTab: FC<Props> = (props) => {
         console.error("add game error", error);
       })
       .finally(() => {
-        setSubmit(false);
+        setLoading(false);
       });
-  }, [onClose, setColumns, setSubmit, status, payload]);
+  }, [onClose, setColumns, setLoading, status, payload]);
 
   const showNoResults = useMemo(() => {
     return search.trim().length === 0 || searchLoading;

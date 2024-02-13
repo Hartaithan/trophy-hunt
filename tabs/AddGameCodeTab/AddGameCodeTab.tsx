@@ -13,22 +13,16 @@ import { Button, Checkbox, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { IconSquarePlus } from "@tabler/icons-react";
-import {
-  type Dispatch,
-  type SetStateAction,
-  type FC,
-  useCallback,
-  useEffect,
-} from "react";
+import { type Dispatch, type SetStateAction, type FC, useEffect } from "react";
 
 interface Props {
   state: AddGameState;
   onClose: () => void;
-  setSubmit: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const AddGameCodeTab: FC<Props> = (props) => {
-  const { state, onClose, setSubmit } = props;
+  const { state, onClose, setLoading } = props;
   const { opened, status } = state;
   const { spacing } = useMantineTheme();
   const { setColumns } = useBoard();
@@ -45,12 +39,8 @@ const AddGameCodeTab: FC<Props> = (props) => {
     validateInputOnChange: true,
   });
 
-  const handleReset = useCallback((): void => {
-    setSubmit(false);
-  }, [setSubmit]);
-
   const handleSubmit = (values: typeof form.values): void => {
-    setSubmit(true);
+    setLoading(true);
     API.post("/games/add/code", JSON.stringify(values))
       .then((res) => {
         const game: Game = res.data.game;
@@ -72,14 +62,14 @@ const AddGameCodeTab: FC<Props> = (props) => {
         console.error("add game error", error);
       })
       .finally(() => {
-        setSubmit(false);
+        setLoading(false);
       });
   };
 
   useEffect(() => {
     if (!opened) return;
-    handleReset();
-  }, [handleReset, opened]);
+    setLoading(false);
+  }, [setLoading, opened]);
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
