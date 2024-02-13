@@ -17,6 +17,7 @@ import {
   useState,
   useCallback,
 } from "react";
+import classes from "./AddGameLibraryTab.module.css";
 
 interface Props {
   state: AddGameState;
@@ -154,7 +155,7 @@ const AddGameLibraryTab: FC<Props> = (props) => {
         </Button>
       )}
       {!isLoading && titles != null && (
-        <Stack>
+        <Stack className={classes.list}>
           {titles?.map((title, index) => (
             <LibraryItem
               key={title.trophyTitleName + index}
