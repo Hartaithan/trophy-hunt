@@ -8,7 +8,7 @@ import { IconPlus } from "@tabler/icons-react";
 
 interface Props {
   item: TrophyTitle;
-  handleAdd?: () => void;
+  handleAdd?: (title: TrophyTitle) => void;
 }
 
 const LibraryItem: FC<Props> = (props) => {
@@ -24,7 +24,12 @@ const LibraryItem: FC<Props> = (props) => {
         <PlatformBadge platform={item.trophyTitlePlatform} />
         <Text className={classes.title}>{item.trophyTitleName}</Text>
       </Flex>
-      <ActionIcon className={classes.add} variant="filled" onClick={handleAdd}>
+      <ActionIcon
+        className={classes.add}
+        variant="filled"
+        onClick={() => {
+          handleAdd != null && handleAdd(item);
+        }}>
         <IconPlus size={18} />
         <Text size="xs">Add</Text>
       </ActionIcon>

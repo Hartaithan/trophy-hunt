@@ -160,9 +160,7 @@ const AddGameLibraryTab: FC<Props> = (props) => {
             <LibraryItem
               key={title.trophyTitleName + index}
               item={title}
-              handleAdd={() => {
-                handleAdd(title);
-              }}
+              handleAdd={handleAdd}
             />
           ))}
         </Stack>

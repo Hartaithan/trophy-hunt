@@ -62,4 +62,5 @@ export const platformLabels: Record<Platform, PlatformLabel> = {
   ps4: { short: "PS4", full: "Playstation 4" },
   ps5: { short: "PS5", full: "Playstation 5" },
   vita: { short: "Vita", full: "Playstation Vita" },
+  psvita: { short: "Vita", full: "Playstation Vita" },
 };

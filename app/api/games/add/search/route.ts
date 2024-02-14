@@ -148,7 +148,7 @@ export const POST = async (req: Request): Promise<Response> => {
   const payload: NewGamePayload = {
     title: titleGroups.trophyTitleName,
     image_url: titleGroups.trophyTitleIconUrl,
-    platform,
+    platform: titleGroups.trophyTitlePlatform,
     status,
     user_id: user.id,
     username: profile.username,
