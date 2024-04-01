@@ -1,17 +1,48 @@
 import { platformLabels } from "@/constants/board";
 import { type Platform } from "@/models/PlatformModel";
-import { Badge } from "@mantine/core";
+import { Badge, Popover, Text } from "@mantine/core";
 import { memo, type FC, useMemo } from "react";
 import classes from "./PlatformBadge.module.css";
-
-interface PlatformBadgeProps {
-  platform: Platform | null;
-}
+import clsx from "clsx";
 
 interface LabelFormatted {
   single: string | null;
   cross: string[] | null;
 }
+
+interface PlatformBadgeProps {
+  platform: Platform | null;
+}
+
+interface MultiPlatformProps {
+  labels: string[] | null;
+}
+
+const MultiPlatformPopover: FC<MultiPlatformProps> = (props) => {
+  const { labels } = props;
+  if (labels == null) return null;
+  return (
+    <Popover width={120} position="bottom" withArrow shadow="md">
+      <Popover.Target>
+        <Badge
+          className={clsx(classes.platform, classes.multi)}
+          radius="sm"
+          component="button">
+          Multi
+        </Badge>
+      </Popover.Target>
+      <Popover.Dropdown p="sm">
+        <Text size="xs" ta="center">
+          {labels
+            .map((i) => platformLabels[i]?.short ?? "Not Found")
+            .join(", ")}
+        </Text>
+      </Popover.Dropdown>
+    </Popover>
+  );
+};
+
+const MemoizedMultiPlatformPopover = memo(MultiPlatformPopover);
 
 const PlatformBadge: FC<PlatformBadgeProps> = (props) => {
   const { platform } = props;
@@ -27,11 +58,7 @@ const PlatformBadge: FC<PlatformBadgeProps> = (props) => {
   }, [platform]);
 
   if (label?.cross != null && label.cross.length > 0) {
-    return label.cross.map((i) => (
-      <Badge key={i} className={classes.platform} radius="sm">
-        {platformLabels[i]?.short ?? "Not Found"}
-      </Badge>
-    ));
+    return <MemoizedMultiPlatformPopover labels={label.cross} />;
   }
 
   return (

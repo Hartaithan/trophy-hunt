@@ -2,3 +2,7 @@
   background: var(--mantine-color-gray-7);
   color: var(--mantine-color-gray-0);
 }
+
+.multi {
+  cursor: pointer;
+}
