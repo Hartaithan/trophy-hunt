@@ -12,6 +12,7 @@ import { validatePayload } from "@/utils/payload";
 import { cookies } from "next/headers";
 import { type AuthorizationPayload, getTitleTrophyGroups } from "psn-api";
 import { SEARCH_URL } from "@/constants/api";
+import { formatPlatform } from "@/utils/platform";
 
 const getGame = async (id: string): Promise<string | null> => {
   let content: string | null = null;
@@ -148,7 +149,7 @@ export const POST = async (req: Request): Promise<Response> => {
   const payload: NewGamePayload = {
     title: titleGroups.trophyTitleName,
     image_url: titleGroups.trophyTitleIconUrl,
-    platform: titleGroups.trophyTitlePlatform,
+    platform: formatPlatform(titleGroups.trophyTitlePlatform),
     status,
     user_id: user.id,
     username: profile.username,
