@@ -1,7 +1,7 @@
 import { platformLabels } from "@/constants/board";
 import { type Platform } from "@/models/PlatformModel";
 import { Badge, Popover, Text } from "@mantine/core";
-import { memo, type FC, useMemo } from "react";
+import { memo, type FC, useMemo, useState } from "react";
 import classes from "./PlatformBadge.module.css";
 import clsx from "clsx";
 
@@ -20,14 +20,26 @@ interface MultiPlatformProps {
 
 const MultiPlatformPopover: FC<MultiPlatformProps> = (props) => {
   const { labels } = props;
+  const [opened, setOpened] = useState<boolean>(false);
   if (labels == null) return null;
   return (
-    <Popover width={120} position="bottom" withArrow shadow="md">
+    <Popover
+      width={120}
+      position="bottom"
+      withArrow
+      shadow="md"
+      data-no-dnd="true"
+      opened={opened}
+      onChange={setOpened}>
       <Popover.Target>
         <Badge
           className={clsx(classes.platform, classes.multi)}
           radius="sm"
-          component="button">
+          component="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpened((o) => !o);
+          }}>
           Multi
         </Badge>
       </Popover.Target>
@@ -62,7 +74,7 @@ const PlatformBadge: FC<PlatformBadgeProps> = (props) => {
   }
 
   return (
-    <Badge className={classes.platform} radius="sm">
+    <Badge className={classes.platform} radius="sm" data-no-dnd="true">
       {label?.single != null
         ? platformLabels[label.single]?.short
         : "Not Found"}
