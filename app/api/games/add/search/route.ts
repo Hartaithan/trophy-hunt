@@ -129,7 +129,7 @@ export const POST = async (req: Request): Promise<Response> => {
   let listOptions: Partial<TitleTrophiesOptions> = {
     headerOverrides: { "Accept-Language": language },
   };
-  if (platform !== "ps5") {
+  if (platform.toLowerCase() !== "ps5") {
     listOptions = { ...listOptions, npServiceName: "trophy" };
   }
 

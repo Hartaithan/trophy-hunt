@@ -16,6 +16,7 @@ import {
   getUserTrophiesEarnedForTitle,
   getUserTrophyGroupEarningsForTitle,
 } from "psn-api";
+import { type Game } from "@/models/GameModel";
 
 interface TrophyParams {
   id: string;
@@ -55,7 +56,7 @@ export const GET = async (
 
   const [profile, game] = await Promise.all([
     supabase.from("profiles").select("language").eq("id", user.id).single(),
-    supabase.from("games").select("*, position(*)").eq("id", id).single(),
+    supabase.from("games").select("*, position(*)").eq("id", id).single<Game>(),
   ]);
   if (profile.error !== null || profile === null) {
     console.error("unable to get profile", profile.error);
@@ -76,7 +77,7 @@ export const GET = async (
   let options: Partial<TitleTrophiesOptions> = {
     headerOverrides: { "Accept-Language": language },
   };
-  if (game.data.platform !== "ps5") {
+  if (game.data.platform.toLowerCase() !== "ps5") {
     options = { ...options, npServiceName: "trophy" };
   }
 

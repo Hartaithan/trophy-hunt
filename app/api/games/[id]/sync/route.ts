@@ -13,6 +13,7 @@ import {
   getTitleTrophies,
   getUserTrophiesEarnedForTitle,
 } from "psn-api";
+import { type Game } from "@/models/GameModel";
 
 interface GameParams {
   id: string;
@@ -43,7 +44,7 @@ export const GET = async (
     .from("games")
     .select("*, position(*)")
     .eq("id", id)
-    .single();
+    .single<Game>();
   if (gameError !== null) {
     console.error("unable to update game by id", id, gameError);
     return Response.json(
@@ -55,7 +56,7 @@ export const GET = async (
   const auth: AuthorizationPayload = { accessToken: access_token };
   const code = game.code;
   let options: Partial<TitleTrophiesOptions> = {};
-  if (game.platform !== "ps5") {
+  if (game.platform.toLowerCase() !== "ps5") {
     options = { ...options, npServiceName: "trophy" };
   }
 
