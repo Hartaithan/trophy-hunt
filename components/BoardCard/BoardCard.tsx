@@ -6,12 +6,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { Flex, type FlexProps, Text, useMantineTheme } from "@mantine/core";
-import {
-  memo,
-  type FC,
-  type MouseEventHandler,
-  type CSSProperties,
-} from "react";
+import { memo, type FC, type CSSProperties } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { type Game } from "@/models/GameModel";
 import ProgressStats from "../ProgressStats/ProgressStats";
@@ -20,7 +15,6 @@ import PlatformBadge from "../PlatformBadge/PlatformBadge";
 import BoardCardMenu from "../BoardCardMenu/BoardCardMenu";
 import clsx from "clsx";
 import classes from "./BoardCard.module.css";
-import { useRouter } from "next/navigation";
 import { useMediaQuery } from "@mantine/hooks";
 import GameThumbnail from "../GameThumbnail/GameThumbnail";
 
@@ -53,7 +47,6 @@ const BoardCard: FC<BoardCardProps> = (props) => {
   } = props;
   const { id, title, image_url, status, platform, progress } = item;
 
-  const { push } = useRouter();
   const { spacing } = useMantineTheme();
   const {
     attributes,
@@ -65,15 +58,10 @@ const BoardCard: FC<BoardCardProps> = (props) => {
   } = useSortable({ id, animateLayoutChanges, disabled: !interactive });
   const isMobile = useMediaQuery(`(max-width: 62em)`) ?? false;
 
-  const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation();
-    if (!interactive) return;
-    const route = `/game/${id}`;
-    push(route);
-  };
-
   return (
     <Flex
+      component={interactive ? "a" : "div"}
+      href={`/game/${id}`}
       ref={setNodeRef}
       {...attributes}
       {...listeners}
@@ -84,8 +72,6 @@ const BoardCard: FC<BoardCardProps> = (props) => {
         classes.container,
         isDragging && classes.draggable,
       ])}
-      direction="column"
-      onClick={handleClick}
       style={{
         transform: CSS.Transform.toString(transform),
         transition,

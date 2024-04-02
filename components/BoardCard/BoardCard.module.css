@@ -4,11 +4,21 @@
   padding: var(--mantine-spacing-xs);
   background: var(--mantine-color-primary-6);
   border-radius: var(--mantine-radius-md);
+  flex-direction: column;
   @media (max-width: $mantine-breakpoint-md) {
     height: 250px;
     width: 200px;
     min-width: 200px;
   }
+}
+
+.container,
+.container:visited,
+.container:hover,
+.container:focus,
+.container:active {
+  color: inherit;
+  text-decoration: none;
 }
 
 .disabled {

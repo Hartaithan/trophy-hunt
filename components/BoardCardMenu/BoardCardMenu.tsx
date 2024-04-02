@@ -22,6 +22,7 @@ const BoardCardMenu: FC<BoardCardMenuProps> = (props) => {
 
   const stopPropagation: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
+    e.preventDefault();
   };
 
   const handleDelete = (): void => {
