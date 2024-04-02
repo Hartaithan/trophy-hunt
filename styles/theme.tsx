@@ -14,6 +14,7 @@ import {
   Badge,
   Menu,
   SegmentedControl,
+  ScrollArea,
 } from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
 import { extendedColors } from "./colors";
@@ -23,6 +24,7 @@ import NotificationClasses from "./Notification.module.css";
 import MenuClasses from "./Menu.module.css";
 import SegmentedControlClasses from "./SegmentedControl.module.css";
 import RichTextEditorClasses from "./RichTextEditor.module.css";
+import ScrollAreaClasses from "./ScrollArea.module.css";
 
 const ContainerDefaultProps: Partial<ContainerProps> = {
   size: "xl",
@@ -67,6 +69,9 @@ export const theme = createTheme({
     }),
     RichTextEditor: RichTextEditor.extend({
       classNames: RichTextEditorClasses,
+    }),
+    ScrollArea: ScrollArea.extend({
+      classNames: ScrollAreaClasses,
     }),
   },
 });

@@ -1,4 +1,12 @@
-.list {
-  max-height: 400px;
-  overflow: auto;
+.container {
+  flex-direction: column;
+}
+
+.viewport {
+  & > div > div {
+    margin-bottom: var(--mantine-spacing-md);
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }

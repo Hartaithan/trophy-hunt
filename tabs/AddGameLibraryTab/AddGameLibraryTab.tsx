@@ -6,9 +6,9 @@ import { type Game, type AddGameState } from "@/models/GameModel";
 import { useBoard } from "@/providers/BoardProvider";
 import { addNewGame } from "@/utils/add";
 import API from "@/utils/api";
-import { Button, Flex, Loader, Stack } from "@mantine/core";
+import { Button, Flex, Loader, ScrollArea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconLibrary } from "@tabler/icons-react";
+import { IconLibrary, IconTextPlus } from "@tabler/icons-react";
 import { type TrophyTitle } from "psn-api";
 import {
   type Dispatch,
@@ -144,7 +144,7 @@ const AddGameLibraryTab: FC<Props> = (props) => {
   }, [pagination]);
 
   return (
-    <Flex direction="column">
+    <Flex className={classes.container}>
       {titles == null && (
         <Button
           fullWidth
@@ -155,7 +155,7 @@ const AddGameLibraryTab: FC<Props> = (props) => {
         </Button>
       )}
       {!isLoading && titles != null && (
-        <Stack className={classes.list}>
+        <ScrollArea classNames={classes} h={400}>
           {titles?.map((title, index) => (
             <LibraryItem
               key={title.trophyTitleName + index}
@@ -163,7 +163,7 @@ const AddGameLibraryTab: FC<Props> = (props) => {
               handleAdd={handleAdd}
             />
           ))}
-        </Stack>
+        </ScrollArea>
       )}
       {!isLoading &&
         titles != null &&
@@ -174,7 +174,9 @@ const AddGameLibraryTab: FC<Props> = (props) => {
             mt="md"
             onClick={fetchMoreTitles}
             disabled={pagination.nextOffset == null}
-            leftSection={isFetching && <Loader size="xs" />}>
+            leftSection={
+              isFetching ? <Loader size="xs" /> : <IconTextPlus size="1.2rem" />
+            }>
             Fetch more
           </Button>
         )}
