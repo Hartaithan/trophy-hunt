@@ -37,6 +37,7 @@ const MultiPlatformPopover: FC<MultiPlatformProps> = (props) => {
           radius="sm"
           component="button"
           onClick={(e) => {
+            e.preventDefault();
             e.stopPropagation();
             setOpened((o) => !o);
           }}>
