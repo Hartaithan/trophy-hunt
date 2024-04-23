@@ -22,11 +22,13 @@ const refreshTokens = async (token: string): Promise<NullableAuthResponse> => {
   } catch (error) {
     console.error("unable to refresh tokens", error);
   }
+  console.info("refreshed auth", JSON.stringify(authorization));
   return authorization;
 };
 
 const resetCookies = (res: NextResponse): NextResponse => {
   const allCookies = cookies().getAll();
+  console.info("cookies before reset", JSON.stringify(allCookies));
   for (let i = 0; i < allCookies.length; i++) {
     const cookie = allCookies[i];
     res.cookies.delete(cookie.name);
@@ -61,6 +63,14 @@ export const middleware: NextMiddleware = async (req) => {
     access_token !== undefined &&
     refresh_token !== undefined &&
     session != null;
+
+  console.info(
+    "middleware",
+    access_token,
+    refresh_token,
+    refreshed_auth === null,
+    pathname,
+  );
 
   if (!isAuth && isHomePage) {
     return resetCookies(res);
