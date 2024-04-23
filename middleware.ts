@@ -66,8 +66,10 @@ export const middleware: NextMiddleware = async (req) => {
 
   console.info(
     "middleware",
-    access_token,
-    refresh_token,
+    session?.user?.email,
+    session?.expires_at,
+    access_token !== undefined ? access_token.slice(-5) : undefined,
+    refresh_token !== undefined ? refresh_token.slice(-5) : undefined,
     refreshed_auth === null,
     pathname,
   );
