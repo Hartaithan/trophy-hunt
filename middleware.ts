@@ -4,11 +4,11 @@ import { exchangeRefreshTokenForAuthTokens } from "psn-api";
 import { cookies } from "next/headers";
 import { createClient } from "./utils/supabase/middleware";
 
-const publicPages = new Map<string, boolean>([
-  ["/signIn", true],
-  ["/signUp", true],
-  ["/setPassword", true],
-  ["/forgot", true],
+const publicPages = new Set<string>([
+  "/signIn",
+  "/signUp",
+  "/setPassword",
+  "/forgot",
 ]);
 
 export const config = {
