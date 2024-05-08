@@ -65,13 +65,17 @@ export const middleware: NextMiddleware = async (req) => {
     session != null;
 
   console.info(
-    "middleware",
+    "middleware user",
+    pathname,
     session?.user?.email,
     session?.expires_at,
+    req.headers.get("user-agent"),
+  );
+  console.info(
+    "middleware token",
     access_token !== undefined ? access_token.slice(-5) : undefined,
     refresh_token !== undefined ? refresh_token.slice(-5) : undefined,
     refreshed_auth === null,
-    pathname,
   );
 
   if (!isAuth && isHomePage) {
