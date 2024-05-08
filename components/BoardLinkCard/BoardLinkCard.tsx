@@ -8,7 +8,7 @@ import ColumnBadge from "../ColumnBadge/ColumnBadge";
 import PlatformBadge from "../PlatformBadge/PlatformBadge";
 import clsx from "clsx";
 import classes from "./BoardLinkCard.module.css";
-import Link from "next/link";
+import Link from "../Link/Link";
 import GameThumbnail from "../GameThumbnail/GameThumbnail";
 
 interface BoardLinkCardProps extends FlexProps {
