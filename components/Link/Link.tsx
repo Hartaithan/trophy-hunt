@@ -1,5 +1,6 @@
 "use client";
 
+// eslint-disable-next-line no-restricted-imports
 import NextLink, { type LinkProps } from "next/link";
 import { type FC, type PropsWithChildren } from "react";
 

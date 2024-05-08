@@ -11,7 +11,7 @@
     "plugin:react-hooks/recommended",
     "prettier"
   ],
-  "plugins": ["react", "prettier"],
+  "plugins": ["react", "prettier", "eslint-plugin-import"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
@@ -19,7 +19,14 @@
   "rules": {
     "no-console": ["error", { "allow": ["info", "error"] }],
     "prettier/prettier": ["error"],
-    "@typescript-eslint/naming-convention": "off"
+    "@typescript-eslint/naming-convention": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        "name": "next/link",
+        "message": "Please use @/components/Link/Link instead."
+      }
+    ]
   },
   "ignorePatterns": ["next.config.js"]
 }
