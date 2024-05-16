@@ -59,10 +59,7 @@ export const middleware: NextMiddleware = async (req) => {
     }
   }
 
-  const isAuth =
-    access_token !== undefined &&
-    refresh_token !== undefined &&
-    session != null;
+  const isAuth = access_token !== undefined && session != null;
 
   console.info(
     "middleware user",
