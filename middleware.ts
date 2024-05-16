@@ -4,6 +4,8 @@ import { exchangeRefreshTokenForAuthTokens } from "psn-api";
 import { cookies } from "next/headers";
 import { createClient } from "./utils/supabase/middleware";
 
+const SB_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY ?? null;
+
 const publicPages = new Set<string>([
   "/signIn",
   "/signUp",
@@ -29,10 +31,9 @@ const refreshTokens = async (token: string): Promise<NullableAuthResponse> => {
 const resetCookies = (res: NextResponse): NextResponse => {
   const allCookies = cookies().getAll();
   console.info("cookies before reset", JSON.stringify(allCookies));
-  for (let i = 0; i < allCookies.length; i++) {
-    const cookie = allCookies[i];
-    res.cookies.delete(cookie.name);
-  }
+  res.cookies.delete("psn-access-token");
+  res.cookies.delete("psn-refresh-token");
+  if (SB_KEY != null) res.cookies.delete(`sb-${SB_KEY}-auth-token`);
   return res;
 };
 
