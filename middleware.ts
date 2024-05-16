@@ -20,11 +20,12 @@ export const config = {
 const refreshTokens = async (token: string): Promise<NullableAuthResponse> => {
   let authorization: NullableAuthResponse = null;
   try {
+    console.info("refresh token", token);
     authorization = await exchangeRefreshTokenForAuthTokens(token);
+    console.info("refreshed auth", authorization);
   } catch (error) {
     console.error("unable to refresh tokens", error);
   }
-  console.info("refreshed auth", JSON.stringify(authorization));
   return authorization;
 };
 
