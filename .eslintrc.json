@@ -26,6 +26,14 @@
         "name": "next/link",
         "message": "Please use @/components/Link/Link instead."
       }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
     ]
   },
   "ignorePatterns": ["next.config.js"]

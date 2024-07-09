@@ -85,7 +85,7 @@ const SignUpForm: FC = () => {
 
   const [username] = useDebouncedValue(form.values.username, 500);
 
-  const handleSubmit = (values: typeof form.values): void => {
+  const _handleSubmit = (values: typeof form.values): void => {
     if (API_URL === undefined) {
       console.error("API_URL not found");
       return;
@@ -162,7 +162,8 @@ const SignUpForm: FC = () => {
         component="form"
         w="100%"
         maw={{ base: "95%", sm: 400 }}
-        onSubmit={form.onSubmit(handleSubmit)}>
+        // onSubmit={form.onSubmit(handleSubmit)}
+      >
         <Stack>
           <TextInput
             required
@@ -234,9 +235,11 @@ const SignUpForm: FC = () => {
         <Button
           type="submit"
           mt="xl"
-          disabled={!form.isValid() || isChecking || !isUnique}
+          // disabled={!form.isValid() || isChecking || !isUnique}
+          disabled
           fullWidth>
-          Sign up!
+          Temporary Disabled
+          {/* Sign up! */}
         </Button>
       </Box>
       <Text ta="center" mt="xl" size="sm" fw={500}>
