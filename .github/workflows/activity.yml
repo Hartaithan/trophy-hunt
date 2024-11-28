@@ -1,7 +1,7 @@
 name: Supabase Activity
 on:
   schedule:
-    - cron: "0 0 * * 0,3"
+    - cron: "0 9 * * 1,4"
   workflow_dispatch:
 
 jobs:
@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send HTTP Request
-        run: curl https://trophy-hunt.vercel.app/api/supabase-activity
+        run: curl https://trophy-hunt.vercel.app/api/activity
