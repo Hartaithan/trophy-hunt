@@ -2,25 +2,11 @@ name: Supabase Activity
 on:
   schedule:
     - cron: "0 9 * * 1,4"
+  workflow_dispatch:
 
 jobs:
   send-http-request:
-    name: Execute Supabase Update
     runs-on: ubuntu-latest
     steps:
-      - name: Send PATCH request
-        run: |
-          date=$(date -u +'%Y-%m-%dT%H:%M:%S.%3NZ')
-          response=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X PATCH "${{ secrets.SUPABASE_URL }}/rest/v1/keep-alive?id=eq.1" \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Content-Type: application/json" \
-            -H "Prefer: return=minimal" \
-            -d "{\"value\": \"$date\"}")
-          if [ "$response" -eq 204 ]; then
-            echo "Success! $date"
-          else
-            echo "Failed with status code: $response"
-            exit 1
-          fi
+      - name: Send HTTP Request
+        run: curl https://trophy-hunt.vercel.app/api/activity
