@@ -7,8 +7,6 @@ export const getRefreshedCookies = (): string => {
   }
   const responseCookies = headers().get("set-cookie");
   if (responseCookies !== undefined) {
-    console.info("cookie from request", refreshed);
-    console.info("cookie from response", responseCookies);
     refreshed = `${refreshed}; ${responseCookies}`;
   }
   return refreshed;

@@ -1,7 +1,6 @@
 import { NextResponse, type NextMiddleware } from "next/server";
 import { type NullableAuthResponse } from "./models/AuthModel";
 import { exchangeRefreshTokenForAuthTokens } from "psn-api";
-import { cookies } from "next/headers";
 import { createClient } from "./utils/supabase/middleware";
 
 const SB_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY ?? null;
@@ -20,9 +19,7 @@ export const config = {
 const refreshTokens = async (token: string): Promise<NullableAuthResponse> => {
   let authorization: NullableAuthResponse = null;
   try {
-    console.info("refresh token", token);
     authorization = await exchangeRefreshTokenForAuthTokens(token);
-    console.info("refreshed auth", authorization);
   } catch (error) {
     console.error("unable to refresh tokens", error);
   }
@@ -30,8 +27,6 @@ const refreshTokens = async (token: string): Promise<NullableAuthResponse> => {
 };
 
 const resetCookies = (res: NextResponse): NextResponse => {
-  const allCookies = cookies().getAll();
-  console.info("cookies before reset", JSON.stringify(allCookies));
   res.cookies.delete("psn-access-token");
   res.cookies.delete("psn-refresh-token");
   if (SB_KEY != null) res.cookies.delete(`sb-${SB_KEY}-auth-token`);
@@ -62,20 +57,6 @@ export const middleware: NextMiddleware = async (req) => {
   }
 
   const isAuth = access_token !== undefined && session != null;
-
-  console.info(
-    "middleware user",
-    pathname,
-    session?.user?.email,
-    session?.expires_at,
-    req.headers.get("user-agent"),
-  );
-  console.info(
-    "middleware token",
-    access_token !== undefined ? access_token.slice(-5) : undefined,
-    refresh_token !== undefined ? refresh_token.slice(-5) : undefined,
-    refreshed_auth === null,
-  );
 
   if (!isAuth && isHomePage) {
     return resetCookies(res);

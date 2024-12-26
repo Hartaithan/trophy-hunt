@@ -142,9 +142,6 @@ const NoteModal: FC<NoteModalProps> = (props) => {
         ),
         labels: { confirm: "Close", cancel: "Cancel" },
         confirmProps: { color: "red" },
-        onCancel: () => {
-          console.info("user cancelled modal close");
-        },
         onConfirm: () => {
           setState((prev) => ({ ...prev, opened: false }));
         },

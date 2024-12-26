@@ -64,9 +64,6 @@ const BoardCardMenu: FC<BoardCardMenuProps> = (props) => {
       ),
       labels: { confirm: "Delete", cancel: "No don't delete it" },
       confirmProps: { color: "red" },
-      onCancel: () => {
-        console.info("user cancelled delete");
-      },
       onConfirm: handleDelete,
     });
   };
