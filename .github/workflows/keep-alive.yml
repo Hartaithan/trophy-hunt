@@ -1,12 +1,14 @@
 name: Keep Alive
 on:
   schedule:
-    - cron: "0 0 */10 * *"
+    - cron: "0 0 * * MON"
 
 jobs:
-  cronjob-based-github-action:
+  keepalive-job:
     name: Keep Alive
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
       - uses: actions/checkout@v4
-      - uses: gautamkrishnar/keepalive-workflow@v1
+      - uses: gautamkrishnar/keepalive-workflow@v2
