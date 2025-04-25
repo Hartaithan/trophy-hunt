@@ -2,6 +2,7 @@ name: Keep Alive
 on:
   schedule:
     - cron: "0 0 * * MON"
+  workflow_dispatch:
 
 jobs:
   keepalive-job:
