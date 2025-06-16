@@ -9,6 +9,7 @@ jobs:
     name: Keep Alive
     runs-on: ubuntu-latest
     permissions:
+      contents: write
       actions: write
     steps:
       - uses: actions/checkout@v4
