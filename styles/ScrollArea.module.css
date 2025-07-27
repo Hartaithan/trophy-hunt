@@ -1,6 +1,0 @@
-.scrollbar {
-  &[data-orientation="vertical"] .thumb,
-  &[data-orientation="horizontal"] .thumb {
-    background-color: var(--mantine-color-primary-5);
-  }
-}
