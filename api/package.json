@@ -14,19 +14,19 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "openai": "^5.3.0"
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "openai": "^5.10.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.18.0",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/node": "^22.10.9",
-    "eslint": "^9.18.0",
-    "prettier": "3.4.2",
-    "prettier-plugin-organize-imports": "^4.1.0",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "@eslint/js": "^9.32.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0",
+    "eslint": "^9.32.0",
+    "prettier": "3.6.2",
+    "prettier-plugin-organize-imports": "^4.2.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0"
   }
 }
