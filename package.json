@@ -1,0 +1,17 @@
+{
+  "name": "trophy-hunt",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:app\"",
+    "dev:api": "cd api && npm run dev",
+    "dev:app": "cd app && npm run dev",
+    "install:all": "npm install && cd api && npm install && cd ../app && npm install",
+    "clean": "rm -rf node_modules api/node_modules app/node_modules",
+    "lint": "npm run lint:api && npm run lint:app",
+    "lint:api": "cd api && npm run lint",
+    "lint:app": "cd app && npm run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}

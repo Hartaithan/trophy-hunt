@@ -1,0 +1,9 @@
+# npm
+node_modules
+package-lock.json
+*.log
+*.gz
+
+# macOS
+.DS_Store
+*.pem

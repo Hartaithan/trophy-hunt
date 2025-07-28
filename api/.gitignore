@@ -17,3 +17,7 @@ benchmarks/graphs
 
 # Output
 dist
+
+# macOS
+.DS_Store
+*.pem
