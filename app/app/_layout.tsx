@@ -5,14 +5,12 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { FC, useRef, useState } from "react";
 import { Platform } from "react-native";
-import { DARK_THEME, LIGHT_THEME } from "~/constants/theme";
-import { useColorScheme } from "~/hooks/use-color-scheme";
+import { THEME } from "~/constants/theme";
 import { useIsomorphicLayoutEffect } from "~/hooks/use-isomorphic-layout-effect";
 export { ErrorBoundary } from "expo-router";
 
 const RootLayout: FC = () => {
   const hasMounted = useRef(false);
-  const { isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
 
   useIsomorphicLayoutEffect(() => {
@@ -27,8 +25,8 @@ const RootLayout: FC = () => {
   if (!isColorSchemeLoaded) return null;
 
   return (
-    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+    <ThemeProvider value={THEME}>
+      <StatusBar style="light" />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
