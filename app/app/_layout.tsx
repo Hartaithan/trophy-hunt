@@ -1,6 +1,7 @@
 import "~/global.css";
 
 import { ThemeProvider } from "@react-navigation/native";
+import { PortalHost } from "@rn-primitives/portal";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { FC, useRef, useState } from "react";
@@ -30,6 +31,7 @@ const RootLayout: FC = () => {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
+      <PortalHost />
     </ThemeProvider>
   );
 };
